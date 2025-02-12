@@ -3,6 +3,7 @@
 #include <unordered_map>
 #include <vector>
 #include <string>
+#include <queue>
 
 const int SCREEN_WIDTH = 1366;
 const int SCREEN_HEIGHT = 768;
@@ -15,7 +16,10 @@ struct TrieNode {
     Vector2 position;
     std::unordered_map<char, TrieNode*> children;
     bool isEndOfWord;
+    bool selected;
     TrieNode() {
+        position = {0, 0};
+        selected = false;
         isEndOfWord = false;
     }
 };
@@ -75,14 +79,28 @@ class Trie {
             return width;
         }
         void draw(TrieNode *root, int x, int y) {
+            //std::cout << "Drawing" << std::endl;
             if (root == NULL) {
                 return;
             }
-            DrawCircle(x, y, NODE_RADIUS, root->isEndOfWord ? RED : BLACK);
+            DrawCircle(x, y, NODE_RADIUS, root->selected ? GREEN : root->isEndOfWord ? RED : BLACK);
             for (auto &child : root->children) {
                 DrawLine(x, y, child.second->position.x + x, child.second->position.y + y, BLACK);
                 draw(child.second, child.second->position.x + x, child.second->position.y + y);
             }
+        }
+        std::queue<TrieNode*> search(std::string word) {
+            std::queue<TrieNode*> result;
+            result.push(root);
+            TrieNode* current = root;
+            for (char c : word) {
+                if (current->children.find(c) == current->children.end()) {
+                    return result;
+                }
+                current = current->children[c];
+                result.push(current);
+            }
+            return result;
         }
 };
 
@@ -96,11 +114,22 @@ int main() {
     trie.insert("worldcode");
     trie.insert("worlds");
     trie.calcPosition(trie.root);
-
+    std::queue<TrieNode*> result = trie.search("world");
+    float lastUpdate = 0;
     while (!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(RAYWHITE);
         trie.draw(trie.root, SCREEN_WIDTH / 2, 50);
+        lastUpdate += 0.01;
+        if (lastUpdate > 1)
+        {
+            lastUpdate = 0;
+            if (!result.empty()) {
+                result.front()->selected = 1;
+                result.front()->isEndOfWord = !result.front()->isEndOfWord;
+                result.pop();
+            }
+        }
         EndDrawing();
     }
 
