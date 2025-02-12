@@ -8,7 +8,7 @@ set(
     ${PROJECT_SOURCE_DIR}/include/raylib/lib/raylib.dll
 )
 include_directories(include/raylib/include)
-include_directories(include/raylib/include/src)
+include_directories(include/raygui/src)
 add_executable(
     ${PROJECT_NAME}
     src/main.cpp

@@ -52,7 +52,7 @@ build cmake_object_order_depends_target_DATA_VISUALIZER: phony || .
 build CMakeFiles/DATA_VISUALIZER.dir/src/main.cpp.obj: CXX_COMPILER__DATA_VISUALIZER_unscanned_Debug D$:/University/Programming/Cplusplus/Project/CS163_Data_Visualization/src/main.cpp || cmake_object_order_depends_target_DATA_VISUALIZER
   DEP_FILE = CMakeFiles\DATA_VISUALIZER.dir\src\main.cpp.obj.d
   FLAGS = -g
-  INCLUDES = -ID:/University/Programming/Cplusplus/Project/CS163_Data_Visualization/include/raylib/include -ID:/University/Programming/Cplusplus/Project/CS163_Data_Visualization/include/raylib/include/src
+  INCLUDES = -ID:/University/Programming/Cplusplus/Project/CS163_Data_Visualization/include/raylib/include -ID:/University/Programming/Cplusplus/Project/CS163_Data_Visualization/include/raygui/src
   OBJECT_DIR = CMakeFiles\DATA_VISUALIZER.dir
   OBJECT_FILE_DIR = CMakeFiles\DATA_VISUALIZER.dir\src
 
