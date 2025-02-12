@@ -1,0 +1,3 @@
+"C:\Program Files\CMake\bin\cmake.exe" -E rm -f CMakeFiles\DATA_VISUALIZER.dir/objects.a
+C:\msys64\ucrt64\bin\ar.exe qc CMakeFiles\DATA_VISUALIZER.dir/objects.a @CMakeFiles\DATA_VISUALIZER.dir\objects1.rsp
+C:\msys64\ucrt64\bin\g++.exe -O3 -DNDEBUG -Wl,--whole-archive CMakeFiles\DATA_VISUALIZER.dir/objects.a -Wl,--no-whole-archive -o DATA_VISUALIZER.exe -Wl,--out-implib,libDATA_VISUALIZER.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\DATA_VISUALIZER.dir\linkLibs.rsp

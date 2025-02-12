@@ -1,0 +1,1 @@
+ D:/projects/CS163_Data_Visualization/include/raylib/lib/libraylibdll.a D:/projects/CS163_Data_Visualization/include/raylib/lib/raylib.dll -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 
