@@ -1,7 +1,7 @@
 [
 {
   "directory": "D:/University/Programming/Cplusplus/Project/CS163_Data_Visualization/build",
-  "command": "C:\\Strawberry\\c\\bin\\c++.exe -ID:/University/Programming/Cplusplus/Project/CS163_Data_Visualization/include/raylib/include -ID:/University/Programming/Cplusplus/Project/CS163_Data_Visualization/include/raygui/src -g -o CMakeFiles\\DATA_VISUALIZER.dir\\src\\main.cpp.obj -c D:\\University\\Programming\\Cplusplus\\Project\\CS163_Data_Visualization\\src\\main.cpp",
+  "command": "C:\\Strawberry\\c\\bin\\c++.exe -ID:/University/Programming/Cplusplus/Project/CS163_Data_Visualization/include/raylib/include -ID:/University/Programming/Cplusplus/Project/CS163_Data_Visualization/include/raygui/src -ID:/University/Programming/Cplusplus/Project/CS163_Data_Visualization/include/GUI -ID:/University/Programming/Cplusplus/Project/CS163_Data_Visualization/include/basis -ID:/University/Programming/Cplusplus/Project/CS163_Data_Visualization/include/structures -g -o CMakeFiles\\DATA_VISUALIZER.dir\\src\\main.cpp.obj -c D:\\University\\Programming\\Cplusplus\\Project\\CS163_Data_Visualization\\src\\main.cpp",
   "file": "D:\\University\\Programming\\Cplusplus\\Project\\CS163_Data_Visualization\\src\\main.cpp",
   "output": "CMakeFiles\\DATA_VISUALIZER.dir\\src\\main.cpp.obj"
 }
