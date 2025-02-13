@@ -1,8 +1,8 @@
 [
 {
-  "directory": "D:/projects/CS163_Data_Visualization/build",
-  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles/DATA_VISUALIZER.dir/includes_CXX.rsp -O3 -DNDEBUG -o CMakeFiles\\DATA_VISUALIZER.dir\\src\\main.cpp.obj -c D:\\projects\\CS163_Data_Visualization\\src\\main.cpp",
-  "file": "D:/projects/CS163_Data_Visualization/src/main.cpp",
-  "output": "CMakeFiles/DATA_VISUALIZER.dir/src/main.cpp.obj"
+  "directory": "D:/University/Programming/Cplusplus/Project/CS163_Data_Visualization/build",
+  "command": "C:\\Strawberry\\c\\bin\\c++.exe -ID:/University/Programming/Cplusplus/Project/CS163_Data_Visualization/include/raylib/include -ID:/University/Programming/Cplusplus/Project/CS163_Data_Visualization/include/raygui/src -g -o CMakeFiles\\DATA_VISUALIZER.dir\\src\\main.cpp.obj -c D:\\University\\Programming\\Cplusplus\\Project\\CS163_Data_Visualization\\src\\main.cpp",
+  "file": "D:\\University\\Programming\\Cplusplus\\Project\\CS163_Data_Visualization\\src\\main.cpp",
+  "output": "CMakeFiles\\DATA_VISUALIZER.dir\\src\\main.cpp.obj"
 }
 ]
