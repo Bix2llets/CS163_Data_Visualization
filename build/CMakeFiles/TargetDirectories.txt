@@ -1,3 +1,3 @@
-D:/projects/CS163_Data_Visualization/build/CMakeFiles/DATA_VISUALIZER.dir
-D:/projects/CS163_Data_Visualization/build/CMakeFiles/edit_cache.dir
-D:/projects/CS163_Data_Visualization/build/CMakeFiles/rebuild_cache.dir
+D:/University/Programming/Cplusplus/Project/CS163_Data_Visualization/build/CMakeFiles/DATA_VISUALIZER.dir
+D:/University/Programming/Cplusplus/Project/CS163_Data_Visualization/build/CMakeFiles/edit_cache.dir
+D:/University/Programming/Cplusplus/Project/CS163_Data_Visualization/build/CMakeFiles/rebuild_cache.dir
