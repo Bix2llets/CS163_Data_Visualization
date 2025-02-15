@@ -1,5 +1,6 @@
-CMakeFiles/DATA_VISUALIZER.dir/src/main.cpp.obj: \
- D:\projects\CS163_Data_Visualization\src\main.cpp \
+CMakeFiles/DATA_VISUALIZER.dir/src/TrieState.cpp.obj: \
+ D:\projects\CS163_Data_Visualization\src\TrieState.cpp \
+ D:/projects/CS163_Data_Visualization/src/TrieState.hpp \
  D:/projects/CS163_Data_Visualization/include/raylib/include/raylib.h \
  C:/msys64/ucrt64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/stdarg.h \
  C:/msys64/ucrt64/include/stdarg.h \
@@ -8,12 +9,17 @@ CMakeFiles/DATA_VISUALIZER.dir/src/main.cpp.obj: \
  C:/msys64/ucrt64/include/_mingw_mac.h \
  C:/msys64/ucrt64/include/_mingw_secapi.h \
  C:/msys64/ucrt64/include/sdks/_mingw_ddk.h \
- C:/msys64/ucrt64/include/c++/13.1.0/iostream \
- C:/msys64/ucrt64/include/c++/13.1.0/bits/requires_hosted.h \
+ C:/msys64/ucrt64/include/c++/13.1.0/cstring \
  C:/msys64/ucrt64/include/c++/13.1.0/x86_64-w64-mingw32/bits/c++config.h \
  C:/msys64/ucrt64/include/c++/13.1.0/x86_64-w64-mingw32/bits/os_defines.h \
  C:/msys64/ucrt64/include/c++/13.1.0/x86_64-w64-mingw32/bits/cpu_defines.h \
  C:/msys64/ucrt64/include/c++/13.1.0/pstl/pstl_config.h \
+ C:/msys64/ucrt64/include/string.h C:/msys64/ucrt64/include/crtdefs.h \
+ C:/msys64/ucrt64/include/corecrt.h \
+ C:/msys64/ucrt64/include/sec_api/string_s.h \
+ D:/projects/CS163_Data_Visualization/src/Trie.hpp \
+ C:/msys64/ucrt64/include/c++/13.1.0/iostream \
+ C:/msys64/ucrt64/include/c++/13.1.0/bits/requires_hosted.h \
  C:/msys64/ucrt64/include/c++/13.1.0/ostream \
  C:/msys64/ucrt64/include/c++/13.1.0/ios \
  C:/msys64/ucrt64/include/c++/13.1.0/iosfwd \
@@ -21,7 +27,7 @@ CMakeFiles/DATA_VISUALIZER.dir/src/main.cpp.obj: \
  C:/msys64/ucrt64/include/c++/13.1.0/bits/memoryfwd.h \
  C:/msys64/ucrt64/include/c++/13.1.0/bits/postypes.h \
  C:/msys64/ucrt64/include/c++/13.1.0/cwchar \
- C:/msys64/ucrt64/include/wchar.h C:/msys64/ucrt64/include/corecrt.h \
+ C:/msys64/ucrt64/include/wchar.h \
  C:/msys64/ucrt64/include/corecrt_stdio_config.h \
  C:/msys64/ucrt64/include/corecrt_wstdlib.h \
  C:/msys64/ucrt64/include/_mingw_off_t.h \
@@ -34,7 +40,7 @@ CMakeFiles/DATA_VISUALIZER.dir/src/main.cpp.obj: \
  C:/msys64/ucrt64/include/c++/13.1.0/bits/exception_defines.h \
  C:/msys64/ucrt64/include/c++/13.1.0/bits/cxxabi_init_exception.h \
  C:/msys64/ucrt64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/stddef.h \
- C:/msys64/ucrt64/include/stddef.h C:/msys64/ucrt64/include/crtdefs.h \
+ C:/msys64/ucrt64/include/stddef.h \
  C:/msys64/ucrt64/include/c++/13.1.0/typeinfo \
  C:/msys64/ucrt64/include/c++/13.1.0/bits/hash_bytes.h \
  C:/msys64/ucrt64/include/c++/13.1.0/new \
@@ -138,14 +144,6 @@ CMakeFiles/DATA_VISUALIZER.dir/src/main.cpp.obj: \
  C:/msys64/ucrt64/include/c++/13.1.0/bits/ostream.tcc \
  C:/msys64/ucrt64/include/c++/13.1.0/istream \
  C:/msys64/ucrt64/include/c++/13.1.0/bits/istream.tcc \
- C:/msys64/ucrt64/include/c++/13.1.0/unordered_map \
- C:/msys64/ucrt64/include/c++/13.1.0/bits/unordered_map.h \
- C:/msys64/ucrt64/include/c++/13.1.0/bits/hashtable.h \
- C:/msys64/ucrt64/include/c++/13.1.0/bits/hashtable_policy.h \
- C:/msys64/ucrt64/include/c++/13.1.0/ext/aligned_buffer.h \
- C:/msys64/ucrt64/include/c++/13.1.0/bits/enable_special_members.h \
- C:/msys64/ucrt64/include/c++/13.1.0/bits/node_handle.h \
- C:/msys64/ucrt64/include/c++/13.1.0/bits/erase_if.h \
  C:/msys64/ucrt64/include/c++/13.1.0/vector \
  C:/msys64/ucrt64/include/c++/13.1.0/bits/stl_uninitialized.h \
  C:/msys64/ucrt64/include/c++/13.1.0/bits/stl_vector.h \
@@ -173,11 +171,13 @@ CMakeFiles/DATA_VISUALIZER.dir/src/main.cpp.obj: \
  C:/msys64/ucrt64/include/c++/13.1.0/tr1/poly_hermite.tcc \
  C:/msys64/ucrt64/include/c++/13.1.0/tr1/poly_laguerre.tcc \
  C:/msys64/ucrt64/include/c++/13.1.0/tr1/riemann_zeta.tcc \
- D:/projects/CS163_Data_Visualization/src/TrieState.hpp \
- C:/msys64/ucrt64/include/c++/13.1.0/cstring \
- C:/msys64/ucrt64/include/string.h \
- C:/msys64/ucrt64/include/sec_api/string_s.h \
- D:/projects/CS163_Data_Visualization/src/Trie.hpp \
  D:/projects/CS163_Data_Visualization/src/TrieNode.hpp \
- D:/projects/CS163_Data_Visualization/include/raygui/src/raygui.h \
- C:/msys64/ucrt64/include/c++/13.1.0/math.h
+ C:/msys64/ucrt64/include/c++/13.1.0/unordered_map \
+ C:/msys64/ucrt64/include/c++/13.1.0/bits/unordered_map.h \
+ C:/msys64/ucrt64/include/c++/13.1.0/bits/hashtable.h \
+ C:/msys64/ucrt64/include/c++/13.1.0/bits/hashtable_policy.h \
+ C:/msys64/ucrt64/include/c++/13.1.0/ext/aligned_buffer.h \
+ C:/msys64/ucrt64/include/c++/13.1.0/bits/enable_special_members.h \
+ C:/msys64/ucrt64/include/c++/13.1.0/bits/node_handle.h \
+ C:/msys64/ucrt64/include/c++/13.1.0/bits/erase_if.h \
+ D:/projects/CS163_Data_Visualization/include/raygui/src/raygui.h

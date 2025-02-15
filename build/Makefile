@@ -128,6 +128,30 @@ DATA_VISUALIZER/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\DATA_VISUALIZER.dir\build.make CMakeFiles/DATA_VISUALIZER.dir/build
 .PHONY : DATA_VISUALIZER/fast
 
+src/TrieState.obj: src/TrieState.cpp.obj
+.PHONY : src/TrieState.obj
+
+# target to build an object file
+src/TrieState.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\DATA_VISUALIZER.dir\build.make CMakeFiles/DATA_VISUALIZER.dir/src/TrieState.cpp.obj
+.PHONY : src/TrieState.cpp.obj
+
+src/TrieState.i: src/TrieState.cpp.i
+.PHONY : src/TrieState.i
+
+# target to preprocess a source file
+src/TrieState.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\DATA_VISUALIZER.dir\build.make CMakeFiles/DATA_VISUALIZER.dir/src/TrieState.cpp.i
+.PHONY : src/TrieState.cpp.i
+
+src/TrieState.s: src/TrieState.cpp.s
+.PHONY : src/TrieState.s
+
+# target to generate assembly for a file
+src/TrieState.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\DATA_VISUALIZER.dir\build.make CMakeFiles/DATA_VISUALIZER.dir/src/TrieState.cpp.s
+.PHONY : src/TrieState.cpp.s
+
 src/main.obj: src/main.cpp.obj
 .PHONY : src/main.obj
 
@@ -161,6 +185,9 @@ help:
 	@echo ... edit_cache
 	@echo ... rebuild_cache
 	@echo ... DATA_VISUALIZER
+	@echo ... src/TrieState.obj
+	@echo ... src/TrieState.i
+	@echo ... src/TrieState.s
 	@echo ... src/main.obj
 	@echo ... src/main.i
 	@echo ... src/main.s
