@@ -5,46 +5,51 @@
 #include <string>
 #include <queue>
 #include <cmath>
+#include <ctime>
 #include "..\..\..\src\Trie.hpp"
+#define RAYGUI_IMPLEMENTATION
+#define RAYGUI_SUPPORT_RICONS
+#include "raygui.h"
+#include "..\..\..\src\TrieState.hpp"
 
 const int SCREEN_WIDTH = 1366;
 const int SCREEN_HEIGHT = 768;
 
+enum class State {
+    MainMenu,
+    Trie
+};
+
+State current_state = State::MainMenu;
+TrieState trieState;
+
 int main() {
-    InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Trie Visualization");
+    InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Data Visualization");
     SetTargetFPS(60);
-    Trie trie;
-    trie.root->valid = true;
-    trie.insert("hello");
-    trie.insert("world");
-    trie.insert("hellocode");
-    trie.insert("worldcode");
-    trie.insert("worlds");
-    trie.calcPosition(trie.root);
-    trie.calcPosition2(trie.root);
-    std::cout << trie.move(trie.root) << std::endl;
-    std::queue<TrieNode*> result = trie.insertAnimation("worldhello");
-    float lastUpdate = 0;
+    srand(time(0));
+
+    GuiSetStyle(BUTTON, BORDER_COLOR_NORMAL, 0x008080FF);  
+    GuiSetStyle(BUTTON, BASE_COLOR_NORMAL, 0x20B2AAFF);    // light sea green
+    GuiSetStyle(BUTTON, TEXT_COLOR_NORMAL, 0xFFFFFFFF);    // white 
+    GuiSetStyle(DEFAULT, TEXT_SIZE, 24);
+
     while (!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(RAYWHITE);
-        trie.drawLine(trie.root, SCREEN_WIDTH / 2, 50);
-        trie.draw(trie.root, SCREEN_WIDTH / 2, 50);
-        lastUpdate += 0.05;
-        trie.move(trie.root);
-        if (lastUpdate > 1)
-        {
-            lastUpdate = 0;
-            if (!result.empty()) {
-                if (trie.move(trie.root)) continue;
-                if (result.front()->valid == 0)
-                {
-                    result.front()->valid = 1;
-                    trie.calcPosition2(trie.root);
+        switch (current_state) {
+            case State::MainMenu:
+                if (GuiButton((Rectangle){10, 10, 100, 40}, "Trie")) {
+                    current_state = State::Trie;
                 }
-                result.front()->selected = 1;
-                result.pop();
-            }
+                break;
+            case State::Trie:
+                trieState.handleInput();
+                trieState.update();
+                trieState.render();
+                if (GuiButton((Rectangle){10, 10, 100, 40}, "Back")) {
+                    current_state = State::MainMenu;
+                }
+                break;
         }
         EndDrawing();
     }

@@ -1,4 +1,6 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/DATA_VISUALIZER.dir/src/TrieState.cpp.obj"
+  "CMakeFiles/DATA_VISUALIZER.dir/src/TrieState.cpp.obj.d"
   "CMakeFiles/DATA_VISUALIZER.dir/src/main.cpp.obj"
   "CMakeFiles/DATA_VISUALIZER.dir/src/main.cpp.obj.d"
   "DATA_VISUALIZER.exe"
