@@ -12,6 +12,8 @@ include_directories(include/raygui/src)
 add_executable(
     ${PROJECT_NAME}
     src/main.cpp
+    src/Trie.hpp
+    src/TrieNode.hpp
 )
 file(COPY ${PROJECT_SOURCE_DIR}/include/raylib/lib/raylib.dll
     DESTINATION ${PROJECT_SOURCE_DIR}/build)
