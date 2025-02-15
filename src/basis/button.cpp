@@ -24,7 +24,7 @@ bool Button::isHovered() const {
     if (mousePosition.x < position.x) return false;
     if (mousePosition.x > position.x + dimension.x) return false;
     if (mousePosition.y < position.y) return false;
-    if (mousePosition.y > position.x + dimension.y) return false;
+    if (mousePosition.y > position.y + dimension.y) return false;
     // std::cerr << "Inside box\n";
     return true;
 }
