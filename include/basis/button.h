@@ -1,4 +1,5 @@
-#pragma once
+#ifndef BUTTON_H
+#define BUTTON_H
 #include <string>
 
 #include "GUIObject.h"
@@ -53,3 +54,5 @@ class Button : public GUIObject {
     bool isPressed() const;
     bool isHovered() const;
 };
+
+#endif
