@@ -25,6 +25,12 @@ int main() {
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Trie Visualization");
     SetTargetFPS(60);
     trieState = TrieState();
+
+    GuiSetStyle(BUTTON, BORDER_COLOR_NORMAL, 0x008080FF);  
+    GuiSetStyle(BUTTON, BASE_COLOR_NORMAL, 0x20B2AAFF);    //light sea green
+    GuiSetStyle(BUTTON, TEXT_COLOR_NORMAL, 0xFFFFFFFF);    //white
+    GuiSetStyle(DEFAULT, TEXT_SIZE, 24);
+
     while (!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(RAYWHITE);

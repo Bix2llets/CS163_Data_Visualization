@@ -19,7 +19,7 @@ class TrieState
         bool showTextBox;
         bool editMode;
         int textDestionation;
-        char textBox[100];
+        char textBox[100], requestText[100];
 };
 
 #endif // TRIESTATE_HPP
