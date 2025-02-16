@@ -3,7 +3,7 @@
 
 #include "raylib.h"
 #include <cstring>
-#include "..\..\..\src\Trie.hpp"
+#include "..\..\Trie.hpp"
 
 class TrieState
 {
@@ -13,7 +13,7 @@ class TrieState
         void update();
         void render();
     private:
-        Trie trie;
+        Trie mTrie;
         bool showOptions;
         bool showCreateOptions;
         bool showTextBox;

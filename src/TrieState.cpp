@@ -4,6 +4,14 @@
 
 const int MAX_TEXT_LENGTH = 15;
 
+void GenerateRandomText(char *text) {
+    int length = GetRandomValue(1, 10) % (MAX_TEXT_LENGTH + 1);
+    for (int i = 0; i < length; i++) {
+        text[i] = (GetRandomValue(1, 1000000000) % 26) + 'A';  
+    }
+    text[length] = '\0'; 
+}
+
 TrieState::TrieState() {
     trie = Trie();
     showOptions = false;
@@ -11,6 +19,8 @@ TrieState::TrieState() {
     showTextBox = false;
     editMode = false;
     textDestionation = 0;
+    textBox[0] = '\0';
+    requestText[0] = '\0';
 }
 
 void TrieState::handleInput() {
@@ -28,17 +38,17 @@ void TrieState::handleInput() {
             showTextBox = 0;
         }
         if (GuiButton((Rectangle){10 + 50, 600, 100, 40}, "Search")) {
-            showTextBox = !showTextBox;
+            showTextBox = 1;
             textDestionation = 1;
             showCreateOptions = 0;
         }
         if (GuiButton((Rectangle){10 + 50, 650, 100, 40}, "Insert")) {
-            showTextBox = !showTextBox;
+            showTextBox = 1;
             textDestionation = 2;
             showCreateOptions = 0;
         }
         if (GuiButton((Rectangle){10 + 50, 700, 100, 40}, "Delete")) {
-            showTextBox = !showTextBox;
+            showTextBox = 1;
             textDestionation = 3;
             showCreateOptions = 0;
         }
@@ -53,7 +63,7 @@ void TrieState::handleInput() {
         }
     }
     if (showTextBox) {
-        if (GuiTextBox((Rectangle){10 + 50 + 150, 600, 200, 40}, textBox, 15, editMode)) editMode = !editMode;
+        if (GuiTextBox((Rectangle){10 + 50 + 150, 625, 200, 40}, textBox, 15, editMode)) editMode = !editMode;
     }
 }
 
@@ -66,7 +76,33 @@ void TrieState::update() {
                 if ('a' <= textBox[strlen(textBox) - 1] && textBox[strlen(textBox) - 1] <= 'z') textBox[strlen(textBox) - 1] -= 32;
                 else textBox[strlen(textBox) - 1] = '\0';
     }
+    if (showTextBox) {
+        if (CheckCollisionPointRec(GetMousePosition(), (Rectangle){10 + 50 + 400, 625, 40, 40}) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) GenerateRandomText(textBox);
+        if (CheckCollisionPointRec(GetMousePosition(), (Rectangle){10 + 50 + 440, 625, 40, 40}) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) 
+        {
+            strcpy(requestText, textBox);
+            textBox[0] = '\0';
+            editMode = 0;
+        }
+        if (GetKeyPressed() == KEY_ENTER) 
+        {
+            strcpy(requestText, textBox);
+            textBox[0] = '\0';
+            editMode = 0;
+        }
+    }
 }
 
 void TrieState::render() {
+    if (showTextBox)
+    {
+        if (textDestionation == 1) DrawText("Searching", 10 + 50 + 150, 550, 20, BLACK);
+        else if (textDestionation == 2) DrawText("Inserting", 10 + 50 + 150, 550, 20, BLACK);
+        else if (textDestionation == 3) DrawText("Deleting", 10 + 50 + 150, 550, 20, BLACK);
+        DrawRectangle(10 + 50 + 400, 625, 40, 40, Fade(RED, 0.3f));
+        DrawRectangle(10 + 50 + 440, 625, 40, 40, Fade(GREEN, 0.3f));
+        DrawText("RD", 10 + 50 + 400 + 10, 625 + 10, 20, BLACK);
+        DrawText("GO", 10 + 50 + 440 + 10, 625 + 10, 20, BLACK);
+    }
+    std::cout << requestText << ' '<< textDestionation << std::endl;
 }

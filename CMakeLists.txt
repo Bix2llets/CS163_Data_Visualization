@@ -9,11 +9,32 @@ set(
 )
 include_directories(include/raylib/include)
 include_directories(include/raygui/src)
+include_directories(include/GUI)
+include_directories(include/basis)
+include_directories(include/structures)
 add_executable(
     ${PROJECT_NAME}
     src/main.cpp
     src/TrieState.cpp
+<<<<<<< HEAD
+=======
+    src/basis/button.cpp
+    src/basis/utility.cpp
+    src/basis/GUIObject.cpp
+    src/basis/colorPalette.cpp
+    
+    src/structures/singlyLinkedList.cpp
+>>>>>>> 319fa06676f539d43f04a98f1475ad1389097c38
 )
-file(COPY ${PROJECT_SOURCE_DIR}/include/raylib/lib/raylib.dll
+# For build and run purpose
+file(COPY ${RAYLIB}
     DESTINATION ${PROJECT_SOURCE_DIR}/build)
+
+# For releasing
+
+
 target_link_libraries(${PROJECT_NAME} PUBLIC ${RAYLIB})
+
+# file(MAKE_DIRECTORY ${PROJECT_SOURCE_DIR}/build/assets)
+file (COPY ${PROJECT_SOURCE_DIR}/assets DESTINATION ${PROJECT_SOURCE_DIR}/build)
+# file (COPY ${PROJECT_SOURCE_DIR}/build/${PROJECT_NAME}.exe DESTINATION ${PROJECT_SOURCE_DIR}/bin)
