@@ -15,6 +15,7 @@ include_directories(include/structures)
 add_executable(
     ${PROJECT_NAME}
     src/main.cpp
+    src/TrieState.cpp
     src/basis/button.cpp
     src/basis/utility.cpp
     src/basis/GUIObject.cpp
