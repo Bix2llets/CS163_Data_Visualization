@@ -13,7 +13,8 @@ void GenerateRandomText(char *text) {
 }
 
 TrieState::TrieState() {
-    trie = Trie();
+    mTrie = Trie();
+    mTrie.root->valid = true;
     showOptions = false;
     showCreateOptions = false;
     showTextBox = false;
@@ -65,17 +66,6 @@ void TrieState::handleInput() {
     if (showTextBox) {
         if (GuiTextBox((Rectangle){10 + 50 + 150, 625, 200, 40}, textBox, 15, editMode)) editMode = !editMode;
     }
-}
-
-void TrieState::update() {
-    if (editMode) {
-        if (strlen(textBox) == 0) ;
-        else
-            if ('A' <= textBox[strlen(textBox) - 1] && textBox[strlen(textBox) - 1] <= 'Z') ;
-            else
-                if ('a' <= textBox[strlen(textBox) - 1] && textBox[strlen(textBox) - 1] <= 'z') textBox[strlen(textBox) - 1] -= 32;
-                else textBox[strlen(textBox) - 1] = '\0';
-    }
     if (showTextBox) {
         if (CheckCollisionPointRec(GetMousePosition(), (Rectangle){10 + 50 + 400, 625, 40, 40}) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) GenerateRandomText(textBox);
         if (CheckCollisionPointRec(GetMousePosition(), (Rectangle){10 + 50 + 440, 625, 40, 40}) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) 
@@ -93,6 +83,17 @@ void TrieState::update() {
     }
 }
 
+void TrieState::update() {
+    if (editMode) {
+        if (strlen(textBox) == 0) ;
+        else
+            if ('A' <= textBox[strlen(textBox) - 1] && textBox[strlen(textBox) - 1] <= 'Z') ;
+            else
+                if ('a' <= textBox[strlen(textBox) - 1] && textBox[strlen(textBox) - 1] <= 'z') textBox[strlen(textBox) - 1] -= 32;
+                else textBox[strlen(textBox) - 1] = '\0';
+    }
+}
+
 void TrieState::render() {
     if (showTextBox)
     {
@@ -104,5 +105,6 @@ void TrieState::render() {
         DrawText("RD", 10 + 50 + 400 + 10, 625 + 10, 20, BLACK);
         DrawText("GO", 10 + 50 + 440 + 10, 625 + 10, 20, BLACK);
     }
-    std::cout << requestText << ' '<< textDestionation << std::endl;
+    mTrie.drawLine(mTrie.root, 700, 100);
+    mTrie.draw(mTrie.root, 700, 100);
 }

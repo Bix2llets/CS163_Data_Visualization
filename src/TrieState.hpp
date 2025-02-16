@@ -13,7 +13,7 @@ class TrieState
         void update();
         void render();
     private:
-        Trie trie;
+        Trie mTrie;
         bool showOptions;
         bool showCreateOptions;
         bool showTextBox;

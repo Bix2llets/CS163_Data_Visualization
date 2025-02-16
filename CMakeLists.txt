@@ -13,6 +13,7 @@ add_executable(
     ${PROJECT_NAME}
     src/main.cpp
     src/TrieState.cpp
+    src/Trie.cpp
 )
 file(COPY ${PROJECT_SOURCE_DIR}/include/raylib/lib/raylib.dll
     DESTINATION ${PROJECT_SOURCE_DIR}/build)
