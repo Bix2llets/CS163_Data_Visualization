@@ -1,4 +1,4 @@
-#include "..\..\..\src\Trie.hpp"
+#include "Trie.hpp"
 
 Trie::Trie() {
     root = new TrieNode();

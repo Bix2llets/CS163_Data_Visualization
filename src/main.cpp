@@ -1,11 +1,10 @@
-#include "raylib.h"
 #include <iostream>
 #include <unordered_map>
 #include <vector>
 #include <string>
 #include <queue>
 #include <cmath>
-#include "..\..\..\src\TrieState.hpp"
+#include "TrieState.hpp"
 #define RAYGUI_IMPLEMENTATION
 #include "raygui.h"
 
@@ -21,9 +20,26 @@ State state = MENU;
 
 TrieState trieState;
 
+#include <memory>
+
+#include "GUIObject.h"
+#include "button.h"
+#include "singlyLInkedList.h"
+#include "raylib.h"
+#include "utility.h"
+#include "colorPalette.h"
+
+using namespace ColorPalette::FlatUI;
 int main() {
-    InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Trie Visualization");
+    InitWindow(1600, 900, "CS163 Data visualizer");
     SetTargetFPS(60);
+    TextUtility::init();
+    SinglyLinkedList ll(50, GetRenderHeight() / 2);
+
+    ll.setColor(ColorPalette::FlatUI::MIDNIGHT_BLUE, ColorPalette::FlatUI::FLAT_ORANGE, ColorPalette::FlatUI::WET_ASPHALT);
+    Button button1(400, 400, 100, 50, "Add Node", 12, ASBESTOS, CLOUDS, MIDNIGHT_BLUE);
+    Button button2(500, 400, 100, 50, "Remove End");
+    int nodeData = 0;
     trieState = TrieState();
 
     GuiSetStyle(BUTTON, BORDER_COLOR_NORMAL, 0x008080FF);  
@@ -56,7 +72,6 @@ int main() {
         }
         EndDrawing();
     }
-
-     CloseWindow();
-    return 0;
+    std::cout << "Program ran successfully\n";
+    CloseWindow();
 }
