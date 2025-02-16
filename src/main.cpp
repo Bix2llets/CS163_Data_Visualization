@@ -4,7 +4,7 @@
 #include <string>
 #include <queue>
 #include <cmath>
-#include "..\..\..\src\TrieState.hpp"
+#include "TrieState.hpp"
 #define RAYGUI_IMPLEMENTATION
 #include "raygui.h"
 

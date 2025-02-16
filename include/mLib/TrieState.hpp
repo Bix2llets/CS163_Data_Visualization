@@ -3,7 +3,7 @@
 
 #include "raylib.h"
 #include <cstring>
-#include "..\..\Trie.hpp"
+#include "Trie.hpp"
 
 class TrieState
 {

@@ -12,19 +12,18 @@ include_directories(include/raygui/src)
 include_directories(include/GUI)
 include_directories(include/basis)
 include_directories(include/structures)
+include_directories(include/mLib)
 add_executable(
     ${PROJECT_NAME}
     src/main.cpp
     src/TrieState.cpp
-<<<<<<< HEAD
-=======
+    src/Trie.cpp
     src/basis/button.cpp
     src/basis/utility.cpp
     src/basis/GUIObject.cpp
     src/basis/colorPalette.cpp
     
     src/structures/singlyLinkedList.cpp
->>>>>>> 319fa06676f539d43f04a98f1475ad1389097c38
 )
 # For build and run purpose
 file(COPY ${RAYLIB}

@@ -7,7 +7,7 @@
 #include <queue>
 #include <cmath>
 #include "raylib.h"
-#include "..\..\..\src\TrieNode.hpp"
+#include "TrieNode.hpp"
 
 class Trie {
     private:

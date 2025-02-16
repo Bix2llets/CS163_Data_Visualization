@@ -1,4 +1,4 @@
-#include "..\..\..\src\TrieState.hpp"
+#include "TrieState.hpp"
 #include "raygui.h"
 #include <cstring>
 
@@ -13,7 +13,7 @@ void GenerateRandomText(char *text) {
 }
 
 TrieState::TrieState() {
-    trie = Trie();
+    mTrie = Trie();
     showOptions = false;
     showCreateOptions = false;
     showTextBox = false;
