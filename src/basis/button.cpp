@@ -8,6 +8,7 @@ void Button::render() {
     else
         DrawRectangle(rect.x, rect.y, rect.width, rect.height, backgroundColor);
     TextUtility::renderText(text, {position.x + dimension.x / 2, position.y + dimension.y / 2}, TextUtility::fontInter, textColor, fontSize, SPACING);
+    DrawRectangleLinesEx(rect, 3, textColor);
 }
 
 void Button::setText(std::string newText) { text = newText; }
