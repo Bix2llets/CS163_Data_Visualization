@@ -1,8 +1,0 @@
-[
-{
-  "directory": "D:/projects/CS163_Data_Visualization/build",
-  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles/DATA_VISUALIZER.dir/includes_CXX.rsp -O3 -DNDEBUG -o CMakeFiles\\DATA_VISUALIZER.dir\\src\\main.cpp.obj -c D:\\projects\\CS163_Data_Visualization\\src\\main.cpp",
-  "file": "D:/projects/CS163_Data_Visualization/src/main.cpp",
-  "output": "CMakeFiles/DATA_VISUALIZER.dir/src/main.cpp.obj"
-}
-]
