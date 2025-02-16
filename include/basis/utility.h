@@ -1,5 +1,4 @@
-#ifndef UTILITY_H
-#define UTILITY_H
+#pragma once
 #include <string>
 
 #include "raylib.h"
@@ -12,4 +11,3 @@ void init();
 void renderText(std::string text, Vector2 position, Font font, Color textColor,
                 int fontSize, int spacing);
 }  // namespace TextUtility
-#endif

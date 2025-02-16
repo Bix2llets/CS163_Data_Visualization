@@ -14,4 +14,4 @@ void init() {
         fontInter = LoadFont("assets/Inter-Black.ttf");
     }
 }
-}  // namespace Utility
+}  // namespace TextUtility

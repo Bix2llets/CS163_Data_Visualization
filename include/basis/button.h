@@ -1,5 +1,4 @@
-#ifndef BUTTON_H
-#define BUTTON_H
+#pragma once
 #include <string>
 
 #include "GUIObject.h"
@@ -16,9 +15,9 @@ class Button : public GUIObject {
     Color hoverColor;
 
    public:
-    Button(Vector2 position, Vector2 dimension, std::string text = "", int fontSize = 12, 
-           Color textColor = WHITE, Color backgroundColor = BLACK,
-           Color hoverColor = GREEN)
+    Button(Vector2 position, Vector2 dimension, std::string text = "",
+           int fontSize = 12, Color textColor = WHITE,
+           Color backgroundColor = BLACK, Color hoverColor = GREEN)
         : GUIObject(position),
           dimension{dimension},
           text{text},
@@ -29,8 +28,9 @@ class Button : public GUIObject {
         font = LoadFont("./assets/Inter-black.ttf");
     };
 
-    Button(Rectangle rectangle, std::string text = "", int fontSize = 12,  Color textColor = WHITE,
-           Color backgroundColor = BLACK, Color hoverColor = GREEN)
+    Button(Rectangle rectangle, std::string text = "", int fontSize = 12,
+           Color textColor = WHITE, Color backgroundColor = BLACK,
+           Color hoverColor = GREEN)
         : Button{Vector2{rectangle.x, rectangle.y},
                  Vector2{rectangle.width, rectangle.height},
                  text,
@@ -39,10 +39,10 @@ class Button : public GUIObject {
                  backgroundColor,
                  hoverColor} {};
 
-    Button(float x, float y, float width, float height, std::string text = "", int fontSize = 12, 
-           Color textColor = WHITE, Color backgroundColor = BLACK,
-           Color hoverColor = GREEN)
-        : Button{Vector2{x, y}, Vector2{width, height}, text, fontSize,
+    Button(float x, float y, float width, float height, std::string text = "",
+           int fontSize = 12, Color textColor = WHITE,
+           Color backgroundColor = BLACK, Color hoverColor = GREEN)
+        : Button{Vector2{x, y}, Vector2{width, height}, text,      fontSize,
                  textColor,     backgroundColor,        hoverColor} {};
 
     Vector2 getDimension() const { return dimension; }
@@ -54,5 +54,3 @@ class Button : public GUIObject {
     bool isPressed() const;
     bool isHovered() const;
 };
-
-#endif

@@ -18,6 +18,8 @@ add_executable(
     src/basis/button.cpp
     src/basis/utility.cpp
     src/basis/GUIObject.cpp
+    src/basis/colorPalette.cpp
+    
     src/structures/singlyLinkedList.cpp
 )
 # For build and run purpose
