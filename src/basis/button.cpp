@@ -1,5 +1,5 @@
 #include "button.h"
-
+#include "utility.h"
 #include <iostream>
 void Button::render() {
     Rectangle rect{position.x, position.y, dimension.x, dimension.y};
@@ -7,13 +7,7 @@ void Button::render() {
         DrawRectangle(rect.x, rect.y, rect.width, rect.height, hoverColor);
     else
         DrawRectangle(rect.x, rect.y, rect.width, rect.height, backgroundColor);
-
-    Vector2 textStart{rect.x + rect.width / 2, rect.y + rect.height / 2};
-    Vector2 textDimension =
-        MeasureTextEx(font, text.c_str(), fontSize, SPACING);
-    textDimension = Vector2Scale(textDimension, 0.5f);
-    textStart = Vector2Subtract(textStart, textDimension);
-    DrawTextEx(font, text.c_str(), textStart, fontSize, SPACING, textColor);
+    TextUtility::renderText(text, {position.x + dimension.x / 2, position.y + dimension.y / 2}, TextUtility::fontInter, textColor, fontSize, SPACING);
 }
 
 void Button::setText(std::string newText) { text = newText; }

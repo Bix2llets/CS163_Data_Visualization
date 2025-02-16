@@ -95,6 +95,7 @@ void SinglyLinkedList::setColor(Color border, Color background,
 
 void SinglyLinkedList::addNode(int data) { addNode(std::to_string(data)); }
 void SinglyLinkedList::addNode(std::string data) {
+    countNode++;
     Node* curr = root;
     if (curr != nullptr) {
         while (curr->nextNode != nullptr) curr = curr->nextNode;
@@ -137,6 +138,7 @@ void SinglyLinkedList::render() {
 }
 
 void SinglyLinkedList::removeEnd() {
+    countNode--;
     Node* curr = root;
     if (curr == nullptr) return;
     if (curr->nextNode == nullptr) {

@@ -15,13 +15,14 @@ include_directories(include/structures)
 add_executable(
     ${PROJECT_NAME}
     src/main.cpp
-    src/TrieState.cpp
     src/basis/button.cpp
     src/basis/utility.cpp
     src/basis/GUIObject.cpp
     src/basis/colorPalette.cpp
     
+    src/GUI/welcomeMenu.cpp
     src/structures/singlyLinkedList.cpp
+    src/structures/TrieState.cpp
 )
 # For build and run purpose
 file(COPY ${RAYLIB}

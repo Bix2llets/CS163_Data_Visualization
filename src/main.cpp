@@ -4,22 +4,7 @@
 #include <string>
 #include <queue>
 #include <cmath>
-#include "..\..\..\src\TrieState.hpp"
-#define RAYGUI_IMPLEMENTATION
-#include "raygui.h"
-
-const int SCREEN_WIDTH = 1366;
-const int SCREEN_HEIGHT = 768;
-
-enum State {
-    MENU,
-    TRIE
-};
-
-State state = MENU;
-
-TrieState trieState;
-
+#include "TrieState.hpp"
 #include <memory>
 
 #include "GUIObject.h"
@@ -28,6 +13,28 @@ TrieState trieState;
 #include "raylib.h"
 #include "utility.h"
 #include "colorPalette.h"
+#define RAYGUI_IMPLEMENTATION
+#include "raygui.h"
+#include "welcomeMenu.h"
+const int SCREEN_WIDTH = 1366;
+const int SCREEN_HEIGHT = 768;
+
+enum State {
+    MENU,
+    TRIE
+};
+
+enum class Scene {
+    NONE, 
+    AVLTREE, 
+    GRAPH,
+    TRIE,
+    LINKED_LIST,
+    HASH,
+};
+State state = MENU;
+Scene currentScene = Scene::NONE;
+TrieState trieState;
 
 using namespace ColorPalette::FlatUI;
 int main() {
@@ -37,11 +44,13 @@ int main() {
     SinglyLinkedList ll(50, GetRenderHeight() / 2);
 
     ll.setColor(ColorPalette::FlatUI::MIDNIGHT_BLUE, ColorPalette::FlatUI::FLAT_ORANGE, ColorPalette::FlatUI::WET_ASPHALT);
-    Button button1(400, 400, 100, 50, "Add Node", 12, ASBESTOS, CLOUDS, MIDNIGHT_BLUE);
-    Button button2(500, 400, 100, 50, "Remove End");
+    // Button button1(400, 400, 100, 50, "Add Node", 12, ASBESTOS, CLOUDS, MIDNIGHT_BLUE);
+    // Button button2(500, 400, 100, 50, "Remove End");
     int nodeData = 0;
     trieState = TrieState();
 
+    // Button trieButton{10, 10, 100, 50, "Trie", 20, MIDNIGHT_BLUE, SILVER, ASBESTOS};
+    Button backButton{10, 10, 100, 50, "Back", 20, MIDNIGHT_BLUE, SILVER, ASBESTOS};
     GuiSetStyle(BUTTON, BORDER_COLOR_NORMAL, 0x008080FF);  
     GuiSetStyle(BUTTON, BASE_COLOR_NORMAL, 0x20B2AAFF);    //light sea green
     GuiSetStyle(BUTTON, TEXT_COLOR_NORMAL, 0xFFFFFFFF);    //white
@@ -54,17 +63,19 @@ int main() {
         {
             case MENU:
             {
-                if (GuiButton((Rectangle){10, 10, 100, 50}, "Trie")) {
+                WelcomeMenu::render();
+                if (WelcomeMenu::isTriePressed()) {
                     state = TRIE;
                 }
                 break;
             }
             case TRIE:
             {
+                backButton.render();
                 trieState.handleInput();
                 trieState.update();
                 trieState.render();
-                if (GuiButton((Rectangle){10, 10, 100, 50}, "Back")) {
+                if (backButton.isPressed()) {
                     state = MENU;
                 }
                 break;

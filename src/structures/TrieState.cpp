@@ -1,4 +1,4 @@
-#include "..\..\..\src\TrieState.hpp"
+#include "TrieState.hpp"
 #include "raygui.h"
 #include <cstring>
 

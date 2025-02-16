@@ -24,6 +24,7 @@ class SinglyLinkedList : public GUIObject {
     float height;
     float distance;
     friend class Node;
+    int countNode;
     const int START_X = 50;
     class Node : public GUIObject {
         friend class SinglyLinkedList;
@@ -52,10 +53,11 @@ class SinglyLinkedList : public GUIObject {
    public:
     SinglyLinkedList(int x, int y) : GUIObject(x, y) {
         root = nullptr;
-        width = 50;
-        distance = 50;
-        height = 50;
+        width = 120;
+        distance = 80;
+        height = 60;
         rotation = Rotation::NO_ROTATION;
+        countNode = 0;
     }
     Color getBorderColor() const { return borderColor; };
     Color getBackgroundColor() const { return backgroundColor; };

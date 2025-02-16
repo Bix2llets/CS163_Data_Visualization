@@ -6,7 +6,6 @@
 #include "raymath.h"
 
 class Button : public GUIObject {
-    Font font;
     int fontSize;
     const static int SPACING = 1;
     Vector2 dimension;
@@ -25,7 +24,6 @@ class Button : public GUIObject {
           textColor{textColor},
           backgroundColor{backgroundColor},
           hoverColor{hoverColor} {
-        font = LoadFont("./assets/Inter-black.ttf");
     };
 
     Button(Rectangle rectangle, std::string text = "", int fontSize = 12,
