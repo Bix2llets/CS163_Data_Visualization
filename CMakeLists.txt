@@ -18,15 +18,12 @@ add_executable(
     src/main.cpp
     src/TrieState.cpp
     src/Trie.cpp
-<<<<<<< HEAD
-=======
     src/basis/button.cpp
     src/basis/utility.cpp
     src/basis/GUIObject.cpp
     src/basis/colorPalette.cpp
     
     src/structures/singlyLinkedList.cpp
->>>>>>> main
 )
 # For build and run purpose
 file(COPY ${RAYLIB}

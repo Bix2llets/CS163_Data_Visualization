@@ -18,9 +18,11 @@ class Trie {
         Trie() ;
         Vector2 calcPosition(TrieNode *root) ;
         void drawLine(TrieNode*root, int x, int y) ;
+        void drawText(TrieNode *root, int x, int y) ;
         void draw(TrieNode *root, int x, int y) ;
-        std::queue<std::pair<TrieNode* , int>> insertAnimation(std::string word) ;
+        std::queue<TrieNode*> insertAnimation(std::string word) ;
         bool move(TrieNode *root) ;
+        std::queue<TrieNode*> work;
 };
 
 

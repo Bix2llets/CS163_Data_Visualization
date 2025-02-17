@@ -42,13 +42,13 @@ Vector2 Trie::calcPosition(TrieNode *root) {
         queue[mid1]->targetPosition = (Vector2){0, yOFFSET};
         width = widthList[mid1];
     }
-    for (int i = 0; i < mid1; i++) {
-        queue[i]->targetPosition = (Vector2){- (width.x + widthList[i].y + xOFFSET / 2), yOFFSET};
-        width.x += widthList[i].x + widthList[i].y + xOFFSET / 2;
+    for (int i = mid1 - 1; i >= 0; i--) {
+        queue[i]->targetPosition = (Vector2){- (width.x + widthList[i].y + xOFFSET), yOFFSET};
+        width.x += widthList[i].x + widthList[i].y + xOFFSET;
     }
     for (int i = mid2 + 1; i < queue.size(); i++) {
-        queue[i]->targetPosition = (Vector2){width.x + widthList[i].y + xOFFSET / 2, yOFFSET};
-        width.y += widthList[i].x + widthList[i].y + xOFFSET / 2;
+        queue[i]->targetPosition = (Vector2){width.y + widthList[i].x + xOFFSET, yOFFSET};
+        width.y += widthList[i].x + widthList[i].y + xOFFSET;
     }
 
     return width;
@@ -65,6 +65,19 @@ void Trie::drawLine(TrieNode*root, int x, int y) {
     }
 }
 
+void Trie::drawText(TrieNode *root, int x, int y)
+{
+    if (root == NULL) {
+        return;
+    }
+    for (auto &child : root->children) 
+        if (child.second->valid) {
+        std ::cout << child.first << std::endl;
+        DrawText(&child.first, child.second->position.x + x - 5, child.second->position.y + y - 5, 20, BLACK);
+        drawText(child.second, child.second->position.x + x, child.second->position.y + y);
+    }
+}
+
 void Trie::draw(TrieNode *root, int x, int y) {
     if (root == NULL) {
         return;
@@ -76,27 +89,24 @@ void Trie::draw(TrieNode *root, int x, int y) {
     }
 }
 
-std::queue<std::pair<TrieNode* , int>> Trie::insertAnimation(std::string word) {
-    std::queue<std::pair<TrieNode* , int>> result;
-    /// 1 existing
-    /// 2 check if new node and creating
-    /// 3 check if new node and not creating
+std::queue<TrieNode*> Trie::insertAnimation(std::string word) {
+    std::queue<TrieNode*> result;
     TrieNode *current = root;
-    result.push({current, 1});
+    result.push(current);
     for (int i = 0; i < word.size(); i++) {
         if (current->children.find(word[i]) == current->children.end()) {
             current->children[word[i]] = new TrieNode();
-            current->children[word[i]]->valid = true;
+            current->children[word[i]]->valid = false;
             current->children[word[i]]->position = current->position;
-            result.push({current->children[word[i]], 2});
-        }
-        else {
-            result.push({current->children[word[i]], 3});
         }
         current = current->children[word[i]];
-        result.push({current, 1});
+        result.push(current);
     }
     current->isEndOfWord = true;
+    while (!result.empty()) {
+        work.push(result.front());
+        result.pop();
+    }
     return result;
 }
 

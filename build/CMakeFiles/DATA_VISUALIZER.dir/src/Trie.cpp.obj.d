@@ -1,6 +1,6 @@
 CMakeFiles/DATA_VISUALIZER.dir/src/Trie.cpp.obj: \
  D:\projects\CS163_Data_Visualization\src\Trie.cpp \
- D:/projects/CS163_Data_Visualization/src/Trie.hpp \
+ D:/projects/CS163_Data_Visualization/include/mLib/Trie.hpp \
  C:/msys64/ucrt64/include/c++/13.1.0/iostream \
  C:/msys64/ucrt64/include/c++/13.1.0/bits/requires_hosted.h \
  C:/msys64/ucrt64/include/c++/13.1.0/x86_64-w64-mingw32/bits/c++config.h \
@@ -166,7 +166,7 @@ CMakeFiles/DATA_VISUALIZER.dir/src/Trie.cpp.obj: \
  C:/msys64/ucrt64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/stdarg.h \
  C:/msys64/ucrt64/include/stdarg.h \
  C:/msys64/ucrt64/include/_mingw_stdarg.h \
- D:/projects/CS163_Data_Visualization/src/TrieNode.hpp \
+ D:/projects/CS163_Data_Visualization/include/mLib/TrieNode.hpp \
  C:/msys64/ucrt64/include/c++/13.1.0/unordered_map \
  C:/msys64/ucrt64/include/c++/13.1.0/bits/unordered_map.h \
  C:/msys64/ucrt64/include/c++/13.1.0/bits/hashtable.h \

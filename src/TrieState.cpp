@@ -67,17 +67,15 @@ void TrieState::handleInput() {
     }
     if (showTextBox) {
         if (CheckCollisionPointRec(GetMousePosition(), (Rectangle){10 + 50 + 400, 625, 40, 40}) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) GenerateRandomText(textBox);
-        if (CheckCollisionPointRec(GetMousePosition(), (Rectangle){10 + 50 + 440, 625, 40, 40}) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) 
+        if ((CheckCollisionPointRec(GetMousePosition(), (Rectangle){10 + 50 + 440, 625, 40, 40}) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) 
+        || GetKeyPressed() == KEY_ENTER) 
         {
             strcpy(requestText, textBox);
             textBox[0] = '\0';
             editMode = 0;
-        }
-        if (GetKeyPressed() == KEY_ENTER) 
-        {
-            strcpy(requestText, textBox);
-            textBox[0] = '\0';
-            editMode = 0;
+            //if (textDestionation == 1) mTrie.search(requestText);
+            if (textDestionation == 2) mTrie.insertAnimation(requestText);
+            //if (textDestionation == 3) mTrie.remove(requestText);
         }
     }
 }
@@ -91,6 +89,7 @@ void TrieState::update() {
                 if ('a' <= textBox[strlen(textBox) - 1] && textBox[strlen(textBox) - 1] <= 'z') textBox[strlen(textBox) - 1] -= 32;
                 else textBox[strlen(textBox) - 1] = '\0';
     }
+    mTrie.move(mTrie.root);
 }
 
 void TrieState::render() {
@@ -105,5 +104,12 @@ void TrieState::render() {
         DrawText("GO", 10 + 50 + 440 + 10, 625 + 10, 20, BLACK);
     }
     mTrie.drawLine(mTrie.root, 700, 100);
+    //mTrie.drawText(mTrie.root, 700, 100);
     mTrie.draw(mTrie.root, 700, 100);
+    if (mTrie.move(mTrie.root) == false && mTrie.work.size() > 0) {
+        mTrie.work.front()->valid = true;
+        mTrie.calcPosition(mTrie.root);
+        mTrie.work.front()->selected = true;
+        mTrie.work.pop();
+    }
 }
