@@ -6,91 +6,37 @@ SinglyLinkedList::Node::~Node() {
 }
 
 void SinglyLinkedList::Node::render() {
-    float width = parentClass.width;
-    float height = parentClass.height;
+    float width = parentClass.WIDTH;
+    float height = parentClass.HEIGHT;
 
     Vector2 cornerVector{width, height};
-    double angle;
-    switch (parentClass.rotation) {
-        case Rotation::NO_ROTATION: {
-            angle = 0;
-            break;
-        }
-        case Rotation::CLOCKWISE: {
-            angle = -PI / 2;
-            break;
-        }
-        case Rotation::COUNTER_CLOCKWISE: {
-            angle = PI / 2;
-            break;
-        }
-        case Rotation::HALF_CIRCLE: {
-            angle = PI;
-            break;
-        }
-    }
-
-    cornerVector = Vector2Rotate(cornerVector, angle);
 
     DrawRectangle(position.x, position.y, cornerVector.x, cornerVector.y,
-                  parentClass.backgroundColor);
-    DrawRectangleLines(position.x, position.y, cornerVector.x, cornerVector.y,
-                       parentClass.borderColor);
+                  parentClass.PALETTE.backgroundNormal);
+    if (parentClass.PALETTE.renderBorder)
+        DrawRectangleLines(position.x, position.y, cornerVector.x,
+                           cornerVector.y, parentClass.PALETTE.border);
     Vector2 center = Vector2Add(
-        position, Vector2Scale({parentClass.width, parentClass.height}, 0.5));
-    TextUtility::renderText(data, center, TextUtility::fontInter,
-                        parentClass.borderColor, TextUtility::NORMAL_SIZE,
-                        TextUtility::SPACING);
+        position, Vector2Scale({parentClass.WIDTH, parentClass.HEIGHT}, 0.5));
+    TextUtility::drawText(data, center, TextUtility::inter20,
+                          parentClass.PALETTE.textNormal,
+                          TextUtility::NORMAL_SIZE, TextUtility::SPACING,
+                          TextUtility::VerticalAlignment::CENTERED,
+                          TextUtility::HorizontalAlignment::CENTERED);
     if (nextNode != nullptr) {
         Vector2 beginPosition = getEndPoint();
         Vector2 endPosition = nextNode->getStartPoint();
-        DrawLineEx(beginPosition, endPosition, 3, parentClass.borderColor);
+        DrawLineEx(beginPosition, endPosition, 3, parentClass.PALETTE.border);
         nextNode->render();
     }
 }
 
 Vector2 SinglyLinkedList::Node::getStartPoint() const {
-    switch (parentClass.rotation) {
-        case Rotation::NO_ROTATION: {
-            return Vector2Add(position, Vector2{0, parentClass.height / 2});
-        }
-        case Rotation::CLOCKWISE: {
-            return Vector2Add(position, Vector2{-parentClass.height / 2, 0});
-        }
-        case Rotation::COUNTER_CLOCKWISE: {
-            return Vector2Add(position, Vector2{parentClass.height / 2, 0});
-        }
-        case Rotation::HALF_CIRCLE: {
-            return Vector2Add(position, Vector2{0, -parentClass.height / 2});
-        }
-    }
+    return Vector2Add(position, Vector2{0, parentClass.HEIGHT / 2});
 }
 
 Vector2 SinglyLinkedList::Node::getEndPoint() const {
-    switch (parentClass.rotation) {
-        case Rotation::NO_ROTATION: {
-            return Vector2Add(getStartPoint(), Vector2{parentClass.width, 0});
-        }
-
-        case Rotation::COUNTER_CLOCKWISE: {
-            return Vector2Add(getStartPoint(), Vector2{0, -parentClass.width});
-        }
-
-        case Rotation::CLOCKWISE: {
-            return Vector2Add(getStartPoint(), Vector2{0, parentClass.width});
-        }
-
-        case Rotation::HALF_CIRCLE: {
-            return Vector2Add(getStartPoint(), Vector2{-parentClass.width, 0});
-        }
-    }
-}
-
-void SinglyLinkedList::setColor(Color border, Color background,
-                                Color highlight) {
-    borderColor = border;
-    backgroundColor = background;
-    highlightColor = highlight;
+    return Vector2Add(getStartPoint(), Vector2{parentClass.WIDTH, 0});
 }
 
 void SinglyLinkedList::addNode(int data) { addNode(std::to_string(data)); }
@@ -100,28 +46,8 @@ void SinglyLinkedList::addNode(std::string data) {
     if (curr != nullptr) {
         while (curr->nextNode != nullptr) curr = curr->nextNode;
         Vector2 nextNodePosition = curr->getPosition();
-        switch (rotation) {
-            case Rotation::NO_ROTATION: {
-                nextNodePosition =
-                    Vector2Add(nextNodePosition, Vector2{width + distance, 0});
-                break;
-            }
-            case Rotation::CLOCKWISE: {
-                nextNodePosition =
-                    Vector2Add(nextNodePosition, Vector2{0, width + distance});
-                break;
-            }
-            case Rotation::COUNTER_CLOCKWISE: {
-                nextNodePosition =
-                    Vector2Add(nextNodePosition, Vector2{0, -width - distance});
-                break;
-            }
-            case Rotation::HALF_CIRCLE: {
-                nextNodePosition =
-                    Vector2Add(nextNodePosition, Vector2{-width - distance, 0});
-                break;
-            }
-        }
+        nextNodePosition = Vector2Add(nextNodePosition,
+                                      Vector2{WIDTH + HORIZONTAL_DISTANCE, 0});
         curr->nextNode =
             new Node(*this, data, nextNodePosition.x, nextNodePosition.y);
         return;

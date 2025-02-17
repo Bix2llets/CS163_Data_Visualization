@@ -4,10 +4,21 @@
 #include "raylib.h"
 #include "raymath.h"
 namespace TextUtility {
-extern Font fontInter;
-const int NORMAL_SIZE = 14;
-const int SPACING = 1;
+enum class VerticalAlignment {
+    TOP, 
+    CENTERED,
+    BOTTOM
+};
+enum class HorizontalAlignment {
+    LEFT, 
+    CENTERED,
+    RIGHT
+};
+extern Font inter20;
+extern const int NORMAL_SIZE;
+extern const int SPACING ;
 void init();
-void renderText(std::string text, Vector2 position, Font font, Color textColor,
-                int fontSize, int spacing);
+void drawText(std::string text, Vector2 position, Font font, Color textColor,
+                int fontSize, int spacing, VerticalAlignment verticalAlign, HorizontalAlignment horizontalAlign);
+
 }  // namespace TextUtility

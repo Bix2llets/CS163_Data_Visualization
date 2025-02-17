@@ -2,7 +2,7 @@
 #include "raylib.h"
 class GUIObject {
    protected:
-    Vector2 position;
+    Vector2 position; 
 
    public:
     GUIObject(Vector2 position) : position{position} {};

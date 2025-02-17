@@ -4,11 +4,19 @@
 void Button::render() {
     Rectangle rect{position.x, position.y, dimension.x, dimension.y};
     if (isHovered())
-        DrawRectangle(rect.x, rect.y, rect.width, rect.height, hoverColor);
+    {
+
+        DrawRectangle(rect.x, rect.y, rect.width, rect.height, PALETTE.backgroundHighlight);
+        TextUtility::drawText(text, {position.x + dimension.x / 2, position.y + dimension.y / 2}, TextUtility::inter20, PALETTE.textHighlight, fontSize, SPACING, TextUtility::VerticalAlignment::CENTERED, TextUtility::HorizontalAlignment::CENTERED);
+    }
     else
-        DrawRectangle(rect.x, rect.y, rect.width, rect.height, backgroundColor);
-    TextUtility::renderText(text, {position.x + dimension.x / 2, position.y + dimension.y / 2}, TextUtility::fontInter, textColor, fontSize, SPACING);
-    DrawRectangleLinesEx(rect, 3, textColor);
+    
+    {
+        DrawRectangle(rect.x, rect.y, rect.width, rect.height, PALETTE.backgroundNormal);
+        TextUtility::drawText(text, {position.x + dimension.x / 2, position.y + dimension.y / 2}, TextUtility::inter20, PALETTE.textNormal, fontSize, SPACING, TextUtility::VerticalAlignment::CENTERED, TextUtility::HorizontalAlignment::CENTERED);
+    }
+    if (PALETTE.renderBorder)
+    DrawRectangleLinesEx(rect, 2, PALETTE.border);
 }
 
 void Button::setText(std::string newText) { text = newText; }

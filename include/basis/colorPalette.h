@@ -26,4 +26,12 @@ extern ::Color SILVER;
 extern ::Color ASBESTOS;
 };  // namespace FlatUI
 Color getTransparency(Color color, float tranperencyRatio);
+struct ColorSet {
+    Color textNormal;
+    Color textHighlight;
+    Color backgroundNormal;
+    Color backgroundHighlight;
+    bool renderBorder;
+    Color border;
+};
 }  // namespace ColorPalette

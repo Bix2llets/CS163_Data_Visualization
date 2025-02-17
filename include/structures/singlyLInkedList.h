@@ -3,29 +3,22 @@
 #include <string>
 
 #include "GUIObject.h"
+#include "colorPalette.h"
 #include "math.h"
 #include "raylib.h"
 #include "raymath.h"
 #include "utility.h"
-enum class Rotation {
-    NO_ROTATION,
-    CLOCKWISE,
-    COUNTER_CLOCKWISE,
-    HALF_CIRCLE
-
-};
 class SinglyLinkedList : public GUIObject {
    private:
-    Rotation rotation;
-    Color borderColor;
-    Color backgroundColor;
-    Color highlightColor;
-    float width;
-    float height;
-    float distance;
+    const ColorPalette::ColorSet PALETTE;
+    const float WIDTH;
+    const float HEIGHT;
+    const float HORIZONTAL_DISTANCE;
+    const float VERTICAL_DISTANCE;
     friend class Node;
     int countNode;
-    const int START_X = 50;
+    const int LEFT_MARGIN;
+    const int RIGHT_MARGIN;
     class Node : public GUIObject {
         friend class SinglyLinkedList;
 
@@ -51,22 +44,20 @@ class SinglyLinkedList : public GUIObject {
     Node *root;
 
    public:
-    SinglyLinkedList(int x, int y) : GUIObject(x, y) {
-        root = nullptr;
-        width = 120;
-        distance = 80;
-        height = 60;
-        rotation = Rotation::NO_ROTATION;
-        countNode = 0;
-    }
-    Color getBorderColor() const { return borderColor; };
-    Color getBackgroundColor() const { return backgroundColor; };
-    Color getHighlightColor() const { return highlightColor; };
-    void setColor(Color border, Color background, Color highlight);
-    Rotation getRotation() const { return rotation; }
+    SinglyLinkedList(int x, int y, ColorPalette::ColorSet colorSet)
+        : GUIObject(x, y),
+          root{nullptr},
+          WIDTH{120},
+          HEIGHT{80},
+          HORIZONTAL_DISTANCE{100},
+          VERTICAL_DISTANCE{60},
+          LEFT_MARGIN{50},
+          RIGHT_MARGIN{50},
+          countNode{0},
+          PALETTE{colorSet} {}
     void addNode(std::string data);
     void addNode(int data);
-    
+
     void removeEnd();
     void render();
 };
