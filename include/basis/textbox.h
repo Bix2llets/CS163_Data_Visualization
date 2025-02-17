@@ -15,15 +15,13 @@ class TextBox : public GUIObject {
     const int ABOVE_MARGIN;
     const int BOTTOM_MARGIN;
     const ColorPalette::ColorSet PALETTE;
-    static std::vector<TextBox> boxList;
+
+    void recordKeyboard();
+    void recordFocus();
 
    public:
     TextBox(Rectangle drawInfo,
-            ColorPalette::ColorSet palette =
-                {ColorPalette::FlatUI::AMETHYST, ColorPalette::FlatUI::WISTERIA,
-                 ColorPalette::FlatUI::CLOUDS, ColorPalette::FlatUI::SILVER,
-                 true, ColorPalette::FlatUI::WET_ASPHALT},
-            int fontSize)
+            ColorPalette::ColorSet palette = ColorPalette::DEF_SET)
         : GUIObject{drawInfo.x, drawInfo.y},
           width{drawInfo.width},
           height{drawInfo.height},
@@ -31,9 +29,11 @@ class TextBox : public GUIObject {
           LEFT_MARGIN{10},
           RIGHT_MARGIN{10},
           ABOVE_MARGIN{10},
-          BOTTOM_MARGIN{10} {};
+          BOTTOM_MARGIN{10},
+          isFocusedOn{false},
+          text{""} {};
 
     void render();
-    static void recordKeyboard();
-    static void recordFocus();
+    void deFocus();
+    std::string getText();
 };
