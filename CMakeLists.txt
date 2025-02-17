@@ -12,6 +12,8 @@ include_directories(include/raygui/src)
 include_directories(include/GUI)
 include_directories(include/basis)
 include_directories(include/structures)
+include_directories(include/animation)
+include_directories(include/scene)
 add_executable(
     ${PROJECT_NAME}
     src/main.cpp
@@ -19,8 +21,12 @@ add_executable(
     src/basis/utility.cpp
     src/basis/GUIObject.cpp
     src/basis/colorPalette.cpp
+    src/basis/textBox.cpp
+
+    src/animation/animation.cpp
     
     src/GUI/welcomeMenu.cpp
+    
     src/structures/singlyLinkedList.cpp
     src/structures/TrieState.cpp
 )
