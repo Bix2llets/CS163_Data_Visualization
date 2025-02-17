@@ -20,6 +20,7 @@ class TrieState
         bool editMode;
         int textDestionation;
         char textBox[100], requestText[100];
+        float mTime;
 };
 
 #endif // TRIESTATE_HPP

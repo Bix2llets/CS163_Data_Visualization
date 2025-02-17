@@ -2,6 +2,8 @@
 
 Trie::Trie() {
     root = new TrieNode();
+    working.clear();
+    itr1 = 0, itr2 = 0;
 }
 
 Vector2 Trie::Lerp(Vector2 start, Vector2 end, float t) {
@@ -82,32 +84,31 @@ void Trie::draw(TrieNode *root, int x, int y) {
     if (root == NULL) {
         return;
     }
-    DrawCircle(x, y, NODE_RADIUS, root->selected ? GREEN : root->isEndOfWord ? RED : BLACK);
+    DrawCircle(x, y, NODE_RADIUS, root -> highlighted ? RED : root ->selected ? GREEN : root->isEndOfWord ? BLUE : PURPLE);
     for (auto &child : root->children) 
         if (child.second->valid) {
         draw(child.second, child.second->position.x + x, child.second->position.y + y);
     }
 }
 
-std::queue<TrieNode*> Trie::insertAnimation(std::string word) {
-    std::queue<TrieNode*> result;
+void Trie::insertAnimation(std::string word) {
+    vWT result;
     TrieNode *current = root;
-    result.push(current);
+    result.push_back({SELECTING, {current}});
     for (int i = 0; i < word.size(); i++) {
+        result.push_back({HIGH_LIGHTING, {current}});
         if (current->children.find(word[i]) == current->children.end()) {
             current->children[word[i]] = new TrieNode();
             current->children[word[i]]->valid = false;
             current->children[word[i]]->position = current->position;
         }
+        result.push_back({CREATE, {current->children[word[i]]}});
         current = current->children[word[i]];
-        result.push(current);
+        result.push_back({SELECTING, {current}});
     }
     current->isEndOfWord = true;
-    while (!result.empty()) {
-        work.push(result.front());
-        result.pop();
-    }
-    return result;
+    result.push_back({HIGH_LIGHTING, {current}});
+    working.push_back({2, result});
 }
 
 bool Trie::move(TrieNode *root)

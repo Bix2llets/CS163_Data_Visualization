@@ -9,11 +9,13 @@ struct TrieNode {
     std::unordered_map<char, TrieNode*> children;
     bool isEndOfWord;
     bool selected;
+    bool highlighted;
     bool valid;
     TrieNode() {
         position = {0, 0};
         targetPosition = {0, 0};
         selected = false;
+        highlighted = false;
         isEndOfWord = false;
         valid = false;
     }

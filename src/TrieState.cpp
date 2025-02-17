@@ -21,6 +21,7 @@ TrieState::TrieState() {
     textDestionation = 0;
     textBox[0] = '\0';
     requestText[0] = '\0';
+    mTime = 0;
 }
 
 void TrieState::handleInput() {
@@ -90,6 +91,12 @@ void TrieState::update() {
                 else textBox[strlen(textBox) - 1] = '\0';
     }
     mTrie.move(mTrie.root);
+    mTrie.move(mTrie.root);
+    mTrie.move(mTrie.root);
+    mTrie.move(mTrie.root);
+    mTrie.move(mTrie.root);
+    mTrie.move(mTrie.root);
+    mTrie.move(mTrie.root);
 }
 
 void TrieState::render() {
@@ -106,10 +113,57 @@ void TrieState::render() {
     mTrie.drawLine(mTrie.root, 700, 100);
     mTrie.draw(mTrie.root, 700, 100);
     mTrie.drawText(mTrie.root, 700, 100);
-    if (mTrie.move(mTrie.root) == false && mTrie.work.size() > 0) {
-        mTrie.work.front()->valid = true;
-        mTrie.calcPosition(mTrie.root);
-        mTrie.work.front()->selected = true;
-        mTrie.work.pop();
+    mTime += GetFrameTime();
+    if (mTrie.itr1 < mTrie.working.size())
+    {
+        if (mTrie.itr2 < mTrie.working[mTrie.itr1].second.size())
+        {
+            switch (mTrie.working[mTrie.itr1].first)
+            {
+                case 1 : DrawText("Searching", 250, 10, 20, BLACK); break;
+                case 2 : DrawText("Inserting", 250, 10, 20, BLACK); break;
+                case 3 : DrawText("Deleting", 250, 10, 20, BLACK); break;
+            }
+        }
+    }
+    if (mTime > 0.5f)
+    {
+        mTime = 0;
+        if (mTrie.itr1 < mTrie.working.size())
+        {
+            if (mTrie.itr2 < mTrie.working[mTrie.itr1].second.size())
+            {
+                if (mTrie.move(mTrie.root) == 0)
+                {
+                    auto current = mTrie.working[mTrie.itr1].second[mTrie.itr2];
+                    if (current.first == SELECTING)
+                    {
+                        if (mTrie.itr2 > 1)
+                        {
+                            mTrie.working[mTrie.itr1].second[mTrie.itr2 - 2].second->selected = false;
+                            mTrie.working[mTrie.itr1].second[mTrie.itr2 - 2].second->highlighted = false;
+                        }
+                        current.second->selected = true;
+                        current.second->highlighted = false;
+                    }
+                    else if (current.first == HIGH_LIGHTING)
+                    {
+                        current.second->selected = false;
+                        current.second->highlighted = true;
+                    }
+                    else if (current.first == CREATE) 
+                    {
+                        current.second->valid = true;
+                        mTrie.calcPosition(mTrie.root);
+                    }
+                    mTrie.itr2++;
+            }
+        }
+        else 
+        {
+            mTrie.itr1++;
+            mTrie.itr2 = 0;
+        }
+        }
     }
 }
