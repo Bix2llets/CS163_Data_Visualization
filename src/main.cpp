@@ -21,41 +21,35 @@ const int SCREEN_HEIGHT = 768;
 
 enum State {
     MENU,
-    TRIE
-};
-
-enum class Scene {
-    NONE, 
-    AVLTREE, 
-    GRAPH,
     TRIE,
     LINKED_LIST,
-    HASH,
 };
+
 State state = MENU;
-Scene currentScene = Scene::NONE;
 TrieState trieState;
 
 using namespace ColorPalette::FlatUI;
+using namespace ColorPalette;
 int main() {
+    SetConfigFlags(FLAG_MSAA_4X_HINT); 
     InitWindow(1600, 900, "CS163 Data visualizer");
     SetTargetFPS(60);
     TextUtility::init();
-    SinglyLinkedList ll(50, GetRenderHeight() / 2);
+    SinglyLinkedList ll(50, GetRenderHeight() / 2, ColorSet{WET_ASPHALT, MIDNIGHT_BLUE, CONCRETE, ASBESTOS, true, GREEN_SEA});
 
-    ll.setColor(ColorPalette::FlatUI::MIDNIGHT_BLUE, ColorPalette::FlatUI::FLAT_ORANGE, ColorPalette::FlatUI::WET_ASPHALT);
-    // Button button1(400, 400, 100, 50, "Add Node", 12, ASBESTOS, CLOUDS, MIDNIGHT_BLUE);
-    // Button button2(500, 400, 100, 50, "Remove End");
+    Button button1(400, 400, 200, 80, "Add Node", 20, ColorSet{WET_ASPHALT, MIDNIGHT_BLUE, CONCRETE, ASBESTOS, false, GREEN_SEA});
+    Button button2(600, 400, 200, 80, "Remove End");
+    Button testArrow(0, 600, 20, 200, ">", 20, ColorSet{PETER_RIVER, PETER_RIVER, CLOUDS, SILVER, true, WET_ASPHALT});
     int nodeData = 0;
     trieState = TrieState();
 
     // Button trieButton{10, 10, 100, 50, "Trie", 20, MIDNIGHT_BLUE, SILVER, ASBESTOS};
-    Button backButton{10, 10, 100, 50, "Back", 20, MIDNIGHT_BLUE, SILVER, ASBESTOS};
+    Button backButton{10, 10, 100, 50, "Back", 20, {MIDNIGHT_BLUE, MIDNIGHT_BLUE, CLOUDS, CONCRETE, true, WET_ASPHALT}};
     GuiSetStyle(BUTTON, BORDER_COLOR_NORMAL, 0x008080FF);  
     GuiSetStyle(BUTTON, BASE_COLOR_NORMAL, 0x20B2AAFF);    //light sea green
     GuiSetStyle(BUTTON, TEXT_COLOR_NORMAL, 0xFFFFFFFF);    //white
     GuiSetStyle(DEFAULT, TEXT_SIZE, 24);
-
+    // trieState.
     while (!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(RAYWHITE);
@@ -67,6 +61,7 @@ int main() {
                 if (WelcomeMenu::isTriePressed()) {
                     state = TRIE;
                 }
+                if (WelcomeMenu::isLinkedListPressed()) {state = LINKED_LIST;}
                 break;
             }
             case TRIE:
@@ -77,6 +72,28 @@ int main() {
                 trieState.render();
                 if (backButton.isPressed()) {
                     state = MENU;
+                }
+                break;
+            }
+            case LINKED_LIST: {
+                backButton.render();
+                if (backButton.isPressed()) {
+                    state = MENU;
+                    break;
+                }
+                ll.render();
+                button1.render();
+                button2.render();
+                testArrow.render();
+                if (button1.isPressed()) {
+                    nodeData++;
+                    ll.addNode(nodeData);
+                }
+                if (button2.isPressed()) {
+                    nodeData--;
+                    if(nodeData<= 0) nodeData = 1;
+                    ll.removeEnd();
+
                 }
                 break;
             }
