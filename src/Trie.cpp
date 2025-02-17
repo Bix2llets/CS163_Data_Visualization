@@ -72,8 +72,8 @@ void Trie::drawText(TrieNode *root, int x, int y)
     }
     for (auto &child : root->children) 
         if (child.second->valid) {
-        std ::cout << child.first << std::endl;
-        DrawText(&child.first, child.second->position.x + x - 5, child.second->position.y + y - 5, 20, BLACK);
+        char str[2] = {child.first, '\0'};
+        DrawText(str, child.second->position.x + x, child.second->position.y + y, 20, BLACK);
         drawText(child.second, child.second->position.x + x, child.second->position.y + y);
     }
 }
@@ -117,7 +117,7 @@ bool Trie::move(TrieNode *root)
     for (auto &child : root->children) {
         if (child.second->targetPosition.x != child.second->position .x || child.second->targetPosition.y != child.second->position.y) {
             moved = true;
-            child.second->position = Lerp(child.second->position, child.second->targetPosition, 5);
+            child.second->position = Lerp(child.second->position, child.second->targetPosition, 1);
         }
         if (move(child.second)) moved = true;
     }

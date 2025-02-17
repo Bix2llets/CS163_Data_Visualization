@@ -2,7 +2,7 @@
 #include "raygui.h"
 #include <cstring>
 
-const int MAX_TEXT_LENGTH = 15;
+const int MAX_TEXT_LENGTH = 10;
 
 void GenerateRandomText(char *text) {
     int length = GetRandomValue(1, 10) % (MAX_TEXT_LENGTH + 1);
@@ -63,7 +63,7 @@ void TrieState::handleInput() {
         }
     }
     if (showTextBox) {
-        if (GuiTextBox((Rectangle){10 + 50 + 150, 625, 200, 40}, textBox, 15, editMode)) editMode = !editMode;
+        if (GuiTextBox((Rectangle){10 + 50 + 150, 625, 200, 40}, textBox, MAX_TEXT_LENGTH, editMode)) editMode = !editMode;
     }
     if (showTextBox) {
         if (CheckCollisionPointRec(GetMousePosition(), (Rectangle){10 + 50 + 400, 625, 40, 40}) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) GenerateRandomText(textBox);
@@ -104,8 +104,8 @@ void TrieState::render() {
         DrawText("GO", 10 + 50 + 440 + 10, 625 + 10, 20, BLACK);
     }
     mTrie.drawLine(mTrie.root, 700, 100);
-    //mTrie.drawText(mTrie.root, 700, 100);
     mTrie.draw(mTrie.root, 700, 100);
+    mTrie.drawText(mTrie.root, 700, 100);
     if (mTrie.move(mTrie.root) == false && mTrie.work.size() > 0) {
         mTrie.work.front()->valid = true;
         mTrie.calcPosition(mTrie.root);

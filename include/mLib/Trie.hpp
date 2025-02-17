@@ -11,7 +11,7 @@
 
 class Trie {
     private:
-        float xOFFSET = 100, yOFFSET = 55, NODE_RADIUS = 20;
+        float xOFFSET = 100, yOFFSET = 70, NODE_RADIUS = 20;
         Vector2 Lerp(Vector2 start, Vector2 end, float t) ;
     public: 
         TrieNode* root;
