@@ -34,4 +34,5 @@ struct ColorSet {
     bool renderBorder;
     Color border;
 };
+extern const ColorSet DEF_SET;
 }  // namespace ColorPalette

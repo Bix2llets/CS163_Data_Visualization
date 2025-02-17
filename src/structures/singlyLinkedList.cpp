@@ -6,37 +6,31 @@ SinglyLinkedList::Node::~Node() {
 }
 
 void SinglyLinkedList::Node::render() {
-    float width = parentClass.WIDTH;
-    float height = parentClass.HEIGHT;
-
-    Vector2 cornerVector{width, height};
-
-    DrawRectangle(position.x, position.y, cornerVector.x, cornerVector.y,
-                  parentClass.PALETTE.backgroundNormal);
-    if (parentClass.PALETTE.renderBorder)
-        DrawRectangleLines(position.x, position.y, cornerVector.x,
-                           cornerVector.y, parentClass.PALETTE.border);
-    Vector2 center = Vector2Add(
-        position, Vector2Scale({parentClass.WIDTH, parentClass.HEIGHT}, 0.5));
-    TextUtility::drawText(data, center, TextUtility::inter20,
-                          parentClass.PALETTE.textNormal,
-                          TextUtility::NORMAL_SIZE, TextUtility::SPACING,
+    if (PALETTE.renderBorder) {
+        DrawCircle(position.x, position.y, RADIUS, PALETTE.border);
+        DrawCircle(position.x, position.y, RADIUS - 3,
+                   PALETTE.backgroundNormal);
+    } else
+        DrawCircle(position.x, position.y, RADIUS, PALETTE.backgroundNormal);
+    TextUtility::drawText(data, position, TextUtility::inter20,
+                          PALETTE.textNormal, TextUtility::NORMAL_SIZE,
+                          TextUtility::SPACING,
                           TextUtility::VerticalAlignment::CENTERED,
                           TextUtility::HorizontalAlignment::CENTERED);
     if (nextNode != nullptr) {
-        Vector2 beginPosition = getEndPoint();
-        Vector2 endPosition = nextNode->getStartPoint();
-        DrawLineEx(beginPosition, endPosition, 3, parentClass.PALETTE.border);
+        Vector2 beginPosition = getRightMost();
+        Vector2 endPosition = nextNode->getLeftMost();
+        DrawLineEx(beginPosition, endPosition, 3, PALETTE.border);
         nextNode->render();
     }
 }
 
-Vector2 SinglyLinkedList::Node::getStartPoint() const {
-    return Vector2Add(position, Vector2{0, parentClass.HEIGHT / 2});
+Vector2 SinglyLinkedList::Node::getLeftMost() const {
+    return Vector2Add(position, Vector2{-RADIUS, 0});
 }
 
-Vector2 SinglyLinkedList::Node::getEndPoint() const {
-    return Vector2Add(getStartPoint(), Vector2{parentClass.WIDTH, 0});
+Vector2 SinglyLinkedList::Node::getRightMost() const {
+    return Vector2Add(position, Vector2{RADIUS, 0});
 }
 
 void SinglyLinkedList::addNode(int data) { addNode(std::to_string(data)); }
@@ -46,17 +40,21 @@ void SinglyLinkedList::addNode(std::string data) {
     if (curr != nullptr) {
         while (curr->nextNode != nullptr) curr = curr->nextNode;
         Vector2 nextNodePosition = curr->getPosition();
-        nextNodePosition = Vector2Add(nextNodePosition,
-                                      Vector2{WIDTH + HORIZONTAL_DISTANCE, 0});
-        curr->nextNode =
-            new Node(*this, data, nextNodePosition.x, nextNodePosition.y);
+        nextNodePosition = Vector2Add(
+            nextNodePosition, Vector2{RADIUS * 2 + HORIZONTAL_DISTANCE, 0});
+        curr->nextNode = new Node(data, nextNodePosition.x, nextNodePosition.y,
+                                  RADIUS, PALETTE);
         return;
     }
-    root = new Node(*this, data, position.x, position.y);
+    root = new Node(data, position.x, position.y, RADIUS, PALETTE);
 }
 
 void SinglyLinkedList::render() {
     Node* curr = root;
+    if (root != nullptr)
+    TextUtility::drawText(
+        "Head", Vector2Add(root->getPosition(),
+                           Vector2Scale({0, VERTICAL_DISTANCE}, 0.5)), TextUtility::inter20, PALETTE.textHighlight, TextUtility::NORMAL_SIZE, TextUtility::SPACING, TextUtility::VerticalAlignment::CENTERED, TextUtility::HorizontalAlignment::CENTERED);
     while (curr) {
         curr->render();
         curr = curr->nextNode;

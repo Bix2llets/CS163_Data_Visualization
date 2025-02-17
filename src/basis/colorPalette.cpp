@@ -32,4 +32,5 @@ Color getTransparency(Color color, float transparencyRatio) {
     return Color{color.r, color.g, color.b,
                  (unsigned char)(round(transparency))};
 }
+const ColorSet DEF_SET = {FlatUI::CONCRETE, FlatUI::ASBESTOS, FlatUI::CLOUDS, FlatUI::SILVER, true, FlatUI::MIDNIGHT_BLUE};
 }  // namespace ColorPalette

@@ -14,4 +14,5 @@ class GUIObject {
     Vector2 getPosition() const { return position; }
 
     virtual void render() = 0;
+
 };

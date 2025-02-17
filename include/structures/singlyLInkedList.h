@@ -11,46 +11,44 @@
 class SinglyLinkedList : public GUIObject {
    private:
     const ColorPalette::ColorSet PALETTE;
-    const float WIDTH;
-    const float HEIGHT;
     const float HORIZONTAL_DISTANCE;
     const float VERTICAL_DISTANCE;
     friend class Node;
     int countNode;
     const int LEFT_MARGIN;
     const int RIGHT_MARGIN;
+    const float RADIUS;
     class Node : public GUIObject {
         friend class SinglyLinkedList;
 
        private:
         std::string data;
         Node *nextNode = nullptr;
-        SinglyLinkedList &parentClass;
-
+        const ColorPalette::ColorSet PALETTE;
+        const float RADIUS;
        public:
         ~Node();
 
-        Node(SinglyLinkedList &parentClass, std::string data = "", int x = 0,
-             int y = 0)
-            : parentClass{parentClass}, GUIObject(x, y), data{data} {};
-        Node(SinglyLinkedList &parentClass, int data, int x = 0, int y = 0)
-            : Node(parentClass, std::to_string(data), x, y) {};
+        Node(std::string data = "", int x = 0,
+             int y = 0, float radius = 50, ColorPalette::ColorSet palette = ColorPalette::DEF_SET)
+            : GUIObject(x, y), data{data}, RADIUS{radius}, PALETTE{palette} {};
+        Node(int data, int x = 0, int y = 0, float radius = 50, ColorPalette::ColorSet palette = ColorPalette::DEF_SET)
+            : Node(std::to_string(data), x, y, radius, palette) {};
         Node *&getNextNode() { return nextNode; };
 
         void render();
-        Vector2 getStartPoint() const;
-        Vector2 getEndPoint() const;
+        Vector2 getLeftMost() const;
+        Vector2 getRightMost() const;
     };
     Node *root;
 
    public:
-    SinglyLinkedList(int x, int y, ColorPalette::ColorSet colorSet)
+    SinglyLinkedList(float x, float y, ColorPalette::ColorSet colorSet)
         : GUIObject(x, y),
           root{nullptr},
-          WIDTH{120},
-          HEIGHT{80},
-          HORIZONTAL_DISTANCE{100},
-          VERTICAL_DISTANCE{60},
+          RADIUS{40},
+          HORIZONTAL_DISTANCE{50},
+          VERTICAL_DISTANCE{120},
           LEFT_MARGIN{50},
           RIGHT_MARGIN{50},
           countNode{0},
