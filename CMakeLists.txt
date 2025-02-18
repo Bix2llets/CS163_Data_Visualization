@@ -24,6 +24,7 @@ add_executable(
     src/basis/textBox.cpp
 
     src/animation/animation.cpp
+    src/animation/arrow.cpp
     
     src/GUI/welcomeMenu.cpp
     

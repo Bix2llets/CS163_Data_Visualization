@@ -2,8 +2,7 @@
 
 #include <iostream>
 void TextBox::render() {
-    recordFocus();
-    recordKeyboard();
+    update();
     DrawRectangleV(position, Vector2{width, height},
                    PALETTE.backgroundHighlight);
     Vector2 textPosition = position;
@@ -21,11 +20,11 @@ void TextBox::render() {
         groundColor = PALETTE.backgroundNormal;
     }
     if (PALETTE.renderBorder) DrawRectangleLinesEx({position.x, position.y, width, height}, 3, PALETTE.border);
-    TextUtility::drawText(textRender, textPosition, TextUtility::inter20,
-                          textColor, TextUtility::NORMAL_SIZE,
-                          TextUtility::SPACING,
-                          TextUtility::VerticalAlignment::CENTERED,
-                          TextUtility::HorizontalAlignment::LEFT);
+    DrawUtility::drawText(textRender, textPosition, DrawUtility::inter20,
+                          textColor, DrawUtility::NORMAL_SIZE,
+                          DrawUtility::SPACING,
+                          DrawUtility::VerticalAlignment::CENTERED,
+                          DrawUtility::HorizontalAlignment::LEFT);
 }
 void TextBox::recordKeyboard() {
     if (!isFocusedOn) return;
@@ -62,3 +61,8 @@ void TextBox::recordFocus() {
 
 void TextBox::deFocus() { isFocusedOn = false; }
 std::string TextBox::getText() { return text; }
+
+void TextBox::update() {
+    recordFocus();
+    recordKeyboard();
+}

@@ -12,17 +12,11 @@ void SinglyLinkedList::Node::render() {
                    PALETTE.backgroundNormal);
     } else
         DrawCircle(position.x, position.y, RADIUS, PALETTE.backgroundNormal);
-    TextUtility::drawText(data, position, TextUtility::inter20,
-                          PALETTE.textNormal, TextUtility::NORMAL_SIZE,
-                          TextUtility::SPACING,
-                          TextUtility::VerticalAlignment::CENTERED,
-                          TextUtility::HorizontalAlignment::CENTERED);
-    if (nextNode != nullptr) {
-        Vector2 beginPosition = getRightMost();
-        Vector2 endPosition = nextNode->getLeftMost();
-        DrawLineEx(beginPosition, endPosition, 3, PALETTE.border);
-        nextNode->render();
-    }
+    DrawUtility::drawText(data, position, DrawUtility::inter20,
+                          PALETTE.textNormal, DrawUtility::NORMAL_SIZE,
+                          DrawUtility::SPACING,
+                          DrawUtility::VerticalAlignment::CENTERED,
+                          DrawUtility::HorizontalAlignment::CENTERED);
 }
 
 Vector2 SinglyLinkedList::Node::getLeftMost() const {
@@ -33,8 +27,19 @@ Vector2 SinglyLinkedList::Node::getRightMost() const {
     return Vector2Add(position, Vector2{RADIUS, 0});
 }
 
-void SinglyLinkedList::addNode(int data) { addNode(std::to_string(data)); }
-void SinglyLinkedList::addNode(std::string data) {
+Vector2 SinglyLinkedList::Node::getTopMost() const {
+    return Vector2Add(position, Vector2{0, -RADIUS});
+}
+
+Vector2 SinglyLinkedList::Node::getBottomMost() const {
+    return Vector2Add(position, Vector2{0, RADIUS});
+}
+
+void SinglyLinkedList::addNode(int data, bool isInstant) {
+    addNode(std::to_string(data), isInstant);
+}
+
+void SinglyLinkedList::addNode(std::string data, bool isInstant) {
     countNode++;
     Node* curr = root;
     if (curr != nullptr) {
@@ -44,20 +49,45 @@ void SinglyLinkedList::addNode(std::string data) {
             nextNodePosition, Vector2{RADIUS * 2 + HORIZONTAL_DISTANCE, 0});
         curr->nextNode = new Node(data, nextNodePosition.x, nextNodePosition.y,
                                   RADIUS, PALETTE);
+        if (isInstant)
+            curr->nextNodeEdge.setEndPosition(curr->nextNode->getPosition());
+        else {
+            curr->nextNodeEdge.setAnimationEndPosition(
+                curr->nextNode->getPosition());
+            curr->nextNodeEdge.setEndPosition(curr->getPosition());
+        }
+        curr->nextNode->setAnimationRate(animationRate);
         return;
     }
     root = new Node(data, position.x, position.y, RADIUS, PALETTE);
+    root->setAnimationRate(animationRate);
 }
 
 void SinglyLinkedList::render() {
-    Node* curr = root;
+    Node* animCurr = root;
+    Node* nodeCurr = root;
     if (root != nullptr)
-    TextUtility::drawText(
-        "Head", Vector2Add(root->getPosition(),
-                           Vector2Scale({0, VERTICAL_DISTANCE}, 0.5)), TextUtility::inter20, PALETTE.textHighlight, TextUtility::NORMAL_SIZE, TextUtility::SPACING, TextUtility::VerticalAlignment::CENTERED, TextUtility::HorizontalAlignment::CENTERED);
-    while (curr) {
-        curr->render();
-        curr = curr->nextNode;
+        DrawUtility::drawText(
+            "Head",
+            Vector2Add(root->getPosition(),
+                       Vector2Scale({0, VERTICAL_DISTANCE}, 0.5)),
+            DrawUtility::inter20, PALETTE.textHighlight,
+            DrawUtility::NORMAL_SIZE, DrawUtility::SPACING,
+            DrawUtility::VerticalAlignment::CENTERED,
+            DrawUtility::HorizontalAlignment::CENTERED);
+    while (animCurr) {
+        if (animCurr->nextNode) animCurr->nextNodeEdge.render();
+        if (animCurr->isAnimationCompleted())
+            animCurr = animCurr->nextNode;
+        else
+            break;
+    }
+    while (nodeCurr) {
+        nodeCurr->render();
+        if (nodeCurr->isAnimationCompleted())
+            nodeCurr = nodeCurr->nextNode;
+        else
+            break;
     }
 }
 
@@ -78,4 +108,52 @@ void SinglyLinkedList::removeEnd() {
 
     delete curr;
     prev->nextNode = nullptr;
+}
+
+void SinglyLinkedList::Node::update() {
+    nextNodeEdge.update();
+    // if (nextNodeEdge.isCompleted() && nextNode) nextNode->update();
+}
+
+void SinglyLinkedList::Node::setAnimationRate(float rate) {
+    nextNodeEdge.setVelocity(rate);
+    if (nextNode != nullptr) {
+        nextNode->setAnimationRate(rate);
+    }
+}
+
+void SinglyLinkedList::Node::resetAnimation() {
+    if (nextNode == nullptr) return;
+    nextNodeEdge.setEndPosition(position);
+    nextNodeEdge.setAnimationEndPosition(nextNode->position);
+}
+
+bool SinglyLinkedList::Node::isAnimationCompleted() {
+    return nextNodeEdge.isCompleted();
+}
+
+void SinglyLinkedList::update() {
+    Node* curr = root;
+    while (curr) {
+        curr->update();
+        if (curr->isAnimationCompleted())
+            curr = curr->nextNode;
+        else
+            break;
+    }
+}
+
+void SinglyLinkedList::setAnimationRate(float rate) {
+    animationRate = rate;
+    if (root != nullptr)
+    root->setAnimationRate(rate);
+}
+
+void SinglyLinkedList::resetAnimation() {
+    Node* curr = root;
+    while(curr) {
+        // curr->nextNodeEdge.setAnimationEndPosition(curr->nextNodeEdge.getEndPosition());
+        curr->nextNodeEdge.setEndPosition(curr->nextNodeEdge.getBeginPosition());
+        curr = curr->nextNode;
+    }
 }

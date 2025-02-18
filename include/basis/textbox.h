@@ -1,3 +1,4 @@
+#pragma once
 #include <string>
 #include <vector>
 
@@ -34,6 +35,7 @@ class TextBox : public GUIObject {
           text{""} {};
 
     void render();
+    void update();
     void deFocus();
     std::string getText();
 };

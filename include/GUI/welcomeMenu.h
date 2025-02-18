@@ -1,3 +1,4 @@
+#pragma once
 #include "button.h"
 #include "raylib.h"
 namespace WelcomeMenu {

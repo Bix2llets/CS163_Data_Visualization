@@ -3,7 +3,7 @@
 
 #include "raylib.h"
 #include "raymath.h"
-namespace TextUtility {
+namespace DrawUtility {
 enum class VerticalAlignment {
     TOP, 
     CENTERED,
@@ -20,5 +20,8 @@ extern const int SPACING ;
 void init();
 void drawText(std::string text, Vector2 position, Font font, Color textColor,
                 int fontSize, int spacing, VerticalAlignment verticalAlign, HorizontalAlignment horizontalAlign);
+
+void drawEdge(Vector2 beginPostion, Vector2 endPosition, Color color);
+
 
 }  // namespace TextUtility

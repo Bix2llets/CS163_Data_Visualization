@@ -7,13 +7,13 @@ void Button::render() {
     {
 
         DrawRectangle(rect.x, rect.y, rect.width, rect.height, PALETTE.backgroundHighlight);
-        TextUtility::drawText(text, {position.x + dimension.x / 2, position.y + dimension.y / 2}, TextUtility::inter20, PALETTE.textHighlight, fontSize, SPACING, TextUtility::VerticalAlignment::CENTERED, TextUtility::HorizontalAlignment::CENTERED);
+        DrawUtility::drawText(text, {position.x + dimension.x / 2, position.y + dimension.y / 2}, DrawUtility::inter20, PALETTE.textHighlight, fontSize, SPACING, DrawUtility::VerticalAlignment::CENTERED, DrawUtility::HorizontalAlignment::CENTERED);
     }
     else
     
     {
         DrawRectangle(rect.x, rect.y, rect.width, rect.height, PALETTE.backgroundNormal);
-        TextUtility::drawText(text, {position.x + dimension.x / 2, position.y + dimension.y / 2}, TextUtility::inter20, PALETTE.textNormal, fontSize, SPACING, TextUtility::VerticalAlignment::CENTERED, TextUtility::HorizontalAlignment::CENTERED);
+        DrawUtility::drawText(text, {position.x + dimension.x / 2, position.y + dimension.y / 2}, DrawUtility::inter20, PALETTE.textNormal, fontSize, SPACING, DrawUtility::VerticalAlignment::CENTERED, DrawUtility::HorizontalAlignment::CENTERED);
     }
     if (PALETTE.renderBorder)
     DrawRectangleLinesEx(rect, 2, PALETTE.border);
