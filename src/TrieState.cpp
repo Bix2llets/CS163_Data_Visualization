@@ -76,7 +76,7 @@ void TrieState::handleInput() {
             editMode = 0;
             if (textDestionation == 1) mTrie.searchAnimation(requestText);
             if (textDestionation == 2) mTrie.insertAnimation(requestText);
-            //if (textDestionation == 3) mTrie.remove(requestText);
+            if (textDestionation == 3) mTrie.deleteAnimation(requestText);
         }
     }
 }
@@ -172,6 +172,11 @@ void TrieState::render() {
                     else if (current.first == DELETE_ITR)
                     {
                         mTrie.Itr[mTrie.itr1].first = mTrie.Itr[mTrie.itr1].second = {-1, -1};
+                    }
+                    else if (current.first == DELETE)
+                    {
+                        mTrie.deleteNode(mTrie.root, current.second);
+                        mTrie.calcPosition(mTrie.root);
                     }
                     mTrie.itr2++;
                 }

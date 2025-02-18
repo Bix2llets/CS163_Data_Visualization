@@ -37,6 +37,7 @@ class Trie {
         void insertAnimation(std::string word) ;
         void searchAnimation(std::string word) ;
         void deleteAnimation(std::string word) ;
+        void deleteNode(TrieNode* root, TrieNode *target) ;
         Vector2 getPos(TrieNode *root, TrieNode *target, int x, int y) ;
         bool move(TrieNode *root) ;
         bool moveItr() ;

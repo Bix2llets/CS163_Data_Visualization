@@ -173,8 +173,37 @@ void Trie::deleteAnimation(std::string word) {
         current = current->children[word[i]];
         result.push_back({SET_ITR_ANIMATION, {current}});
         result.push_back({SELECTING, {current}});
+        stack.push_back(current);
     }
-    
+    result.push_back({DELETE_ITR, {current}});
+    result.push_back({CLEAR, {current}});
+
+    while (stack.size() > 0) {
+        current = stack.back();
+        stack.pop_back();
+        result.push_back({SELECTING, {current}});
+        result.push_back({CLEAR, {current}});
+        if (current->children.size() <= 1)
+        {
+            result.push_back({DELETE, {current}});
+        }
+        else break;
+    }
+    stack.clear();
+    working.push_back({3, result});
+    Itr.push_back({root->position, root->position});
+}
+
+void Trie::deleteNode(TrieNode* root, TrieNode *target) {
+    if (root == NULL) return;
+    for (auto &child : root->children) {
+        if (child.second == target) {
+            child.second = NULL;
+            root->children.erase(child.first);
+            return;
+        }
+        deleteNode(child.second, target);
+    }
 }
 
 bool Trie::move(TrieNode *root)
