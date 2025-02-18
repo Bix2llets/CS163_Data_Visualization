@@ -74,7 +74,7 @@ void TrieState::handleInput() {
             strcpy(requestText, textBox);
             textBox[0] = '\0';
             editMode = 0;
-            //if (textDestionation == 1) mTrie.search(requestText);
+            if (textDestionation == 1) mTrie.searchAnimation(requestText);
             if (textDestionation == 2) mTrie.insertAnimation(requestText);
             //if (textDestionation == 3) mTrie.remove(requestText);
         }
@@ -97,6 +97,13 @@ void TrieState::update() {
     mTrie.move(mTrie.root);
     mTrie.move(mTrie.root);
     mTrie.move(mTrie.root);
+    mTrie.moveItr();
+    mTrie.moveItr();   
+    mTrie.moveItr();
+    mTrie.moveItr();
+    mTrie.moveItr();
+    mTrie.moveItr();
+    mTrie.moveItr();
 }
 
 void TrieState::render() {
@@ -111,6 +118,7 @@ void TrieState::render() {
         DrawText("GO", 10 + 50 + 440 + 10, 625 + 10, 20, BLACK);
     }
     mTrie.drawLine(mTrie.root, 700, 100);
+    mTrie.drawItr(700, 100);
     mTrie.draw(mTrie.root, 700, 100);
     mTrie.drawText(mTrie.root, 700, 100);
     mTime += GetFrameTime();
@@ -133,37 +141,46 @@ void TrieState::render() {
         {
             if (mTrie.itr2 < mTrie.working[mTrie.itr1].second.size())
             {
-                if (mTrie.move(mTrie.root) == 0)
+                if (mTrie.move(mTrie.root) == 0 && mTrie.moveItr() == 0)
                 {
                     auto current = mTrie.working[mTrie.itr1].second[mTrie.itr2];
                     if (current.first == SELECTING)
                     {
-                        if (mTrie.itr2 > 1)
-                        {
-                            mTrie.working[mTrie.itr1].second[mTrie.itr2 - 2].second->selected = false;
-                            mTrie.working[mTrie.itr1].second[mTrie.itr2 - 2].second->highlighted = false;
-                        }
                         current.second->selected = true;
-                        current.second->highlighted = false;
-                    }
-                    else if (current.first == HIGH_LIGHTING)
-                    {
-                        current.second->selected = false;
-                        current.second->highlighted = true;
                     }
                     else if (current.first == CREATE) 
                     {
                         current.second->valid = true;
                         mTrie.calcPosition(mTrie.root);
                     }
+                    else if (current.first == CLEAR)
+                    {
+                        current.second->selected = false;
+                    }
+                    else if (current.first == SETEND)
+                    {
+                        current.second->isEndOfWord = true;
+                    }
+                    else if (current.first == SET_ITR_INSTANCE)
+                    {
+                        mTrie.Itr[mTrie.itr1].first = mTrie.Itr[mTrie.itr1].second = mTrie.getPos(mTrie.root, current.second, 0, 0);
+                    }
+                    else if (current.first == SET_ITR_ANIMATION)
+                    {
+                        mTrie.Itr[mTrie.itr1].second = mTrie.getPos(mTrie.root, current.second, 0, 0);
+                    }
+                    else if (current.first == DELETE_ITR)
+                    {
+                        mTrie.Itr[mTrie.itr1].first = mTrie.Itr[mTrie.itr1].second = {-1, -1};
+                    }
                     mTrie.itr2++;
+                }
             }
-        }
-        else 
-        {
-            mTrie.itr1++;
-            mTrie.itr2 = 0;
-        }
+            else 
+                {
+                    mTrie.itr1++;
+                    mTrie.itr2 = 0;
+                }
         }
     }
 }

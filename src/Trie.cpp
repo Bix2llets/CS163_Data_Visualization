@@ -4,6 +4,7 @@ Trie::Trie() {
     root = new TrieNode();
     working.clear();
     itr1 = 0, itr2 = 0;
+    Itr.clear();
 }
 
 Vector2 Trie::Lerp(Vector2 start, Vector2 end, float t) {
@@ -84,11 +85,29 @@ void Trie::draw(TrieNode *root, int x, int y) {
     if (root == NULL) {
         return;
     }
-    DrawCircle(x, y, NODE_RADIUS, root -> highlighted ? RED : root ->selected ? GREEN : root->isEndOfWord ? BLUE : PURPLE);
+    if (root -> selected) DrawRing((Vector2){x, y}, NODE_RADIUS, NODE_RADIUS + 5, 0, 360, 20, RED);
+    DrawCircle(x, y, NODE_RADIUS, root->isEndOfWord ? BLUE : PURPLE);
     for (auto &child : root->children) 
         if (child.second->valid) {
         draw(child.second, child.second->position.x + x, child.second->position.y + y);
     }
+}
+
+Vector2 Trie::getPos(TrieNode *root, TrieNode *target, int x, int y) {
+    if (root == NULL) return {-1, -1};
+    if (root == target) return {x, y};
+    for (auto &child : root->children) {
+        Vector2 result = getPos(child.second, target, child.second->position.x + x, child.second->position.y + y);
+        if (result.x != -1) return result;
+    }
+    return {-1, -1};
+}
+
+void Trie::drawItr(int x, int y)
+{
+    for (int i = 0; i < Itr.size(); i ++) 
+        if (Itr[i].first.x != -1)
+            DrawRing((Vector2){Itr[i].first.x + x, Itr[i].first.y + y}, NODE_RADIUS, NODE_RADIUS + 5, 0, 360, 20, GREEN);
 }
 
 void Trie::insertAnimation(std::string word) {
@@ -96,19 +115,66 @@ void Trie::insertAnimation(std::string word) {
     TrieNode *current = root;
     result.push_back({SELECTING, {current}});
     for (int i = 0; i < word.size(); i++) {
-        result.push_back({HIGH_LIGHTING, {current}});
         if (current->children.find(word[i]) == current->children.end()) {
             current->children[word[i]] = new TrieNode();
             current->children[word[i]]->valid = false;
             current->children[word[i]]->position = current->position;
         }
         result.push_back({CREATE, {current->children[word[i]]}});
+        result.push_back({CLEAR, {current}});
         current = current->children[word[i]];
+        result.push_back({SET_ITR_ANIMATION, {current}});
         result.push_back({SELECTING, {current}});
     }
-    current->isEndOfWord = true;
-    result.push_back({HIGH_LIGHTING, {current}});
+    result.push_back({DELETE_ITR, {current}});
+    result.push_back({SETEND, {current}});
+    result.push_back({CLEAR, {current}});
     working.push_back({2, result});
+    Itr.push_back({root->position, root->position});
+}
+
+void Trie::searchAnimation(std::string word) {
+    vWT result;
+    TrieNode *current = root;
+    result.push_back({SELECTING, {current}});
+    for (int i = 0; i < word.size(); i++) {
+        if (current->children.find(word[i]) == current->children.end()) {
+            result.push_back({DELETE_ITR, {current}});
+            result.push_back({CLEAR, {current}});
+            working.push_back({1, result});
+            Itr.push_back({root->position, root->position});
+            return ;
+        }
+        result.push_back({CLEAR, {current}});
+        current = current->children[word[i]];
+        result.push_back({SET_ITR_ANIMATION, {current}});
+        result.push_back({SELECTING, {current}});
+    }
+    result.push_back({DELETE_ITR, {current}});
+    result.push_back({CLEAR, {current}});
+    working.push_back({1, result});
+    Itr.push_back({root->position, root->position});
+}
+
+void Trie::deleteAnimation(std::string word) {
+    vWT result;
+    TrieNode *current = root;   
+    result.push_back({SELECTING, {current}});
+    std::vector <TrieNode*> stack;
+    for (int i = 0; i < word.size(); i++) {
+        if (current->children.find(word[i]) == current->children.end()) {
+            result.push_back({DELETE_ITR, {current}});
+            result.push_back({CLEAR, {current}});
+            working.push_back({3, result});
+            Itr.push_back({root->position, root->position});
+            return ;
+        }
+        result.push_back({CLEAR, {current}});
+        current = current->children[word[i]];
+        result.push_back({SET_ITR_ANIMATION, {current}});
+        result.push_back({SELECTING, {current}});
+    }
+    
 }
 
 bool Trie::move(TrieNode *root)
@@ -121,6 +187,18 @@ bool Trie::move(TrieNode *root)
             child.second->position = Lerp(child.second->position, child.second->targetPosition, 1);
         }
         if (move(child.second)) moved = true;
+    }
+    return moved;
+}
+
+bool Trie::moveItr()
+{
+    bool moved = false;
+    for (int i = 0; i < Itr.size(); i++) {
+        if (Itr[i].first.x != Itr[i].second.x || Itr[i].first.y != Itr[i].second.y) {
+            moved = true;
+            Itr[i].first = Lerp(Itr[i].first, Itr[i].second, 1);
+        }
     }
     return moved;
 }
