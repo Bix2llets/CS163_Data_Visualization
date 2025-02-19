@@ -46,9 +46,10 @@ int main() {
     DrawUtility::init();
     SinglyLinkedList ll(50, GetRenderHeight() / 2, elementTheme);
 
-    Button button1(400, 400, 200, 80, "Add Node", 20, elementTheme);
-    Button button2(600, 400, 200, 80, "Remove End", 20, elementTheme);
-    Button button3(800, 400, 200, 80, "Reset Animation", 20, elementTheme);
+    Button button1(400, 200, 200, 80, "Add Node", 20, elementTheme);
+    Button button2(600, 200, 200, 80, "Remove End", 20, elementTheme);
+    Button button3(800, 200, 200, 80, "Reset Animation", 20, elementTheme);
+    Button button4(1000, 200, 200, 80, "Add Node Instant", 20, elementTheme);
     Button testArrow(0, 600, 20, 200, ">", 20, elementTheme);
     int nodeData = 0;
     trieState = TrieState();
@@ -56,9 +57,10 @@ int main() {
     // Button trieButton{10, 10, 100, 50, "Trie", 20, MIDNIGHT_BLUE, SILVER,
     // ASBESTOS};
     Button backButton{10, 10, 100, 50, "Back", 20, elementTheme};
-    TextBox textBox1{{300, 0, 300, 50}, elementTheme};
-    TextBox textBox2{{300, 100, 300, 50}, elementTheme};
-    TextBox textBox3{{300, 200, 300, 50}, elementTheme};
+    TextBox textBox1{{300, 0, 500, 50}, elementTheme};
+    TextBox textBox2{{300, 100, 500, 50}, elementTheme};
+    TextBox textBox3{{300, 200, 500
+        , 50}, elementTheme};
     GuiSetStyle(BUTTON, BORDER_COLOR_NORMAL, 0x008080FF);
     GuiSetStyle(BUTTON, BASE_COLOR_NORMAL, 0x20B2AAFF);  // light sea green
     GuiSetStyle(BUTTON, TEXT_COLOR_NORMAL, 0xFFFFFFFF);  // white
@@ -139,9 +141,17 @@ int main() {
                 button1.render();
                 button2.render();
                 button3.render();
+                button4.render();
+                textBox1.render();
+                textBox2.render();
+                textBox3.render();
                 if (button1.isPressed()) {
                     nodeData++;
                     ll.addNode(nodeData, false);
+                }
+                if (button4.isPressed()) {
+                    nodeData++;
+                    ll.addNode(nodeData, true);
                 }
                 if (button2.isPressed()) {
                     nodeData--;

@@ -31,7 +31,7 @@ void drawEdge(Vector2 beginPosition, Vector2 endPosition, Color color) {
     // Vector2 point1 = Vector2Add(endPosition, Vector2Add(Vector2Scale(distanceVect, 10), Vector2Scale(perpendicularVect, 5)));
     // Vector2 point2 = Vector2Add(endPosition, Vector2Add(Vector2Scale(distanceVect, 10), Vector2Scale(perpendicularVect, -5)));
     
-    DrawLineEx(beginPosition, endPosition, 2, color);
+    DrawLineEx(beginPosition, endPosition, 3, color);
     // DrawTriangle(endPosition, point1, point2, color);
     // DrawTriangle(endPosition, point2, point1, color);
 }

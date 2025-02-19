@@ -50,7 +50,11 @@ void SinglyLinkedList::addNode(std::string data, bool isInstant) {
         curr->nextNode = new Node(data, nextNodePosition.x, nextNodePosition.y,
                                   RADIUS, PALETTE);
         if (isInstant)
+        {
+
             curr->nextNodeEdge.setEndPosition(curr->nextNode->getPosition());
+            curr->nextNodeEdge.setAnimationEndPosition(curr->nextNode->getPosition());
+        }
         else {
             curr->nextNodeEdge.setAnimationEndPosition(
                 curr->nextNode->getPosition());
