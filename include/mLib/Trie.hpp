@@ -16,6 +16,7 @@ enum workingType
     DELETE,
     CLEAR,
     SETEND,
+    UNSETEND,
     SET_ITR_INSTANCE,
     SET_ITR_ANIMATION,
     DELETE_ITR,

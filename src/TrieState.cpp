@@ -95,13 +95,8 @@ void TrieState::update() {
     mTrie.move(mTrie.root);
     mTrie.move(mTrie.root);
     mTrie.move(mTrie.root);
-    mTrie.move(mTrie.root);
-    mTrie.move(mTrie.root);
     mTrie.moveItr();
     mTrie.moveItr();   
-    mTrie.moveItr();
-    mTrie.moveItr();
-    mTrie.moveItr();
     mTrie.moveItr();
     mTrie.moveItr();
 }
@@ -161,13 +156,20 @@ void TrieState::render() {
                     {
                         current.second->isEndOfWord = true;
                     }
+                    else if (current.first == UNSETEND)
+                    {
+                        current.second->isEndOfWord = false;
+                    }
                     else if (current.first == SET_ITR_INSTANCE)
                     {
                         mTrie.Itr[mTrie.itr1].first = mTrie.Itr[mTrie.itr1].second = mTrie.getPos(mTrie.root, current.second, 0, 0);
                     }
                     else if (current.first == SET_ITR_ANIMATION)
                     {
-                        mTrie.Itr[mTrie.itr1].second = mTrie.getPos(mTrie.root, current.second, 0, 0);
+                        mTrie.Itr[mTrie.itr1].first = mTrie.getPos(mTrie.root, current.second, 0, 0);
+                        mTrie.Itr[mTrie.itr1].second 
+                            = mTrie.getPos(mTrie.root, mTrie.working[mTrie.itr1].second[mTrie.itr2 + 1].second, 0, 0);
+                        mTrie.itr2 ++;
                     }
                     else if (current.first == DELETE_ITR)
                     {
