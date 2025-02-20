@@ -9,9 +9,9 @@ class AnimationEdge{
     Animation endPosition;
     bool isHighlighted;
     float factor;
+    public:
+    
     AnimationColor currentColor;
-
-   public:
     AnimationEdge(Vector2 beginPos, Vector2 endPos, AnimationColor currentColor, float newFac = 1);
     
     void render();
@@ -27,10 +27,9 @@ class AnimationEdge{
     void setBeginPosition(Vector2 target);
     void setEndPosition(Vector2 target);
 
-    void setHighlight(bool highlight);
+    void setColor(AnimationColor newColor);
     
-    void setMotionUpdateRate(float rate);
-    void setColorUpdateRate(float rate);
+    void setUpdateRate(float rate);
     
     bool isMotionCompleted();
     bool isColorCompleted();

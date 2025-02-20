@@ -6,12 +6,8 @@ SinglyLinkedList::Node::~Node() {
 }
 
 void SinglyLinkedList::Node::render() {
-    if (PALETTE.renderBorder) {
-        DrawCircle(position.x, position.y, RADIUS, PALETTE.border);
-        DrawCircle(position.x, position.y, RADIUS - 3,
-                   PALETTE.backgroundNormal);
-    } else
-        DrawCircle(position.x, position.y, RADIUS, PALETTE.backgroundNormal);
+    DrawCircle(position.x, position.y, RADIUS, borderColor.getCurrentColor());
+    DrawCircle(position.x, position.y, RADIUS - 3, PALETTE.backgroundNormal);
     DrawUtility::drawText(data, position, DrawUtility::inter20,
                           PALETTE.textNormal, DrawUtility::NORMAL_SIZE,
                           DrawUtility::SPACING,
@@ -48,7 +44,7 @@ void SinglyLinkedList::addNode(std::string data, bool isInstant) {
         nextNodePosition = Vector2Add(
             nextNodePosition, Vector2{RADIUS * 2 + HORIZONTAL_DISTANCE, 0});
         curr->nextNode = new Node(data, nextNodePosition.x, nextNodePosition.y,
-                                  RADIUS, PALETTE, currentColor);
+                                  RADIUS, PALETTE, AnimationColor{DrawUtility::EDGE_HIGHLIGHTED, DrawUtility::EDGE_NORMAL, animationRate});
         if (isInstant) {
             curr->nextNodeEdge.setEndPosition(curr->nextNode->getPosition());
             curr->nextNodeEdge.setMotionEndPosition(
@@ -63,6 +59,8 @@ void SinglyLinkedList::addNode(std::string data, bool isInstant) {
     }
     root = new Node(data, position.x, position.y, RADIUS, PALETTE);
     root->setAnimationRate(animationRate);
+    root->borderColor = AnimationColor{DrawUtility::EDGE_HIGHLIGHTED, DrawUtility::EDGE_NORMAL, animationRate};
+    root->nextNodeEdge.setColor(AnimationColor{DrawUtility::EDGE_HIGHLIGHTED, DrawUtility::EDGE_NORMAL, animationRate});
 }
 
 void SinglyLinkedList::render() {
@@ -118,11 +116,13 @@ void SinglyLinkedList::Node::updateMotion() {
 }
 
 void SinglyLinkedList::Node::updateColor() {
-    nextNodeEdge.updateColor();
+    borderColor.update();
+    if (borderColor.isCompleted()) nextNodeEdge.updateColor();
 }
 
 void SinglyLinkedList::Node::setAnimationRate(float rate) {
-    nextNodeEdge.setMotionUpdateRate(rate);
+    nextNodeEdge.setUpdateRate(rate);
+    borderColor.setUpdateRate(rate);
     if (nextNode != nullptr) {
         nextNode->setAnimationRate(rate);
     }
@@ -149,12 +149,18 @@ void SinglyLinkedList::update() {
             break;
     }
     curr = root;
-    while(curr) {
+    while (curr) {
         curr->updateColor();
-        curr = curr -> nextNode;
+        if (curr->isColorCompleted())
+            curr = curr->nextNode;
+        else
+            break;
     }
 }
 
+bool SinglyLinkedList::Node::isColorCompleted() {
+    return nextNodeEdge.isColorCompleted() && borderColor.isCompleted();
+}
 void SinglyLinkedList::setAnimationRate(float rate) {
     animationRate = rate;
     if (root != nullptr) root->setAnimationRate(rate);
@@ -171,17 +177,56 @@ void SinglyLinkedList::resetAnimation() {
 }
 
 void SinglyLinkedList::setHighlight(bool highlight) {
-    currentColor.setFactor(0.f);
+    Color baseColor;
+    Color targetColor;
     if (highlight) {
-        currentColor.setBaseColor(DrawUtility::EDGE_NORMAL);
-        currentColor.setTargetColor(DrawUtility::EDGE_HIGHLIGHTED);
+        baseColor = DrawUtility::EDGE_NORMAL;
+        targetColor = DrawUtility::EDGE_HIGHLIGHTED;
     } else {
-        currentColor.setBaseColor(DrawUtility::EDGE_HIGHLIGHTED);
-        currentColor.setTargetColor(DrawUtility::EDGE_NORMAL);
+        baseColor = DrawUtility::EDGE_HIGHLIGHTED;
+        targetColor = DrawUtility::EDGE_NORMAL;
     }
     Node* curr = root;
     while (curr) {
-        curr->nextNodeEdge.setHighlight(highlight);
+        if (curr->nextNodeEdge.currentColor.getBaseColor() == baseColor &&
+            curr->nextNodeEdge.currentColor.getTargetColor() == targetColor) {
+        } else {
+            curr->nextNodeEdge.currentColor.setBaseColor(baseColor);
+            curr->nextNodeEdge.currentColor.setTargetColor(targetColor);
+            curr->nextNodeEdge.currentColor.setFactor(
+                1 - curr->nextNodeEdge.currentColor.getFactor());
+        }
+        if (curr->borderColor.getBaseColor() == baseColor &&
+              curr->borderColor.getTargetColor() == targetColor) {
+        } else {
+            curr->borderColor.setBaseColor(baseColor);
+            curr->borderColor.setTargetColor(targetColor);
+            curr->borderColor.setFactor(1 - curr->borderColor.getFactor());
+        }
+        curr = curr->nextNode;
+    }
+}
+SinglyLinkedList::Node::Node(std::string data, float x, float y, float radius,
+                             ColorPalette::ColorSet palette,
+                             AnimationColor color, float rate)
+    : GUIObject(x, y),
+      data{data},
+      RADIUS{radius},
+      PALETTE{palette},
+      nextNodeEdge{Vector2{x, y}, Vector2{x, y}, color, rate} {
+    borderColor = AnimationColor(color);
+    borderColor.setUpdateRate(rate);
+};
+
+void SinglyLinkedList::deHighlight() {
+    Node* curr = root;
+    currentColor.setBaseColor(DrawUtility::EDGE_HIGHLIGHTED);
+    currentColor.setTargetColor(DrawUtility::EDGE_NORMAL);
+    currentColor.setFactor(1.f);
+    currentColor.setUpdateRate(animationRate);
+    while (curr) {
+        curr->borderColor = currentColor;
+        curr->nextNodeEdge.setColor(currentColor);
         curr = curr->nextNode;
     }
 }

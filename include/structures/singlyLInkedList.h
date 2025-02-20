@@ -8,6 +8,7 @@
 #include "math.h"
 #include "raylib.h"
 #include "raymath.h"
+#include "overload.h"
 #include "utility.h"
 class SinglyLinkedList : public GUIObject {
    private:
@@ -20,6 +21,7 @@ class SinglyLinkedList : public GUIObject {
     const int RIGHT_MARGIN;
     const float RADIUS;
     float animationRate;
+
     AnimationColor currentColor;
     class Node : public GUIObject {
         friend class SinglyLinkedList;
@@ -31,17 +33,13 @@ class SinglyLinkedList : public GUIObject {
         const ColorPalette::ColorSet PALETTE;
         const float RADIUS;
         AnimationEdge nextNodeEdge;
+        AnimationColor borderColor;
        public:
         ~Node();
 
         Node(std::string data = "", float x = 0, float y = 0, float radius = 50,
              ColorPalette::ColorSet palette = ColorPalette::DEF_SET,
-             AnimationColor color = AnimationColor{1.0f}, float rate = 1.0f)
-            : GUIObject(x, y),
-              data{data},
-              RADIUS{radius},
-              PALETTE{palette},
-              nextNodeEdge{Vector2{x, y}, Vector2{x, y}, color, rate} {};
+             AnimationColor color = AnimationColor{1.0f}, float rate = 1.0f);
         Node(int data, int x = 0, int y = 0, float radius = 50,
              ColorPalette::ColorSet palette = ColorPalette::DEF_SET)
             : Node(std::to_string(data), x, y, radius, palette) {};
@@ -56,9 +54,9 @@ class SinglyLinkedList : public GUIObject {
         void resetAnimation();
         void render();
         void updateMotion();
-        void update();
         void updateColor();
         bool isMotionCompleted();
+        bool isColorCompleted();
     };
     Node *root;
 
@@ -66,8 +64,8 @@ class SinglyLinkedList : public GUIObject {
     SinglyLinkedList(float x, float y, ColorPalette::ColorSet colorSet, float animationRate = 1.0f)
         : GUIObject(x, y),
           root{nullptr},
-          RADIUS{40},
-          HORIZONTAL_DISTANCE{50},
+          RADIUS{20},
+          HORIZONTAL_DISTANCE{30},
           VERTICAL_DISTANCE{120},
           LEFT_MARGIN{50},
           RIGHT_MARGIN{50},
@@ -85,6 +83,8 @@ class SinglyLinkedList : public GUIObject {
 
     void resetAnimation();
     void setHighlight(bool highlight);
+
+    void deHighlight();
 };
 
 #endif

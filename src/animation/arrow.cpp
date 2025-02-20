@@ -38,31 +38,19 @@ void AnimationEdge::setBeginPosition(Vector2 target) {
 void AnimationEdge::setEndPosition(Vector2 target) {
     endPosition.setPosition(target);
 };
-void AnimationEdge::setHighlight(bool highlight) {
-    isHighlighted = highlight;
-    currentColor.setFactor(0);
-    if (isHighlighted) {
-        currentColor.setBaseColor(DrawUtility::EDGE_NORMAL);
-        currentColor.setTargetColor(DrawUtility::EDGE_HIGHLIGHTED);
-    }
-    else {
-        currentColor.setBaseColor(DrawUtility::EDGE_HIGHLIGHTED);
-        currentColor.setTargetColor(DrawUtility::EDGE_NORMAL);
-    }
+void AnimationEdge::setColor(AnimationColor newColor) {
+    currentColor = newColor;
 };
-void AnimationEdge::setMotionUpdateRate(float rate) {
+void AnimationEdge::setUpdateRate(float rate) {
     beginPosition.setUpdateRate(rate);
     endPosition.setUpdateRate(rate);
-};
-
-void AnimationEdge::setColorUpdateRate(float rate) {
     currentColor.setUpdateRate(rate);
 }
 bool AnimationEdge::isMotionCompleted() {
     return beginPosition.isCompleted() && endPosition.isCompleted();
 };
 bool AnimationEdge::isColorCompleted() {
-    return beginPosition.isCompleted() && endPosition.isCompleted();
+    return currentColor.isCompleted();
 };
 
 Vector2 AnimationEdge::getBeginPosition() {
