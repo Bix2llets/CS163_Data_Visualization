@@ -5,6 +5,8 @@
 #include "colorPalette.h"
 #include "raylib.h"
 #include "raymath.h"
+#include "animation.h"
+#include "animationColor.h"
 class Button : public GUIObject {
     int fontSize;
     const static int SPACING = 1;
@@ -12,6 +14,7 @@ class Button : public GUIObject {
     const ColorPalette::ColorSet PALETTE;
     std::string text;
 
+    AnimationColor edgeColor;
    public:
     Button(Vector2 position, Vector2 dimension, std::string text = "",
            int fontSize = 20,
@@ -21,7 +24,7 @@ class Button : public GUIObject {
           dimension{dimension},
           text{text},
           fontSize{fontSize},
-          PALETTE{palette} {};
+          PALETTE{palette}, edgeColor{}{};
 
     Button(Rectangle rectangle, std::string text = "", int fontSize = 20,
            ColorPalette::ColorSet palette =

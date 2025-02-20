@@ -23,5 +23,6 @@ void drawText(std::string text, Vector2 position, Font font, Color textColor,
 
 void drawEdge(Vector2 beginPostion, Vector2 endPosition, Color color);
 
-
+extern const Color EDGE_NORMAL;
+extern const Color EDGE_HIGHLIGHTED;
 }  // namespace TextUtility

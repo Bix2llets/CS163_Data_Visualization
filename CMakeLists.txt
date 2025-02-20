@@ -25,6 +25,7 @@ add_executable(
 
     src/animation/animation.cpp
     src/animation/arrow.cpp
+    src/animation/animationColor.cpp
     
     src/GUI/welcomeMenu.cpp
     

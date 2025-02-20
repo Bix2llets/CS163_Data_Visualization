@@ -49,13 +49,11 @@ void SinglyLinkedList::addNode(std::string data, bool isInstant) {
             nextNodePosition, Vector2{RADIUS * 2 + HORIZONTAL_DISTANCE, 0});
         curr->nextNode = new Node(data, nextNodePosition.x, nextNodePosition.y,
                                   RADIUS, PALETTE);
-        if (isInstant)
-        {
-
+        if (isInstant) {
             curr->nextNodeEdge.setEndPosition(curr->nextNode->getPosition());
-            curr->nextNodeEdge.setAnimationEndPosition(curr->nextNode->getPosition());
-        }
-        else {
+            curr->nextNodeEdge.setAnimationEndPosition(
+                curr->nextNode->getPosition());
+        } else {
             curr->nextNodeEdge.setAnimationEndPosition(
                 curr->nextNode->getPosition());
             curr->nextNodeEdge.setEndPosition(curr->getPosition());
@@ -133,7 +131,7 @@ void SinglyLinkedList::Node::resetAnimation() {
 }
 
 bool SinglyLinkedList::Node::isAnimationCompleted() {
-    return nextNodeEdge.isCompleted();
+    return nextNodeEdge.isMotionCompleted();
 }
 
 void SinglyLinkedList::update() {
@@ -149,15 +147,23 @@ void SinglyLinkedList::update() {
 
 void SinglyLinkedList::setAnimationRate(float rate) {
     animationRate = rate;
-    if (root != nullptr)
-    root->setAnimationRate(rate);
+    if (root != nullptr) root->setAnimationRate(rate);
 }
 
 void SinglyLinkedList::resetAnimation() {
     Node* curr = root;
-    while(curr) {
+    while (curr) {
         // curr->nextNodeEdge.setAnimationEndPosition(curr->nextNodeEdge.getEndPosition());
-        curr->nextNodeEdge.setEndPosition(curr->nextNodeEdge.getBeginPosition());
+        curr->nextNodeEdge.setEndPosition(
+            curr->nextNodeEdge.getBeginPosition());
+        curr = curr->nextNode;
+    }
+}
+
+void SinglyLinkedList::setHighlight(bool highlight) {
+    Node* curr = root;
+    while (curr) {
+        curr->nextNodeEdge.setHighlight(highlight);
         curr = curr->nextNode;
     }
 }

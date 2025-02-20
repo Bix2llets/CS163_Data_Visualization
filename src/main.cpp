@@ -45,11 +45,11 @@ int main() {
     SetTargetFPS(60);
     DrawUtility::init();
     SinglyLinkedList ll(50, GetRenderHeight() / 2, elementTheme);
-
+    bool SLLHighlight = false;
     Button button1(400, 200, 200, 80, "Add Node", 20, elementTheme);
     Button button2(600, 200, 200, 80, "Remove End", 20, elementTheme);
     Button button3(800, 200, 200, 80, "Reset Animation", 20, elementTheme);
-    Button button4(1000, 200, 200, 80, "Add Node Instant", 20, elementTheme);
+    Button button4(1000, 200, 200, 80, "Set highlight", 20, elementTheme);
     Button testArrow(0, 600, 20, 200, ">", 20, elementTheme);
     int nodeData = 0;
     trieState = TrieState();
@@ -150,8 +150,8 @@ int main() {
                     ll.addNode(nodeData, false);
                 }
                 if (button4.isPressed()) {
-                    nodeData++;
-                    ll.addNode(nodeData, true);
+                    SLLHighlight = !SLLHighlight;
+                    ll.setHighlight(SLLHighlight);
                 }
                 if (button2.isPressed()) {
                     nodeData--;

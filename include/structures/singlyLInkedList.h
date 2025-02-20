@@ -81,6 +81,7 @@ class SinglyLinkedList : public GUIObject {
     void update();
 
     void resetAnimation();
+    void setHighlight(bool highlight);
 };
 
 #endif

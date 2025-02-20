@@ -2,6 +2,8 @@
 namespace DrawUtility {
 const int SPACING = 1;
 const int NORMAL_SIZE = 20;
+const Color EDGE_NORMAL = BLACK;
+const Color EDGE_HIGHLIGHTED = GOLD; 
 Font inter20;
 void drawText(std::string text, Vector2 position, Font font, Color textColor,
               int fontSize, int spacing, VerticalAlignment verticalAlign,
