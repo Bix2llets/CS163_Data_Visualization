@@ -6,19 +6,19 @@
 #include "raymath.h"
 class Animation : public GUIObject {
    private:
-    float velocity;
+    float rate;
     Vector2 targetedPosition;
 
    public:
-    Animation(float x, float y, float velocity = 1)
-        : velocity{velocity},
+    Animation(float x, float y, float rate = 1)
+        : rate{rate},
           GUIObject(x, y),
           targetedPosition{x, y} {};
     void update();
     void setTargetedPosition(Vector2 target);
     Vector2 getTargetedPosition();
     bool isCompleted() const;
-    void setVelocity(float velo);
+    void setUpdateRate(float rate);
 
     virtual void render();
 };

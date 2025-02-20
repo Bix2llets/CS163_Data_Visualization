@@ -1,4 +1,10 @@
 #include "arrow.h"
+
+AnimationEdge::AnimationEdge(Vector2 beginPos, Vector2 endPos, AnimationColor currentColor, float newFac)
+: beginPosition{beginPos.x, beginPos.y, newFac},
+  endPosition{endPos.x, endPos.y, newFac},
+  isHighlighted{false}, currentColor{currentColor} { currentColor.setUpdateRate(newFac);};
+
 void AnimationEdge::render() {
     Vector2 beginPos = beginPosition.getPosition();
     Vector2 endPos = endPosition.getPosition();
@@ -8,14 +14,22 @@ void AnimationEdge::render() {
     DrawUtility::drawEdge(beginPos, endPos, currentColor.getCurrentColor());
 }
 void AnimationEdge::update() {
+    updateMotion();
+    updateColor();
+}
+
+void AnimationEdge::updateMotion() {
     beginPosition.update();
     endPosition.update();
+}
+
+void AnimationEdge::updateColor() {
     currentColor.update();
 }
-void AnimationEdge::setAnimationBeginPosition(Vector2 target) {
+void AnimationEdge::setMotionBeginPosition(Vector2 target) {
     beginPosition.setTargetedPosition(target);
 };
-void AnimationEdge::setAnimationEndPosition(Vector2 target) {
+void AnimationEdge::setMotionEndPosition(Vector2 target) {
     endPosition.setTargetedPosition(target);
 };
 void AnimationEdge::setBeginPosition(Vector2 target) {
@@ -36,10 +50,14 @@ void AnimationEdge::setHighlight(bool highlight) {
         currentColor.setTargetColor(DrawUtility::EDGE_NORMAL);
     }
 };
-void AnimationEdge::setVelocity(float velo) {
-    beginPosition.setVelocity(velo);
-    endPosition.setVelocity(velo);
+void AnimationEdge::setMotionUpdateRate(float rate) {
+    beginPosition.setUpdateRate(rate);
+    endPosition.setUpdateRate(rate);
 };
+
+void AnimationEdge::setColorUpdateRate(float rate) {
+    currentColor.setUpdateRate(rate);
+}
 bool AnimationEdge::isMotionCompleted() {
     return beginPosition.isCompleted() && endPosition.isCompleted();
 };

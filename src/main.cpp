@@ -39,7 +39,7 @@ float accumulatedTime = 0.0f;
 int frameCount = 0;
 int main() {
     ColorSet elementTheme = {WET_ASPHALT, MIDNIGHT_BLUE, CLOUDS,
-                             ASBESTOS,    true,          MIDNIGHT_BLUE};
+                             ASBESTOS,    true,          DrawUtility::EDGE_NORMAL};
     SetConfigFlags(FLAG_MSAA_4X_HINT);
     InitWindow(1600, 900, "CS163 Data visualizer");
     SetTargetFPS(60);
@@ -66,19 +66,19 @@ int main() {
     GuiSetStyle(BUTTON, TEXT_COLOR_NORMAL, 0xFFFFFFFF);  // white
     GuiSetStyle(DEFAULT, TEXT_SIZE, 24);
     Animation aniTest{50, 50, 9};
-    AnimationEdge arrowTest{{50, 50}, {100, 100}, BLACK, GREEN, 2};
+    AnimationEdge arrowTest{{50, 50}, {100, 100}, AnimationColor{1}, 2};
     ll.setAnimationRate(10);
     // trieState.
     while (!WindowShouldClose()) {
         accumulatedTime += GetFrameTime();
         while (accumulatedTime > DELTA_TIME) {
             accumulatedTime -= DELTA_TIME;
-            std::cerr << "Begin update\n";
+            // std::cerr << "Begin update\n";
             ll.update();
-            std::cerr << "Updated done\n";
+            // std::cerr << "Updated done\n";
         }
         BeginDrawing();
-        ClearBackground(RAYWHITE);
+        ClearBackground(CONCRETE);
         // arrowTest.render();
         
         // if (IsKeyPressed(KEY_UP)) {
@@ -94,16 +94,16 @@ int main() {
         //     arrowTest.setAnimationBeginPosition(Vector2Add(arrowTest.getBeginPosition(), {50, 0}));
         // }
         // if (IsKeyPressed(KEY_W)) {
-        //     arrowTest.setAnimationEndPosition(Vector2Add(arrowTest.getEndPosition(), {0, -50}));
+        //     arrowTest.setMotionEndPosition(Vector2Add(arrowTest.getEndPosition(), {0, -50}));
         // }
         // if (IsKeyPressed(KEY_S)) {
-        //     arrowTest.setAnimationEndPosition(Vector2Add(arrowTest.getEndPosition(), {0, 50}));
+        //     arrowTest.setMotionEndPosition(Vector2Add(arrowTest.getEndPosition(), {0, 50}));
         // }
         // if (IsKeyPressed(KEY_A)) {
-        //     arrowTest.setAnimationEndPosition(Vector2Add(arrowTest.getEndPosition(), {-50, 0}));
+        //     arrowTest.setMotionEndPosition(Vector2Add(arrowTest.getEndPosition(), {-50, 0}));
         // }
         // if (IsKeyPressed(KEY_D)) {
-        //     arrowTest.setAnimationEndPosition(Vector2Add(arrowTest.getEndPosition(), {50, 0}));
+        //     arrowTest.setMotionEndPosition(Vector2Add(arrowTest.getEndPosition(), {50, 0}));
         // }
         // ll.render();
         switch ( state )

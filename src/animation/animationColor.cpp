@@ -14,7 +14,7 @@ void AnimationColor::update() {
     currentColor = ColorLerp(baseColor, targetColor, factor);
 }
 
-void AnimationColor::setUpdateSpeed(float newSpeed) { updateSpeed = newSpeed; }
+void AnimationColor::setUpdateRate(float newSpeed) { updateSpeed = newSpeed; }
 
 Color AnimationColor::getCurrentColor() { return currentColor; };
 

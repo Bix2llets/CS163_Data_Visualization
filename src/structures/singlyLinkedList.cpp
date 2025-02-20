@@ -48,13 +48,13 @@ void SinglyLinkedList::addNode(std::string data, bool isInstant) {
         nextNodePosition = Vector2Add(
             nextNodePosition, Vector2{RADIUS * 2 + HORIZONTAL_DISTANCE, 0});
         curr->nextNode = new Node(data, nextNodePosition.x, nextNodePosition.y,
-                                  RADIUS, PALETTE);
+                                  RADIUS, PALETTE, currentColor);
         if (isInstant) {
             curr->nextNodeEdge.setEndPosition(curr->nextNode->getPosition());
-            curr->nextNodeEdge.setAnimationEndPosition(
+            curr->nextNodeEdge.setMotionEndPosition(
                 curr->nextNode->getPosition());
         } else {
-            curr->nextNodeEdge.setAnimationEndPosition(
+            curr->nextNodeEdge.setMotionEndPosition(
                 curr->nextNode->getPosition());
             curr->nextNodeEdge.setEndPosition(curr->getPosition());
         }
@@ -79,14 +79,14 @@ void SinglyLinkedList::render() {
             DrawUtility::HorizontalAlignment::CENTERED);
     while (animCurr) {
         if (animCurr->nextNode) animCurr->nextNodeEdge.render();
-        if (animCurr->isAnimationCompleted())
+        if (animCurr->isMotionCompleted())
             animCurr = animCurr->nextNode;
         else
             break;
     }
     while (nodeCurr) {
         nodeCurr->render();
-        if (nodeCurr->isAnimationCompleted())
+        if (nodeCurr->isMotionCompleted())
             nodeCurr = nodeCurr->nextNode;
         else
             break;
@@ -112,13 +112,17 @@ void SinglyLinkedList::removeEnd() {
     prev->nextNode = nullptr;
 }
 
-void SinglyLinkedList::Node::update() {
-    nextNodeEdge.update();
+void SinglyLinkedList::Node::updateMotion() {
+    nextNodeEdge.updateMotion();
     // if (nextNodeEdge.isCompleted() && nextNode) nextNode->update();
 }
 
+void SinglyLinkedList::Node::updateColor() {
+    nextNodeEdge.updateColor();
+}
+
 void SinglyLinkedList::Node::setAnimationRate(float rate) {
-    nextNodeEdge.setVelocity(rate);
+    nextNodeEdge.setMotionUpdateRate(rate);
     if (nextNode != nullptr) {
         nextNode->setAnimationRate(rate);
     }
@@ -127,21 +131,27 @@ void SinglyLinkedList::Node::setAnimationRate(float rate) {
 void SinglyLinkedList::Node::resetAnimation() {
     if (nextNode == nullptr) return;
     nextNodeEdge.setEndPosition(position);
-    nextNodeEdge.setAnimationEndPosition(nextNode->position);
+    nextNodeEdge.setMotionEndPosition(nextNode->position);
 }
 
-bool SinglyLinkedList::Node::isAnimationCompleted() {
+bool SinglyLinkedList::Node::isMotionCompleted() {
     return nextNodeEdge.isMotionCompleted();
 }
 
 void SinglyLinkedList::update() {
+    currentColor.update();
     Node* curr = root;
     while (curr) {
-        curr->update();
-        if (curr->isAnimationCompleted())
+        curr->updateMotion();
+        if (curr->isMotionCompleted())
             curr = curr->nextNode;
         else
             break;
+    }
+    curr = root;
+    while(curr) {
+        curr->updateColor();
+        curr = curr -> nextNode;
     }
 }
 
@@ -153,7 +163,7 @@ void SinglyLinkedList::setAnimationRate(float rate) {
 void SinglyLinkedList::resetAnimation() {
     Node* curr = root;
     while (curr) {
-        // curr->nextNodeEdge.setAnimationEndPosition(curr->nextNodeEdge.getEndPosition());
+        // curr->nextNodeEdge.setMotionEndPosition(curr->nextNodeEdge.getEndPosition());
         curr->nextNodeEdge.setEndPosition(
             curr->nextNodeEdge.getBeginPosition());
         curr = curr->nextNode;
@@ -161,6 +171,14 @@ void SinglyLinkedList::resetAnimation() {
 }
 
 void SinglyLinkedList::setHighlight(bool highlight) {
+    currentColor.setFactor(0.f);
+    if (highlight) {
+        currentColor.setBaseColor(DrawUtility::EDGE_NORMAL);
+        currentColor.setTargetColor(DrawUtility::EDGE_HIGHLIGHTED);
+    } else {
+        currentColor.setBaseColor(DrawUtility::EDGE_HIGHLIGHTED);
+        currentColor.setTargetColor(DrawUtility::EDGE_NORMAL);
+    }
     Node* curr = root;
     while (curr) {
         curr->nextNodeEdge.setHighlight(highlight);

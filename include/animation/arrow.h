@@ -12,23 +12,26 @@ class AnimationEdge{
     AnimationColor currentColor;
 
    public:
-    AnimationEdge(Vector2 beginPos, Vector2 endPos, Color normalColor,
-                   Color highlightColor, float velocity = 1)
-        : beginPosition{beginPos.x, beginPos.y, velocity},
-          endPosition{endPos.x, endPos.y, velocity},
-          isHighlighted{false}, currentColor{velocity} {};
+    AnimationEdge(Vector2 beginPos, Vector2 endPos, AnimationColor currentColor, float newFac = 1);
     
     void render();
 
     void update();
 
-    void setAnimationBeginPosition(Vector2 target);
-    void setAnimationEndPosition(Vector2 target);
+    void updateMotion();
+    void updateColor();
+    
+    void setMotionBeginPosition(Vector2 target);
+    void setMotionEndPosition(Vector2 target);
+
     void setBeginPosition(Vector2 target);
     void setEndPosition(Vector2 target);
-    void setHighlight(bool highlight);
-    void setVelocity(float velo);
 
+    void setHighlight(bool highlight);
+    
+    void setMotionUpdateRate(float rate);
+    void setColorUpdateRate(float rate);
+    
     bool isMotionCompleted();
     bool isColorCompleted();
 
