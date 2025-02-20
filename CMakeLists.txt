@@ -18,6 +18,8 @@ add_executable(
     src/main.cpp
     src/TrieState.cpp
     src/Trie.cpp
+    src/AVL.cpp
+    src/AVLState.cpp
     src/basis/button.cpp
     src/basis/utility.cpp
     src/basis/GUIObject.cpp

@@ -1,20 +1,12 @@
-#include "TrieState.hpp"
+#include "AVLState.hpp"
 #include "raygui.h"
 #include "Utility.hpp"
 #include <cstring>
 
 const int MAX_TEXT_LENGTH = 10;
 
-// void GenerateRandomText(char *text) {
-//     int length = GetRandomValue(1, 10) % (MAX_TEXT_LENGTH + 1);
-//     for (int i = 0; i < length; i++) {
-//         text[i] = (GetRandomValue(1, 1000000000) % 26) + 'A';  
-//     }
-//     text[length] = '\0'; 
-// }
-
-TrieState::TrieState() {
-    mTrie = Trie();
+AVLState::AVLState() {
+    mAVL = AVL();
     showOptions = false;
     showCreateOptions = false;
     showTextBox = false;
@@ -25,7 +17,7 @@ TrieState::TrieState() {
     mTime = 0;
 }
 
-void TrieState::handleInput() {
+void AVLState::handleInput() {
     if (GuiButton((Rectangle){10, 550, 30, 200}, ">")) {
         showOptions = !showOptions;
         if (showOptions == 0) 
@@ -75,14 +67,17 @@ void TrieState::handleInput() {
             strcpy(requestText, textBox);
             textBox[0] = '\0';
             editMode = 0;
-            if (textDestionation == 1) mTrie.searchAnimation(requestText);
-            if (textDestionation == 2) mTrie.insertAnimation(requestText);
-            if (textDestionation == 3) mTrie.deleteAnimation(requestText);
+            if (requestText[0] != '\0') 
+            {
+                if (textDestionation == 1) mAVL.searchAnimation(requestText);
+                if (textDestionation == 2) mAVL.insertAnimation(requestText);
+                if (textDestionation == 3) mAVL.deleteAnimation(requestText);
+            }
         }
     }
 }
 
-void TrieState::update() {
+void AVLState::update() {
     if (editMode) {
         if (strlen(textBox) == 0) ;
         else
@@ -91,18 +86,18 @@ void TrieState::update() {
                 if ('a' <= textBox[strlen(textBox) - 1] && textBox[strlen(textBox) - 1] <= 'z') textBox[strlen(textBox) - 1] -= 32;
                 else textBox[strlen(textBox) - 1] = '\0';
     }
-    mTrie.move(mTrie.root);
-    mTrie.move(mTrie.root);
-    mTrie.move(mTrie.root);
-    mTrie.move(mTrie.root);
-    mTrie.move(mTrie.root);
-    mTrie.moveItr();
-    mTrie.moveItr();   
-    mTrie.moveItr();
-    mTrie.moveItr();
+    mAVL.move(mAVL.root);
+    mAVL.move(mAVL.root);
+    mAVL.move(mAVL.root);
+    mAVL.move(mAVL.root);
+    mAVL.move(mAVL.root);
+    mAVL.moveItr();
+    mAVL.moveItr();   
+    mAVL.moveItr();
+    mAVL.moveItr();
 }
 
-void TrieState::render() {
+void AVLState::render() {
     if (showTextBox)
     {
         if (textDestionation == 1) DrawText("Searching", 10 + 50 + 150, 550, 20, BLACK);
@@ -113,16 +108,16 @@ void TrieState::render() {
         DrawText("RD", 10 + 50 + 400 + 10, 625 + 10, 20, BLACK);
         DrawText("GO", 10 + 50 + 440 + 10, 625 + 10, 20, BLACK);
     }
-    mTrie.drawLine(mTrie.root, 700, 100);
-    mTrie.drawItr(700, 100);
-    mTrie.draw(mTrie.root, 700, 100);
-    mTrie.drawText(mTrie.root, 700, 100);
+    mAVL.drawLine(mAVL.root, 800, 100);
+    mAVL.drawItr(800, 100);
+    mAVL.draw(mAVL.root, 800, 100);
+    mAVL.drawText(mAVL.root, 800, 100);
     mTime += GetFrameTime();
-    if (mTrie.itr1 < mTrie.working.size())
+    if (mAVL.itr1 < mAVL.working.size())
     {
-        if (mTrie.itr2 < mTrie.working[mTrie.itr1].second.size())
+        if (mAVL.itr2 < mAVL.working[mAVL.itr1].second.size())
         {
-            switch (mTrie.working[mTrie.itr1].first)
+            switch (mAVL.working[mAVL.itr1].first)
             {
                 case 1 : DrawText("Searching", 250, 10, 20, BLACK); break;
                 case 2 : DrawText("Inserting", 250, 10, 20, BLACK); break;
@@ -133,13 +128,13 @@ void TrieState::render() {
     if (mTime > 0.5f)
     {
         mTime = 0;
-        if (mTrie.itr1 < mTrie.working.size())
+        if (mAVL.itr1 < mAVL.working.size())
         {
-            if (mTrie.itr2 < mTrie.working[mTrie.itr1].second.size())
+            if (mAVL.itr2 < mAVL.working[mAVL.itr1].second.size())
             {
-                if (mTrie.move(mTrie.root) == 0 && mTrie.moveItr() == 0)
+                if (mAVL.move(mAVL.root) == 0 && mAVL.moveItr() == 0)
                 {
-                    auto current = mTrie.working[mTrie.itr1].second[mTrie.itr2];
+                    auto current = mAVL.working[mAVL.itr1].second[mAVL.itr2];
                     if (current.first == SELECTING)
                     {
                         current.second->selected = true;
@@ -147,47 +142,39 @@ void TrieState::render() {
                     else if (current.first == CREATE) 
                     {
                         current.second->valid = true;
-                        mTrie.calcPosition(mTrie.root);
+                        mAVL.calcPosition(mAVL.root);
                     }
                     else if (current.first == CLEAR)
                     {
                         current.second->selected = false;
                     }
-                    else if (current.first == SETEND)
-                    {
-                        current.second->isEndOfWord = true;
-                    }
-                    else if (current.first == UNSETEND)
-                    {
-                        current.second->isEndOfWord = false;
-                    }
                     else if (current.first == SET_ITR_INSTANCE)
                     {
-                        mTrie.Itr[mTrie.itr1].first = mTrie.Itr[mTrie.itr1].second = mTrie.getPos(mTrie.root, current.second, 0, 0);
+                        mAVL.Itr[mAVL.itr1].first = mAVL.Itr[mAVL.itr1].second = mAVL.getPos(mAVL.root, current.second, 0, 0);
                     }
                     else if (current.first == SET_ITR_ANIMATION)
                     {
-                        mTrie.Itr[mTrie.itr1].first = mTrie.getPos(mTrie.root, current.second, 0, 0);
-                        mTrie.Itr[mTrie.itr1].second 
-                            = mTrie.getPos(mTrie.root, mTrie.working[mTrie.itr1].second[mTrie.itr2 + 1].second, 0, 0);
-                        mTrie.itr2 ++;
+                        mAVL.Itr[mAVL.itr1].first = mAVL.getPos(mAVL.root, current.second, 0, 0);
+                        mAVL.Itr[mAVL.itr1].second 
+                            = mAVL.getPos(mAVL.root, mAVL.working[mAVL.itr1].second[mAVL.itr2 + 1].second, 0, 0);
+                        mAVL.itr2 ++;
                     }
                     else if (current.first == DELETE_ITR)
                     {
-                        mTrie.Itr[mTrie.itr1].first = mTrie.Itr[mTrie.itr1].second = {-1, -1};
+                        mAVL.Itr[mAVL.itr1].first = mAVL.Itr[mAVL.itr1].second = {-1, -1};
                     }
                     else if (current.first == DELETE)
                     {
-                        mTrie.deleteNode(mTrie.root, current.second);
-                        mTrie.calcPosition(mTrie.root);
+                        mAVL.deleteNode(mAVL.root, current.second);
+                        mAVL.calcPosition(mAVL.root);
                     }
-                    mTrie.itr2++;
+                    mAVL.itr2++;
                 }
             }
             else 
                 {
-                    mTrie.itr1++;
-                    mTrie.itr2 = 0;
+                    mAVL.itr1++;
+                    mAVL.itr2 = 0;
                 }
         }
     }
