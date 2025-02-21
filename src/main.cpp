@@ -106,6 +106,8 @@ int main() {
                 }
                 if (button1.isPressed()) {
                     nodeData++;
+                    SLLHighlight = false;
+                    ll.deHighlight();
                     ll.addNode(nodeData, false);
                 }
                 if (button4.isPressed()) {
@@ -122,6 +124,8 @@ int main() {
                 }
                 if (button6.isPressed()) {
                     nodeData++;
+                    SLLHighlight = false;
+                    ll.deHighlight();
                     ll.addNode(nodeData, true);
                 }
                 if (button5.isPressed()) {

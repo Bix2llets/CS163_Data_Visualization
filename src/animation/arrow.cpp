@@ -63,3 +63,13 @@ Vector2 AnimationEdge::getTargetedBeginPosition() {
 Vector2 AnimationEdge::getTargetedEndPosition() {
     return endPosition.getTargetedPosition();
 }
+
+void AnimationEdge::makeFinish() {
+    currentColor.makeFinish();
+    endPosition.setPosition(endPosition.getTargetedPosition());
+    beginPosition.setPosition(beginPosition.getTargetedPosition());
+}
+
+void AnimationEdge::setBaseColor(Color color) {currentColor.setBaseColor(color);}
+void AnimationEdge::setTargetColor(Color color) {currentColor.setTargetColor(color);}
+void AnimationEdge::setFactor(float factor) {currentColor.setFactor(factor);}

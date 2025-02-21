@@ -28,11 +28,16 @@ class AnimationEdge{
     void setEndPosition(Vector2 target);
 
     void setColor(AnimationColor newColor);
+    void setBaseColor(Color color);
+    void setTargetColor(Color color);
+    void setFactor(float factor);
     
     void setUpdateRate(float rate);
     
     bool isMotionCompleted();
     bool isColorCompleted();
+
+    void makeFinish();
 
     Vector2 getBeginPosition();
     Vector2 getEndPosition();

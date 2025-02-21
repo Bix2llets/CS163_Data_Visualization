@@ -27,3 +27,5 @@ float AnimationColor::getFactor() { return factor; }
 Color AnimationColor::getBaseColor() { return baseColor; }
 
 Color AnimationColor::getTargetColor() { return targetColor; }
+
+void AnimationColor::makeFinish() { setFactor(1.0f); }

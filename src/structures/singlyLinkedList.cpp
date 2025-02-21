@@ -43,8 +43,10 @@ void SinglyLinkedList::addNode(std::string data, bool isInstant) {
         Vector2 nextNodePosition = curr->getPosition();
         nextNodePosition = Vector2Add(
             nextNodePosition, Vector2{RADIUS * 2 + HORIZONTAL_DISTANCE, 0});
-        curr->nextNode = new Node(data, nextNodePosition.x, nextNodePosition.y,
-                                  RADIUS, PALETTE, AnimationColor{DrawUtility::EDGE_HIGHLIGHTED, DrawUtility::EDGE_NORMAL, animationRate});
+        curr->nextNode = new Node(
+            data, nextNodePosition.x, nextNodePosition.y, RADIUS, PALETTE,
+            AnimationColor{DrawUtility::EDGE_HIGHLIGHTED,
+                           DrawUtility::EDGE_NORMAL, animationRate});
         if (isInstant) {
             curr->nextNodeEdge.setEndPosition(curr->nextNode->getPosition());
             curr->nextNodeEdge.setMotionEndPosition(
@@ -59,8 +61,11 @@ void SinglyLinkedList::addNode(std::string data, bool isInstant) {
     }
     root = new Node(data, position.x, position.y, RADIUS, PALETTE);
     root->setAnimationRate(animationRate);
-    root->borderColor = AnimationColor{DrawUtility::EDGE_HIGHLIGHTED, DrawUtility::EDGE_NORMAL, animationRate};
-    root->nextNodeEdge.setColor(AnimationColor{DrawUtility::EDGE_HIGHLIGHTED, DrawUtility::EDGE_NORMAL, animationRate});
+    root->borderColor = AnimationColor{DrawUtility::EDGE_HIGHLIGHTED,
+                                       DrawUtility::EDGE_NORMAL, animationRate};
+    root->nextNodeEdge.setColor(AnimationColor{DrawUtility::EDGE_HIGHLIGHTED,
+                                               DrawUtility::EDGE_NORMAL,
+                                               animationRate});
 }
 
 void SinglyLinkedList::render() {
@@ -188,21 +193,13 @@ void SinglyLinkedList::setHighlight(bool highlight) {
     }
     Node* curr = root;
     while (curr) {
-        if (curr->nextNodeEdge.currentColor.getBaseColor() == baseColor &&
-            curr->nextNodeEdge.currentColor.getTargetColor() == targetColor) {
-        } else {
-            curr->nextNodeEdge.currentColor.setBaseColor(baseColor);
-            curr->nextNodeEdge.currentColor.setTargetColor(targetColor);
-            curr->nextNodeEdge.currentColor.setFactor(
-                1 - curr->nextNodeEdge.currentColor.getFactor());
-        }
-        if (curr->borderColor.getBaseColor() == baseColor &&
-              curr->borderColor.getTargetColor() == targetColor) {
-        } else {
-            curr->borderColor.setBaseColor(baseColor);
-            curr->borderColor.setTargetColor(targetColor);
-            curr->borderColor.setFactor(1 - curr->borderColor.getFactor());
-        }
+        curr->nextNodeEdge.makeFinish();
+        curr->nextNodeEdge.setBaseColor(baseColor);
+        curr->nextNodeEdge.setTargetColor(targetColor);
+        curr->nextNodeEdge.setFactor(0.f);
+        curr->borderColor.setBaseColor(baseColor);
+        curr->borderColor.setTargetColor(targetColor);
+        curr->borderColor.setFactor(0.f);
         curr = curr->nextNode;
     }
 }

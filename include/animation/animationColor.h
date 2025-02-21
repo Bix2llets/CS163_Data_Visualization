@@ -25,5 +25,7 @@ class AnimationColor {
     
     bool isCompleted();
     Color getCurrentColor();
+
+    void makeFinish();
     float getFactor();
 };
