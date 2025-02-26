@@ -19,7 +19,7 @@ class Button : public GUIObject {
     Button(Vector2 position, Vector2 dimension, std::string text = "",
            int fontSize = 20,
            ColorPalette::ColorSet palette =
-               ColorPalette::ColorSet{WHITE, WHITE, GRAY, GREEN, false, BLACK})
+               ColorPalette::DEF_SET)
         : GUIObject(position),
           dimension{dimension},
           text{text},
@@ -28,7 +28,7 @@ class Button : public GUIObject {
 
     Button(Rectangle rectangle, std::string text = "", int fontSize = 20,
            ColorPalette::ColorSet palette =
-               ColorPalette::ColorSet{WHITE, WHITE, GRAY, GREEN, false, BLACK})
+               ColorPalette::DEF_SET)
         : Button{Vector2{rectangle.x, rectangle.y},
                  Vector2{rectangle.width, rectangle.height}, text, fontSize,
                  palette} {};
@@ -36,7 +36,7 @@ class Button : public GUIObject {
     Button(float x, float y, float width, float height, std::string text = "",
            int fontSize = 20,
            ColorPalette::ColorSet palette =
-               ColorPalette::ColorSet{WHITE, WHITE, GRAY, GREEN, false, BLACK})
+               ColorPalette::DEF_SET)
         : Button{Vector2{x, y}, Vector2{width, height}, text, fontSize,
                  palette} {};
 

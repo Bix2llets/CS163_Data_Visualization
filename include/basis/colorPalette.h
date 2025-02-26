@@ -31,8 +31,8 @@ struct ColorSet {
     Color textHighlight;
     Color backgroundNormal;
     Color backgroundHighlight;
-    bool renderBorder;
-    Color border;
+    Color borderNormal;
+    Color borderHighlight;
 };
 extern const ColorSet DEF_SET;
 }  // namespace ColorPalette

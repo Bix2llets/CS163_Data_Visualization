@@ -8,15 +8,15 @@ void Button::render() {
 
         DrawRectangle(rect.x, rect.y, rect.width, rect.height, PALETTE.backgroundHighlight);
         DrawUtility::drawText(text, {position.x + dimension.x / 2, position.y + dimension.y / 2}, DrawUtility::inter20, PALETTE.textHighlight, fontSize, SPACING, DrawUtility::VerticalAlignment::CENTERED, DrawUtility::HorizontalAlignment::CENTERED);
+        DrawRectangleLinesEx(rect, 2, PALETTE.borderHighlight);
     }
     else
     
     {
         DrawRectangle(rect.x, rect.y, rect.width, rect.height, PALETTE.backgroundNormal);
         DrawUtility::drawText(text, {position.x + dimension.x / 2, position.y + dimension.y / 2}, DrawUtility::inter20, PALETTE.textNormal, fontSize, SPACING, DrawUtility::VerticalAlignment::CENTERED, DrawUtility::HorizontalAlignment::CENTERED);
+        DrawRectangleLinesEx(rect, 2, PALETTE.borderNormal);
     }
-    if (PALETTE.renderBorder)
-    DrawRectangleLinesEx(rect, 2, PALETTE.border);
 }
 
 void Button::setText(std::string newText) { text = newText; }

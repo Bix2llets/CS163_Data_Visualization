@@ -38,8 +38,9 @@ const float DELTA_TIME = 1.0 / 24;
 float accumulatedTime = 0.0f;
 int frameCount = 0;
 int main() {
-    ColorSet elementTheme = {WET_ASPHALT, MIDNIGHT_BLUE, CLOUDS,
-                             ASBESTOS,    true,          DrawUtility::EDGE_NORMAL};
+    ColorSet elementTheme = {WET_ASPHALT, MIDNIGHT_BLUE,
+                             CLOUDS,      ASBESTOS,
+                             DrawUtility::EDGE_NORMAL,        DrawUtility::EDGE_HIGHLIGHTED};
     SetConfigFlags(FLAG_MSAA_4X_HINT);
     InitWindow(1600, 900, "CS163 Data visualizer");
     SetTargetFPS(60);
@@ -48,18 +49,17 @@ int main() {
     Button button1(400, 200, 200, 80, "Add Node", 20, elementTheme);
     Button button2(600, 200, 200, 80, "Remove End", 20, elementTheme);
     Button button3(800, 200, 200, 80, "Reset Animation", 20, elementTheme);
-    Button button4(1000, 200, 200, 80, "Set highlight", 20, elementTheme);
+    Button button4(400, 280, 200, 80, "Set highlight", 20, elementTheme);
+    Button button5(600, 280, 200, 80, "deHighlight", 20, elementTheme);
+    Button button6(800, 280, 200, 80, "Add node Instant", 20, elementTheme);
     Button testArrow(0, 600, 20, 200, ">", 20, elementTheme);
     int nodeData = 0;
     trieState = TrieState();
 
-    // Button trieButton{10, 10, 100, 50, "Trie", 20, MIDNIGHT_BLUE, SILVER,
-    // ASBESTOS};
     Button backButton{10, 10, 100, 50, "Back", 20, elementTheme};
     TextBox textBox1{{300, 0, 500, 50}, elementTheme};
     TextBox textBox2{{300, 100, 500, 50}, elementTheme};
-    TextBox textBox3{{300, 200, 500
-        , 50}, elementTheme};
+    TextBox textBox3{{300, 200, 500, 50}, elementTheme};
     GuiSetStyle(BUTTON, BORDER_COLOR_NORMAL, 0x008080FF);
     GuiSetStyle(BUTTON, BASE_COLOR_NORMAL, 0x20B2AAFF);  // light sea green
     GuiSetStyle(BUTTON, TEXT_COLOR_NORMAL, 0xFFFFFFFF);  // white

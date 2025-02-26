@@ -33,8 +33,8 @@ void Animation::render() {
     DrawCircle(position.x, position.y, 50, BLACK);
 }
 
-void Animation::setUpdateRate(float rate) {
-    rate = rate;
+void Animation::setUpdateRate(float newRate) {
+    rate = newRate;
 }
 
 Vector2 Animation::getTargetedPosition() { return targetedPosition; }

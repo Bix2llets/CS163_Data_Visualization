@@ -8,18 +8,20 @@ void TextBox::render() {
     Vector2 textPosition = position;
     textPosition.y += height / 2;
     textPosition.x += LEFT_MARGIN;
-    Color textColor, groundColor;
+    Color textColor, groundColor, borderColor;
 
     std::string textRender = text;
     if (isFocusedOn) {
         textColor = PALETTE.textHighlight;
         textRender += '_';
         groundColor = PALETTE.backgroundHighlight;
+        borderColor = PALETTE.borderHighlight;
     } else {
         textColor = PALETTE.textNormal;
         groundColor = PALETTE.backgroundNormal;
+        borderColor = PALETTE.borderNormal;
     }
-    if (PALETTE.renderBorder) DrawRectangleLinesEx({position.x, position.y, width, height}, 3, PALETTE.border);
+    DrawRectangleLinesEx({position.x, position.y, width, height}, 3, borderColor);
     DrawUtility::drawText(textRender, textPosition, DrawUtility::inter20,
                           textColor, DrawUtility::NORMAL_SIZE,
                           DrawUtility::SPACING,

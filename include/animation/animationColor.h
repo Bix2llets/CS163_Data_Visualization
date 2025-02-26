@@ -12,6 +12,7 @@ class AnimationColor {
 
    public:
     AnimationColor(float updateSpeed = 1) : baseColor{BLACK}, targetColor{BLACK}, currentColor{BLACK}, factor{1.f}, UPDATE_RATE{0.05f}, updateSpeed{updateSpeed} {};
+    AnimationColor(Color baseColor, Color targetColor, float updateSpeed = 1) : baseColor{baseColor}, targetColor{targetColor}, factor{1.f}, UPDATE_RATE{0.05f}, updateSpeed{updateSpeed} {};
     void setTargetColor(Color color);
     void setBaseColor(Color color);
     void setCurrentColor(Color color);
@@ -19,6 +20,12 @@ class AnimationColor {
     void setUpdateRate(float newSpeed);
     void update();
 
+    Color getBaseColor();
+    Color getTargetColor();
+    
     bool isCompleted();
     Color getCurrentColor();
+
+    void makeFinish();
+    float getFactor();
 };
