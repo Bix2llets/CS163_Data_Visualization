@@ -44,7 +44,6 @@ int main() {
     InitWindow(1600, 900, "CS163 Data visualizer");
     SetTargetFPS(60);
     DrawUtility::init();
-    SinglyLinkedList ll(50, GetRenderHeight() / 2, elementTheme);
     bool SLLHighlight = false;
     Button button1(400, 200, 200, 80, "Add Node", 20, elementTheme);
     Button button2(600, 200, 200, 80, "Remove End", 20, elementTheme);
@@ -67,14 +66,12 @@ int main() {
     GuiSetStyle(DEFAULT, TEXT_SIZE, 24);
     Animation aniTest{50, 50, 9};
     AnimationEdge arrowTest{{50, 50}, {100, 100}, AnimationColor{1}, 2};
-    ll.setAnimationRate(10);
     // trieState.
     while (!WindowShouldClose()) {
         accumulatedTime += GetFrameTime();
         while (accumulatedTime > DELTA_TIME) {
             accumulatedTime -= DELTA_TIME;
             // std::cerr << "Begin update\n";
-            ll.update();
             // std::cerr << "Updated done\n";
         }
         BeginDrawing();
@@ -108,62 +105,6 @@ int main() {
         // ll.render();
         switch ( state )
         {
-            case MENU:
-            {
-                WelcomeMenu::render();
-                if (WelcomeMenu::isTriePressed()) {
-                    state = TRIE;
-                }
-                if (WelcomeMenu::isLinkedListPressed()) {state =
-                LINKED_LIST;} break;
-            }
-            case TRIE:
-            {
-                backButton.render();
-                trieState.handleInput();
-                trieState.update();
-                trieState.render();
-                if (backButton.isPressed()) {
-                    state = MENU;
-                }
-                break;
-            }
-            case LINKED_LIST: {
-                // textBox1.render();
-                // textBox2.render();
-                // textBox3.render();
-                backButton.render();
-                if (backButton.isPressed()) {
-                    state = MENU;
-                    break;
-                }
-                ll.render();
-                button1.render();
-                button2.render();
-                button3.render();
-                button4.render();
-                textBox1.render();
-                textBox2.render();
-                textBox3.render();
-                if (button1.isPressed()) {
-                    nodeData++;
-                    ll.addNode(nodeData, false);
-                }
-                if (button4.isPressed()) {
-                    SLLHighlight = !SLLHighlight;
-                    ll.setHighlight(SLLHighlight);
-                }
-                if (button2.isPressed()) {
-                    nodeData--;
-                    if(nodeData<= 0) nodeData = 1;
-                    ll.removeEnd();
-
-                }
-                if (button3.isPressed()) {
-                    ll.resetAnimation();
-                }
-                break;
-            }
         }
         EndDrawing();
     }
