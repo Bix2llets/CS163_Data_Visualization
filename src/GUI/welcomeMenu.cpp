@@ -3,7 +3,6 @@
 #include "colorPalette.h"
 namespace WelcomeMenu {
 using namespace ColorPalette::FlatUI;
-using ColorPalette::ColorSet;
 const int BANNER_X = 0;
 const int BANNER_Y = 0;
 const int BANNER_WIDTH = 1600;

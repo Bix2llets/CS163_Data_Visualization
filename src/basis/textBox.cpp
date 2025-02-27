@@ -25,8 +25,8 @@ void TextBox::render() {
     DrawUtility::drawText(textRender, textPosition, DrawUtility::inter20,
                           textColor, DrawUtility::NORMAL_SIZE,
                           DrawUtility::SPACING,
-                          DrawUtility::VerticalAlignment::CENTERED,
-                          DrawUtility::HorizontalAlignment::LEFT);
+                          VerticalAlignment::CENTERED,
+                          HorizontalAlignment::LEFT);
 }
 void TextBox::recordKeyboard() {
     if (!isFocusedOn) return;

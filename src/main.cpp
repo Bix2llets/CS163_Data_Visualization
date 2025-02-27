@@ -6,7 +6,6 @@
 #include <unordered_map>
 #include <vector>
 
-#include "GUIObject.h"
 #include "TrieState.hpp"
 #include "button.h"
 #include "colorPalette.h"
@@ -15,6 +14,7 @@
 #include "textBox.h"
 #include "utility.h"
 #define RAYGUI_IMPLEMENTATION
+#include "SGLScene.h"
 #include "animation.h"
 #include "arrow.h"
 #include "raygui.h"
@@ -38,76 +38,75 @@ const float DELTA_TIME = 1.0 / 24;
 float accumulatedTime = 0.0f;
 int frameCount = 0;
 int main() {
-    ColorSet elementTheme = {WET_ASPHALT, MIDNIGHT_BLUE,
-                             CLOUDS,      ASBESTOS,
-                             DrawUtility::EDGE_NORMAL,        DrawUtility::EDGE_HIGHLIGHTED};
     SetConfigFlags(FLAG_MSAA_4X_HINT);
     InitWindow(1600, 900, "CS163 Data visualizer");
     SetTargetFPS(60);
-    DrawUtility::init();
-    bool SLLHighlight = false;
-    Button button1(400, 200, 200, 80, "Add Node", 20, elementTheme);
-    Button button2(600, 200, 200, 80, "Remove End", 20, elementTheme);
-    Button button3(800, 200, 200, 80, "Reset Animation", 20, elementTheme);
-    Button button4(400, 280, 200, 80, "Set highlight", 20, elementTheme);
-    Button button5(600, 280, 200, 80, "deHighlight", 20, elementTheme);
-    Button button6(800, 280, 200, 80, "Add node Instant", 20, elementTheme);
-    Button testArrow(0, 600, 20, 200, ">", 20, elementTheme);
-    int nodeData = 0;
-    trieState = TrieState();
-
-    Button backButton{10, 10, 100, 50, "Back", 20, elementTheme};
-    TextBox textBox1{{300, 0, 500, 50}, elementTheme};
-    TextBox textBox2{{300, 100, 500, 50}, elementTheme};
-    TextBox textBox3{{300, 200, 500, 50}, elementTheme};
     GuiSetStyle(BUTTON, BORDER_COLOR_NORMAL, 0x008080FF);
     GuiSetStyle(BUTTON, BASE_COLOR_NORMAL, 0x20B2AAFF);  // light sea green
     GuiSetStyle(BUTTON, TEXT_COLOR_NORMAL, 0xFFFFFFFF);  // white
     GuiSetStyle(DEFAULT, TEXT_SIZE, 24);
-    Animation aniTest{50, 50, 9};
-    AnimationEdge arrowTest{{50, 50}, {100, 100}, AnimationColor{1}, 2};
+
+    // * Raylib/Raygui initialization
+
+    ColorSet elementTheme = {WET_ASPHALT,
+                             MIDNIGHT_BLUE,
+                             CLOUDS,
+                             ASBESTOS,
+                             DrawUtility::EDGE_NORMAL,
+                             DrawUtility::EDGE_HIGHLIGHTED};
+    DrawUtility::init();
+    int nodeData = 0;
+    Node node1(23, 50, 50, 30);
+    Node node2(230, 150, 50, 30);
+    Node node3(2300, 250, 50, 30);
+
+    Button addButton{{0, 0, 200, 75}, "Add node at end", 20, elementTheme};
+    Button add1Button{{0, 75, 200, 75}, "Add node at 1", 20, elementTheme};
+    Button add17Button{{0, 150, 200, 75}, "Add node at 17", 20, elementTheme};
+    // * Object initialization
+
+    SLL sll({100, 100, 1400, 400}, 10.0f);
     // trieState.
-    while (!WindowShouldClose()) {
-        accumulatedTime += GetFrameTime();
-        while (accumulatedTime > DELTA_TIME) {
-            accumulatedTime -= DELTA_TIME;
-            // std::cerr << "Begin update\n";
-            // std::cerr << "Updated done\n";
-        }
-        BeginDrawing();
-        ClearBackground(CONCRETE);
-        // arrowTest.render();
-        
-        // if (IsKeyPressed(KEY_UP)) {
-        //     arrowTest.setAnimationBeginPosition(Vector2Add(arrowTest.getBeginPosition(), {0, -50}));
-        // }
-        // if (IsKeyPressed(KEY_DOWN)) {
-        //     arrowTest.setAnimationBeginPosition(Vector2Add(arrowTest.getBeginPosition(), {0, 50}));
-        // }
-        // if (IsKeyPressed(KEY_LEFT)) {
-        //     arrowTest.setAnimationBeginPosition(Vector2Add(arrowTest.getBeginPosition(), {-50, 0}));
-        // }
-        // if (IsKeyPressed(KEY_RIGHT)) {
-        //     arrowTest.setAnimationBeginPosition(Vector2Add(arrowTest.getBeginPosition(), {50, 0}));
-        // }
-        // if (IsKeyPressed(KEY_W)) {
-        //     arrowTest.setMotionEndPosition(Vector2Add(arrowTest.getEndPosition(), {0, -50}));
-        // }
-        // if (IsKeyPressed(KEY_S)) {
-        //     arrowTest.setMotionEndPosition(Vector2Add(arrowTest.getEndPosition(), {0, 50}));
-        // }
-        // if (IsKeyPressed(KEY_A)) {
-        //     arrowTest.setMotionEndPosition(Vector2Add(arrowTest.getEndPosition(), {-50, 0}));
-        // }
-        // if (IsKeyPressed(KEY_D)) {
-        //     arrowTest.setMotionEndPosition(Vector2Add(arrowTest.getEndPosition(), {50, 0}));
-        // }
-        // ll.render();
-        switch ( state )
-        {
-        }
-        EndDrawing();
-    }
+    // while (!WindowShouldClose()) {
+    //     accumulatedTime += GetFrameTime();
+    //     while (accumulatedTime > DELTA_TIME) {
+    //         accumulatedTime -= DELTA_TIME;
+    //         sll.update();
+    //     }
+    //     BeginDrawing();
+    //     ClearBackground(CONCRETE);
+    //     addButton.render();
+    //     add1Button.render();
+    //     add17Button.render();
+    //     sll.render();
+    //     DrawUtility::drawText(std::to_string(GetFPS()), {50, 50},
+    //                           DrawUtility::inter20, BLACK, 20,
+    //                           DrawUtility::SPACING, VerticalAlignment::TOP,
+    //                           HorizontalAlignment::LEFT);
+    //     EndDrawing();
+
+    //     if (addButton.isPressed()) {
+    //         sll.addEnd(std::to_string(1));
+    //     }
+    //     if (add1Button.isPressed()) {
+    //         sll.addAt(std::to_string(1), 1);
+    //     }
+    //     if (add17Button.isPressed()) {
+    //         for (int i = 0; i < 100; i++) sll.addAt(std::to_string(1), 17);
+    //     }
+    // }
+
+    for (int i = 0; i < 10; i++) sll.addEnd("1");
+    SLL sll2(sll);
+    Node* root1;
+    Node* root2;
+    root1 = sll.root;
+    root2 = sll2.root;
+    while (root1 && root2) {
+        std::cout << root1 << " " << root2 << " " << (root1 == root2) << "\n";
+        root1 = root1->nextNode;
+        root2 = root2->nextNode;
+    };
     std::cout << "Program ran successfully\n";
     CloseWindow();
 }

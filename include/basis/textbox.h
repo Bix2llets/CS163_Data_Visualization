@@ -15,14 +15,14 @@ class TextBox : public GUIObject {
     const int RIGHT_MARGIN;
     const int ABOVE_MARGIN;
     const int BOTTOM_MARGIN;
-    const ColorPalette::ColorSet PALETTE;
+    const ColorSet PALETTE;
 
     void recordKeyboard();
     void recordFocus();
 
    public:
     TextBox(Rectangle drawInfo,
-            ColorPalette::ColorSet palette = ColorPalette::DEF_SET)
+            ColorSet palette = DEF_SET)
         : GUIObject{drawInfo.x, drawInfo.y},
           width{drawInfo.width},
           height{drawInfo.height},

@@ -5,20 +5,20 @@ void Animation::update() {
     Vector2 displacement = Vector2Subtract(targetedPosition, position);
     displacement =
         Vector2Scale(displacement, 1.0f / Vector2Length(displacement));
-    std::cerr << position.x << " " << position.y << "\n";
-    std::cerr << targetedPosition.x << " " << targetedPosition.y << "\n";
+    // std::cerr << position.x << " " << position.y << "\n";
+    // std::cerr << targetedPosition.x << " " << targetedPosition.y << "\n";
     displacement = Vector2Scale(
         displacement, rate);
     if (abs(displacement.x) < 1e-6) displacement.x = 0;
     if (abs(displacement.y) < 1e-6) displacement.y = 0;
-    std::cerr << displacement.x << " " << displacement.y << " " << rate << "\n";
+    // std::cerr << displacement.x << " " << displacement.y << " " << rate << "\n";
     if (Vector2Length(displacement) >=
         Vector2Distance(position, targetedPosition))
         position = targetedPosition;
     else
         position =
             Vector2Add(position, displacement);
-    std::cerr << "Result: " << position.x << " " << position.y << "\n----\n";
+    // std::cerr << "Result: " << position.x << " " << position.y << "\n----\n";
 }
 
 void Animation::setTargetedPosition(Vector2 target) {

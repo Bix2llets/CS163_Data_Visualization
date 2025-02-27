@@ -11,15 +11,15 @@ class Button : public GUIObject {
     int fontSize;
     const static int SPACING = 1;
     Vector2 dimension;
-    const ColorPalette::ColorSet PALETTE;
+    const ColorSet PALETTE;
     std::string text;
 
     AnimationColor edgeColor;
    public:
     Button(Vector2 position, Vector2 dimension, std::string text = "",
            int fontSize = 20,
-           ColorPalette::ColorSet palette =
-               ColorPalette::DEF_SET)
+           ColorSet palette =
+               DEF_SET)
         : GUIObject(position),
           dimension{dimension},
           text{text},
@@ -27,16 +27,16 @@ class Button : public GUIObject {
           PALETTE{palette}, edgeColor{}{};
 
     Button(Rectangle rectangle, std::string text = "", int fontSize = 20,
-           ColorPalette::ColorSet palette =
-               ColorPalette::DEF_SET)
+           ColorSet palette =
+               DEF_SET)
         : Button{Vector2{rectangle.x, rectangle.y},
                  Vector2{rectangle.width, rectangle.height}, text, fontSize,
                  palette} {};
 
     Button(float x, float y, float width, float height, std::string text = "",
            int fontSize = 20,
-           ColorPalette::ColorSet palette =
-               ColorPalette::DEF_SET)
+           ColorSet palette =
+               DEF_SET)
         : Button{Vector2{x, y}, Vector2{width, height}, text, fontSize,
                  palette} {};
 

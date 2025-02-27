@@ -31,8 +31,11 @@ add_executable(
     
     src/GUI/welcomeMenu.cpp
     
+    src/structures/SLLNode.cpp
     src/structures/singlyLinkedList.cpp
     src/structures/TrieState.cpp
+
+    src/scene/SGLScene.cpp
 )
 # For build and run purpose
 file(COPY ${RAYLIB}

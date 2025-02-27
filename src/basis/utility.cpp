@@ -4,6 +4,7 @@ const int SPACING = 1;
 const int NORMAL_SIZE = 20;
 const Color EDGE_NORMAL = BLACK;
 const Color EDGE_HIGHLIGHTED = GOLD; 
+const Color TEXT_COLOR = BLACK;
 Font inter20;
 void drawText(std::string text, Vector2 position, Font font, Color textColor,
               int fontSize, int spacing, VerticalAlignment verticalAlign,
@@ -27,13 +28,13 @@ void drawEdge(Vector2 beginPosition, Vector2 endPosition, Color color) {
     if (Vector2Distance(beginPosition, endPosition) == 0) return;
     Vector2 distanceVect = Vector2Subtract(endPosition, beginPosition);
     
+    DrawLineEx(beginPosition, endPosition, 3, color);
+    // * Below code are for drawing arrow head, currently not used.
     // distanceVect = Vector2ClampValue(distanceVect, 1, 1);
     // distanceVect = Vector2Scale(distanceVect, -1);
     // Vector2 perpendicularVect = {-distanceVect.y, distanceVect.x};
     // Vector2 point1 = Vector2Add(endPosition, Vector2Add(Vector2Scale(distanceVect, 10), Vector2Scale(perpendicularVect, 5)));
     // Vector2 point2 = Vector2Add(endPosition, Vector2Add(Vector2Scale(distanceVect, 10), Vector2Scale(perpendicularVect, -5)));
-    
-    DrawLineEx(beginPosition, endPosition, 3, color);
     // DrawTriangle(endPosition, point1, point2, color);
     // DrawTriangle(endPosition, point2, point1, color);
 }

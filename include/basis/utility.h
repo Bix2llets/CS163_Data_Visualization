@@ -3,7 +3,6 @@
 
 #include "raylib.h"
 #include "raymath.h"
-namespace DrawUtility {
 enum class VerticalAlignment {
     TOP, 
     CENTERED,
@@ -14,6 +13,7 @@ enum class HorizontalAlignment {
     CENTERED,
     RIGHT
 };
+namespace DrawUtility {
 extern Font inter20;
 extern const int NORMAL_SIZE;
 extern const int SPACING ;
@@ -25,4 +25,6 @@ void drawEdge(Vector2 beginPostion, Vector2 endPosition, Color color);
 
 extern const Color EDGE_NORMAL;
 extern const Color EDGE_HIGHLIGHTED;
+extern const Color TEXT_COLOR;
+
 }  // namespace TextUtility
