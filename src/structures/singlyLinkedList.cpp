@@ -44,13 +44,13 @@ SLL::SLL(const SLL& sll) {
     }
 }
 
-Node* SLL::addEnd(std::string data) {
+void SLL::addEnd(std::string data) {
     if (root == nullptr) {
         root =
             new Node(data, drawArea.x + NODE_RADIUS, drawArea.y + NODE_RADIUS,
                      NODE_RADIUS, NODE_PALETTE, animationRate);
         nodeCount++;
-        return root;
+        return;
     }
 
     Node* curr = root;
@@ -64,10 +64,16 @@ Node* SLL::addEnd(std::string data) {
                               NODE_RADIUS, NODE_PALETTE, animationRate);
     curr->nextNode->setTargetedPosition(nextTargetPosition);
     nodeCount++;
-    return curr->nextNode;
+    return;
 }
 
 void SLL::render() {
+    if (root == nullptr) return;
+    DrawUtility::drawText(
+        "Root", Vector2Add(root->getPosition(), {0, DISTANCE_HORIZONTAL / 2}),
+        DrawUtility::inter20, BLACK, DrawUtility::NORMAL_SIZE,
+        DrawUtility::SPACING, VerticalAlignment::CENTERED,
+        HorizontalAlignment::CENTERED);
     Node* currEdge = root;
     Node* currNode = root;
     while (currEdge) {
@@ -79,6 +85,7 @@ void SLL::render() {
         } else
             break;
     }
+
     while (currNode) {
         currNode->render();
         currNode = currNode->nextNode;
@@ -98,7 +105,7 @@ Vector2 getNextNodePosition(Vector2 currentPosition, int horizontalDistance,
                        currentPosition.y};
 }
 
-Node* SLL::addAt(std::string data, int place) {
+void SLL::addAt(std::string data, int place) {
     std::cerr << nodeCount << " " << nodePerRow << "\n";
     shiftForward(place);
     if (place == 0) {
@@ -108,12 +115,15 @@ Node* SLL::addAt(std::string data, int place) {
         node->setTargetedPosition(
             {node->getPosition().x,
              node->getPosition().y + DISTANCE_VERTICAL / 2});
-             
+        if (root == nullptr) {
+            root = node;
+            return;
+        }
         Node* curr = root;
         node->nextNode = root;
         root = node;
         nodeCount++;
-        return root;
+        return;
     }
     int index = place;
     Node* curr = root;
@@ -122,7 +132,7 @@ Node* SLL::addAt(std::string data, int place) {
         curr = curr->nextNode;
         place--;
     }
-    if (curr == nullptr) return nullptr;
+    if (curr == nullptr) return;
 
     Vector2 newPosition =
         getNextNodePosition(curr->getTargetedPosition(), DISTANCE_HORIZONTAL,
@@ -135,7 +145,7 @@ Node* SLL::addAt(std::string data, int place) {
     node->nextNode = curr->nextNode;
     curr->nextNode = node;
     nodeCount++;
-    return node;
+    return;
 }
 
 void SLL::removeEnd() {
@@ -143,16 +153,37 @@ void SLL::removeEnd() {
     if (root->nextNode == nullptr) {
         delete root;
         root = nullptr;
+        return;
     };
     Node* curr = root;
 
     while (curr->nextNode->nextNode) curr = curr->nextNode;
     delete curr->nextNode;
     curr->nextNode = nullptr;
+    nodeCount--;
     return;
 }
 
-void SLL::removeAt(int place) {}
+void SLL::removeAt(int place) {
+    Node* curr = root;
+    Node* prev = nullptr;
+    while (place && curr) {
+        place--;
+        prev = curr;
+        curr = curr->nextNode;
+    };
+    if (curr == nullptr) return;
+    if (prev == nullptr) {
+        root = curr->nextNode;
+        delete curr;
+    } else {
+        prev->nextNode = curr->nextNode;
+        delete (curr);
+    }
+
+    shiftBackward(place);
+    nodeCount--;
+}
 
 void SLL::shiftForward(int place) {
     if (root == nullptr) return;
@@ -166,9 +197,36 @@ void SLL::shiftForward(int place) {
     if (curr == nullptr) return;
 
     while (curr) {
-        curr->setTargetedPosition(
-            getNextNodePosition(curr->getTargetedPosition(), DISTANCE_HORIZONTAL,
-                                DISTANCE_VERTICAL, nodePerRow, index));
+        curr->setTargetedPosition(getNextNodePosition(
+            curr->getTargetedPosition(), DISTANCE_HORIZONTAL, DISTANCE_VERTICAL,
+            nodePerRow, index));
+        curr = curr->nextNode;
+        index++;
+    }
+}
+
+void SLL::shiftBackward(int place) {
+    if (root == nullptr) return;
+    Node* curr = root;
+    Node* prev = nullptr;
+    int index = 0;
+    while (place && curr) {
+        index++;
+        place--;
+        prev = curr;
+        curr = curr->nextNode;
+    }
+
+    if (curr == nullptr) return;
+    while (curr) {
+        if (curr == root)
+            curr->setTargetedPosition(
+                {drawArea.x + NODE_RADIUS, drawArea.y + NODE_RADIUS});
+        else
+            curr->setTargetedPosition(getNextNodePosition(
+                prev->getTargetedPosition(), DISTANCE_HORIZONTAL,
+                DISTANCE_VERTICAL, nodePerRow, index));
+        prev = curr;
         curr = curr->nextNode;
         index++;
     }

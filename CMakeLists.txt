@@ -35,7 +35,7 @@ add_executable(
     src/structures/singlyLinkedList.cpp
     src/structures/TrieState.cpp
 
-    src/scene/SGLScene.cpp
+    src/scene/SLLScene.cpp
 )
 # For build and run purpose
 file(COPY ${RAYLIB}
