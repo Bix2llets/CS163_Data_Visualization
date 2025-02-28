@@ -1,13 +1,18 @@
 
 #include "singlyLinkedList.h"
 
-const ColorSet SLL::NODE_PALETTE = ColorSet{BLACK, BLACK, WHITE, WHITE, BLACK, GOLD};
+const ColorSet SLL::NODE_PALETTE =
+    ColorSet{BLACK, BLACK, WHITE, WHITE, BLACK, GOLD};
 const int SLL::NODE_RADIUS = 30;
 const int SLL::DISTANCE_HORIZONTAL = 80;
 const int SLL::DISTANCE_VERTICAL = 80;
 
-SLL::SLL(Rectangle area, float animationRate):
-drawArea{area}, animationRate{animationRate}, root{nullptr}, nodePerRow{int(1 + area.width / DISTANCE_HORIZONTAL)}, nodeCount{0} {}
+SLL::SLL(Rectangle area, float animationRate)
+    : drawArea{area},
+      animationRate{animationRate},
+      root{nullptr},
+      nodePerRow{int(1 + area.width / DISTANCE_HORIZONTAL)},
+      nodeCount{0} {}
 void SLL::update() {
     Node* curr = root;
     while (curr) {
@@ -16,7 +21,7 @@ void SLL::update() {
     }
 }
 
-SLL::SLL(const SLL &sll) {
+SLL::SLL(const SLL& sll) {
     nodePerRow = sll.nodePerRow;
     drawArea = sll.drawArea;
     nodeCount = sll.nodeCount;
@@ -25,13 +30,12 @@ SLL::SLL(const SLL &sll) {
     root = nullptr;
     Node* sllPtr = sll.root;
     Node* currPtr = root;
-    while(sllPtr) {
+    while (sllPtr) {
         if (root == nullptr) {
             root = new Node(*sllPtr);
             root->nextNode = nullptr;
             currPtr = root;
-        }
-        else {
+        } else {
             currPtr->nextNode = new Node(*sllPtr);
             currPtr = currPtr->nextNode;
             currPtr->nextNode = nullptr;
@@ -96,24 +100,16 @@ Vector2 getNextNodePosition(Vector2 currentPosition, int horizontalDistance,
 
 Node* SLL::addAt(std::string data, int place) {
     std::cerr << nodeCount << " " << nodePerRow << "\n";
+    shiftForward(place);
     if (place == 0) {
         Node* node = new Node(data, drawArea.x + NODE_RADIUS,
                               drawArea.y + NODE_RADIUS - DISTANCE_VERTICAL / 2,
                               NODE_RADIUS, NODE_PALETTE, animationRate);
         node->setTargetedPosition(
-            {node->getPosition().x, node->getPosition().y + DISTANCE_VERTICAL / 2});
+            {node->getPosition().x,
+             node->getPosition().y + DISTANCE_VERTICAL / 2});
+             
         Node* curr = root;
-        while (curr) {
-            if (curr->nextNode != nullptr)
-                curr->setTargetedPosition(
-                    curr->nextNode->getTargetedPosition());
-            else {
-                curr->setTargetedPosition(getNextNodePosition(
-                    curr->getTargetedPosition(), DISTANCE_HORIZONTAL,
-                    DISTANCE_VERTICAL, nodePerRow, nodeCount));
-            }
-            curr = curr->nextNode;
-        }
         node->nextNode = root;
         root = node;
         nodeCount++;
@@ -136,17 +132,6 @@ Node* SLL::addAt(std::string data, int place) {
                  NODE_RADIUS, NODE_PALETTE, animationRate);
     node->setTargetedPosition(newPosition);
 
-    Node* updatePtr = curr->nextNode;
-    while (updatePtr) {
-        if (updatePtr->nextNode != nullptr)
-            updatePtr->setTargetedPosition(
-                updatePtr->nextNode->getTargetedPosition());
-        else
-            updatePtr->setTargetedPosition(getNextNodePosition(
-                updatePtr->getTargetedPosition(), DISTANCE_HORIZONTAL,
-                DISTANCE_VERTICAL, nodePerRow, nodeCount));
-        updatePtr = updatePtr->nextNode;
-    }
     node->nextNode = curr->nextNode;
     curr->nextNode = node;
     nodeCount++;
@@ -169,3 +154,22 @@ void SLL::removeEnd() {
 
 void SLL::removeAt(int place) {}
 
+void SLL::shiftForward(int place) {
+    if (root == nullptr) return;
+    Node* curr = root;
+    int index = 1;
+    while (place && curr) {
+        curr = curr->nextNode;
+        place--;
+        index++;
+    };
+    if (curr == nullptr) return;
+
+    while (curr) {
+        curr->setTargetedPosition(
+            getNextNodePosition(curr->getTargetedPosition(), DISTANCE_HORIZONTAL,
+                                DISTANCE_VERTICAL, nodePerRow, index));
+        curr = curr->nextNode;
+        index++;
+    }
+}

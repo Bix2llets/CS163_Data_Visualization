@@ -64,49 +64,48 @@ int main() {
     Button add1Button{{0, 75, 200, 75}, "Add node at 1", 20, elementTheme};
     Button add17Button{{0, 150, 200, 75}, "Add node at 17", 20, elementTheme};
     // * Object initialization
-
     SLL sll({100, 100, 1400, 400}, 10.0f);
     // trieState.
-    // while (!WindowShouldClose()) {
-    //     accumulatedTime += GetFrameTime();
-    //     while (accumulatedTime > DELTA_TIME) {
-    //         accumulatedTime -= DELTA_TIME;
-    //         sll.update();
-    //     }
-    //     BeginDrawing();
-    //     ClearBackground(CONCRETE);
-    //     addButton.render();
-    //     add1Button.render();
-    //     add17Button.render();
-    //     sll.render();
-    //     DrawUtility::drawText(std::to_string(GetFPS()), {50, 50},
-    //                           DrawUtility::inter20, BLACK, 20,
-    //                           DrawUtility::SPACING, VerticalAlignment::TOP,
-    //                           HorizontalAlignment::LEFT);
-    //     EndDrawing();
+    while (!WindowShouldClose()) {
+        accumulatedTime += GetFrameTime();
+        while (accumulatedTime > DELTA_TIME) {
+            accumulatedTime -= DELTA_TIME;
+            sll.update();
+        }
+        BeginDrawing();
+        ClearBackground(CONCRETE);
+        addButton.render();
+        add1Button.render();
+        add17Button.render();
+        sll.render();
+        DrawUtility::drawText(std::to_string(GetFPS()), {50, 50},
+                              DrawUtility::inter20, BLACK, 20,
+                              DrawUtility::SPACING, VerticalAlignment::TOP,
+                              HorizontalAlignment::LEFT);
+        EndDrawing();
 
-    //     if (addButton.isPressed()) {
-    //         sll.addEnd(std::to_string(1));
-    //     }
-    //     if (add1Button.isPressed()) {
-    //         sll.addAt(std::to_string(1), 1);
-    //     }
-    //     if (add17Button.isPressed()) {
-    //         for (int i = 0; i < 100; i++) sll.addAt(std::to_string(1), 17);
-    //     }
-    // }
+        if (addButton.isPressed()) {
+            sll.addEnd(std::to_string(1));
+        }
+        if (add1Button.isPressed()) {
+            sll.addAt(std::to_string(1), 1);
+        }
+        if (add17Button.isPressed()) {
+            for (int i = 0; i < 100; i++) sll.addAt(std::to_string(1), 17);
+        }
+    }
 
-    for (int i = 0; i < 10; i++) sll.addEnd("1");
-    SLL sll2(sll);
-    Node* root1;
-    Node* root2;
-    root1 = sll.root;
-    root2 = sll2.root;
-    while (root1 && root2) {
-        std::cout << root1 << " " << root2 << " " << (root1 == root2) << "\n";
-        root1 = root1->nextNode;
-        root2 = root2->nextNode;
-    };
+    // for (int i = 0; i < 10; i++) sll.addEnd("1");
+    // SLL sll2(sll);
+    // Node* root1;
+    // Node* root2;
+    // root1 = sll.root;
+    // root2 = sll2.root;
+    // while (root1 && root2) {
+    //     std::cout << root1 << " " << root2 << " " << (root1 == root2) << "\n";
+    //     root1 = root1->nextNode;
+    //     root2 = root2->nextNode;
+    // };
     std::cout << "Program ran successfully\n";
     CloseWindow();
 }

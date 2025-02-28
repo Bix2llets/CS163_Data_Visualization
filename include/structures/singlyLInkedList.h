@@ -24,4 +24,7 @@ class SLL {
     void removeEnd();
     void removeAt(int place);
 
+    void shiftForward(int place);
+    void shiftBackward(int place);
+
 };  // namespace SLL
