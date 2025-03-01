@@ -19,6 +19,8 @@ class SLL {
     SLL(Rectangle area = {100, 100, 1400, 400}, float animationRate = 1.0f);
     SLL(const SLL &sll);
     void update();
+    void setAnimationRate(float rate);
+    
     void addEnd(std::string data);
     void addAt(std::string data, int place);
     void render();
@@ -27,5 +29,12 @@ class SLL {
 
     void shiftForward(int place);
     void shiftBackward(int place);
+
+    bool isFinished();
+    void finishAnimation();
+    
+    SLL clone();
+
+    SLL operator=(const SLL &source);
 
 };  // namespace SLL

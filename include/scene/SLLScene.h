@@ -8,13 +8,18 @@ namespace SLLScene {
     extern const Rectangle CANVAS;
     extern float animationRate;
     extern SLL sll;
+    extern std::deque<SLL> steps;
 
-    void addEnd();
-    void addAt(int place);
+    void setSpecs(float _stepDelay = 0.5f, float _animationRate = 1.f);
+    void addEnd(std::string data);
+    void addAt(std::string data, int place);
     
-    void deleteEnd();
-    void deleteAt(int place);
+    void removeEnd();
+    void removeAt(int place);
 
     void update();
+
+    void addStep();
     
+    void render();
 }

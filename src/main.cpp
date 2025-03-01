@@ -55,6 +55,7 @@ int main() {
                              DrawUtility::EDGE_NORMAL,
                              DrawUtility::EDGE_HIGHLIGHTED};
     DrawUtility::init();
+    SLLScene::setSpecs(0.1f, 10.f);
     int nodeData = 0;
     Node node1(23, 50, 50, 30);
     Node node2(230, 150, 50, 30);
@@ -62,21 +63,20 @@ int main() {
 
     Button addButton{{0, 0, 200, 75}, "Add node at end", 20, elementTheme};
     Button add1Button{{0, 75, 200, 75}, "Add node at 1", 20, elementTheme};
-    Button add17Button{{0, 150, 200, 75}, "Add node at 17", 20, elementTheme};
+    Button add17Button{{0, 150, 200, 75}, "Add node at 2", 20, elementTheme};
     Button erase1Button{
         {0, 225, 200, 75}, "Remove node at 1", 20, elementTheme};
     Button erase17Button{
-        {0, 300, 200, 75}, "Remove node at 17", 20, elementTheme};
+        {0, 300, 200, 75}, "Remove node at 2", 20, elementTheme};
     Button eraseButton{
-        {0, 375, 200, 75}, "Remove node at 17", 20, elementTheme};
+        {0, 375, 200, 75}, "Remove node at end", 20, elementTheme};
     // * Object initialization
-    SLL sll({100, 100, 1400, 400}, 10.0f);
     // trieState.
     while (!WindowShouldClose()) {
         accumulatedTime += GetFrameTime();
         while (accumulatedTime > DELTA_TIME) {
             accumulatedTime -= DELTA_TIME;
-            sll.update();
+            SLLScene::update();
         }
         BeginDrawing();
         ClearBackground(CONCRETE);
@@ -86,7 +86,7 @@ int main() {
         eraseButton.render();
         erase17Button.render();
         erase1Button.render();
-        sll.render();
+        SLLScene::render();
         DrawUtility::drawText(std::to_string(GetFPS()), {50, 50},
                               DrawUtility::inter20, BLACK, 20,
                               DrawUtility::SPACING, VerticalAlignment::TOP,
@@ -94,29 +94,29 @@ int main() {
         EndDrawing();
 
         if (addButton.isPressed()) {
-            sll.addEnd(std::to_string(1));
+            SLLScene::addEnd(std::to_string(1));
         }
         if (add1Button.isPressed()) {
-            sll.addAt(std::to_string(1), 1);
+            SLLScene::addAt(std::to_string(1), 1);
         }
         if (add17Button.isPressed()) {
-            for (int i = 0; i < 100; i++) sll.addAt(std::to_string(1), 17);
+            SLLScene::addAt(std::to_string(1), 2);
         }
         if (eraseButton.isPressed()) {
-            sll.removeEnd();
+            SLLScene::removeEnd();
         }
         if (erase1Button.isPressed()) {
-            sll.removeAt(1);
+            SLLScene::removeAt(1);
         }
         if (erase17Button.isPressed()) {
-            for (int i = 0; i < 100; i++) sll.removeAt(17);
+            SLLScene::removeAt(2);
         }
 
         
     }
 
     // for (int i = 0; i < 10; i++) sll.addEnd("1");
-    // SLL sll2(sll);
+    // SLL sll2 = sll.clone();
     // Node* root1;
     // Node* root2;
     // root1 = sll.root;

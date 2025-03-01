@@ -38,3 +38,7 @@ void Animation::setUpdateRate(float newRate) {
 }
 
 Vector2 Animation::getTargetedPosition() { return targetedPosition; }
+
+void Animation::makeFinish() {
+    position = targetedPosition;
+}

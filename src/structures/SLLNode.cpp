@@ -30,4 +30,19 @@ void Node::update() {
     edgeColor.update();
 }
 
-void Node::setAnimationRate(int rate) { animationRate = rate; }
+void Node::setAnimationRate(float rate) {
+    animationRate = rate;
+    borderColor.setUpdateRate(rate);
+    edgeColor.setUpdateRate(rate);
+}
+
+bool Node::isFinished() {
+    return this->isCompleted() && borderColor.isCompleted() &&
+           edgeColor.isCompleted();
+}
+
+void Node::finishAnimation() {
+    Animation::makeFinish();
+    borderColor.makeFinish();
+    edgeColor.makeFinish();
+}

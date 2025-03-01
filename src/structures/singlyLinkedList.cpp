@@ -27,28 +27,15 @@ SLL::SLL(const SLL& sll) {
     nodeCount = sll.nodeCount;
     animationRate = sll.animationRate;
 
-    root = nullptr;
-    Node* sllPtr = sll.root;
-    Node* currPtr = root;
-    while (sllPtr) {
-        if (root == nullptr) {
-            root = new Node(*sllPtr);
-            root->nextNode = nullptr;
-            currPtr = root;
-        } else {
-            currPtr->nextNode = new Node(*sllPtr);
-            currPtr = currPtr->nextNode;
-            currPtr->nextNode = nullptr;
-        }
-        sllPtr = sllPtr->nextNode;
-    }
+    root = sll.root;
 }
 
 void SLL::addEnd(std::string data) {
     if (root == nullptr) {
         root =
-            new Node(data, drawArea.x + NODE_RADIUS, drawArea.y + NODE_RADIUS,
+            new Node(data, drawArea.x + NODE_RADIUS - DISTANCE_HORIZONTAL / 2, drawArea.y + NODE_RADIUS - DISTANCE_VERTICAL / 2,
                      NODE_RADIUS, NODE_PALETTE, animationRate);
+        root->setTargetedPosition({drawArea.x + NODE_RADIUS, drawArea.y + NODE_RADIUS});
         nodeCount++;
         return;
     }
@@ -59,8 +46,8 @@ void SLL::addEnd(std::string data) {
         getNextNodePosition(curr->getTargetedPosition(), DISTANCE_HORIZONTAL,
                             DISTANCE_VERTICAL, nodePerRow, nodeCount);
 
-    curr->nextNode = new Node(data, nextTargetPosition.x,
-                              nextTargetPosition.y + DISTANCE_VERTICAL / 2,
+    curr->nextNode = new Node(data, nextTargetPosition.x - DISTANCE_HORIZONTAL / 2,
+                              nextTargetPosition.y - DISTANCE_VERTICAL / 2,
                               NODE_RADIUS, NODE_PALETTE, animationRate);
     curr->nextNode->setTargetedPosition(nextTargetPosition);
     nodeCount++;
@@ -107,14 +94,13 @@ Vector2 getNextNodePosition(Vector2 currentPosition, int horizontalDistance,
 
 void SLL::addAt(std::string data, int place) {
     std::cerr << nodeCount << " " << nodePerRow << "\n";
-    shiftForward(place);
+    place--;
     if (place == 0) {
-        Node* node = new Node(data, drawArea.x + NODE_RADIUS,
+        Node* node = new Node(data, drawArea.x + NODE_RADIUS - DISTANCE_HORIZONTAL / 2,
                               drawArea.y + NODE_RADIUS - DISTANCE_VERTICAL / 2,
                               NODE_RADIUS, NODE_PALETTE, animationRate);
         node->setTargetedPosition(
-            {node->getPosition().x,
-             node->getPosition().y + DISTANCE_VERTICAL / 2});
+            {drawArea.x + NODE_RADIUS, drawArea.y + NODE_RADIUS});
         if (root == nullptr) {
             root = node;
             return;
@@ -138,7 +124,7 @@ void SLL::addAt(std::string data, int place) {
         getNextNodePosition(curr->getTargetedPosition(), DISTANCE_HORIZONTAL,
                             DISTANCE_VERTICAL, nodePerRow, index);
     Node* node =
-        new Node(data, newPosition.x, newPosition.y + DISTANCE_VERTICAL / 2,
+        new Node(data, newPosition.x - DISTANCE_HORIZONTAL / 2, newPosition.y - DISTANCE_VERTICAL / 2,
                  NODE_RADIUS, NODE_PALETTE, animationRate);
     node->setTargetedPosition(newPosition);
 
@@ -165,8 +151,11 @@ void SLL::removeEnd() {
 }
 
 void SLL::removeAt(int place) {
+    if (place > nodeCount) return;
+    place--;
     Node* curr = root;
     Node* prev = nullptr;
+
     while (place && curr) {
         place--;
         prev = curr;
@@ -181,7 +170,6 @@ void SLL::removeAt(int place) {
         delete (curr);
     }
 
-    shiftBackward(place);
     nodeCount--;
 }
 
@@ -189,6 +177,7 @@ void SLL::shiftForward(int place) {
     if (root == nullptr) return;
     Node* curr = root;
     int index = 1;
+    place--;
     while (place && curr) {
         curr = curr->nextNode;
         place--;
@@ -210,6 +199,7 @@ void SLL::shiftBackward(int place) {
     Node* curr = root;
     Node* prev = nullptr;
     int index = 0;
+    place--;
     while (place && curr) {
         index++;
         place--;
@@ -229,5 +219,71 @@ void SLL::shiftBackward(int place) {
         prev = curr;
         curr = curr->nextNode;
         index++;
+    }
+}
+
+bool SLL::isFinished() {
+    if (root == nullptr) return true;
+    Node* curr = root;
+    while (curr) {
+        if (curr->isFinished() == false) return false;
+        curr = curr->nextNode;
+    }
+    return true;
+}
+
+SLL SLL::clone() {
+    SLL result;
+    result.nodePerRow = nodePerRow;
+    result.drawArea = drawArea;
+    result.nodeCount = nodeCount;
+    result.animationRate = animationRate;
+
+    Node* currPtr = root;
+    result.root = nullptr;
+    Node* resultPtr = result.root;
+    while(currPtr) {
+        if (result.root == nullptr) {
+            result.root = new Node(*currPtr);
+            resultPtr = result.root;
+        }
+        else {
+            resultPtr->nextNode = new Node(*currPtr);
+            resultPtr = resultPtr->nextNode;
+        }
+        currPtr = currPtr->nextNode;
+    }
+    return result;
+}
+
+SLL SLL::operator=(const SLL &source) {
+    if (this != &source) {
+
+        nodePerRow = source.nodePerRow;
+        drawArea = source.drawArea;
+        nodeCount = source.nodeCount;
+        animationRate = source.animationRate;
+        
+        root = source.root;
+    }
+    return *this;
+}
+
+void SLL::finishAnimation() {
+    if (root == nullptr) return;
+    Node* curr = root;
+    while(curr) {
+        curr->finishAnimation();
+        curr = curr->nextNode;
+    }
+}
+
+void SLL::setAnimationRate(float rate) {
+    animationRate = rate;
+    Node* curr = root;
+    if (curr == nullptr) return;
+    while(curr) {
+        curr->setAnimationRate(rate);
+        curr = curr->nextNode;
     }
 }

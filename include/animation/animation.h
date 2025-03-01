@@ -19,6 +19,7 @@ class Animation : public GUIObject {
     Vector2 getTargetedPosition();
     bool isCompleted() const;
     void setUpdateRate(float newRate);
+    void makeFinish();
 
     virtual void render();
 };

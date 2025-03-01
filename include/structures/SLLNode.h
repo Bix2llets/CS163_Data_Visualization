@@ -15,7 +15,7 @@ class Node : public Animation {
     const ColorSet PALETTE;
     int radius;
     float animationRate;
-    
+    friend class SLL;
     public:
     AnimationColor borderColor;
     AnimationColor edgeColor;
@@ -29,5 +29,8 @@ class Node : public Animation {
 
     void render();
     void update();
-    void setAnimationRate(int rate);
+    void setAnimationRate(float rate);
+    bool isFinished();
+
+    void finishAnimation();
 };
