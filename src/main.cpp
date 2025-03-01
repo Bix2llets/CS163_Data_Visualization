@@ -55,7 +55,7 @@ int main() {
                              DrawUtility::EDGE_NORMAL,
                              DrawUtility::EDGE_HIGHLIGHTED};
     DrawUtility::init();
-    SLLScene::setSpecs(0.1f, 10.f);
+    SLLScene::setSpecs(0.0f, 50.f);
     int nodeData = 0;
     Node node1(23, 50, 50, 30);
     Node node2(230, 150, 50, 30);
@@ -97,18 +97,22 @@ int main() {
             SLLScene::addEnd(std::to_string(1));
         }
         if (add1Button.isPressed()) {
+            for (int i = 0; i < 10; i++)
             SLLScene::addAt(std::to_string(1), 1);
         }
         if (add17Button.isPressed()) {
+            for (int i = 0; i < 10; i++)
             SLLScene::addAt(std::to_string(1), 2);
         }
         if (eraseButton.isPressed()) {
             SLLScene::removeEnd();
         }
         if (erase1Button.isPressed()) {
+            for (int i = 0; i < 10; i++)
             SLLScene::removeAt(1);
         }
         if (erase17Button.isPressed()) {
+            for (int i = 0; i < 10; i++)
             SLLScene::removeAt(2);
         }
 

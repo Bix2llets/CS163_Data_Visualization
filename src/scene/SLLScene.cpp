@@ -16,7 +16,6 @@ void SLLScene::addEnd(std::string data) {
     addStep();
     SLL &curr = steps.back();
     curr.addEnd(data);
-    std::cerr << "Done adding\n";
 };
 void SLLScene::addAt(std::string data, int place) {
     if (steps.size()) {
@@ -28,7 +27,7 @@ void SLLScene::addAt(std::string data, int place) {
     steps.back().shiftForward(place);
     addStep();
     steps.back().addAt(data, place);
-    std::cerr << "Done adding\n";
+    std::cerr << steps.back().nodeCount << "\n";
 };
 void SLLScene::removeEnd() {
     addStep();
@@ -45,11 +44,11 @@ void SLLScene::removeAt(int place) {
         }
     } else {
         if (place > sll.nodeCount) {
+            std::cerr << place << " " << sll.nodeCount << "\n";
             std::cerr << "Exitted due to invalid place\n";
             return;
         }
     }
-    std::cerr << place << " " << steps.back().nodeCount << "\n";
     addStep();
     steps.back().removeAt(place);
     addStep();
@@ -57,7 +56,6 @@ void SLLScene::removeAt(int place) {
 };
 void SLLScene::update() {
     sll.update();
-    // std::cerr << "Done sll updating\n";
     if (!sll.isFinished()) return;
 
     timeLeft -= GetFrameTime();
@@ -65,22 +63,17 @@ void SLLScene::update() {
     if (timeLeft <= 0) timeLeft = 0;
 
     if (timeLeft == 0 && steps.size()) {
-        std::cerr << "Next step init\n" << " " << steps.size() << " ";
         sll = steps.front();
         steps.pop_front();
-        std::cerr << steps.size() << "\n";
         timeLeft = stepDelay;
     }
-    // std::cerr << "Done scene updating\n";
 };
 void SLLScene::addStep() {
-    std::cerr << "addStep called\n";
     if (steps.size())
         steps.push_back(steps.back().clone());
     else
         steps.push_back(sll.clone());
     steps.back().finishAnimation();
-    // std::cerr << "Done adding copy to end of steps deque\n";
 }
 
 void SLLScene::render() { sll.render(); }

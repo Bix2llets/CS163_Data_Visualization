@@ -41,10 +41,15 @@ void SLL::addEnd(std::string data) {
     }
 
     Node* curr = root;
-    while (curr->nextNode) curr = curr->nextNode;
+    int index = 1;
+    while (curr->nextNode) 
+    {
+        curr = curr->nextNode;
+        index++;
+    }
     Vector2 nextTargetPosition =
         getNextNodePosition(curr->getTargetedPosition(), DISTANCE_HORIZONTAL,
-                            DISTANCE_VERTICAL, nodePerRow, nodeCount);
+                            DISTANCE_VERTICAL, nodePerRow, index);
 
     curr->nextNode = new Node(data, nextTargetPosition.x - DISTANCE_HORIZONTAL / 2,
                               nextTargetPosition.y - DISTANCE_VERTICAL / 2,
@@ -93,7 +98,6 @@ Vector2 getNextNodePosition(Vector2 currentPosition, int horizontalDistance,
 }
 
 void SLL::addAt(std::string data, int place) {
-    std::cerr << nodeCount << " " << nodePerRow << "\n";
     place--;
     if (place == 0) {
         Node* node = new Node(data, drawArea.x + NODE_RADIUS - DISTANCE_HORIZONTAL / 2,
@@ -101,6 +105,7 @@ void SLL::addAt(std::string data, int place) {
                               NODE_RADIUS, NODE_PALETTE, animationRate);
         node->setTargetedPosition(
             {drawArea.x + NODE_RADIUS, drawArea.y + NODE_RADIUS});
+        nodeCount++;
         if (root == nullptr) {
             root = node;
             return;
@@ -108,7 +113,6 @@ void SLL::addAt(std::string data, int place) {
         Node* curr = root;
         node->nextNode = root;
         root = node;
-        nodeCount++;
         return;
     }
     int index = place;
