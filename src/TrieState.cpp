@@ -142,6 +142,7 @@ void TrieState::render() {
                     auto current = mTrie.working[mTrie.itr1].second[mTrie.itr2];
                     if (current.first == SELECTING)
                     {
+                        mTrie.Itr[mTrie.itr1].first = mTrie.Itr[mTrie.itr1].second = {-1, -1};
                         current.second->selected = true;
                     }
                     else if (current.first == CREATE) 
@@ -160,10 +161,6 @@ void TrieState::render() {
                     else if (current.first == UNSETEND)
                     {
                         current.second->isEndOfWord = false;
-                    }
-                    else if (current.first == SET_ITR_INSTANCE)
-                    {
-                        mTrie.Itr[mTrie.itr1].first = mTrie.Itr[mTrie.itr1].second = mTrie.getPos(mTrie.root, current.second, 0, 0);
                     }
                     else if (current.first == SET_ITR_ANIMATION)
                     {

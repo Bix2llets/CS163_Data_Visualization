@@ -229,7 +229,7 @@ bool Trie::moveItr()
             moved = true;
             Itr[i].first = Lerp(Itr[i].first, Itr[i].second, 1);
         }
-        else Itr[i].first = Itr[i].second = {-1, -1};
+        //else Itr[i].first = Itr[i].second = {-1, -1};
     }
     return moved;
 }
