@@ -100,6 +100,7 @@ CMakeFiles/DATA_VISUALIZER.dir/src/basis/button.cpp.obj: \
  C:/msys64/ucrt64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/stdarg.h \
  C:/msys64/ucrt64/include/stdarg.h \
  C:/msys64/ucrt64/include/_mingw_stdarg.h \
+ D:/projects/CS163_Data_Visualization/include/basis/colorPalette.h \
  D:/projects/CS163_Data_Visualization/include/raylib/include/raymath.h \
  C:/msys64/ucrt64/include/c++/13.1.0/math.h \
  C:/msys64/ucrt64/include/c++/13.1.0/cmath \
@@ -118,6 +119,7 @@ CMakeFiles/DATA_VISUALIZER.dir/src/basis/button.cpp.obj: \
  C:/msys64/ucrt64/include/c++/13.1.0/tr1/poly_hermite.tcc \
  C:/msys64/ucrt64/include/c++/13.1.0/tr1/poly_laguerre.tcc \
  C:/msys64/ucrt64/include/c++/13.1.0/tr1/riemann_zeta.tcc \
+ D:/projects/CS163_Data_Visualization/include/animation/animation.h \
  C:/msys64/ucrt64/include/c++/13.1.0/iostream \
  C:/msys64/ucrt64/include/c++/13.1.0/ostream \
  C:/msys64/ucrt64/include/c++/13.1.0/ios \
@@ -160,4 +162,6 @@ CMakeFiles/DATA_VISUALIZER.dir/src/basis/button.cpp.obj: \
  C:/msys64/ucrt64/include/c++/13.1.0/bits/basic_ios.tcc \
  C:/msys64/ucrt64/include/c++/13.1.0/bits/ostream.tcc \
  C:/msys64/ucrt64/include/c++/13.1.0/istream \
- C:/msys64/ucrt64/include/c++/13.1.0/bits/istream.tcc
+ C:/msys64/ucrt64/include/c++/13.1.0/bits/istream.tcc \
+ D:/projects/CS163_Data_Visualization/include/animation/animationColor.h \
+ D:/projects/CS163_Data_Visualization/include/basis/utility.h

@@ -14,6 +14,7 @@ include_directories(include/basis)
 include_directories(include/structures)
 include_directories(include/animation)
 include_directories(include/scene)
+include_directories(include)
 add_executable(
     ${PROJECT_NAME}
     src/main.cpp
@@ -33,6 +34,7 @@ add_executable(
     
     src/structures/SLLNode.cpp
     src/structures/singlyLinkedList.cpp
+    src/structures/Trie.cpp
     src/structures/TrieState.cpp
 
     src/scene/SLLScene.cpp

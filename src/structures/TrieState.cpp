@@ -1,6 +1,6 @@
 #include "TrieState.hpp"
 #include "raygui.h"
-#include "Utility.hpp"
+#include <mLib/Utility.hpp>
 #include <cstring>
 
 const int MAX_TEXT_LENGTH = 10;
