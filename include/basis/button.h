@@ -2,48 +2,43 @@
 #include <string>
 
 #include "GUIObject.h"
+#include "colorPalette.h"
 #include "raylib.h"
 #include "raymath.h"
-
+#include "animation.h"
+#include "animationColor.h"
 class Button : public GUIObject {
-    Font font;
     int fontSize;
     const static int SPACING = 1;
     Vector2 dimension;
-    Color textColor, backgroundColor;
+    const ColorSet PALETTE;
     std::string text;
-    Color hoverColor;
 
+    AnimationColor edgeColor;
    public:
     Button(Vector2 position, Vector2 dimension, std::string text = "",
-           int fontSize = 12, Color textColor = WHITE,
-           Color backgroundColor = BLACK, Color hoverColor = GREEN)
+           int fontSize = 20,
+           ColorSet palette =
+               DEF_SET)
         : GUIObject(position),
           dimension{dimension},
           text{text},
           fontSize{fontSize},
-          textColor{textColor},
-          backgroundColor{backgroundColor},
-          hoverColor{hoverColor} {
-        font = LoadFont("./assets/Inter-black.ttf");
-    };
+          PALETTE{palette}, edgeColor{}{};
 
-    Button(Rectangle rectangle, std::string text = "", int fontSize = 12,
-           Color textColor = WHITE, Color backgroundColor = BLACK,
-           Color hoverColor = GREEN)
+    Button(Rectangle rectangle, std::string text = "", int fontSize = 20,
+           ColorSet palette =
+               DEF_SET)
         : Button{Vector2{rectangle.x, rectangle.y},
-                 Vector2{rectangle.width, rectangle.height},
-                 text,
-                 fontSize,
-                 textColor,
-                 backgroundColor,
-                 hoverColor} {};
+                 Vector2{rectangle.width, rectangle.height}, text, fontSize,
+                 palette} {};
 
     Button(float x, float y, float width, float height, std::string text = "",
-           int fontSize = 12, Color textColor = WHITE,
-           Color backgroundColor = BLACK, Color hoverColor = GREEN)
-        : Button{Vector2{x, y}, Vector2{width, height}, text,      fontSize,
-                 textColor,     backgroundColor,        hoverColor} {};
+           int fontSize = 20,
+           ColorSet palette =
+               DEF_SET)
+        : Button{Vector2{x, y}, Vector2{width, height}, text, fontSize,
+                 palette} {};
 
     Vector2 getDimension() const { return dimension; }
 

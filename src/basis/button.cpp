@@ -1,19 +1,22 @@
 #include "button.h"
-
+#include "utility.h"
 #include <iostream>
 void Button::render() {
     Rectangle rect{position.x, position.y, dimension.x, dimension.y};
     if (isHovered())
-        DrawRectangle(rect.x, rect.y, rect.width, rect.height, hoverColor);
-    else
-        DrawRectangle(rect.x, rect.y, rect.width, rect.height, backgroundColor);
+    {
 
-    Vector2 textStart{rect.x + rect.width / 2, rect.y + rect.height / 2};
-    Vector2 textDimension =
-        MeasureTextEx(font, text.c_str(), fontSize, SPACING);
-    textDimension = Vector2Scale(textDimension, 0.5f);
-    textStart = Vector2Subtract(textStart, textDimension);
-    DrawTextEx(font, text.c_str(), textStart, fontSize, SPACING, textColor);
+        DrawRectangle(rect.x, rect.y, rect.width, rect.height, PALETTE.backgroundHighlight);
+        DrawUtility::drawText(text, {position.x + dimension.x / 2, position.y + dimension.y / 2}, DrawUtility::inter20, PALETTE.textHighlight, fontSize, SPACING, VerticalAlignment::CENTERED, HorizontalAlignment::CENTERED);
+        DrawRectangleLinesEx(rect, 2, PALETTE.borderHighlight);
+    }
+    else
+    
+    {
+        DrawRectangle(rect.x, rect.y, rect.width, rect.height, PALETTE.backgroundNormal);
+        DrawUtility::drawText(text, {position.x + dimension.x / 2, position.y + dimension.y / 2}, DrawUtility::inter20, PALETTE.textNormal, fontSize, SPACING, VerticalAlignment::CENTERED, HorizontalAlignment::CENTERED);
+        DrawRectangleLinesEx(rect, 2, PALETTE.borderNormal);
+    }
 }
 
 void Button::setText(std::string newText) { text = newText; }

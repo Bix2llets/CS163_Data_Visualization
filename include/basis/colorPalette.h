@@ -1,5 +1,14 @@
 #pragma once
 #include "raylib.h"
+struct ColorSet {
+    Color textNormal;
+    Color textHighlight;
+    Color backgroundNormal;
+    Color backgroundHighlight;
+    Color borderNormal;
+    Color borderHighlight;
+};
+extern const ColorSet DEF_SET;
 
 namespace ColorPalette {
 const int MAX_TRANSPARENCY = 255;

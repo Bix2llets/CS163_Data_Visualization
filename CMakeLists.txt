@@ -12,18 +12,30 @@ include_directories(include/raygui/src)
 include_directories(include/GUI)
 include_directories(include/basis)
 include_directories(include/structures)
-include_directories(include/mLib)
+include_directories(include/animation)
+include_directories(include/scene)
 add_executable(
     ${PROJECT_NAME}
     src/main.cpp
-    src/TrieState.cpp
-    src/Trie.cpp
     src/basis/button.cpp
     src/basis/utility.cpp
     src/basis/GUIObject.cpp
     src/basis/colorPalette.cpp
+    src/basis/textBox.cpp
+
+    src/basis/overload.cpp
     
+    src/animation/animation.cpp
+    src/animation/arrow.cpp
+    src/animation/animationColor.cpp
+    
+    src/GUI/welcomeMenu.cpp
+    
+    src/structures/SLLNode.cpp
     src/structures/singlyLinkedList.cpp
+    src/structures/TrieState.cpp
+
+    src/scene/SLLScene.cpp
 )
 # For build and run purpose
 file(COPY ${RAYLIB}

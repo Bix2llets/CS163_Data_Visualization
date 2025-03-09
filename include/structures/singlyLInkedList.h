@@ -1,72 +1,31 @@
-#ifndef SINGLY_LINKED_LIST_H
-#define SINGLY_LINKED_LIST_H
-#include <string>
+#pragma once
+#include <deque>
 
-#include "GUIObject.h"
-#include "math.h"
-#include "raylib.h"
-#include "raymath.h"
-#include "utility.h"
-enum class Rotation {
-    NO_ROTATION,
-    CLOCKWISE,
-    COUNTER_CLOCKWISE,
-    HALF_CIRCLE
+#include "SLLNode.h"
+class SLL {
+     public:
+    const static ColorSet NODE_PALETTE;
+    const static int NODE_RADIUS;
+    const static int DISTANCE_HORIZONTAL;
+    const static int DISTANCE_VERTICAL;
 
-};
-class SinglyLinkedList : public GUIObject {
-   private:
-    Rotation rotation;
-    Color borderColor;
-    Color backgroundColor;
-    Color highlightColor;
-    float width;
-    float height;
-    float distance;
-    friend class Node;
-    const int START_X = 50;
-    class Node : public GUIObject {
-        friend class SinglyLinkedList;
+    int nodePerRow;
+    Rectangle drawArea;
+    int nodeCount;
+    float animationRate;
 
-       private:
-        std::string data;
-        Node *nextNode = nullptr;
-        SinglyLinkedList &parentClass;
+    Node* root;
 
-       public:
-        ~Node();
-
-        Node(SinglyLinkedList &parentClass, std::string data = "", int x = 0,
-             int y = 0)
-            : parentClass{parentClass}, GUIObject(x, y), data{data} {};
-        Node(SinglyLinkedList &parentClass, int data, int x = 0, int y = 0)
-            : Node(parentClass, std::to_string(data), x, y) {};
-        Node *&getNextNode() { return nextNode; };
-
-        void render();
-        Vector2 getStartPoint() const;
-        Vector2 getEndPoint() const;
-    };
-    Node *root;
-
-   public:
-    SinglyLinkedList(int x, int y) : GUIObject(x, y) {
-        root = nullptr;
-        width = 50;
-        distance = 50;
-        height = 50;
-        rotation = Rotation::NO_ROTATION;
-    }
-    Color getBorderColor() const { return borderColor; };
-    Color getBackgroundColor() const { return backgroundColor; };
-    Color getHighlightColor() const { return highlightColor; };
-    void setColor(Color border, Color background, Color highlight);
-    Rotation getRotation() const { return rotation; }
-    void addNode(std::string data);
-    void addNode(int data);
-    
-    void removeEnd();
+    SLL(Rectangle area = {100, 100, 1400, 400}, float animationRate = 1.0f);
+    SLL(const SLL &sll);
+    void update();
+    void addEnd(std::string data);
+    void addAt(std::string data, int place);
     void render();
-};
+    void removeEnd();
+    void removeAt(int place);
 
-#endif
+    void shiftForward(int place);
+    void shiftBackward(int place);
+
+};  // namespace SLL
