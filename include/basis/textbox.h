@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
-
+#include <utility>
 #include "GUIObject.h"
 #include "colorPalette.h"
 #include "raylib.h"
@@ -38,4 +38,5 @@ class TextBox : public GUIObject {
     void update();
     void deFocus();
     std::string getText();
+    std::pair<bool, int> getValue();
 };

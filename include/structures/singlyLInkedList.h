@@ -18,6 +18,7 @@ class SLL {
 
     SLL(Rectangle area = {100, 100, 1400, 400}, float animationRate = 1.0f);
     SLL(const SLL &sll);
+    // ~SLL();
     void update();
     void setAnimationRate(float rate);
     
@@ -32,7 +33,13 @@ class SLL {
 
     bool isFinished();
     void finishAnimation();
+
+    void moveOutAt(int place);
+    void moveOutEnd();
     
+    int locate(std::string val);
+    void highlightTo(int place);
+    void deHighlight();
     SLL clone();
 
     SLL operator=(const SLL &source);

@@ -29,6 +29,8 @@ class Node : public Animation {
 
     void render();
     void update();
+
+    void updateAnimation();
     void setAnimationRate(float rate);
     bool isFinished();
 

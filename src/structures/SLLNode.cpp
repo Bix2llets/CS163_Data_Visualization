@@ -17,7 +17,7 @@ Node::Node(std::string data, float x, float y, int radius, ColorSet palette,
       PALETTE{palette},
       radius{radius},
       borderColor{PALETTE.borderHighlight, PALETTE.borderNormal, animationRate},
-      edgeColor{PALETTE.borderHighlight, PALETTE.borderNormal},
+      edgeColor{PALETTE.borderHighlight, PALETTE.borderNormal, animationRate},
       nextNode{nullptr} {};
 
 Node::Node(int data, float x, float y, int radius, ColorSet palette,
@@ -45,4 +45,8 @@ void Node::finishAnimation() {
     Animation::makeFinish();
     borderColor.makeFinish();
     edgeColor.makeFinish();
+}
+
+void Node::updateAnimation() {
+    Animation::update();
 }

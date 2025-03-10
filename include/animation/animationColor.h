@@ -19,11 +19,12 @@ class AnimationColor {
     void setFactor(float newFactor);
     void setUpdateRate(float newSpeed);
     void update();
-
+    
     Color getBaseColor();
     Color getTargetColor();
     
     bool isCompleted();
+    int getAnimationRate();
     Color getCurrentColor();
 
     void makeFinish();

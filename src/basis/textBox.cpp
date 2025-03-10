@@ -32,7 +32,7 @@ void TextBox::recordKeyboard() {
     if (!isFocusedOn) return;
     if (IsKeyPressed(KEY_BACKSPACE)) {
         text = text.substr(0, text.length() - 1);
-        std::cerr << "Erased " << text << "\n";
+        // std::cerr << "Erased " << text << "\n";
         return;
     }
     bool isCaptialized = false;
@@ -49,7 +49,7 @@ void TextBox::recordKeyboard() {
         chr = keyNum - KEY_ZERO + '0';
 
     if (chr != '\0' && text.length() <= 30) text = text + chr;
-    std::cerr << chr << " " << text << "\n";
+    // std::cerr << chr << " " << text << "\n";
 }
 void TextBox::recordFocus() {
     if (!IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) return;
@@ -67,4 +67,10 @@ std::string TextBox::getText() { return text; }
 void TextBox::update() {
     recordFocus();
     recordKeyboard();
+}
+
+std::pair<bool, int> TextBox::getValue() {
+    if (text.size() == 0) return {0, 0};
+    for (char chr: text) if (chr < '0' || '9' < chr) return {0, 0};
+    return {1, std::stoi(text)};
 }

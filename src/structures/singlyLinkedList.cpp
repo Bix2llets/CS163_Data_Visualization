@@ -15,8 +15,21 @@ SLL::SLL(Rectangle area, float animationRate)
       nodeCount{0} {}
 void SLL::update() {
     Node* curr = root;
+
+    // update animation
     while (curr) {
-        curr->update();
+        curr->updateAnimation();
+        curr = curr->nextNode;
+    }
+    // update gradient color
+    curr = root;
+    while (curr) {
+        curr->borderColor.update();
+        std::cerr << curr->borderColor.getAnimationRate() << "\n";
+        if (!curr->borderColor.isCompleted()) break;
+        curr->edgeColor.update();
+        std::cerr << curr->edgeColor.getAnimationRate() << "\n";
+        if (!curr->edgeColor.isCompleted()) break;
         curr = curr->nextNode;
     }
 }
@@ -33,17 +46,18 @@ SLL::SLL(const SLL& sll) {
 void SLL::addEnd(std::string data) {
     if (root == nullptr) {
         root =
-            new Node(data, drawArea.x + NODE_RADIUS - DISTANCE_HORIZONTAL / 2, drawArea.y + NODE_RADIUS - DISTANCE_VERTICAL / 2,
+            new Node(data, drawArea.x + NODE_RADIUS - DISTANCE_HORIZONTAL / 2,
+                     drawArea.y + NODE_RADIUS - DISTANCE_VERTICAL / 2,
                      NODE_RADIUS, NODE_PALETTE, animationRate);
-        root->setTargetedPosition({drawArea.x + NODE_RADIUS, drawArea.y + NODE_RADIUS});
+        root->setTargetedPosition(
+            {drawArea.x + NODE_RADIUS, drawArea.y + NODE_RADIUS});
         nodeCount++;
         return;
     }
 
     Node* curr = root;
     int index = 1;
-    while (curr->nextNode) 
-    {
+    while (curr->nextNode) {
         curr = curr->nextNode;
         index++;
     }
@@ -51,9 +65,10 @@ void SLL::addEnd(std::string data) {
         getNextNodePosition(curr->getTargetedPosition(), DISTANCE_HORIZONTAL,
                             DISTANCE_VERTICAL, nodePerRow, index);
 
-    curr->nextNode = new Node(data, nextTargetPosition.x - DISTANCE_HORIZONTAL / 2,
-                              nextTargetPosition.y - DISTANCE_VERTICAL / 2,
-                              NODE_RADIUS, NODE_PALETTE, animationRate);
+    curr->nextNode =
+        new Node(data, nextTargetPosition.x - DISTANCE_HORIZONTAL / 2,
+                 nextTargetPosition.y - DISTANCE_VERTICAL / 2, NODE_RADIUS,
+                 NODE_PALETTE, animationRate);
     curr->nextNode->setTargetedPosition(nextTargetPosition);
     nodeCount++;
     return;
@@ -98,11 +113,11 @@ Vector2 getNextNodePosition(Vector2 currentPosition, int horizontalDistance,
 }
 
 void SLL::addAt(std::string data, int place) {
-    place--;
     if (place == 0) {
-        Node* node = new Node(data, drawArea.x + NODE_RADIUS - DISTANCE_HORIZONTAL / 2,
-                              drawArea.y + NODE_RADIUS - DISTANCE_VERTICAL / 2,
-                              NODE_RADIUS, NODE_PALETTE, animationRate);
+        Node* node =
+            new Node(data, drawArea.x + NODE_RADIUS - DISTANCE_HORIZONTAL / 2,
+                     drawArea.y + NODE_RADIUS - DISTANCE_VERTICAL / 2,
+                     NODE_RADIUS, NODE_PALETTE, animationRate);
         node->setTargetedPosition(
             {drawArea.x + NODE_RADIUS, drawArea.y + NODE_RADIUS});
         nodeCount++;
@@ -127,9 +142,9 @@ void SLL::addAt(std::string data, int place) {
     Vector2 newPosition =
         getNextNodePosition(curr->getTargetedPosition(), DISTANCE_HORIZONTAL,
                             DISTANCE_VERTICAL, nodePerRow, index);
-    Node* node =
-        new Node(data, newPosition.x - DISTANCE_HORIZONTAL / 2, newPosition.y - DISTANCE_VERTICAL / 2,
-                 NODE_RADIUS, NODE_PALETTE, animationRate);
+    Node* node = new Node(data, newPosition.x - DISTANCE_HORIZONTAL / 2,
+                          newPosition.y - DISTANCE_VERTICAL / 2, NODE_RADIUS,
+                          NODE_PALETTE, animationRate);
     node->setTargetedPosition(newPosition);
 
     node->nextNode = curr->nextNode;
@@ -155,8 +170,7 @@ void SLL::removeEnd() {
 }
 
 void SLL::removeAt(int place) {
-    if (place > nodeCount) return;
-    place--;
+    if (place > nodeCount - 1) return;
     Node* curr = root;
     Node* prev = nullptr;
 
@@ -177,11 +191,31 @@ void SLL::removeAt(int place) {
     nodeCount--;
 }
 
+void SLL::moveOutAt(int place) {
+    if (place > nodeCount) return;
+    Node* curr = root;
+    while (place && curr) {
+        curr = curr->nextNode;
+        place--;
+    }
+    curr->setTargetedPosition(
+        Vector2Add(curr->getTargetedPosition(),
+                   {DISTANCE_HORIZONTAL / 2, DISTANCE_VERTICAL / 2}));
+}
+
+void SLL::moveOutEnd() {
+    Node* curr = root;
+    if (curr == nullptr) return;
+    while (curr->nextNode) curr = curr->nextNode;
+    curr->setTargetedPosition(
+        Vector2Add(curr->getTargetedPosition(),
+                   {DISTANCE_HORIZONTAL / 2, DISTANCE_VERTICAL / 2}));
+}
+
 void SLL::shiftForward(int place) {
     if (root == nullptr) return;
     Node* curr = root;
     int index = 1;
-    place--;
     while (place && curr) {
         curr = curr->nextNode;
         place--;
@@ -203,7 +237,6 @@ void SLL::shiftBackward(int place) {
     Node* curr = root;
     Node* prev = nullptr;
     int index = 0;
-    place--;
     while (place && curr) {
         index++;
         place--;
@@ -246,12 +279,11 @@ SLL SLL::clone() {
     Node* currPtr = root;
     result.root = nullptr;
     Node* resultPtr = result.root;
-    while(currPtr) {
+    while (currPtr) {
         if (result.root == nullptr) {
             result.root = new Node(*currPtr);
             resultPtr = result.root;
-        }
-        else {
+        } else {
             resultPtr->nextNode = new Node(*currPtr);
             resultPtr = resultPtr->nextNode;
         }
@@ -260,14 +292,13 @@ SLL SLL::clone() {
     return result;
 }
 
-SLL SLL::operator=(const SLL &source) {
+SLL SLL::operator=(const SLL& source) {
     if (this != &source) {
-
         nodePerRow = source.nodePerRow;
         drawArea = source.drawArea;
         nodeCount = source.nodeCount;
         animationRate = source.animationRate;
-        
+
         root = source.root;
     }
     return *this;
@@ -276,7 +307,7 @@ SLL SLL::operator=(const SLL &source) {
 void SLL::finishAnimation() {
     if (root == nullptr) return;
     Node* curr = root;
-    while(curr) {
+    while (curr) {
         curr->finishAnimation();
         curr = curr->nextNode;
     }
@@ -286,8 +317,62 @@ void SLL::setAnimationRate(float rate) {
     animationRate = rate;
     Node* curr = root;
     if (curr == nullptr) return;
-    while(curr) {
+    while (curr) {
         curr->setAnimationRate(rate);
+        curr = curr->nextNode;
+    }
+}
+
+// SLL::~SLL() {
+//     while (root) {
+//         Node* curr = root;
+//         root = root->nextNode;
+//         delete curr;
+//     }
+// }
+
+int SLL::locate(std::string val) {
+    Node* curr = root;
+    int place = 0;
+    while(curr && curr->data != val) {
+        curr = curr->nextNode;
+        place++;
+    }
+    if (curr == nullptr) return -1;
+    return place;
+}
+
+void SLL::highlightTo(int place) {
+    if (place < 0) return;
+    Node* curr = root;
+    while(curr && place) {
+        curr->borderColor.setBaseColor(DrawUtility::EDGE_NORMAL);
+        curr->borderColor.setTargetColor(DrawUtility::EDGE_HIGHLIGHTED);
+        curr->borderColor.setFactor(0.f);
+        curr->edgeColor.setBaseColor(DrawUtility::EDGE_NORMAL);
+        curr->edgeColor.setTargetColor(DrawUtility::EDGE_HIGHLIGHTED);
+        curr->edgeColor.setFactor(0.f);
+        curr = curr->nextNode;
+        place--;
+    }
+    if (curr == nullptr) return;
+    curr->borderColor.setBaseColor(DrawUtility::EDGE_NORMAL);
+    curr->borderColor.setTargetColor(DrawUtility::EDGE_HIGHLIGHTED);
+    curr->borderColor.setFactor(0.f);
+}
+
+void SLL::deHighlight() {
+    Node* curr = root;
+    Color normalColor = DrawUtility::EDGE_NORMAL;
+    while(curr) {
+        curr->borderColor.setBaseColor(normalColor);
+        curr->borderColor.setCurrentColor(normalColor);
+        curr->borderColor.setTargetColor(normalColor);
+        curr->borderColor.setFactor(1.f);
+        curr->edgeColor.setBaseColor(normalColor);
+        curr->edgeColor.setCurrentColor(normalColor);
+        curr->edgeColor.setTargetColor(normalColor);
+        curr->edgeColor.setFactor(1.f);
         curr = curr->nextNode;
     }
 }

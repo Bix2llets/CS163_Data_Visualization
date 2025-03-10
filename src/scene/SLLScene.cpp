@@ -14,8 +14,9 @@ void SLLScene::setSpecs(float _stepDelay, float _animationRate) {
 }
 void SLLScene::addEnd(std::string data) {
     addStep();
-    SLL &curr = steps.back();
-    curr.addEnd(data);
+    steps.back().highlightTo(steps.back().nodeCount - 1);
+    addStep();
+    steps.back().addEnd(data);
 };
 void SLLScene::addAt(std::string data, int place) {
     if (steps.size()) {
@@ -23,6 +24,10 @@ void SLLScene::addAt(std::string data, int place) {
     } else {
         if (place > sll.nodeCount + 1) return;
     }
+    place--;
+    addStep();
+    steps.back().deHighlight();
+    steps.back().highlightTo(place - 1);
     addStep();
     steps.back().shiftForward(place);
     addStep();
@@ -31,24 +36,34 @@ void SLLScene::addAt(std::string data, int place) {
 };
 void SLLScene::removeEnd() {
     addStep();
-    SLL &curr = steps.back();
-    curr.removeEnd();
+    steps.back().deHighlight();
+    steps.back().highlightTo(steps.back().nodeCount - 1);
+    addStep();
+    steps.back().moveOutEnd();
+    addStep();
+    steps.back().removeEnd();
 };
 void SLLScene::removeAt(int place) {
     std::cerr << "Begin remove at\n";
+    place--;
     if (steps.size()) {
         std::cerr << "Checking: " << place << steps.back().nodeCount << "\n";
-        if (place > steps.back().nodeCount) {
+        if (place >= steps.back().nodeCount) {
             std::cerr << "Exitted due to invalid place\n";
             return;
         }
     } else {
-        if (place > sll.nodeCount) {
+        if (place >= sll.nodeCount) {
             std::cerr << place << " " << sll.nodeCount << "\n";
             std::cerr << "Exitted due to invalid place\n";
             return;
         }
     }
+    addStep();
+    steps.back().deHighlight();
+    steps.back().highlightTo(place);
+    addStep();
+    steps.back().moveOutAt(place);
     addStep();
     steps.back().removeAt(place);
     addStep();
@@ -69,10 +84,12 @@ void SLLScene::update() {
     }
 };
 void SLLScene::addStep() {
+    SLL newSll;
     if (steps.size())
-        steps.push_back(steps.back().clone());
+        newSll = steps.back().clone();
     else
-        steps.push_back(sll.clone());
+        newSll = sll.clone();
+    steps.push_back(newSll);
     steps.back().finishAnimation();
 }
 

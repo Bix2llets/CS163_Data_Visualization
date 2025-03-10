@@ -55,7 +55,7 @@ int main() {
                              DrawUtility::EDGE_NORMAL,
                              DrawUtility::EDGE_HIGHLIGHTED};
     DrawUtility::init();
-    SLLScene::setSpecs(0.0f, 50.f);
+    SLLScene::setSpecs(0.0f, 5.f);
     int nodeData = 0;
     Node node1(23, 50, 50, 30);
     Node node2(230, 150, 50, 30);
@@ -70,6 +70,7 @@ int main() {
         {0, 300, 200, 75}, "Remove node at 2", 20, elementTheme};
     Button eraseButton{
         {0, 375, 200, 75}, "Remove node at end", 20, elementTheme};
+    TextBox testBox{{0, 500, 100, 50}};
     // * Object initialization
     // trieState.
     while (!WindowShouldClose()) {
@@ -87,6 +88,7 @@ int main() {
         erase17Button.render();
         erase1Button.render();
         SLLScene::render();
+        testBox.render();
         DrawUtility::drawText(std::to_string(GetFPS()), {50, 50},
                               DrawUtility::inter20, BLACK, 20,
                               DrawUtility::SPACING, VerticalAlignment::TOP,
@@ -97,26 +99,22 @@ int main() {
             SLLScene::addEnd(std::to_string(1));
         }
         if (add1Button.isPressed()) {
-            for (int i = 0; i < 10; i++)
             SLLScene::addAt(std::to_string(1), 1);
         }
         if (add17Button.isPressed()) {
-            for (int i = 0; i < 10; i++)
-            SLLScene::addAt(std::to_string(1), 2);
+            auto textBoxResult = testBox.getValue();
+            if (textBoxResult.first) SLLScene::addAt("1", textBoxResult.second);
         }
         if (eraseButton.isPressed()) {
             SLLScene::removeEnd();
         }
         if (erase1Button.isPressed()) {
-            for (int i = 0; i < 10; i++)
             SLLScene::removeAt(1);
         }
         if (erase17Button.isPressed()) {
-            for (int i = 0; i < 10; i++)
-            SLLScene::removeAt(2);
+            auto textBoxResult = testBox.getValue();
+            if (textBoxResult.first) SLLScene::removeAt(textBoxResult.second);
         }
-
-        
     }
 
     // for (int i = 0; i < 10; i++) sll.addEnd("1");
