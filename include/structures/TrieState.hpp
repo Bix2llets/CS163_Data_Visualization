@@ -12,15 +12,19 @@ class TrieState
         void handleInput();
         void update();
         void render();
+        void run();
+        ~TrieState();
     private:
         Trie mTrie;
         bool showOptions;
         bool showCreateOptions;
         bool showTextBox;
         bool editMode;
+        int isReversed;
         int textDestionation;
         char textBox[100], requestText[100];
-        float mTime;
+        double mTime, mTimeStep;
+        bool animationPlaying, pendingPause, showRunStepByStep, forward, backward;
 };
 
 #endif // TRIESTATE_HPP

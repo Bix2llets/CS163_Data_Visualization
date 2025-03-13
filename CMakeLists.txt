@@ -36,6 +36,7 @@ add_executable(
     src/structures/singlyLinkedList.cpp
     src/structures/Trie.cpp
     src/structures/TrieState.cpp
+    src/mLib/Utility.cpp
 
     src/scene/SLLScene.cpp
 )

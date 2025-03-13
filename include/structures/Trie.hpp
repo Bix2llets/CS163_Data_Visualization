@@ -9,41 +9,73 @@
 #include "raylib.h"
 #include "TrieNode.hpp"
 
-enum workingType
-{
-    SELECTING,
+enum TrieAction {
+    INIT,
+    CLEAR,
+    SETLECT,
     CREATE,
     DELETE,
-    CLEAR,
     SETEND,
     UNSETEND,
-    SET_ITR_ANIMATION,
-    DELETE_ITR,
 };
+
+struct ItrAction {
+    Animation *animation;
+    bool show;
+    TrieNode *targetedNode;
+    void setTarget() {
+        if (targetedNode == NULL) animation->setTargetedPosition((Vector2){0, 0});
+        else animation->setTargetedPosition(targetedNode->getTargetedPosition());
+    }
+    ItrAction() {
+        animation = new Animation(0, 0);
+        targetedNode = NULL;
+        show = false;
+    }
+};
+
+struct action {
+    int index;
+    TrieAction action;
+    TrieNode* node;
+};
+
+typedef std::vector<action> ActionList;
 
 class Trie {
     private:
-        float xOFFSET = 100, yOFFSET = 70, NODE_RADIUS = 20;
-        Vector2 Lerp(Vector2 start, Vector2 end, float t) ;
-        typedef std::vector<std::pair <workingType, TrieNode*> > vWT;
-    public: 
+        float xOFFSET = 100, yOFFSET = 130, NODE_RADIUS = 30;
         TrieNode* root;
+    public: 
         Trie() ;
-        Vector2 calcPosition(TrieNode *root) ;
-        void drawLine(TrieNode*root, int x, int y) ;
-        void drawText(TrieNode *root, int x, int y) ;
-        void draw(TrieNode *root, int x, int y) ;
-        void drawItr(int x, int y) ;
-        void insertAnimation(std::string word) ;
-        void searchAnimation(std::string word) ;
-        void deleteAnimation(std::string word) ;
-        void deleteNode(TrieNode* root, TrieNode *target) ;
-        Vector2 getPos(TrieNode *root, TrieNode *target, int x, int y) ;
-        bool move(TrieNode *root) ;
-        bool moveItr() ;
-        std::vector<std::pair<int,  vWT> > working;
-        std::vector<std::pair<Vector2, Vector2> > Itr;
-        int itr1, itr2;
+        bool Action(bool isReversed);
+        bool doAction(action Action);
+        bool Undo(action Action);
+        void insert(std::string word);
+        void search(std::string word);
+        void remove(std::string word);
+        void draw();
+        void update(double currTime, double rate);
+        ~Trie();
+        bool completedAllActions();
+        bool completeAnimation();
+        bool reachedEnd();
+        bool reachedStart();
+        void ClearOperator();
+        inline bool endLoop() { return loop == core.size(); }
+        inline bool startLoop() { return loop == 0; }
+    private:
+        Vector2 calcPosition(TrieNode *root);
+        void APosition(TrieNode *root);
+        void draw(TrieNode *root);
+        void drawArrow(TrieNode *root);
+        void update(TrieNode *root, double currTime, double rate);
+        bool isCompleted(TrieNode *root);
+        void DrawArrowWithCircles(Vector2 start, Vector2 end, float radius, Color color, float thickness);
+        ItrAction Itr;
+        int loop;
+        ActionList core;
+        std::vector<std::pair<TrieNode*, int>> ItrHistory;
 };
 
 

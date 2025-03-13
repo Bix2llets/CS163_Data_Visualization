@@ -15,10 +15,14 @@ class Animation : public GUIObject {
           GUIObject(x, y),
           targetedPosition{x, y} {};
     void update();
+    void update(float rate);
     void setTargetedPosition(Vector2 target);
     Vector2 getTargetedPosition();
+    Vector2 getPosition();
+    void setPosition(Vector2 newPosition);
     bool isCompleted() const;
     void setUpdateRate(float newRate);
-
+    double bezier(double t);
+    bool displace(double currentTime, double TRANS_TIME);
     virtual void render();
 };

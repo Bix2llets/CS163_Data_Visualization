@@ -2,21 +2,26 @@
 #define TRIENODE_HPP
 
 #include "raylib.h"
+#include "animation.h"
 #include <map>
 
-struct TrieNode {
-    Vector2 position, targetPosition;
-    std::map<char, TrieNode*> children;
-    bool isEndOfWord;
-    bool selected;
-    bool valid;
-    TrieNode() {
-        position = {0, 0};
-        targetPosition = {0, 0};
-        selected = false;
-        isEndOfWord = false;
-        valid = false;
-    }
+class TrieNode : public Animation {
+    public:
+        TrieNode *parent;
+        std::map<char, TrieNode*> children;
+        bool isEndOfWord, valid;
+        char character;
+        inline TrieNode(int x, int y, char character, TrieNode *parent) : Animation(x, y), parent(parent), character(character) {
+            parent = NULL;
+            children.clear();
+            isEndOfWord = valid = false;
+            character = '\0';
+            setPosition((Vector2){x, y});
+        }
+        inline ~TrieNode() {
+            for (auto &child : children) delete child.second;
+            children.clear();
+        }
 };
 
 #endif // TRIENODE_HPP
