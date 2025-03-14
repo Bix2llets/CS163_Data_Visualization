@@ -2,12 +2,13 @@
 #include <string>
 
 #include "GUIObject.h"
+#include "animation.h"
+#include "animationColor.h"
 #include "colorPalette.h"
 #include "raylib.h"
 #include "raymath.h"
-#include "animation.h"
-#include "animationColor.h"
 class Button : public GUIObject {
+    bool enabled;
     int fontSize;
     const static int SPACING = 1;
     Vector2 dimension;
@@ -15,28 +16,26 @@ class Button : public GUIObject {
     std::string text;
 
     AnimationColor edgeColor;
+
    public:
     Button(Vector2 position, Vector2 dimension, std::string text = "",
-           int fontSize = 20,
-           ColorSet palette =
-               DEF_SET)
+           int fontSize = 20, ColorSet palette = DEF_SET)
         : GUIObject(position),
           dimension{dimension},
           text{text},
           fontSize{fontSize},
-          PALETTE{palette}, edgeColor{}{};
+          PALETTE{palette},
+          edgeColor{},
+          enabled{true} {};
 
     Button(Rectangle rectangle, std::string text = "", int fontSize = 20,
-           ColorSet palette =
-               DEF_SET)
+           ColorSet palette = DEF_SET)
         : Button{Vector2{rectangle.x, rectangle.y},
                  Vector2{rectangle.width, rectangle.height}, text, fontSize,
                  palette} {};
 
     Button(float x, float y, float width, float height, std::string text = "",
-           int fontSize = 20,
-           ColorSet palette =
-               DEF_SET)
+           int fontSize = 20, ColorSet palette = DEF_SET)
         : Button{Vector2{x, y}, Vector2{width, height}, text, fontSize,
                  palette} {};
 
@@ -48,4 +47,9 @@ class Button : public GUIObject {
 
     bool isPressed() const;
     bool isHovered() const;
+
+    bool isEnabled();
+    void toggleEnabled();
+    void enable();
+    void disable();
 };

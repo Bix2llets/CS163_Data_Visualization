@@ -11,10 +11,13 @@ namespace SLLScene {
     extern std::deque<SLL> steps;
 
     void setSpecs(float _stepDelay = 0.5f, float _animationRate = 1.f);
+
     void addEnd(std::string data);
+
     void addAt(std::string data, int place);
     
     void removeEnd();
+
     void removeAt(int place);
 
     void update();
@@ -22,4 +25,8 @@ namespace SLLScene {
     void addStep();
     
     void render();
+
+    void find(std::string val);
+
+    void mainLoop();
 }

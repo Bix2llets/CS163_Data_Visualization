@@ -94,3 +94,27 @@ void SLLScene::addStep() {
 }
 
 void SLLScene::render() { sll.render(); }
+
+void SLLScene::find(std::string val) {
+    addStep();
+    SLL &currSll = steps.back();
+    Node* curr = currSll.root;
+    currSll.deHighlight();
+    int nodeIndex = sll.locate(val);
+    if (nodeIndex == -1) {
+        currSll.highlightTo(sll.nodeCount);
+        return;
+    }
+
+    for(int i = 0; i < nodeIndex; i++)
+        curr = curr->nextNode;
+
+    currSll.highlightTo(nodeIndex); // since node index is actual node - 1;
+    curr->borderColor.setBaseColor(BLACK);
+    curr->borderColor.setTargetColor(RED);
+    curr->borderColor.setFactor(0.f);
+}
+
+void SLLScene::mainLoop() {
+
+}

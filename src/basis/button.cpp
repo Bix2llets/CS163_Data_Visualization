@@ -2,6 +2,7 @@
 #include "utility.h"
 #include <iostream>
 void Button::render() {
+    if (!enabled) return;
     Rectangle rect{position.x, position.y, dimension.x, dimension.y};
     if (isHovered())
     {
@@ -33,7 +34,24 @@ bool Button::isHovered() const {
 }
 
 bool Button::isPressed() const {
+    if (!enabled) return false;
     if (!isHovered()) return false;
     if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) return true;
     return false;
+}
+
+bool Button::isEnabled() {
+    return enabled;
+}
+
+void Button::enable() {
+    enabled = true;
+}
+
+void Button::disable() {
+    enabled = false;
+}
+
+void Button::toggleEnabled() {
+    enabled = !enabled;
 }

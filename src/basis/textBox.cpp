@@ -21,6 +21,7 @@ void TextBox::render() {
         groundColor = PALETTE.backgroundNormal;
         borderColor = PALETTE.borderNormal;
     }
+    DrawRectangle(position.x, position.y, width, height, groundColor);
     DrawRectangleLinesEx({position.x, position.y, width, height}, 3, borderColor);
     DrawUtility::drawText(textRender, textPosition, DrawUtility::inter20,
                           textColor, DrawUtility::NORMAL_SIZE,

@@ -37,7 +37,13 @@ using namespace ColorPalette;
 const float DELTA_TIME = 1.0 / 24;
 float accumulatedTime = 0.0f;
 int frameCount = 0;
-int main() {
+ColorSet elementTheme = {WET_ASPHALT,
+    MIDNIGHT_BLUE,
+    CLOUDS,
+    ASBESTOS,
+                         DrawUtility::EDGE_NORMAL,
+                         DrawUtility::EDGE_HIGHLIGHTED};
+                         int main() {
     SetConfigFlags(FLAG_MSAA_4X_HINT);
     InitWindow(1600, 900, "CS163 Data visualizer");
     SetTargetFPS(60);
@@ -45,22 +51,13 @@ int main() {
     GuiSetStyle(BUTTON, BASE_COLOR_NORMAL, 0x20B2AAFF);  // light sea green
     GuiSetStyle(BUTTON, TEXT_COLOR_NORMAL, 0xFFFFFFFF);  // white
     GuiSetStyle(DEFAULT, TEXT_SIZE, 24);
-
+    
     // * Raylib/Raygui initialization
-
-    ColorSet elementTheme = {WET_ASPHALT,
-                             MIDNIGHT_BLUE,
-                             CLOUDS,
-                             ASBESTOS,
-                             DrawUtility::EDGE_NORMAL,
-                             DrawUtility::EDGE_HIGHLIGHTED};
+    
     DrawUtility::init();
-    SLLScene::setSpecs(0.0f, 5.f);
+    SLLScene::setSpecs(0.0f, 12.5f);
     int nodeData = 0;
-    Node node1(23, 50, 50, 30);
-    Node node2(230, 150, 50, 30);
-    Node node3(2300, 250, 50, 30);
-
+    
     Button addButton{{0, 0, 200, 75}, "Add node at end", 20, elementTheme};
     Button add1Button{{0, 75, 200, 75}, "Add node at 1", 20, elementTheme};
     Button add17Button{{0, 150, 200, 75}, "Add node at 2", 20, elementTheme};
@@ -70,7 +67,10 @@ int main() {
         {0, 300, 200, 75}, "Remove node at 2", 20, elementTheme};
     Button eraseButton{
         {0, 375, 200, 75}, "Remove node at end", 20, elementTheme};
-    TextBox testBox{{0, 500, 100, 50}};
+    Button findButton{
+        {0, 450, 200, 75}, "Find node labeled: ", 20, elementTheme};
+    TextBox locationBox{{0, 700, 100, 50}};
+    TextBox valueBox{{0, 750, 100, 50}};
     // * Object initialization
     // trieState.
     while (!WindowShouldClose()) {
@@ -87,14 +87,17 @@ int main() {
         eraseButton.render();
         erase17Button.render();
         erase1Button.render();
+        findButton.render();
         SLLScene::render();
-        testBox.render();
-        DrawUtility::drawText(std::to_string(GetFPS()), {50, 50},
+        locationBox.render();
+        valueBox.render();
+        DrawUtility::drawText(std::to_string(GetFPS()), {500, 500},
                               DrawUtility::inter20, BLACK, 20,
                               DrawUtility::SPACING, VerticalAlignment::TOP,
                               HorizontalAlignment::LEFT);
         EndDrawing();
-
+        auto value = valueBox.getText();
+        auto location = locationBox.getValue();
         if (addButton.isPressed()) {
             SLLScene::addEnd(std::to_string(1));
         }
@@ -102,8 +105,7 @@ int main() {
             SLLScene::addAt(std::to_string(1), 1);
         }
         if (add17Button.isPressed()) {
-            auto textBoxResult = testBox.getValue();
-            if (textBoxResult.first) SLLScene::addAt("1", textBoxResult.second);
+            if (location.first) SLLScene::addAt(value, location.second);
         }
         if (eraseButton.isPressed()) {
             SLLScene::removeEnd();
@@ -112,8 +114,10 @@ int main() {
             SLLScene::removeAt(1);
         }
         if (erase17Button.isPressed()) {
-            auto textBoxResult = testBox.getValue();
-            if (textBoxResult.first) SLLScene::removeAt(textBoxResult.second);
+            if (location.first) SLLScene::removeAt(location.second);
+        }
+        if (findButton.isPressed()) {
+            SLLScene::find(value);
         }
     }
 

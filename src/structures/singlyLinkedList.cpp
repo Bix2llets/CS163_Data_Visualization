@@ -25,10 +25,10 @@ void SLL::update() {
     curr = root;
     while (curr) {
         curr->borderColor.update();
-        std::cerr << curr->borderColor.getAnimationRate() << "\n";
+        // std::cerr << curr->borderColor.getAnimationRate() << "\n";
         if (!curr->borderColor.isCompleted()) break;
         curr->edgeColor.update();
-        std::cerr << curr->edgeColor.getAnimationRate() << "\n";
+        // std::cerr << curr->edgeColor.getAnimationRate() << "\n";
         if (!curr->edgeColor.isCompleted()) break;
         curr = curr->nextNode;
     }
