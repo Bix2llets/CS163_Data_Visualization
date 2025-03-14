@@ -52,7 +52,9 @@
         "format": "cpp",
         "span": "cpp",
         "text_encoding": "cpp",
-        "variant": "cpp"
+        "variant": "cpp",
+        "stdio.h": "c",
+        "tinyfiledialogs.h": "c"
     },
     "C_Cpp.errorSquiggles": "enabled"
 }

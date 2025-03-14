@@ -2,6 +2,8 @@
 #include "raygui.h"
 #include <mLib/Utility.hpp>
 #include <cstring>
+#include <fstream>
+#include <mLib/tinyfiledialogs.h>
 
 const int MAX_TEXT_LENGTH = 5;
 
@@ -23,6 +25,7 @@ TrieState::TrieState() : mTrie() {
     showRunStepByStep = 1;
     forward = 0;
     backward = 0;
+    sliderValue = 50;
 }
 
 TrieState::~TrieState() {
@@ -64,8 +67,23 @@ void TrieState::handleInput() {
             mTrie = Trie();
         }
         if (GuiButton((Rectangle){10 + 50 + 150, 750, 100, 40}, "Random")) {
+            mTrie = Trie();
+            for (int i = 0; i < GetRandomValue(0, 5); i ++)  {
+                mLib::GenerateRandomText(requestText);
+                mTrie.insert(requestText);
+            }
         }
         if (GuiButton((Rectangle){10 + 50 + 150, 800, 100, 40}, "Custom")) {
+            mTrie = Trie();
+            const char *filter[2] = {"*.txt", "*.inp"};
+            const char *path = tinyfd_openFileDialog("Open File", "", 2, filter, "txt or inp files", 0);
+            std::cout << "File path: " << path << std::endl;
+            std::cout << path << std::endl;
+            if (path != NULL) {
+                std::ifstream file(path);
+                std::string line;
+                while (std::getline(file, line)) mTrie.insert(line);
+            }
         }
     }
     if (showTextBox & mTrie.completedAllActions()) {
@@ -122,6 +140,16 @@ void TrieState::handleInput() {
         isReversed = 1;
     }
     if (mTrie.startLoop()) GuiEnable();
+    
+    if (mTimeStep >= 0.1f) {
+        float minValue = 0.0f;     
+        float maxValue = 100.0f;   
+        float newMin = 0.1f;
+        float newMax = 2.0f;
+        GuiSliderBar((Rectangle){10 + 50 + 750, 850, 200, 20}, "Time Step", TextFormat("%.2f", mTimeStep), &sliderValue, minValue, maxValue);
+        mTimeStep = newMin + (newMax - newMin) * (sliderValue - minValue) / (maxValue - minValue);
+        mTimeStep = 2.0f - mTimeStep + 0.1f;
+    }
 }
 
 void TrieState::update() {

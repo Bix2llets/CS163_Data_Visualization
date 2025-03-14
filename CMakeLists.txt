@@ -37,6 +37,7 @@ add_executable(
     src/structures/Trie.cpp
     src/structures/TrieState.cpp
     src/mLib/Utility.cpp
+    src/mLib/tinyfiledialogs.cpp
 
     src/scene/SLLScene.cpp
 )
@@ -47,7 +48,7 @@ file(COPY ${RAYLIB}
 # For releasing
 
 
-target_link_libraries(${PROJECT_NAME} PUBLIC ${RAYLIB})
+target_link_libraries(${PROJECT_NAME} PUBLIC ${RAYLIB} comdlg32)
 
 # file(MAKE_DIRECTORY ${PROJECT_SOURCE_DIR}/build/assets)
 file (COPY ${PROJECT_SOURCE_DIR}/assets DESTINATION ${PROJECT_SOURCE_DIR}/build)

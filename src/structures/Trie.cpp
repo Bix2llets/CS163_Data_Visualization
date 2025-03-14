@@ -280,12 +280,10 @@ bool Trie::reachedStart() {
 
 void Trie::ClearOperator() {
     while (core.size() > loop) {
-        if (core.back().action == SETLECT) ItrHistory.pop_back();
-        else
-            if (core.back().action == CREATE) {
-                core.back().node->parent->children.erase(core.back().node->character);
-                delete core.back().node;
-            }
+        if (core.back().action == CREATE) {
+            core.back().node->parent->children.erase(core.back().node->character);
+            delete core.back().node;
+        }
         core.pop_back();
     }
 }

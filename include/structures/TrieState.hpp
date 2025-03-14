@@ -25,6 +25,7 @@ class TrieState
         char textBox[100], requestText[100];
         double mTime, mTimeStep;
         bool animationPlaying, pendingPause, showRunStepByStep, forward, backward;
+        float sliderValue;
 };
 
 #endif // TRIESTATE_HPP
