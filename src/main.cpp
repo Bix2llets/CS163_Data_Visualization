@@ -76,7 +76,6 @@ int main() {
         BeginDrawing();
         ClearBackground(WHITE);
         AppMenu::render();
-        eraseButton.render();
         EndDrawing();
         // accumulatedTime += GetFrameTime();
         // while (accumulatedTime > DELTA_TIME) {
