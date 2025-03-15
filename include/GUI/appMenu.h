@@ -1,38 +1,35 @@
 #pragma once
-#include "button.h"
-#include "textbox.h"
-#include "form.h"
-#include "colorPalette.h"
 #include <vector>
-enum class SceneList {
-    MAIN_MENU,
-    LINKED_LIST,
-    TRIE,
-    GRAPH,
-    HASH
-};
+
+#include "button.h"
+#include "colorPalette.h"
+#include "form.h"
+#include "textbox.h"
+enum class SceneList { MAIN_MENU, LINKED_LIST, TRIE, GRAPH, HASH };
 namespace AppMenu {
-    extern Vector2 codeBlockPosition;
-    extern Vector2 codeLineSize;
-    extern ColorSet codeBlockColor; 
-    
-    extern Button addByValueButton;
-    extern Button addAtIndexButton;
-    extern Button addButton;
+extern Vector2 codeBlockPosition;
+extern Vector2 codeLineSize;
+extern ColorSet codeBlockColor;
 
-    extern Button removeByValueButton;
-    extern Button removeAtIndexButton;
-    extern Button removeButton;
+extern Vector2 buttonDimension;
+extern ColorSet buttonPalette;
+extern Button addByValueButton;
+extern Button addAtIndexButton;
+extern Button addButton;
 
-    extern Form locationBox;
-    extern Form valueBox;
+extern Button removeByValueButton;
+extern Button removeAtIndexButton;
+extern Button removeButton;
 
-    extern std::vector<GUIObject*> renderList;
-    extern std::vector<TextBox> codeList; 
+extern Form locationBox;
+extern Form valueBox;
 
-    void init();
+extern std::vector<GUIObject *> renderList;
+extern std::vector<TextBox> codeList;
 
-    void render();
+void init();
 
-    void loadCode(const std::vector<std::string> &strVect);
-}
+void render();
+
+void loadCode(const std::vector<std::string> &strVect);
+}  // namespace AppMenu

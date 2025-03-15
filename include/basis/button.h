@@ -13,7 +13,8 @@ class Button : public GUIObject {
     Vector2 dimension;
    private:
     int fontSize;
-    const static int SPACING = 1;
+    constexpr static float TEXT_OFFSET = 5;
+    constexpr static float BORDER_OFFSET = 1;
     ColorSet PALETTE;
     std::string text;
 

@@ -25,9 +25,9 @@ void TextBox::render() {
         textColor = color.textNormal;
         borderColor = color.borderNormal;
     }
-    Rectangle drawInfo{position.x - 1, position.y - 1, renderWidth + 2, renderHeight + 2};
+    Rectangle drawInfo{position.x - BORDER_OFFSET, position.y - BORDER_OFFSET, renderWidth + 2 * BORDER_OFFSET, renderHeight + 2 * BORDER_OFFSET};
     DrawRectangle(drawInfo.x, drawInfo.y, drawInfo.width, drawInfo.height, backgroundColor);
-    DrawRectangleLinesEx(drawInfo, 2, borderColor);
+    DrawRectangleLinesEx(drawInfo, 2 * BORDER_OFFSET, borderColor);
     DrawUtility::drawText(text, {position.x + OFFSET, position.y + textDimension.y / 2}, *font, textColor, DrawUtility::NORMAL_SIZE, DrawUtility::SPACING, VerticalAlignment::CENTERED, HorizontalAlignment::LEFT);
 }  
 

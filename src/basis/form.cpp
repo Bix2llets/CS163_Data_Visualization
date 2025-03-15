@@ -21,9 +21,9 @@ void Form::render() {
         groundColor = PALETTE.backgroundNormal;
         borderColor = PALETTE.borderNormal;
     }
-    Rectangle drawInfo = {position.x - 1, position.y - 1, width + 2, height + 2};
+    Rectangle drawInfo = {position.x - BORDER_OFFSET, position.y - BORDER_OFFSET, width + 2 * BORDER_OFFSET, height + 2 * BORDER_OFFSET};
     DrawRectangle(drawInfo.x, drawInfo.y, drawInfo.width, drawInfo.height, groundColor);
-    DrawRectangleLinesEx(drawInfo, 2, borderColor);
+    DrawRectangleLinesEx(drawInfo, 2 * BORDER_OFFSET, borderColor);
     DrawUtility::drawText(textRender, textPosition, DrawUtility::inter20,
                           textColor, DrawUtility::NORMAL_SIZE,
                           DrawUtility::SPACING,

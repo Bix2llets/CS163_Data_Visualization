@@ -16,6 +16,7 @@ class TextBox : public GUIObject {
     Font* font;
     ColorSet color;
     constexpr static float OFFSET = 5;
+    constexpr static float BORDER_OFFSET = 1;
     public:
 
     TextBox(Rectangle minimumBox = {0, 0, 0, 0}, ColorSet color = DEF_SET, Font* renderFont = nullptr, std::string text = "") : color{color}, font{renderFont}, text{text}, GUIObject(minimumBox.x, minimumBox.y), width{minimumBox.width}, height{minimumBox.height} {};

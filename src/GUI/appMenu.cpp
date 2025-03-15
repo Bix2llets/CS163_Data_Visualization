@@ -1,28 +1,45 @@
 #include "appMenu.h"
 
-Button AppMenu::addByValueButton(0, 800, 100, 25);
-Button AppMenu::addAtIndexButton(0, 825, 100, 25);
-Button AppMenu::addButton(0, 850, 100, 25);
+namespace AppMenu {
 
-ColorSet AppMenu::codeBlockColor{
-    Color{173, 181, 189, 255}, Color{46, 52, 64, 255},
-    Color{216, 222, 233, 255}, Color{211, 255, 206, 255},
-    Color{59, 66, 82, 255}, Color{59, 66, 82, 255},
+Button addByValueButton(0, 700, buttonDimension.x, buttonDimension.y, "add element",
+                        DrawUtility::NORMAL_SIZE, buttonPalette);
+Button addAtIndexButton(0, 740, buttonDimension.x, buttonDimension.y, "add at index",
+                        DrawUtility::NORMAL_SIZE, buttonPalette);
+Button addButton(0, 780, buttonDimension.x, buttonDimension.y, "Add",
+                 DrawUtility::NORMAL_SIZE, buttonPalette);
+
+Button removeByValueButton({200, 700, buttonDimension.x, buttonDimension.y},
+                           "remove element", DrawUtility::NORMAL_SIZE,
+                           buttonPalette);
+Button removeAtIndexButton(200, 740, buttonDimension.x, buttonDimension.y,
+                           "remove at index", DrawUtility::NORMAL_SIZE,
+                           buttonPalette);
+Button removeButton(200, 780, buttonDimension.x, buttonDimension.y, "Remove",
+                    DrawUtility::NORMAL_SIZE, buttonPalette);
+
+ColorSet buttonPalette = {
+    Color{186, 180, 163, 255}, Color{186, 180, 163, 255},
+    Color{51, 49, 45, 255},    Color{42, 114, 47, 255},
+    Color{229, 189, 80, 255},  Color{229, 189, 80, 255},
 };
 
-Button AppMenu::removeByValueButton({0, 875, 100, 25}, "Amogus", 20, DEF_SET);
-Button AppMenu::removeAtIndexButton(100, 800, 100, 25);
-Button AppMenu::removeButton(100, 825, 100, 25);
+ColorSet codeBlockColor{
+    Color{173, 181, 189, 255}, Color{46, 52, 64, 255},
+    Color{216, 222, 233, 255}, Color{211, 255, 206, 255},
+    Color{59, 66, 82, 255},    Color{59, 66, 82, 255},
+};
 
-Vector2 AppMenu::codeBlockPosition{1250, 600};
-Vector2 AppMenu::codeLineSize{300, 25};
+Vector2 buttonDimension = {200, 40};
+Vector2 codeBlockPosition{1250, 600};
+Vector2 codeLineSize{300, 25};
 
-Form AppMenu::locationBox{{200, 800, 500, 50}};
-Form AppMenu::valueBox{{200, 900, 500, 50}};
-std::vector<TextBox> AppMenu::codeList;
-std::vector<GUIObject*> AppMenu::renderList;
+Form locationBox{{400, 700, 200, 40}, buttonPalette};
+Form valueBox{{400, 740, 200, 40}, buttonPalette};
+std::vector<TextBox> codeList;
+std::vector<GUIObject*> renderList;
 
-void AppMenu::init() {
+void init() {
     codeList.resize(10);
     for (int i = 0; i < codeList.size(); i++) {
         float x = codeBlockPosition.x;
@@ -32,27 +49,6 @@ void AppMenu::init() {
         codeList[i] = temp;
         if (i % 2 == 0) codeList[i].setHighlight(true);
     }
-
-    addByValueButton = Button(0, 800, 100, 25);
-    addAtIndexButton = Button(0, 825, 100, 25);
-    addButton = Button(0, 850, 100, 25);
-
-    ColorSet codeBlockColor = {
-        Color{173, 181, 189, 255}, Color{46, 52, 64, 255},
-        Color{216, 222, 233, 255}, Color{211, 255, 206, 255},
-        Color{216, 222, 233, 255}, Color{255, 114, 86, 255},
-    };
-
-    removeByValueButton = Button({0, 875, 100, 25}, "Amogus", 20,
-                                        DEF_SET);
-    removeAtIndexButton = Button (100, 800, 100, 25);
-    removeButton = Button(100, 825, 100, 25);
-
-    codeBlockPosition = {1250, 600};
-    codeLineSize = {300, 25};
-
-    locationBox = Form{{200, 800, 500, 50}};
-    valueBox = Form{{200, 850, 500, 50}};
     renderList.push_back(&addByValueButton);
     renderList.push_back(&addAtIndexButton);
     renderList.push_back(&addButton);
@@ -63,7 +59,7 @@ void AppMenu::init() {
     renderList.push_back(&valueBox);
 }
 
-void AppMenu::render() {
+void render() {
     for (GUIObject* object : renderList) {
         object->render();
         // std::cerr << "Rendering: " << object << "\n";
@@ -73,7 +69,9 @@ void AppMenu::render() {
     for (TextBox box : codeList) box.render();
 }
 
-void AppMenu::loadCode(const std::vector<std::string>& strVect) {
+void loadCode(const std::vector<std::string>& strVect) {
     for (int i = 0; i < codeList.size() && i < strVect.size(); i++)
         codeList[i].setText(strVect[i]);
 }
+
+}  // namespace AppMenu

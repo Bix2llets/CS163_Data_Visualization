@@ -44,6 +44,8 @@ ColorSet elementTheme = {WET_ASPHALT,
                          ASBESTOS,
                          DrawUtility::EDGE_NORMAL,
                          DrawUtility::EDGE_HIGHLIGHTED};
+
+Color backgroundColor = Color{51, 49, 45, 255};
 int main() {
     SetConfigFlags(FLAG_MSAA_4X_HINT);
     InitWindow(1600, 900, "CS163 Data visualizer");
@@ -74,7 +76,7 @@ int main() {
     while (!WindowShouldClose()) {
 
         BeginDrawing();
-        ClearBackground(WHITE);
+        ClearBackground(backgroundColor);
         AppMenu::render();
         EndDrawing();
         // accumulatedTime += GetFrameTime();

@@ -1,23 +1,38 @@
 #include "button.h"
-#include "utility.h"
+
 #include <iostream>
+
+#include "utility.h"
 void Button::render() {
     if (!enabled) return;
-    Rectangle rect{position.x - 1, position.y - 1, dimension.x + 2, dimension.y + 2};
-    if (isHovered())
-    {
 
-        DrawRectangle(rect.x, rect.y, rect.width, rect.height, PALETTE.backgroundHighlight);
-        DrawUtility::drawText(text, {position.x + dimension.x / 2, position.y + dimension.y / 2}, DrawUtility::inter20, PALETTE.textHighlight, fontSize, SPACING, VerticalAlignment::CENTERED, HorizontalAlignment::CENTERED);
-        DrawRectangleLinesEx(rect, 2, PALETTE.borderHighlight);
+    Color borderColor;
+    Color backgroundColor;
+    Color textColor;
+    float innerOffset;
+    float outerOffset;
+    if (isHovered()) {
+        borderColor = PALETTE.borderHighlight;
+        backgroundColor = PALETTE.backgroundHighlight;
+        textColor = PALETTE.textHighlight;
+    } else {
+        borderColor = PALETTE.borderNormal;
+        backgroundColor = PALETTE.backgroundNormal;
+        textColor = PALETTE.textNormal;
     }
-    else
-    
-    {
-        DrawRectangle(rect.x, rect.y, rect.width, rect.height, PALETTE.backgroundNormal);
-        DrawUtility::drawText(text, {position.x + dimension.x / 2, position.y + dimension.y / 2}, DrawUtility::inter20, PALETTE.textNormal, fontSize, SPACING, VerticalAlignment::CENTERED, HorizontalAlignment::CENTERED);
-        DrawRectangleLinesEx(rect, 2, PALETTE.borderNormal);
-    }
+
+    Rectangle renderInfo = {position.x - BORDER_OFFSET, position.y - BORDER_OFFSET,
+                            dimension.x + 2 * (BORDER_OFFSET),
+                            dimension.y + 2 * (BORDER_OFFSET)};
+
+    DrawRectangle(renderInfo.x, renderInfo.y, renderInfo.width,
+                  renderInfo.height, backgroundColor);
+    DrawRectangleLinesEx(renderInfo, BORDER_OFFSET * 2, borderColor);
+    DrawUtility::drawText(
+        text, {position.x + dimension.x / 2, position.y + dimension.y / 2},
+        DrawUtility::inter20, textColor, DrawUtility::NORMAL_SIZE,
+        DrawUtility::SPACING, VerticalAlignment::CENTERED,
+        HorizontalAlignment::CENTERED);
 }
 
 void Button::setText(std::string newText) { text = newText; }
@@ -40,18 +55,10 @@ bool Button::isPressed() const {
     return false;
 }
 
-bool Button::isEnabled() {
-    return enabled;
-}
+bool Button::isEnabled() { return enabled; }
 
-void Button::enable() {
-    enabled = true;
-}
+void Button::enable() { enabled = true; }
 
-void Button::disable() {
-    enabled = false;
-}
+void Button::disable() { enabled = false; }
 
-void Button::toggleEnabled() {
-    enabled = !enabled;
-}
+void Button::toggleEnabled() { enabled = !enabled; }

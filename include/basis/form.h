@@ -16,7 +16,7 @@ class Form : public GUIObject {
     int ABOVE_MARGIN;
     int BOTTOM_MARGIN;
     ColorSet PALETTE;
-
+    constexpr static float BORDER_OFFSET = 1;
     void recordKeyboard();
     void recordFocus();
 
