@@ -3,7 +3,7 @@
 #include <iostream>
 void Button::render() {
     if (!enabled) return;
-    Rectangle rect{position.x, position.y, dimension.x, dimension.y};
+    Rectangle rect{position.x - 1, position.y - 1, dimension.x + 2, dimension.y + 2};
     if (isHovered())
     {
 
@@ -25,10 +25,10 @@ void Button::setText(std::string newText) { text = newText; }
 bool Button::isHovered() const {
     Vector2 mousePosition = GetMousePosition();
     // std::cerr << mousePosition.x << " " << mousePosition.y << "\n";
-    if (mousePosition.x < position.x) return false;
-    if (mousePosition.x > position.x + dimension.x) return false;
-    if (mousePosition.y < position.y) return false;
-    if (mousePosition.y > position.y + dimension.y) return false;
+    if (mousePosition.x <= position.x) return false;
+    if (mousePosition.x >= position.x + dimension.x) return false;
+    if (mousePosition.y <= position.y) return false;
+    if (mousePosition.y >= position.y + dimension.y) return false;
     // std::cerr << "Inside box\n";
     return true;
 }

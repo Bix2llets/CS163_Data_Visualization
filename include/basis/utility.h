@@ -15,6 +15,7 @@ enum class HorizontalAlignment {
 };
 namespace DrawUtility {
 extern Font inter20;
+extern Font jbm20;
 extern const int NORMAL_SIZE;
 extern const int SPACING ;
 void init();

@@ -21,7 +21,8 @@ add_executable(
     src/basis/utility.cpp
     src/basis/GUIObject.cpp
     src/basis/colorPalette.cpp
-    src/basis/textBox.cpp
+    src/basis/form.cpp
+    src/basis/textbox.cpp
 
     src/basis/overload.cpp
     
@@ -30,6 +31,7 @@ add_executable(
     src/animation/animationColor.cpp
     
     src/GUI/welcomeMenu.cpp
+    src/GUI/appMenu.cpp
     
     src/structures/SLLNode.cpp
     src/structures/singlyLinkedList.cpp

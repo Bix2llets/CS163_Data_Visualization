@@ -8,11 +8,13 @@
 #include "raylib.h"
 #include "raymath.h"
 class Button : public GUIObject {
+   protected:
     bool enabled;
+    Vector2 dimension;
+   private:
     int fontSize;
     const static int SPACING = 1;
-    Vector2 dimension;
-    const ColorSet PALETTE;
+    ColorSet PALETTE;
     std::string text;
 
     AnimationColor edgeColor;

@@ -1,6 +1,8 @@
 #pragma once
 #include "singlyLinkedList.h"
 #include <deque>
+#include <vector>
+#include <string> 
 namespace SLLScene {
     extern float stepDelay;
     extern float timeLeft;
@@ -10,6 +12,7 @@ namespace SLLScene {
     extern SLL sll;
     extern std::deque<SLL> steps;
 
+    extern std::vector<std::string> pseudoCodeList; 
     void setSpecs(float _stepDelay = 0.5f, float _animationRate = 1.f);
 
     void addEnd(std::string data);
