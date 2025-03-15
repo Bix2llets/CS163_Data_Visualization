@@ -20,6 +20,7 @@
 #include "singlyLInkedList.h"
 #include "utility.h"
 #include "welcomeMenu.h"
+#include "mainLoop.h"
 const int SCREEN_WIDTH = 1366;
 const int SCREEN_HEIGHT = 768;
 
@@ -60,8 +61,8 @@ int main() {
     DrawUtility::init();
     AppMenu::init();
     SLLScene::setSpecs(0.0f, 12.5f);
+
     // * Object initialization
-    // trieState.
 
     std::vector<std::string> exampleCode = {
         "#include <iostream>"
@@ -70,72 +71,19 @@ int main() {
         "",
         "int main()",
         "{",
-        "}"
-    };
+        "}"};
     AppMenu::loadCode(exampleCode);
-    while (!WindowShouldClose()) {
 
+
+
+    while (!WindowShouldClose()) {
+        Loop::registerInput();
+        Loop::update();
         BeginDrawing();
         ClearBackground(backgroundColor);
-        AppMenu::render();
+        Loop::render();
         EndDrawing();
-        // accumulatedTime += GetFrameTime();
-        // while (accumulatedTime > DELTA_TIME) {
-        //     accumulatedTime -= DELTA_TIME;
-        //     SLLScene::update();
-        // }
-        // BeginDrawing();
-        // ClearBackground(CONCRETE);
-        // addButton.render();
-        // add1Button.render();
-        // add17Button.render();
-        // eraseButton.render();
-        // erase17Button.render();
-        // erase1Button.render();
-        // findButton.render();
-        // SLLScene::render();
-        // locationBox.render();
-        // valueBox.render();
-        // DrawUtility::drawText(std::to_string(GetFPS()), {500, 500},
-        //                       DrawUtility::inter20, BLACK, 20,
-        //                       DrawUtility::SPACING, VerticalAlignment::TOP,
-        //                       HorizontalAlignment::LEFT);
-        // EndDrawing();
-        // auto value = valueBox.getText();
-        // auto location = locationBox.getValue();
-        // if (addButton.isPressed()) {
-        //     SLLScene::addEnd(std::to_string(1));
-        // }
-        // if (add1Button.isPressed()) {
-        //     SLLScene::addAt(std::to_string(1), 1);
-        // }
-        // if (add17Button.isPressed()) {
-        //     if (location.first) SLLScene::addAt(value, location.second);
-        // }
-        // if (eraseButton.isPressed()) {
-        //     SLLScene::removeEnd();
-        // }
-        // if (erase1Button.isPressed()) {
-        //     SLLScene::removeAt(1);
-        // }
-        // if (erase17Button.isPressed()) {
-        //     if (location.first) SLLScene::removeAt(location.second);
-        // }
-        // if (findButton.isPressed()) {
-        //     SLLScene::find(value);
-        // }
     }
-
-    // for (int i = 0; i < 10; i++) sll.addEnd("1");
-    // SLL sll2 = sll.clone();
-    // Node* root1;
-    // Node* root2;
-    // root1 = sll.root;
-    // root2 = sll2.root;
-    // while (root1 && root2) {
-    //     std::cout << root1 << " " << root2 << " " << (root1 == root2) <<
-    //     "\n"; root1 = root1->nextNode; root2 = root2->nextNode;
-    // };
     std::cout << "Program ran successfully\n";
     CloseWindow();
 }

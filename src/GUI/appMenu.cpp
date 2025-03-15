@@ -18,6 +18,7 @@ Button removeAtIndexButton(200, 740, buttonDimension.x, buttonDimension.y,
 Button removeButton(200, 780, buttonDimension.x, buttonDimension.y, "Remove",
                     DrawUtility::NORMAL_SIZE, buttonPalette);
 
+Button backButton({25, 25, buttonDimension.x, buttonDimension.y}, "Back", DrawUtility::NORMAL_SIZE, buttonPalette);
 ColorSet buttonPalette = {
     Color{186, 180, 163, 255}, Color{186, 180, 163, 255},
     Color{51, 49, 45, 255},    Color{42, 114, 47, 255},
@@ -57,6 +58,7 @@ void init() {
     renderList.push_back(&removeButton);
     renderList.push_back(&locationBox);
     renderList.push_back(&valueBox);
+    renderList.push_back(&backButton);
 }
 
 void render() {

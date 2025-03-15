@@ -5,7 +5,7 @@
 #include "colorPalette.h"
 #include "form.h"
 #include "textbox.h"
-enum class SceneList { MAIN_MENU, LINKED_LIST, TRIE, GRAPH, HASH };
+
 namespace AppMenu {
 extern Vector2 codeBlockPosition;
 extern Vector2 codeLineSize;
@@ -20,12 +20,14 @@ extern Button addButton;
 extern Button removeByValueButton;
 extern Button removeAtIndexButton;
 extern Button removeButton;
+extern Button backButton;
 
 extern Form locationBox;
 extern Form valueBox;
 
 extern std::vector<GUIObject *> renderList;
 extern std::vector<TextBox> codeList;
+
 
 void init();
 
