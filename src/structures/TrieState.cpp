@@ -146,9 +146,9 @@ void TrieState::handleInput() {
         float maxValue = 100.0f;   
         float newMin = 0.1f;
         float newMax = 2.0f;
-        GuiSliderBar((Rectangle){10 + 50 + 750, 850, 200, 20}, "Time Step", TextFormat("%.2f", mTimeStep), &sliderValue, minValue, maxValue);
-        mTimeStep = newMin + (newMax - newMin) * (sliderValue - minValue) / (maxValue - minValue);
-        mTimeStep = 2.0f - mTimeStep + 0.1f;
+        GuiSliderBar((Rectangle){10 + 50 + 750, 850, 200, 20}, "Time Step", TextFormat("%.2f", mTimeStepSlider), &sliderValue, minValue, maxValue);
+        mTimeStepSlider = newMin + (newMax - newMin) * (sliderValue - minValue) / (maxValue - minValue);
+        mTimeStep = 2.0f - mTimeStepSlider + 0.1f;
     }
 }
 

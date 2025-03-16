@@ -54,7 +54,14 @@
         "text_encoding": "cpp",
         "variant": "cpp",
         "stdio.h": "c",
-        "tinyfiledialogs.h": "c"
+        "tinyfiledialogs.h": "c",
+        "codecvt": "cpp",
+        "list": "cpp",
+        "map": "cpp",
+        "ratio": "cpp",
+        "fstream": "cpp",
+        "iomanip": "cpp",
+        "sstream": "cpp"
     },
     "C_Cpp.errorSquiggles": "enabled"
 }

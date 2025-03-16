@@ -5,6 +5,7 @@
 #include <queue>
 #include <cmath>
 #include "TrieState.hpp"
+#include "AVLState.hpp"
 #define RAYGUI_IMPLEMENTATION
 #include "raygui.h"
 #include <mLib/Utility.hpp>
@@ -14,12 +15,15 @@ const int SCREEN_HEIGHT = 768;
 
 enum State {
     MENU,
-    TRIE
+    TRIE,
+    AVL,
+    HASH_TABLE,
 };
 
 State state = MENU;
 
 TrieState trieState;
+AVLState avlState;
 
 #include <memory>
 
@@ -45,6 +49,7 @@ int main() {
     mLib::InitFont("assets/inter-black.ttf");
 
     trieState = TrieState();
+    avlState = AVLState();
     
     while (!WindowShouldClose()) {
         BeginDrawing();
@@ -56,6 +61,9 @@ int main() {
                 if (GuiButton((Rectangle){10, 10, 100, 50}, "Trie")) {
                     state = TRIE;
                 }
+                if (GuiButton((Rectangle){10, 70, 100, 50}, "AVL")) {
+                    state = AVL;
+                }
                 break;
             }
             case TRIE:
@@ -66,6 +74,15 @@ int main() {
                 }
                 break;
             }
+            case AVL:
+            {
+                avlState.run();
+                if (GuiButton((Rectangle){10, 10, 100, 50}, "Back")) {
+                    state = MENU;
+                }
+                break;
+            }
+
         }
         EndDrawing();
     }

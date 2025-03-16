@@ -1,12 +1,16 @@
 #include "AVLState.hpp"
 #include "raygui.h"
-#include "Utility.hpp"
+#include <mLib/Utility.hpp>
 #include <cstring>
+#include <fstream>
+#include <mLib/tinyfiledialogs.h>
+#include <cstdlib>
 
-const int MAX_TEXT_LENGTH = 10;
+const int MAX_TEXT_LENGTH = 3;
 
-AVLState::AVLState() {
-    mAVL = AVL();
+#include <iostream>
+
+AVLState::AVLState() : mAVL() {
     showOptions = false;
     showCreateOptions = false;
     showTextBox = false;
@@ -15,10 +19,21 @@ AVLState::AVLState() {
     textBox[0] = '\0';
     requestText[0] = '\0';
     mTime = 0;
+    isReversed = -1;
+    mTimeStep = 0.5f;
+    animationPlaying = 1;
+    pendingPause = 0;
+    showRunStepByStep = 1;
+    forward = 0;
+    backward = 0;
+    sliderValue = 50;
+}
+
+AVLState::~AVLState() {
 }
 
 void AVLState::handleInput() {
-    if (GuiButton((Rectangle){10, 550, 30, 200}, ">")) {
+    if (GuiButton((Rectangle){10, 700, 30, 190}, ">")) {
         showOptions = !showOptions;
         if (showOptions == 0) 
         {
@@ -27,53 +42,117 @@ void AVLState::handleInput() {
         }
     }
     if (showOptions) {
-        if (GuiButton((Rectangle){10 + 50, 550, 100, 40}, "Create")) {
+        if (GuiButton((Rectangle){10 + 50, 700, 100, 40}, "Create")) {
             showCreateOptions = !showCreateOptions;
             showTextBox = 0;
         }
-        if (GuiButton((Rectangle){10 + 50, 600, 100, 40}, "Search")) {
+        if (GuiButton((Rectangle){10 + 50, 750, 100, 40}, "Search")) {
             showTextBox = 1;
             textDestionation = 1;
             showCreateOptions = 0;
         }
-        if (GuiButton((Rectangle){10 + 50, 650, 100, 40}, "Insert")) {
+        if (GuiButton((Rectangle){10 + 50, 800, 100, 40}, "Insert")) {
             showTextBox = 1;
             textDestionation = 2;
             showCreateOptions = 0;
         }
-        if (GuiButton((Rectangle){10 + 50, 700, 100, 40}, "Delete")) {
+        if (GuiButton((Rectangle){10 + 50, 850, 100, 40}, "Delete")) {
             showTextBox = 1;
             textDestionation = 3;
             showCreateOptions = 0;
         }
     }
-    if (showCreateOptions)
+    if (showCreateOptions & mAVL.completedAllActions())
     {
-        if (GuiButton((Rectangle){10 + 50 + 150, 575, 100, 40}, "Clear")) {
+        if (GuiButton((Rectangle){10 + 50 + 150, 700, 100, 40}, "Clear")) {
+            mAVL = AVL();
         }
-        if (GuiButton((Rectangle){10 + 50 + 150, 625, 100, 40}, "Random")) {
+        if (GuiButton((Rectangle){10 + 50 + 150, 750, 100, 40}, "Random")) {
+            mAVL = AVL();
+            for (int i = 0; i < GetRandomValue(0, 5); i ++)  {
+                mLib::GenerateRandomNum(requestText);
+                mAVL.insert(std::atoi(requestText));
+            }
         }
-        if (GuiButton((Rectangle){10 + 50 + 150, 675, 100, 40}, "Custom")) {
+        if (GuiButton((Rectangle){10 + 50 + 150, 800, 100, 40}, "Custom")) {
+            mAVL = AVL();
+            const char *filter[2] = {"*.txt", "*.inp"};
+            const char *path = tinyfd_openFileDialog("Open File", "", 2, filter, "txt or inp files", 0);
+            std::cout << "File path: " << path << std::endl;
+            std::cout << path << std::endl;
+            if (path != NULL) {
+                std::ifstream file(path);
+                int n;
+                while (file >> n) {
+                    mAVL.insert(n);
+                }
+                file.close();
+            }
         }
     }
-    if (showTextBox) {
-        if (GuiTextBox((Rectangle){10 + 50 + 150, 625, 200, 40}, textBox, MAX_TEXT_LENGTH, editMode)) editMode = !editMode;
-    }
-    if (showTextBox) {
-        if (CheckCollisionPointRec(GetMousePosition(), (Rectangle){10 + 50 + 400, 625, 40, 40}) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) mLib::GenerateRandomText(textBox);
-        if ((CheckCollisionPointRec(GetMousePosition(), (Rectangle){10 + 50 + 440, 625, 40, 40}) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) 
+    if (showTextBox & mAVL.completedAllActions()) {
+        if (GuiTextBox((Rectangle){10 + 50 + 150, 800, 200, 40}, textBox, MAX_TEXT_LENGTH + 1, editMode)) editMode = !editMode;
+        if (CheckCollisionPointRec(GetMousePosition(), (Rectangle){10 + 50 + 400, 800, 40, 40}) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) mLib::GenerateRandomNum(textBox);
+        if ((CheckCollisionPointRec(GetMousePosition(), (Rectangle){10 + 50 + 440, 800, 40, 40}) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) 
         || GetKeyPressed() == KEY_ENTER) 
         {
             strcpy(requestText, textBox);
             textBox[0] = '\0';
             editMode = 0;
-            if (requestText[0] != '\0') 
-            {
-                if (textDestionation == 1) mAVL.searchAnimation(requestText);
-                if (textDestionation == 2) mAVL.insertAnimation(requestText);
-                if (textDestionation == 3) mAVL.deleteAnimation(requestText);
+            if (strlen(requestText) > 0) {
+                if (textDestionation == 1) mAVL.search(std::atoi(requestText));
+                if (textDestionation == 2) mAVL.insert(std::atoi(requestText));
+                if (textDestionation == 3) mAVL.remove(std::atoi(requestText));
             }
         }
+    }
+    if (GuiButton((Rectangle){10 + 50 + 750, 800, 100, 40}, animationPlaying ? "Pause" : "Play")) {
+        if (animationPlaying == 0) animationPlaying = 1;
+        else {
+            if (mAVL.completedAllActions()) animationPlaying = 0;
+            else pendingPause = 1;
+        }
+    }
+    if (showRunStepByStep && animationPlaying == 0) ;
+    else GuiDisable();
+
+    if (mAVL.startLoop()) GuiDisable();
+    if (GuiButton((Rectangle){10 + 50 + 750 - 100, 800, 100, 40}, "Prev")) {
+        isReversed = 1;
+    }
+    if (mAVL.startLoop()) GuiEnable();
+    if (mAVL.endLoop()) GuiDisable();
+    if (GuiButton((Rectangle){10 + 50 + 750 + 100, 800, 100, 40}, "Next")) {
+        isReversed = 0;
+    }
+    if (mAVL.endLoop()) GuiEnable();
+
+    if (showRunStepByStep && animationPlaying == 0) ;
+    else GuiEnable();
+
+    if (mAVL.endLoop()) GuiDisable();
+    if (GuiButton((Rectangle){10 + 50 + 750 + 200, 800, 100, 40}, "Forward")) {
+        forward = 1;
+        mTimeStep = 1e-15;
+        isReversed = 0;
+    }
+    if (mAVL.endLoop()) GuiEnable();
+    if (mAVL.startLoop()) GuiDisable();
+    if (GuiButton((Rectangle){10 + 50 + 750 - 200, 800, 100, 40}, "Backward")) {
+        backward = 1;
+        mTimeStep = 1e-15;
+        isReversed = 1;
+    }
+    if (mAVL.startLoop()) GuiEnable();
+    
+    if (mTimeStep >= 0.1f) {
+        float minValue = 0.0f;     
+        float maxValue = 100.0f;   
+        float newMin = 0.1f;
+        float newMax = 2.0f;
+        GuiSliderBar((Rectangle){10 + 50 + 750, 850, 200, 20}, "Time Step", TextFormat("%.2f", mTimeStepSlider), &sliderValue, minValue, maxValue);
+        mTimeStepSlider = newMin + (newMax - newMin) * (sliderValue - minValue) / (maxValue - minValue);
+        mTimeStep = 2.0f - mTimeStepSlider + 0.1f;
     }
 }
 
@@ -81,101 +160,69 @@ void AVLState::update() {
     if (editMode) {
         if (strlen(textBox) == 0) ;
         else
-            if ('A' <= textBox[strlen(textBox) - 1] && textBox[strlen(textBox) - 1] <= 'Z') ;
-            else
-                if ('a' <= textBox[strlen(textBox) - 1] && textBox[strlen(textBox) - 1] <= 'z') textBox[strlen(textBox) - 1] -= 32;
-                else textBox[strlen(textBox) - 1] = '\0';
+            if ('0' <= textBox[strlen(textBox) - 1] && textBox[strlen(textBox) - 1] <= '9') ;
+            else textBox[strlen(textBox) - 1] = '\0';
     }
-    mAVL.move(mAVL.root);
-    mAVL.move(mAVL.root);
-    mAVL.move(mAVL.root);
-    mAVL.move(mAVL.root);
-    mAVL.move(mAVL.root);
-    mAVL.moveItr();
-    mAVL.moveItr();   
-    mAVL.moveItr();
-    mAVL.moveItr();
+    showRunStepByStep = mAVL.completeAnimation();
 }
 
 void AVLState::render() {
-    if (showTextBox)
+    if (showTextBox & mAVL.completedAllActions())
     {
-        if (textDestionation == 1) DrawText("Searching", 10 + 50 + 150, 550, 20, BLACK);
-        else if (textDestionation == 2) DrawText("Inserting", 10 + 50 + 150, 550, 20, BLACK);
-        else if (textDestionation == 3) DrawText("Deleting", 10 + 50 + 150, 550, 20, BLACK);
-        DrawRectangle(10 + 50 + 400, 625, 40, 40, Fade(RED, 0.3f));
-        DrawRectangle(10 + 50 + 440, 625, 40, 40, Fade(GREEN, 0.3f));
-        DrawText("RD", 10 + 50 + 400 + 10, 625 + 10, 20, BLACK);
-        DrawText("GO", 10 + 50 + 440 + 10, 625 + 10, 20, BLACK);
+        if (textDestionation == 1) DrawTextEx(mLib::mFont, "Searching", (Vector2) {10 + 50 + 150, 750}, 30, 2, BLACK);
+        else if (textDestionation == 2) DrawTextEx(mLib::mFont, "Inserting", (Vector2) {10 + 50 + 150, 750}, 30, 2, BLACK);
+        else if (textDestionation == 3) DrawTextEx(mLib::mFont, "Deleting", (Vector2) {10 + 50 + 150, 750}, 30, 2, BLACK);
+        DrawRectangle(10 + 50 + 400, 800, 40, 40, Fade(RED, 0.3f));
+        DrawRectangle(10 + 50 + 440, 800, 40, 40, Fade(GREEN, 0.3f));
+        DrawTextEx(mLib::mFont, "RD", (Vector2) {10 + 50 + 400, 800}, 30, 2, BLACK);
+        DrawTextEx(mLib::mFont, "GO", (Vector2) {10 + 50 + 440, 800}, 30, 2, BLACK);
     }
-    mAVL.drawLine(mAVL.root, 800, 100);
-    mAVL.drawItr(800, 100);
-    mAVL.draw(mAVL.root, 800, 100);
-    mAVL.drawText(mAVL.root, 800, 100);
+    mAVL.draw();
+}
+
+void AVLState::run() {
+    handleInput();
     mTime += GetFrameTime();
-    if (mAVL.itr1 < mAVL.working.size())
-    {
-        if (mAVL.itr2 < mAVL.working[mAVL.itr1].second.size())
-        {
-            switch (mAVL.working[mAVL.itr1].first)
-            {
-                case 1 : DrawText("Searching", 250, 10, 20, BLACK); break;
-                case 2 : DrawText("Inserting", 250, 10, 20, BLACK); break;
-                case 3 : DrawText("Deleting", 250, 10, 20, BLACK); break;
-            }
-        }
-    }
-    if (mTime > 0.5f)
-    {
+    update();
+    mAVL.update(mTime, mTimeStep);
+    if (mTime >= mTimeStep && (animationPlaying || isReversed != -1)) {
         mTime = 0;
-        if (mAVL.itr1 < mAVL.working.size())
+        if (isReversed == -1)
         {
-            if (mAVL.itr2 < mAVL.working[mAVL.itr1].second.size())
+            if (mAVL.Action(0))
             {
-                if (mAVL.move(mAVL.root) == 0 && mAVL.moveItr() == 0)
-                {
-                    auto current = mAVL.working[mAVL.itr1].second[mAVL.itr2];
-                    if (current.first == SELECTING)
-                    {
-                        current.second->selected = true;
-                    }
-                    else if (current.first == CREATE) 
-                    {
-                        current.second->valid = true;
-                        mAVL.calcPosition(mAVL.root);
-                    }
-                    else if (current.first == CLEAR)
-                    {
-                        current.second->selected = false;
-                    }
-                    else if (current.first == SET_ITR_INSTANCE)
-                    {
-                        mAVL.Itr[mAVL.itr1].first = mAVL.Itr[mAVL.itr1].second = mAVL.getPos(mAVL.root, current.second, 0, 0);
-                    }
-                    else if (current.first == SET_ITR_ANIMATION)
-                    {
-                        mAVL.Itr[mAVL.itr1].first = mAVL.getPos(mAVL.root, current.second, 0, 0);
-                        mAVL.Itr[mAVL.itr1].second 
-                            = mAVL.getPos(mAVL.root, mAVL.working[mAVL.itr1].second[mAVL.itr2 + 1].second, 0, 0);
-                        mAVL.itr2 ++;
-                    }
-                    else if (current.first == DELETE_ITR)
-                    {
-                        mAVL.Itr[mAVL.itr1].first = mAVL.Itr[mAVL.itr1].second = {-1, -1};
-                    }
-                    else if (current.first == DELETE)
-                    {
-                        mAVL.deleteNode(mAVL.root, current.second);
-                        mAVL.calcPosition(mAVL.root);
-                    }
-                    mAVL.itr2++;
+                showRunStepByStep = 1;
+                if (pendingPause) {
+                    pendingPause = 0;
+                    animationPlaying = 0;
                 }
             }
-            else 
-                {
-                    mAVL.itr1++;
-                    mAVL.itr2 = 0;
+        }
+        else
+        {
+            if (mAVL.Action(isReversed)) {
+                if (forward) {
+                    if (mAVL.reachedEnd()) {
+                        forward = 0;
+                        mTimeStep = 0.5f;
+                        isReversed = -1;
+                    }
                 }
+                else
+                    if (backward) {
+                        if (mAVL.reachedStart()) {
+                            mAVL.ClearOperator();
+                            backward = 0;
+                            mTimeStep = 0.5f;
+                            isReversed = -1;
+                        }
+                    }
+                    else {
+                        if (isReversed == 1 && mAVL.reachedStart()) mAVL.ClearOperator();
+                        isReversed = -1;
+                    }
+            }
         }
     }
+    render();
 }

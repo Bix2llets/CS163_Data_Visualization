@@ -12,10 +12,8 @@ class TrieNode : public Animation {
         bool isEndOfWord, valid;
         char character;
         inline TrieNode(int x, int y, char character, TrieNode *parent) : Animation(x, y), parent(parent), character(character) {
-            parent = NULL;
             children.clear();
             isEndOfWord = valid = false;
-            character = '\0';
             setPosition((Vector2){x, y});
         }
         inline ~TrieNode() {

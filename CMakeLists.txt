@@ -36,6 +36,8 @@ add_executable(
     src/structures/singlyLinkedList.cpp
     src/structures/Trie.cpp
     src/structures/TrieState.cpp
+    src/structures/AVL.cpp 
+    src/structures/AVLState.cpp
     src/mLib/Utility.cpp
     src/mLib/tinyfiledialogs.cpp
 

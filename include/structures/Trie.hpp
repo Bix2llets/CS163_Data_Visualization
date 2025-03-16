@@ -9,40 +9,40 @@
 #include "raylib.h"
 #include "TrieNode.hpp"
 
-enum TrieAction {
-    INIT,
-    CLEAR,
-    SETLECT,
-    CREATE,
-    DELETE,
-    SETEND,
-    UNSETEND,
-};
-
-struct ItrAction {
-    Animation *animation;
-    bool show;
-    TrieNode *targetedNode;
-    void setTarget() {
-        if (targetedNode == NULL) animation->setTargetedPosition((Vector2){0, 0});
-        else animation->setTargetedPosition(targetedNode->getTargetedPosition());
-    }
-    ItrAction() {
-        animation = new Animation(0, 0);
-        targetedNode = NULL;
-        show = false;
-    }
-};
-
-struct action {
-    int index;
-    TrieAction action;
-    TrieNode* node;
-};
-
-typedef std::vector<action> ActionList;
-
 class Trie {
+    private:
+        enum TrieAction {
+            INIT,
+            CLEAR,
+            SETLECT,
+            CREATE,
+            DELETE,
+            SETEND,
+            UNSETEND,
+        };
+        
+        struct ItrAction {
+            Animation *animation;
+            bool show;
+            TrieNode *targetedNode;
+            void setTarget() {
+                if (targetedNode == NULL) animation->setTargetedPosition((Vector2){0, 0});
+                else animation->setTargetedPosition(targetedNode->getTargetedPosition());
+            }
+            ItrAction() {
+                animation = new Animation(0, 0);
+                targetedNode = NULL;
+                show = false;
+            }
+        };
+        
+        struct action {
+            int index;
+            TrieAction action;
+            TrieNode* node;
+        };
+        
+        typedef std::vector<action> ActionList;
     private:
         float xOFFSET = 100, yOFFSET = 130, NODE_RADIUS = 30;
         TrieNode* root;

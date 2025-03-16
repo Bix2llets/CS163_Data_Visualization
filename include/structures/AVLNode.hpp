@@ -2,31 +2,28 @@
 #define AVLNODE_HPP
 
 #include "raylib.h"
+#include "animation.h"
 #include <map>
 
-struct AVLNode {
-    Vector2 position, targetPosition;
-    AVLNode *left, *right;
-    int data, height;
-    bool selected;
-    bool valid;
-    AVLNode(int _data) {
-        position = {0, 0};
-        targetPosition = {0, 0};
-        selected = false;
-        valid = false;
-        left = right = nullptr;
-        height = 1;
-        data = _data;
-    }
-    bool isLeaf() {
-        return left == nullptr && right == nullptr;
-    }
-    int balanceFactor() {
-        int leftHight = left == nullptr ? 0 : left->height;
-        int rightHight = right == nullptr ? 0 : right->height;
-        return leftHight - rightHight;
-    }
+class AVLNode : public Animation {
+    public:
+        AVLNode *parent;
+        AVLNode *left, *right;
+        bool valid, targeted;
+        int height, value, heightLeft, heightRight, balanceLeft, balanceRight, balance, targetValue;
+        inline AVLNode(int x, int y, int value, AVLNode *parent) : Animation(x, y), parent(parent), value(value) {
+            left = right = NULL;
+            valid = targeted = false;
+            height = 1; balance = 0;
+            heightLeft = heightRight = 0;
+            balanceLeft = balanceRight = 0;
+            targetValue = -1;
+            setPosition((Vector2){x, y});
+        }
+        inline ~AVLNode() {
+            if (left != NULL) delete left, left = NULL;
+            if (right != NULL) delete right, right = NULL;
+        }
 };
 
 #endif // AVLNODE_HPP

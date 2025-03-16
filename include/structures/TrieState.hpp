@@ -23,7 +23,7 @@ class TrieState
         int isReversed;
         int textDestionation;
         char textBox[100], requestText[100];
-        double mTime, mTimeStep;
+        double mTime, mTimeStep, mTimeStepSlider;
         bool animationPlaying, pendingPause, showRunStepByStep, forward, backward;
         float sliderValue;
 };

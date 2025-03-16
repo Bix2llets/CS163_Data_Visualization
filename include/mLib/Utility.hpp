@@ -12,6 +12,13 @@ namespace mLib
         }
         text[length] = '\0'; 
     }
+    inline void GenerateRandomNum(char *text) {
+        int length = GetRandomValue(1, 10) % 3 + 1;
+        for (int i = 0; i < length; i++) {
+            text[i] = (GetRandomValue(1, 1000000000) % 10) + '0';  
+        }
+        text[length] = '\0'; 
+    }
     extern Font mFont;
     inline void InitFont(const char *path) {
         mFont = LoadFont(path);
