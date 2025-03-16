@@ -4,7 +4,7 @@ void Node::render() {
     DrawCircleV(position, radius - 3, PALETTE.backgroundNormal);
 
     DrawUtility::drawText(data, position, DrawUtility::inter20,
-                          DrawUtility::TEXT_COLOR, DrawUtility::NORMAL_SIZE,
+                          PALETTE.textNormal, DrawUtility::NORMAL_SIZE,
                           DrawUtility::SPACING, VerticalAlignment::CENTERED,
                           HorizontalAlignment::CENTERED);
 }
@@ -16,7 +16,7 @@ Node::Node(std::string data, float x, float y, int radius, ColorSet palette,
       animationRate{animationRate},
       PALETTE{palette},
       radius{radius},
-      borderColor{PALETTE.borderHighlight, PALETTE.borderNormal, animationRate},
+      borderColor{PALETTE.borderNormal, PALETTE.borderNormal, animationRate},
       edgeColor{PALETTE.borderHighlight, PALETTE.borderNormal, animationRate},
       nextNode{nullptr} {};
 

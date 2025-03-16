@@ -2,6 +2,7 @@
 
 #include <iostream>
 void Form::render() {
+    if (!enabled) return;
     update();
     DrawRectangleV(position, Vector2{width, height},
                    PALETTE.backgroundHighlight);
@@ -60,6 +61,7 @@ void Form::recordKeyboard() {
     // std::cerr << chr << " " << text << "\n";
 }
 void Form::recordFocus() {
+    if (!enabled) {isFocusedOn = false; return;}
     if (!IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) return;
     Vector2 mousePosition = GetMousePosition();
     if (CheckCollisionPointRec(mousePosition,
@@ -81,4 +83,14 @@ std::pair<bool, int> Form::getValue() {
     if (text.size() == 0) return {0, 0};
     for (char chr: text) if (chr < '0' || '9' < chr) return {0, 0};
     return {1, std::stoi(text)};
+}
+
+void Form::enable() { 
+    enabled = true;
+}
+void Form::disable() { 
+    enabled = false;
+}
+void Form::toggle() { 
+    enabled = !enabled;
 }

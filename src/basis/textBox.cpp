@@ -28,7 +28,32 @@ void TextBox::render() {
     Rectangle drawInfo{position.x - BORDER_OFFSET, position.y - BORDER_OFFSET, renderWidth + 2 * BORDER_OFFSET, renderHeight + 2 * BORDER_OFFSET};
     DrawRectangle(drawInfo.x, drawInfo.y, drawInfo.width, drawInfo.height, backgroundColor);
     DrawRectangleLinesEx(drawInfo, 2 * BORDER_OFFSET, borderColor);
-    DrawUtility::drawText(text, {position.x + OFFSET, position.y + textDimension.y / 2}, *font, textColor, DrawUtility::NORMAL_SIZE, DrawUtility::SPACING, VerticalAlignment::CENTERED, HorizontalAlignment::LEFT);
+
+    Vector2 textPosition;
+    switch (verticalAlign){
+        case VerticalAlignment::CENTERED:
+            textPosition.y = position.y + height / 2;
+            break;
+        case VerticalAlignment::BOTTOM:
+            textPosition.y = position.y + height - OFFSET;
+            break;
+        case VerticalAlignment::TOP:
+            textPosition.y = position.y + OFFSET;
+            break;
+    }
+
+    switch (horizontalAlign) {
+        case HorizontalAlignment::CENTERED:
+            textPosition.x = position.x + width / 2;
+            break;
+        case HorizontalAlignment::LEFT:
+            textPosition.x = position.x + OFFSET;
+            break;
+        case HorizontalAlignment::RIGHT:
+            textPosition.x = position.x + width - OFFSET;
+            break;
+    }
+    DrawUtility::drawText(text, textPosition, *font, textColor, DrawUtility::NORMAL_SIZE, DrawUtility::SPACING, verticalAlign, horizontalAlign);
 }  
 
 void TextBox::setText(std::string newText) {

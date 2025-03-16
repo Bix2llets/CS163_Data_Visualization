@@ -4,15 +4,27 @@
 #include <vector>
 #include <string> 
 namespace SLLScene {
+    struct SLLStorage {
+        SLL sll;
+        int highlightIndex;
+    };
+    
     extern float stepDelay;
     extern float timeLeft;
+    extern SLL sll;
+    extern int highlightedRow;
 
     extern const Rectangle CANVAS;
     extern float animationRate;
-    extern SLL sll;
-    extern std::deque<SLL> steps;
-
-    extern std::vector<std::string> pseudoCodeList; 
+    extern std::deque<SLLStorage> steps;
+    extern std::deque<SLLStorage> past;
+    // * For pseudo code rendered in code panel
+    extern const std::vector<std::string> PSEUDO_INSERT_K;
+    extern const std::vector<std::string> PSEUDO_DELETE_K;
+    extern const std::vector<std::string> PSEUDO_SEARCH;
+    extern const std::vector<std::string> PSEUDO_INSERT_END;
+    extern const std::vector<std::string> PSEUDO_DELETE_END;
+    // --------------------------
     void setSpecs(float _stepDelay = 0.5f, float _animationRate = 1.f);
 
     void addEnd(std::string data);
@@ -25,11 +37,11 @@ namespace SLLScene {
 
     void update();
 
-    void addStep();
+    void addStep(int highlightIndex);
     
     void render();
 
     void find(std::string val);
 
-    void mainLoop();
+    void clearScene();
 }

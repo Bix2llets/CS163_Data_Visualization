@@ -1,3 +1,4 @@
+#pragma once
 #include "appMenu.h"
 #include "raylib.h"
 #include "singlyLInkedList.h"
@@ -11,8 +12,13 @@ extern float elapsedSinceLastUpdate;
 extern int frameCount;
 extern const float FRAME_TIME;
 extern SceneList currentScene;
+
+extern void (*renderFunc)();
+extern void (*updateFunc)();
+
 void registerInput();
 void update();
 void render();
 void checkForReturn();
+
 }  // namespace Loop

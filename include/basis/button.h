@@ -31,7 +31,7 @@ class Button : public GUIObject {
           edgeColor{},
           enabled{true} {};
 
-    Button(Rectangle rectangle, std::string text = "", int fontSize = 20,
+    Button(Rectangle rectangle = {0, 0, 0, 0}, std::string text = "", int fontSize = 20,
            ColorSet palette = DEF_SET)
         : Button{Vector2{rectangle.x, rectangle.y},
                  Vector2{rectangle.width, rectangle.height}, text, fontSize,

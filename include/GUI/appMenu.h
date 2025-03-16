@@ -7,24 +7,26 @@
 #include "textbox.h"
 
 namespace AppMenu {
+// Render info
 extern Vector2 codeBlockPosition;
 extern Vector2 codeLineSize;
 extern ColorSet codeBlockColor;
 
 extern Vector2 buttonDimension;
 extern ColorSet buttonPalette;
-extern Button addByValueButton;
-extern Button addAtIndexButton;
-extern Button addButton;
+extern Vector2 panelPosition;
 
-extern Button removeByValueButton;
-extern Button removeAtIndexButton;
-extern Button removeButton;
+extern int horizontalCellCount;
+extern int verticalCellCount;
+
+// Buttons
+extern std::vector<std::vector<Button>> buttonPanel;
 extern Button backButton;
-
+// Forms
 extern Form locationBox;
 extern Form valueBox;
 
+// For rendering objects
 extern std::vector<GUIObject *> renderList;
 extern std::vector<TextBox> codeList;
 

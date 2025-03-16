@@ -1,8 +1,11 @@
 
 #include "singlyLinkedList.h"
 
-const ColorSet SLL::NODE_PALETTE =
-    ColorSet{BLACK, BLACK, WHITE, WHITE, BLACK, GOLD};
+const ColorSet SLL::NODE_PALETTE = {
+    Color{186, 180, 163, 255}, Color{186, 180, 163, 255},
+    Color{51, 49, 45, 255},    Color{42, 114, 47, 255},
+    Color{186, 180, 163, 255},  Color{229, 189, 80, 255},
+};
 const int SLL::NODE_RADIUS = 30;
 const int SLL::DISTANCE_HORIZONTAL = 80;
 const int SLL::DISTANCE_VERTICAL = 80;
@@ -78,7 +81,7 @@ void SLL::render() {
     if (root == nullptr) return;
     DrawUtility::drawText(
         "Root", Vector2Add(root->getPosition(), {0, DISTANCE_HORIZONTAL / 2}),
-        DrawUtility::inter20, BLACK, DrawUtility::NORMAL_SIZE,
+        DrawUtility::inter20, NODE_PALETTE.textNormal, DrawUtility::NORMAL_SIZE,
         DrawUtility::SPACING, VerticalAlignment::CENTERED,
         HorizontalAlignment::CENTERED);
     Node* currEdge = root;
@@ -346,24 +349,24 @@ void SLL::highlightTo(int place) {
     if (place < 0) return;
     Node* curr = root;
     while(curr && place) {
-        curr->borderColor.setBaseColor(DrawUtility::EDGE_NORMAL);
-        curr->borderColor.setTargetColor(DrawUtility::EDGE_HIGHLIGHTED);
+        curr->borderColor.setBaseColor(NODE_PALETTE.borderNormal);
+        curr->borderColor.setTargetColor(NODE_PALETTE.borderHighlight);
         curr->borderColor.setFactor(0.f);
-        curr->edgeColor.setBaseColor(DrawUtility::EDGE_NORMAL);
-        curr->edgeColor.setTargetColor(DrawUtility::EDGE_HIGHLIGHTED);
+        curr->edgeColor.setBaseColor(NODE_PALETTE.borderNormal);
+        curr->edgeColor.setTargetColor(NODE_PALETTE.borderHighlight);
         curr->edgeColor.setFactor(0.f);
         curr = curr->nextNode;
         place--;
     }
     if (curr == nullptr) return;
-    curr->borderColor.setBaseColor(DrawUtility::EDGE_NORMAL);
-    curr->borderColor.setTargetColor(DrawUtility::EDGE_HIGHLIGHTED);
+    curr->borderColor.setBaseColor(NODE_PALETTE.borderNormal);
+    curr->borderColor.setTargetColor(NODE_PALETTE.borderHighlight);
     curr->borderColor.setFactor(0.f);
 }
 
 void SLL::deHighlight() {
     Node* curr = root;
-    Color normalColor = DrawUtility::EDGE_NORMAL;
+    Color normalColor = NODE_PALETTE.borderNormal;
     while(curr) {
         curr->borderColor.setBaseColor(normalColor);
         curr->borderColor.setCurrentColor(normalColor);

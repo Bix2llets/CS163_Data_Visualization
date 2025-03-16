@@ -2,23 +2,6 @@
 
 namespace AppMenu {
 
-Button addByValueButton(0, 700, buttonDimension.x, buttonDimension.y, "add element",
-                        DrawUtility::NORMAL_SIZE, buttonPalette);
-Button addAtIndexButton(0, 740, buttonDimension.x, buttonDimension.y, "add at index",
-                        DrawUtility::NORMAL_SIZE, buttonPalette);
-Button addButton(0, 780, buttonDimension.x, buttonDimension.y, "Add",
-                 DrawUtility::NORMAL_SIZE, buttonPalette);
-
-Button removeByValueButton({200, 700, buttonDimension.x, buttonDimension.y},
-                           "remove element", DrawUtility::NORMAL_SIZE,
-                           buttonPalette);
-Button removeAtIndexButton(200, 740, buttonDimension.x, buttonDimension.y,
-                           "remove at index", DrawUtility::NORMAL_SIZE,
-                           buttonPalette);
-Button removeButton(200, 780, buttonDimension.x, buttonDimension.y, "Remove",
-                    DrawUtility::NORMAL_SIZE, buttonPalette);
-
-Button backButton({25, 25, buttonDimension.x, buttonDimension.y}, "Back", DrawUtility::NORMAL_SIZE, buttonPalette);
 ColorSet buttonPalette = {
     Color{186, 180, 163, 255}, Color{186, 180, 163, 255},
     Color{51, 49, 45, 255},    Color{42, 114, 47, 255},
@@ -31,14 +14,25 @@ ColorSet codeBlockColor{
     Color{59, 66, 82, 255},    Color{59, 66, 82, 255},
 };
 
+Vector2 panelPosition{50, 760};
 Vector2 buttonDimension = {200, 40};
-Vector2 codeBlockPosition{1250, 600};
-Vector2 codeLineSize{300, 25};
+Vector2 codeBlockPosition{900, 620};
+Vector2 codeLineSize{500, 25};
 
-Form locationBox{{400, 700, 200, 40}, buttonPalette};
-Form valueBox{{400, 740, 200, 40}, buttonPalette};
+std::vector<std::vector<Button>> buttonPanel;
+Button backButton;
+
+Form locationBox{{550, 760, 200, 40}, buttonPalette};
+Form valueBox{{550, 840, 200, 40}, buttonPalette};
+
 std::vector<TextBox> codeList;
 std::vector<GUIObject*> renderList;
+
+TextBox locationText({450, 760, buttonDimension.x / 2, buttonDimension.y}, buttonPalette, &DrawUtility::inter20, "Location: ");
+TextBox valueText({450, 840, buttonDimension.x / 2, buttonDimension.y}, buttonPalette, &DrawUtility::inter20, "Value: ");
+
+int verticalCellCount = 3;
+int horizontalCellCount = 2;
 
 void init() {
     codeList.resize(10);
@@ -46,19 +40,32 @@ void init() {
         float x = codeBlockPosition.x;
         float y = codeBlockPosition.y + i * codeLineSize.y;
         TextBox temp(Rectangle{x, y, codeLineSize.x, codeLineSize.y},
-                     codeBlockColor, &DrawUtility::jbm20, "amogus");
+                     codeBlockColor, &DrawUtility::jbm20, "amogus", HorizontalAlignment::LEFT);
         codeList[i] = temp;
         if (i % 2 == 0) codeList[i].setHighlight(true);
     }
-    renderList.push_back(&addByValueButton);
-    renderList.push_back(&addAtIndexButton);
-    renderList.push_back(&addButton);
-    renderList.push_back(&removeByValueButton);
-    renderList.push_back(&removeAtIndexButton);
-    renderList.push_back(&removeButton);
-    renderList.push_back(&locationBox);
+
+    buttonPanel.resize(verticalCellCount);
+    for (std::vector<Button> &v : buttonPanel) v.resize(horizontalCellCount);
+
+    for (int i = 0; i < buttonPanel.size(); i++)
+        for (int j = 0; j < buttonPanel[i].size(); j++) {
+            buttonPanel[i][j] = Button(
+                {
+                    panelPosition.x + buttonDimension.x * j,
+                    panelPosition.y + buttonDimension.y * i,
+                    buttonDimension.x,
+                    buttonDimension.y,
+                },
+                "", DrawUtility::NORMAL_SIZE, buttonPalette);
+            buttonPanel[i][j].enable();
+            renderList.push_back(&buttonPanel[i][j]);
+        }
     renderList.push_back(&valueBox);
+    renderList.push_back(&locationBox);
     renderList.push_back(&backButton);
+    renderList.push_back(&valueText);
+    renderList.push_back(&locationText);
 }
 
 void render() {
@@ -66,8 +73,6 @@ void render() {
         object->render();
         // std::cerr << "Rendering: " << object << "\n";
     }
-    removeByValueButton.render();
-    std::cerr << "Done\n";
     for (TextBox box : codeList) box.render();
 }
 

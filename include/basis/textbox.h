@@ -1,14 +1,15 @@
-// 
-#include "GUIObject.h"
-#include "raylib.h"
-#include "utility.h"
-#include "colorPalette.h"
-#include <string>
+//
 #include <algorithm>
 #include <iostream>
+#include <string>
+
+#include "GUIObject.h"
+#include "colorPalette.h"
+#include "raylib.h"
+#include "utility.h"
 // * This provides no line wrapping, only box enlargement
 class TextBox : public GUIObject {
-    private:
+   private:
     bool isHighlighted = false;
     float width;
     float height;
@@ -17,9 +18,23 @@ class TextBox : public GUIObject {
     ColorSet color;
     constexpr static float OFFSET = 5;
     constexpr static float BORDER_OFFSET = 1;
-    public:
 
-    TextBox(Rectangle minimumBox = {0, 0, 0, 0}, ColorSet color = DEF_SET, Font* renderFont = nullptr, std::string text = "") : color{color}, font{renderFont}, text{text}, GUIObject(minimumBox.x, minimumBox.y), width{minimumBox.width}, height{minimumBox.height} {};
+    VerticalAlignment verticalAlign;
+    HorizontalAlignment horizontalAlign;
+
+   public:
+    TextBox(Rectangle minimumBox = {0, 0, 0, 0}, ColorSet color = DEF_SET,
+            Font* renderFont = nullptr, std::string text = "",
+            HorizontalAlignment horizontalAlign = HorizontalAlignment::CENTERED,
+            VerticalAlignment verticalAlign = VerticalAlignment::CENTERED)
+        : color{color},
+          font{renderFont},
+          text{text},
+          GUIObject(minimumBox.x, minimumBox.y),
+          width{minimumBox.width},
+          height{minimumBox.height},
+          verticalAlign{verticalAlign},
+          horizontalAlign{horizontalAlign} {};
 
     void render();
 
