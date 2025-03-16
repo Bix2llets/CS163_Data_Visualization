@@ -15,6 +15,7 @@ extern SceneList currentScene;
 
 extern void (*renderFunc)();
 extern void (*updateFunc)();
+extern void (*recordFunc)();
 
 void registerInput();
 void update();

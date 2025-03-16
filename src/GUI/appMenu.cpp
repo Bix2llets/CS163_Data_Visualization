@@ -9,7 +9,7 @@ ColorSet buttonPalette = {
 };
 
 ColorSet codeBlockColor{
-    Color{173, 181, 189, 255}, Color{46, 52, 64, 255},
+    Color{46, 52, 64, 255},    Color{46, 52, 64, 255},
     Color{216, 222, 233, 255}, Color{211, 255, 206, 255},
     Color{59, 66, 82, 255},    Color{59, 66, 82, 255},
 };
@@ -28,9 +28,12 @@ Form valueBox{{550, 840, 200, 40}, buttonPalette};
 std::vector<TextBox> codeList;
 std::vector<GUIObject*> renderList;
 
-TextBox locationText({450, 760, buttonDimension.x / 2, buttonDimension.y}, buttonPalette, &DrawUtility::inter20, "Location: ");
-TextBox valueText({450, 840, buttonDimension.x / 2, buttonDimension.y}, buttonPalette, &DrawUtility::inter20, "Value: ");
+TextBox locationText({450, 760, buttonDimension.x / 2, buttonDimension.y},
+                     buttonPalette, &DrawUtility::inter20, "Location: ");
+TextBox valueText({450, 840, buttonDimension.x / 2, buttonDimension.y},
+                  buttonPalette, &DrawUtility::inter20, "Value: ");
 
+int* highlightValue = nullptr;
 int verticalCellCount = 3;
 int horizontalCellCount = 2;
 
@@ -40,13 +43,14 @@ void init() {
         float x = codeBlockPosition.x;
         float y = codeBlockPosition.y + i * codeLineSize.y;
         TextBox temp(Rectangle{x, y, codeLineSize.x, codeLineSize.y},
-                     codeBlockColor, &DrawUtility::jbm20, "amogus", HorizontalAlignment::LEFT);
+                     codeBlockColor, &DrawUtility::jbm20, "amogus",
+                     HorizontalAlignment::LEFT);
         codeList[i] = temp;
-        if (i % 2 == 0) codeList[i].setHighlight(true);
+        // if (i % 2 == 0) codeList[i].setHighlight(true);
     }
 
     buttonPanel.resize(verticalCellCount);
-    for (std::vector<Button> &v : buttonPanel) v.resize(horizontalCellCount);
+    for (std::vector<Button>& v : buttonPanel) v.resize(horizontalCellCount);
 
     for (int i = 0; i < buttonPanel.size(); i++)
         for (int j = 0; j < buttonPanel[i].size(); j++) {
@@ -73,12 +77,21 @@ void render() {
         object->render();
         // std::cerr << "Rendering: " << object << "\n";
     }
+    if (highlightValue != nullptr) {
+        for (int i = 0; i < codeList.size(); i++)
+            codeList[i].setHighlight(false);
+        if (*highlightValue >= 0) codeList[*highlightValue].setHighlight(true);
+    }
+
     for (TextBox box : codeList) box.render();
 }
 
 void loadCode(const std::vector<std::string>& strVect) {
-    for (int i = 0; i < codeList.size() && i < strVect.size(); i++)
-        codeList[i].setText(strVect[i]);
+    for (int i = 0; i < codeList.size(); i++)
+        if (i < strVect.size())
+            codeList[i].setText(strVect[i]);
+        else
+            codeList[i].setText("");
 }
 
 }  // namespace AppMenu

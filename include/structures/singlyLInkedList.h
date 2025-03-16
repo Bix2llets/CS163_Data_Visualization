@@ -34,8 +34,8 @@ class SLL {
     bool isFinished();
     void finishAnimation();
 
-    void moveOutAt(int place);
-    void moveOutEnd();
+    void moveAt(int place);
+    void moveEnd();
     
     int locate(std::string val);
     void highlightTo(int place);

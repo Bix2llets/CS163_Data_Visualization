@@ -8,6 +8,7 @@ SceneList currentScene = SceneList::MAIN_MENU;
 
 void (*renderFunc)() = nullptr;
 void (*updateFunc)() = nullptr;
+void (*recordFunc)() = nullptr;
 void checkForReturn() {
     if (AppMenu::backButton.isPressed()) {
         currentScene = MAIN_MENU;
@@ -18,6 +19,7 @@ void checkForReturn() {
         AppMenu::valueBox.enable();
         renderFunc = nullptr;
         updateFunc = nullptr;
+        recordFunc = nullptr;
     }
 }
 void update() {
@@ -33,64 +35,30 @@ void update() {
 }
 
 void registerInput() {
-    switch (currentScene) {
-        // Button configuration
-        case MAIN_MENU: {
-            if (WelcomeMenu::isAVLTreePressed()) currentScene = SceneList::AVL;
-            if (WelcomeMenu::isGraphPressed()) currentScene = SceneList::GRAPH;
-            if (WelcomeMenu::isHashTablePressed())
-                currentScene = SceneList::HASH;
-            if (WelcomeMenu::isLinkedListPressed()) {
-                currentScene = SceneList::LINKED_LIST;
+    if (currentScene == SceneList::MAIN_MENU) {
+        if (WelcomeMenu::isAVLTreePressed()) currentScene = SceneList::AVL;
+        if (WelcomeMenu::isGraphPressed()) currentScene = SceneList::GRAPH;
+        if (WelcomeMenu::isHashTablePressed()) currentScene = SceneList::HASH;
+        if (WelcomeMenu::isLinkedListPressed()) {
+            currentScene = SceneList::LINKED_LIST;
 
-                AppMenu::buttonPanel[0][0].setText("Add End");
-                AppMenu::buttonPanel[1][0].setText("Remove End");
-                AppMenu::buttonPanel[0][1].setText("Add");
-                AppMenu::buttonPanel[1][1].setText("Remove");
-                AppMenu::buttonPanel[2][1].setText("Search");
-                AppMenu::buttonPanel[2][0].disable();
+            AppMenu::buttonPanel[0][0].setText("Add End");
+            AppMenu::buttonPanel[1][0].setText("Remove End");
+            AppMenu::buttonPanel[0][1].setText("Add");
+            AppMenu::buttonPanel[1][1].setText("Remove");
+            AppMenu::buttonPanel[2][1].setText("Search");
+            AppMenu::buttonPanel[2][0].disable();
 
-                renderFunc = &SLLScene::render;
-                updateFunc = &SLLScene::update;
-            }
-            if (WelcomeMenu::isTriePressed()) currentScene = TRIE;
-            break;
+            renderFunc = &SLLScene::render;
+            updateFunc = &SLLScene::update;
+            recordFunc = &SLLScene::recordInput;
+            AppMenu::highlightValue = &SLLScene::highlightedRow;
         }
-        case LINKED_LIST: {
-            checkForReturn();
-            auto location = AppMenu::locationBox.getValue();
-            auto value = AppMenu::valueBox.getValue();
-            auto &buttonPanel = AppMenu::buttonPanel;
-            if (buttonPanel[0][0].isPressed()) { 
-                // * Add at end
-                if (value.first) 
-                {
-                    SLLScene::addEnd(std::to_string(value.second));
-                    AppMenu::loadCode(SLLScene::PSEUDO_INSERT_END);
-                }
-            }
-
-            break;
-        }
-        case TRIE: {
-            checkForReturn();
-            break;
-        }
-        case GRAPH: {
-            checkForReturn();
-            break;
-        }
-        case AVL: {
-            checkForReturn();
-            break;
-        }
-        case HASH: {
-            checkForReturn();
-            break;
-        }
-        default:
-            break;
+        if (WelcomeMenu::isTriePressed()) currentScene = TRIE;
+        return;
     }
+    checkForReturn();
+    if (recordFunc) recordFunc();
 }
 
 void render() {

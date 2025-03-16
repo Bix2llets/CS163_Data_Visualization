@@ -1,14 +1,10 @@
 
 #include "singlyLinkedList.h"
-
-const ColorSet SLL::NODE_PALETTE = {
-    Color{186, 180, 163, 255}, Color{186, 180, 163, 255},
-    Color{51, 49, 45, 255},    Color{42, 114, 47, 255},
-    Color{186, 180, 163, 255},  Color{229, 189, 80, 255},
-};
+#include "SLLScene.h"
+const ColorSet SLL::NODE_PALETTE = SLLScene::NODE_PALETTE;
 const int SLL::NODE_RADIUS = 30;
-const int SLL::DISTANCE_HORIZONTAL = 80;
-const int SLL::DISTANCE_VERTICAL = 80;
+const int SLL::DISTANCE_HORIZONTAL = 120;
+const int SLL::DISTANCE_VERTICAL = 120;
 
 SLL::SLL(Rectangle area, float animationRate)
     : drawArea{area},
@@ -52,8 +48,6 @@ void SLL::addEnd(std::string data) {
             new Node(data, drawArea.x + NODE_RADIUS - DISTANCE_HORIZONTAL / 2,
                      drawArea.y + NODE_RADIUS - DISTANCE_VERTICAL / 2,
                      NODE_RADIUS, NODE_PALETTE, animationRate);
-        root->setTargetedPosition(
-            {drawArea.x + NODE_RADIUS, drawArea.y + NODE_RADIUS});
         nodeCount++;
         return;
     }
@@ -72,7 +66,6 @@ void SLL::addEnd(std::string data) {
         new Node(data, nextTargetPosition.x - DISTANCE_HORIZONTAL / 2,
                  nextTargetPosition.y - DISTANCE_VERTICAL / 2, NODE_RADIUS,
                  NODE_PALETTE, animationRate);
-    curr->nextNode->setTargetedPosition(nextTargetPosition);
     nodeCount++;
     return;
 }
@@ -121,8 +114,6 @@ void SLL::addAt(std::string data, int place) {
             new Node(data, drawArea.x + NODE_RADIUS - DISTANCE_HORIZONTAL / 2,
                      drawArea.y + NODE_RADIUS - DISTANCE_VERTICAL / 2,
                      NODE_RADIUS, NODE_PALETTE, animationRate);
-        node->setTargetedPosition(
-            {drawArea.x + NODE_RADIUS, drawArea.y + NODE_RADIUS});
         nodeCount++;
         if (root == nullptr) {
             root = node;
@@ -148,7 +139,6 @@ void SLL::addAt(std::string data, int place) {
     Node* node = new Node(data, newPosition.x - DISTANCE_HORIZONTAL / 2,
                           newPosition.y - DISTANCE_VERTICAL / 2, NODE_RADIUS,
                           NODE_PALETTE, animationRate);
-    node->setTargetedPosition(newPosition);
 
     node->nextNode = curr->nextNode;
     curr->nextNode = node;
@@ -173,10 +163,16 @@ void SLL::removeEnd() {
 }
 
 void SLL::removeAt(int place) {
-    if (place > nodeCount - 1) return;
-    Node* curr = root;
+    if (place > nodeCount) return;
+    Node* curr = root;;
     Node* prev = nullptr;
 
+    if (place == 0) {
+        root = root->nextNode;
+        delete curr;
+        nodeCount--;
+        return;
+    }
     while (place && curr) {
         place--;
         prev = curr;
@@ -194,19 +190,22 @@ void SLL::removeAt(int place) {
     nodeCount--;
 }
 
-void SLL::moveOutAt(int place) {
+void SLL::moveAt(int place) {
     if (place > nodeCount) return;
+    // if (place == 0) return;
+    // place--;
     Node* curr = root;
     while (place && curr) {
         curr = curr->nextNode;
         place--;
     }
+    if (curr == nullptr) return;
     curr->setTargetedPosition(
         Vector2Add(curr->getTargetedPosition(),
                    {DISTANCE_HORIZONTAL / 2, DISTANCE_VERTICAL / 2}));
 }
 
-void SLL::moveOutEnd() {
+void SLL::moveEnd() {
     Node* curr = root;
     if (curr == nullptr) return;
     while (curr->nextNode) curr = curr->nextNode;
@@ -218,7 +217,7 @@ void SLL::moveOutEnd() {
 void SLL::shiftForward(int place) {
     if (root == nullptr) return;
     Node* curr = root;
-    int index = 1;
+    int index = 0;
     while (place && curr) {
         curr = curr->nextNode;
         place--;
@@ -337,7 +336,7 @@ void SLL::setAnimationRate(float rate) {
 int SLL::locate(std::string val) {
     Node* curr = root;
     int place = 0;
-    while(curr && curr->data != val) {
+    while (curr && curr->data != val) {
         curr = curr->nextNode;
         place++;
     }
@@ -348,7 +347,7 @@ int SLL::locate(std::string val) {
 void SLL::highlightTo(int place) {
     if (place < 0) return;
     Node* curr = root;
-    while(curr && place) {
+    while (curr && place) {
         curr->borderColor.setBaseColor(NODE_PALETTE.borderNormal);
         curr->borderColor.setTargetColor(NODE_PALETTE.borderHighlight);
         curr->borderColor.setFactor(0.f);
@@ -367,7 +366,7 @@ void SLL::highlightTo(int place) {
 void SLL::deHighlight() {
     Node* curr = root;
     Color normalColor = NODE_PALETTE.borderNormal;
-    while(curr) {
+    while (curr) {
         curr->borderColor.setBaseColor(normalColor);
         curr->borderColor.setCurrentColor(normalColor);
         curr->borderColor.setTargetColor(normalColor);

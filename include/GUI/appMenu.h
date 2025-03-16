@@ -30,6 +30,7 @@ extern Form valueBox;
 extern std::vector<GUIObject *> renderList;
 extern std::vector<TextBox> codeList;
 
+extern int* highlightValue;
 
 void init();
 
