@@ -7,9 +7,9 @@
 #include "colorPalette.h"
 #include "raylib.h"
 #include "raymath.h"
-class Button : public GUIObject {
+#include "toggleable.h"
+class Button : public GUIObject, public Toggleable {
    protected:
-    bool enabled;
     Vector2 dimension;
    private:
     int fontSize;
@@ -29,7 +29,7 @@ class Button : public GUIObject {
           fontSize{fontSize},
           PALETTE{palette},
           edgeColor{},
-          enabled{true} {};
+          Toggleable() {};
 
     Button(Rectangle rectangle = {0, 0, 0, 0}, std::string text = "", int fontSize = 20,
            ColorSet palette = DEF_SET)
@@ -50,9 +50,4 @@ class Button : public GUIObject {
 
     bool isPressed() const;
     bool isHovered() const;
-
-    bool isEnabled();
-    void toggleEnabled();
-    void enable();
-    void disable();
 };

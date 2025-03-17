@@ -84,13 +84,3 @@ std::pair<bool, int> Form::getValue() {
     for (char chr: text) if (chr < '0' || '9' < chr) return {0, 0};
     return {1, std::stoi(text)};
 }
-
-void Form::enable() { 
-    enabled = true;
-}
-void Form::disable() { 
-    enabled = false;
-}
-void Form::toggle() { 
-    enabled = !enabled;
-}

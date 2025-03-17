@@ -7,8 +7,9 @@
 #include "colorPalette.h"
 #include "raylib.h"
 #include "utility.h"
+#include "toggleable.h"
 // * This provides no line wrapping, only box enlargement
-class TextBox : public GUIObject {
+class TextBox : public GUIObject, public Toggleable {
    private:
     bool isHighlighted = false;
     float width;
@@ -34,7 +35,8 @@ class TextBox : public GUIObject {
           width{minimumBox.width},
           height{minimumBox.height},
           verticalAlign{verticalAlign},
-          horizontalAlign{horizontalAlign} {};
+          horizontalAlign{horizontalAlign}, 
+          Toggleable() {};
 
     void render();
 

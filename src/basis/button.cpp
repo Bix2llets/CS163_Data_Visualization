@@ -54,11 +54,3 @@ bool Button::isPressed() const {
     if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) return true;
     return false;
 }
-
-bool Button::isEnabled() { return enabled; }
-
-void Button::enable() { enabled = true; }
-
-void Button::disable() { enabled = false; }
-
-void Button::toggleEnabled() { enabled = !enabled; }

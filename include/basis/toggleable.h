@@ -3,9 +3,11 @@
 
 // PEAK MULTIPLE INHERITANCE
 class Toggleable{
+    protected:
     bool enabled;
+    public:
     Toggleable() : enabled{true} {}
-
+    
     void enable();
     void disable();
     void toggle();

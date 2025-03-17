@@ -6,8 +6,8 @@
 #include "colorPalette.h"
 #include "raylib.h"
 #include "utility.h"
-class Form : public GUIObject {
-    bool enabled;
+#include "toggleable.h"
+class Form : public GUIObject, public Toggleable {
     std::string text;
     bool isFocusedOn;
     float width;
@@ -34,7 +34,7 @@ class Form : public GUIObject {
           BOTTOM_MARGIN{10},
           isFocusedOn{false},
           text{""},
-          enabled{true} {};
+          Toggleable() {};
 
     void render();
     void update();
@@ -42,7 +42,4 @@ class Form : public GUIObject {
     std::string getText();
     std::pair<bool, int> getValue();
 
-    void enable();
-    void disable();
-    void toggle();
 };
