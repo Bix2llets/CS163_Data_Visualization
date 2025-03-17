@@ -68,4 +68,38 @@ namespace mLib
         "root[index]->value = -1", // 13
         "End", // 14
     };
+
+    const char *AVLInsert[15] = {
+        "Begin", // 0
+        "search for insert position", // 1
+        "insert node", // 2
+        "rebalance", // 3
+        "Case 1: Left rotation", // 4
+        "Case 2: Right rotation", // 5
+        "Case 3: Left-Right rotation", // 6
+        "Case 4: Right-Left rotation", // 7
+        "End", // 8
+    };
+
+    const char *AVLSearch[15] = {
+        "Begin", // 9
+        "search for node", // 10
+        "End", // 11
+    };
+
+    const char *AVLDelete[15] = {
+        "Begin", // 12
+        "search for node", // 13
+        "if node is internal node", // 14
+        "find successor S, node.v = S.v", // 14
+        "delete successor S", // 14
+        "else delete node", // 15
+        "endif",
+        "rebalance", // 16
+        "Case 1: Left rotation", // 17
+        "Case 2: Right rotation", // 18
+        "Case 3: Left-Right rotation", // 19
+        "Case 4: Right-Left rotation", // 20
+        "End", // 21
+    };
 } // namespace mLib

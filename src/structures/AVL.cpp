@@ -62,33 +62,33 @@ std::pair<int, int> AVL::insert(AVLNode *par, AVLNode *&root, int value, ActionL
     if (root == NULL) {
         if (par == NULL) root = new AVLNode(700, 100, value, par);
         else root = new AVLNode(par->getPosition().x, par->getPosition().y, value, par);
-        actions.push_back({-1, CREATE, root});
-        actions.push_back({-1, SETLECT, root});
+        actions.push_back({2, CREATE, root});
+        actions.push_back({2, SETLECT, root});
         return {1, 0};
     }
 
-    actions.push_back({-1, SETLECT, root});
+    actions.push_back({1, SETLECT, root});
     if (value < root -> value) std::tie(root -> heightLeft, root -> balanceLeft) = insert(root, root -> left, value, actions);
     else if (value > root -> value) std::tie(root -> heightRight, root -> balanceRight) = insert(root, root -> right, value, actions);
     else return {root -> height, root -> balance};
 
-    actions.push_back({-1, SETLECT, root});
+    actions.push_back({3, SETLECT, root});
     int balance = root -> heightLeft - root -> heightRight;
     if (balance > 1) {
         if (value < root -> left -> value) {
-            actions.push_back({-1, Right, root});
+            actions.push_back({5, Right, root});
         } else {
-            actions.push_back({-1, LL, root});
-            actions.push_back({-1, Right, root});
+            actions.push_back({6, LL, root});
+            actions.push_back({6, Right, root});
         }
         return {std::max(root -> heightLeft, root -> heightRight), 1};
     }
     else if (balance < -1) {
         if (value > root -> right -> value) {
-            actions.push_back({-1, Left, root});
+            actions.push_back({4, Left, root});
         } else {
-            actions.push_back({-1, RR, root});
-            actions.push_back({-1, Left, root});
+            actions.push_back({7, RR, root});
+            actions.push_back({7, Left, root});
         }
         return {std::max(root -> heightLeft, root -> heightRight), -1};
     }
@@ -97,15 +97,15 @@ std::pair<int, int> AVL::insert(AVLNode *par, AVLNode *&root, int value, ActionL
 
 void AVL::insert(int value) {
     ActionList actions;
-    actions.push_back({-1, INIT, NULL});
+    actions.push_back({0, INIT, NULL});
     insert(NULL, root, value, actions);
-    actions.push_back({-1, CLEAR, NULL});
+    actions.push_back({8, CLEAR, NULL});
     core.insert(core.end(), actions.begin(), actions.end());
 }
 
 void AVL::search(AVLNode *root, int value, ActionList &actions) {
     if (root == NULL) return ;
-    actions.push_back({-1, SETLECT, root});
+    actions.push_back({10, SETLECT, root});
     if (root->value == value) return ;
     if (value < root->value) search(root->left, value, actions);
     else search(root->right, value, actions);
@@ -113,9 +113,9 @@ void AVL::search(AVLNode *root, int value, ActionList &actions) {
 
 void AVL::search(int value) {
     ActionList actions;
-    actions.push_back({-1, INIT, NULL});
+    actions.push_back({9, INIT, NULL});
     search(root, value, actions);
-    actions.push_back({-1, CLEAR, NULL});
+    actions.push_back({11, CLEAR, NULL});
     core.insert(core.end(), actions.begin(), actions.end());
 }
 
@@ -126,58 +126,78 @@ int AVL::getLeftmost(AVLNode *root) {
 
 std::pair<int, int> AVL::remove(AVLNode *par, AVLNode *root, int value, ActionList &actions) {
     if (root == NULL) return {0, 0};
-    actions.push_back({-1, SETLECT, root});
+    actions.push_back({13, SETLECT, root});
     if (value < root->value) std::tie(root->heightLeft, root->balanceLeft) = remove(root, root->left, value, actions);
     else if (value > root->value) std::tie(root->heightRight, root->balanceRight) = remove(root, root->right, value, actions);
     else {
-        actions.push_back({-1, target, root});
+        actions.push_back({13, target, root});
         if (root->left == NULL || root->right == NULL) {
-            actions.push_back({-1, DELETE, root});
+            actions.push_back({15, DELETE, root});
             return {std::max(root->left == NULL ? 0 : root->heightLeft, root->right == NULL ? 0 : root->heightRight), 0};
         }
         else {
             int leftmost = getLeftmost(root->right);
             std::tie(root->heightRight, root->balanceLeft) = remove(root, root->right, leftmost, actions);
             root->targetValue = leftmost;
-            actions.push_back({-1, changeValue, root});
+            actions.push_back({14, changeValue, root});
             for (int i = actions.size() - 2; i >= 0; i--) {
                 if (actions[i].action == target) break;
                 std::swap(actions[i], actions[i + 1]);
             }
         }
     }
-    actions.push_back({-1, SETLECT, root});
-    if (root->value == value) actions.push_back({-1, untarget, root});
+    actions.push_back({16, SETLECT, root});
+    if (root->value == value) actions.push_back({16, untarget, root});
     int balance = root->heightLeft - root->heightRight;
     if (balance > 1) {
         if (root->left->balance >= 0) {
-            actions.push_back({-1, Right, root});
+            actions.push_back({18, Right, root});
         } else {
-            actions.push_back({-1, LL, root});
-            actions.push_back({-1, Right, root});
+            actions.push_back({19, LL, root});
+            actions.push_back({19, Right, root});
         }
         return {std::max(root->heightLeft, root->heightRight), 1};
     }
     else if (balance < -1) {
         if (root->right->balance <= 0) {
-            actions.push_back({-1, Left, root});
+            actions.push_back({17, Left, root});
         } else {
-            actions.push_back({-1, RR, root});
-            actions.push_back({-1, Left, root});
+            actions.push_back({20, RR, root});
+            actions.push_back({20, Left, root});
         }
         return {std::max(root->heightLeft, root->heightRight), -1};
     }
     return {std::max(root->heightLeft, root->heightRight) + 1, balance};
 }
 
+#include <cassert>
+
 void AVL::remove(int value) {
     ActionList actions;
-    actions.push_back({-1, INIT, NULL});
+    actions.push_back({12, INIT, NULL});
     remove(NULL, root, value, actions);
-    actions.push_back({-1, CLEAR, NULL});
+    actions.push_back({21, CLEAR, NULL});
+    for (int i = actions.size() - 1; i >= 0; i --)
+        if (actions[i].action == changeValue) {
+            assert(i < actions.size() - 1);
+            assert(actions[i + 1].action == DELETE);
+            actions[i + 1].index = 14;
+            for (int j = i; j >= 0; j --)
+                if (actions[j].node == actions[i].node && j < i) break;
+                else actions[j].index = 14;
+            break ;
+        }
     for (int i = 0; i < actions.size() - 1; i ++) 
         if (actions[i].action == DELETE) {
-            std::swap(actions[i], actions[i + 1]);
+            if (actions[i + 1].action == SETLECT) {
+                std::swap(actions[i], actions[i + 1]);
+                actions[i].index = actions[i + 1].index;
+            }
+            else {
+                actions.push_back({15, SETLECT, NULL});
+                std::swap(actions.back(), actions[i + 1]);
+                std::swap(actions[i], actions[i + 1]);
+            }
             break;
         }
     core.insert(core.end(), actions.begin(), actions.end());
@@ -209,6 +229,7 @@ bool AVL::Undo(action Action) {
                 else 
                 if (Action.node->left == Action.node->parent->left) Action.node->parent->left = Action.node;
                 else Action.node->parent->right = Action.node;
+                calcPosition(root);
             }
             return isCompleted(root);
         case target:
@@ -427,7 +448,7 @@ void AVL::draw(AVLNode*root) {
 }
 
 void AVL::draw() {
-    //if (!endLoop()) mLib::DrawTextTrie(core[loop].index);
+    if (!endLoop()) mLib::DrawTextAVL(core[loop].index);
     drawArrow(root);
     draw(root);
     if (Itr.show) DrawRing(Itr.animation->getPosition(), NODE_RADIUS, NODE_RADIUS + 5, 0, 360, 20, GREEN);
