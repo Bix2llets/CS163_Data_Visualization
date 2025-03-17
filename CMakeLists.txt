@@ -26,6 +26,7 @@ add_executable(
     src/basis/textbox.cpp
 
     src/basis/overload.cpp
+    src/basis/toggleable.cpp
     
     src/animation/animation.cpp
     src/animation/arrow.cpp
