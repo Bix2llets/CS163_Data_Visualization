@@ -38,6 +38,8 @@ add_executable(
     src/structures/TrieState.cpp
     src/structures/AVL.cpp 
     src/structures/AVLState.cpp
+    src/structures/hash.cpp
+    src/structures/hashState.cpp
     src/mLib/Utility.cpp
     src/mLib/tinyfiledialogs.cpp
 

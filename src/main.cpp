@@ -6,6 +6,7 @@
 #include <cmath>
 #include "TrieState.hpp"
 #include "AVLState.hpp"
+#include "hashState.hpp"
 #define RAYGUI_IMPLEMENTATION
 #include "raygui.h"
 #include <mLib/Utility.hpp>
@@ -24,6 +25,7 @@ State state = MENU;
 
 TrieState trieState;
 AVLState avlState;
+hashState _hashState;
 
 #include <memory>
 
@@ -47,10 +49,9 @@ int main() {
     Font font = LoadFont("assets/inter-black.ttf");
     GuiSetFont(font);
     mLib::InitFont("assets/inter-black.ttf");
-
     trieState = TrieState();
     avlState = AVLState();
-    
+    _hashState = hashState();
     while (!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(RAYWHITE);
@@ -63,6 +64,9 @@ int main() {
                 }
                 if (GuiButton((Rectangle){10, 70, 100, 50}, "AVL")) {
                     state = AVL;
+                }
+                if (GuiButton((Rectangle){10, 130, 100, 50}, "Hash")) {
+                    state = HASH_TABLE;
                 }
                 break;
             }
@@ -82,7 +86,15 @@ int main() {
                 }
                 break;
             }
-
+            case HASH_TABLE:
+            {
+                _hashState.printTable();
+                _hashState.run();
+                if (GuiButton((Rectangle){10, 10, 100, 50}, "Back")) {
+                    state = MENU;
+                }
+                break;
+            }
         }
         EndDrawing();
     }
