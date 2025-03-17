@@ -141,14 +141,12 @@ std::pair<int, int> AVL::remove(AVLNode *par, AVLNode *root, int value, ActionLi
             root->targetValue = leftmost;
             actions.push_back({-1, changeValue, root});
             for (int i = actions.size() - 2; i >= 0; i--) {
+                if (actions[i].action == target) break;
                 std::swap(actions[i], actions[i + 1]);
-                if (actions[i + 1].action == DELETE) break;
             }
         }
     }
     actions.push_back({-1, SETLECT, root});
-    if (actions.size() > 1 && actions[actions.size() - 2].action == DELETE) 
-        std::swap(actions[actions.size() - 2], actions[actions.size() - 1]);
     if (root->value == value) actions.push_back({-1, untarget, root});
     int balance = root->heightLeft - root->heightRight;
     if (balance > 1) {
@@ -177,6 +175,11 @@ void AVL::remove(int value) {
     actions.push_back({-1, INIT, NULL});
     remove(NULL, root, value, actions);
     actions.push_back({-1, CLEAR, NULL});
+    for (int i = 0; i < actions.size() - 1; i ++) 
+        if (actions[i].action == DELETE) {
+            std::swap(actions[i], actions[i + 1]);
+            break;
+        }
     core.insert(core.end(), actions.begin(), actions.end());
 }
 
