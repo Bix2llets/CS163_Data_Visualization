@@ -12,6 +12,7 @@ extern float elapsedSinceLastUpdate;
 extern int frameCount;
 extern const float FRAME_TIME;
 extern SceneList currentScene;
+extern bool isRunning;
 
 extern void (*renderFunc)();
 extern void (*updateFunc)();

@@ -44,4 +44,6 @@ class SLL {
 
     SLL operator=(const SLL &source);
 
+    void freeMemory();
+
 };  // namespace SLL

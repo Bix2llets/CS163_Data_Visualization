@@ -1,6 +1,7 @@
 #pragma once
 #include "singlyLinkedList.h"
 #include "appMenu.h"
+#include "mainLoop.h"
 #include <deque>
 #include <vector>
 #include <string> 
@@ -19,6 +20,7 @@ namespace SLLScene {
     extern float animationRate;
     extern std::deque<SLLStorage> steps;
     extern std::deque<SLLStorage> past;
+    extern std::deque<SLLStorage> future;
     // * For pseudo code rendered in code panel
     extern const std::vector<std::string> PSEUDO_INSERT;
     extern const std::vector<std::string> PSEUDO_DELETE;
@@ -47,4 +49,10 @@ namespace SLLScene {
     void clearScene();
 
     void recordInput();
+
+    void prevStep();
+
+    void nextStep();
+
+    void init();
 }

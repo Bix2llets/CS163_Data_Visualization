@@ -5,6 +5,7 @@ float elapsedSinceLastUpdate = 0.f;
 int frameCount = 0;
 const float FRAME_TIME = 1.0f / 24;
 SceneList currentScene = SceneList::MAIN_MENU;
+bool isRunning = true;
 
 void (*renderFunc)() = nullptr;
 void (*updateFunc)() = nullptr;
@@ -17,6 +18,9 @@ void checkForReturn() {
 
         AppMenu::locationBox.enable();
         AppMenu::valueBox.enable();
+        AppMenu::undoButton.enable();
+        AppMenu::redoButton.enable();
+        AppMenu::togglePauseButton.enable();
         renderFunc = nullptr;
         updateFunc = nullptr;
         recordFunc = nullptr;
@@ -29,7 +33,7 @@ void update() {
         elapsedSinceLastUpdate -= FRAME_TIME;
     }
     while (frameCount) {
-        if (updateFunc != nullptr) updateFunc();
+        if (updateFunc != nullptr && isRunning) updateFunc();
         frameCount--;
     }
 }
@@ -58,6 +62,12 @@ void registerInput() {
         return;
     }
     checkForReturn();
+    
+    if (AppMenu::togglePauseButton.isPressed()) isRunning = !isRunning;
+    if (isRunning) AppMenu::togglePauseButton.setText("Running");
+    else AppMenu::togglePauseButton.setText("Pausing");
+
+    
     if (recordFunc) recordFunc();
 }
 
@@ -66,7 +76,7 @@ void render() {
         WelcomeMenu::render();
     } else {
         AppMenu::render();
-        renderFunc();
+        if (renderFunc) renderFunc();
     }
 }
 

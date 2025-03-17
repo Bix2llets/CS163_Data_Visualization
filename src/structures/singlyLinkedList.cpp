@@ -45,8 +45,8 @@ SLL::SLL(const SLL& sll) {
 void SLL::addEnd(std::string data) {
     if (root == nullptr) {
         root =
-            new Node(data, drawArea.x + NODE_RADIUS - DISTANCE_HORIZONTAL / 2,
-                     drawArea.y + NODE_RADIUS - DISTANCE_VERTICAL / 2,
+            new Node(data, drawArea.x + NODE_RADIUS - DISTANCE_HORIZONTAL / 3,
+                     drawArea.y + NODE_RADIUS - DISTANCE_VERTICAL / 3,
                      NODE_RADIUS, NODE_PALETTE, animationRate);
         nodeCount++;
         return;
@@ -63,8 +63,8 @@ void SLL::addEnd(std::string data) {
                             DISTANCE_VERTICAL, nodePerRow, index);
 
     curr->nextNode =
-        new Node(data, nextTargetPosition.x - DISTANCE_HORIZONTAL / 2,
-                 nextTargetPosition.y - DISTANCE_VERTICAL / 2, NODE_RADIUS,
+        new Node(data, nextTargetPosition.x - DISTANCE_HORIZONTAL / 3,
+                 nextTargetPosition.y - DISTANCE_VERTICAL / 3, NODE_RADIUS,
                  NODE_PALETTE, animationRate);
     nodeCount++;
     return;
@@ -73,7 +73,7 @@ void SLL::addEnd(std::string data) {
 void SLL::render() {
     if (root == nullptr) return;
     DrawUtility::drawText(
-        "Root", Vector2Add(root->getPosition(), {0, DISTANCE_HORIZONTAL / 2}),
+        "Root", Vector2Add(root->getPosition(), {0, DISTANCE_HORIZONTAL / 3}),
         DrawUtility::inter20, NODE_PALETTE.textNormal, DrawUtility::NORMAL_SIZE,
         DrawUtility::SPACING, VerticalAlignment::CENTERED,
         HorizontalAlignment::CENTERED);
@@ -111,8 +111,8 @@ Vector2 getNextNodePosition(Vector2 currentPosition, int horizontalDistance,
 void SLL::addAt(std::string data, int place) {
     if (place == 0) {
         Node* node =
-            new Node(data, drawArea.x + NODE_RADIUS - DISTANCE_HORIZONTAL / 2,
-                     drawArea.y + NODE_RADIUS - DISTANCE_VERTICAL / 2,
+            new Node(data, drawArea.x + NODE_RADIUS - DISTANCE_HORIZONTAL / 3,
+                     drawArea.y + NODE_RADIUS - DISTANCE_VERTICAL / 3,
                      NODE_RADIUS, NODE_PALETTE, animationRate);
         nodeCount++;
         if (root == nullptr) {
@@ -136,8 +136,8 @@ void SLL::addAt(std::string data, int place) {
     Vector2 newPosition =
         getNextNodePosition(curr->getTargetedPosition(), DISTANCE_HORIZONTAL,
                             DISTANCE_VERTICAL, nodePerRow, index);
-    Node* node = new Node(data, newPosition.x - DISTANCE_HORIZONTAL / 2,
-                          newPosition.y - DISTANCE_VERTICAL / 2, NODE_RADIUS,
+    Node* node = new Node(data, newPosition.x - DISTANCE_HORIZONTAL / 3,
+                          newPosition.y - DISTANCE_VERTICAL / 3, NODE_RADIUS,
                           NODE_PALETTE, animationRate);
 
     node->nextNode = curr->nextNode;
@@ -202,7 +202,7 @@ void SLL::moveAt(int place) {
     if (curr == nullptr) return;
     curr->setTargetedPosition(
         Vector2Add(curr->getTargetedPosition(),
-                   {DISTANCE_HORIZONTAL / 2, DISTANCE_VERTICAL / 2}));
+                   {DISTANCE_HORIZONTAL / 3, DISTANCE_VERTICAL / 3}));
 }
 
 void SLL::moveEnd() {
@@ -211,7 +211,7 @@ void SLL::moveEnd() {
     while (curr->nextNode) curr = curr->nextNode;
     curr->setTargetedPosition(
         Vector2Add(curr->getTargetedPosition(),
-                   {DISTANCE_HORIZONTAL / 2, DISTANCE_VERTICAL / 2}));
+                   {DISTANCE_HORIZONTAL / 3, DISTANCE_VERTICAL / 3}));
 }
 
 void SLL::shiftForward(int place) {
@@ -376,5 +376,13 @@ void SLL::deHighlight() {
         curr->edgeColor.setTargetColor(normalColor);
         curr->edgeColor.setFactor(1.f);
         curr = curr->nextNode;
+    }
+}
+
+void SLL::freeMemory() {
+    while(root) {
+        Node* curr = root;
+        root = root->nextNode;
+        delete curr;
     }
 }

@@ -22,6 +22,9 @@ extern int verticalCellCount;
 // Buttons
 extern std::vector<std::vector<Button>> buttonPanel;
 extern Button backButton;
+extern Button undoButton;
+extern Button redoButton;
+extern Button togglePauseButton;
 // Forms
 extern Form locationBox;
 extern Form valueBox;
@@ -29,7 +32,6 @@ extern Form valueBox;
 // For rendering objects
 extern std::vector<GUIObject *> renderList;
 extern std::vector<TextBox> codeList;
-
 extern int* highlightValue;
 
 void init();

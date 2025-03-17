@@ -60,7 +60,8 @@ int main() {
 
     DrawUtility::init();
     AppMenu::init();
-    SLLScene::setSpecs(0.f, 12.5f);
+    SLLScene::setSpecs(0.05f, 10.0f);
+    SLLScene::init();
 
     // * Object initialization
 

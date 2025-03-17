@@ -16,11 +16,20 @@ ColorSet codeBlockColor{
 
 Vector2 panelPosition{50, 760};
 Vector2 buttonDimension = {200, 40};
-Vector2 codeBlockPosition{900, 620};
+Vector2 codeBlockPosition{1050, 620};
 Vector2 codeLineSize{500, 25};
 
 std::vector<std::vector<Button>> buttonPanel;
-Button backButton;
+Button backButton({10, 10, buttonDimension.x, buttonDimension.y}, "Back",
+                  DrawUtility::NORMAL_SIZE, buttonPalette);
+
+Button undoButton({800, 0}, buttonDimension, "undo", DrawUtility::NORMAL_SIZE,
+                  buttonPalette);
+Button redoButton({800, buttonDimension.y}, buttonDimension, "redo",
+                  DrawUtility::NORMAL_SIZE, buttonPalette);
+Button togglePauseButton({800, buttonDimension.y * 2}, buttonDimension,
+                         "toggle Pause", DrawUtility::NORMAL_SIZE,
+                         buttonPalette);
 
 Form locationBox{{550, 760, 200, 40}, buttonPalette};
 Form valueBox{{550, 840, 200, 40}, buttonPalette};
@@ -70,6 +79,9 @@ void init() {
     renderList.push_back(&backButton);
     renderList.push_back(&valueText);
     renderList.push_back(&locationText);
+    renderList.push_back(&undoButton);
+    renderList.push_back(&redoButton);
+    renderList.push_back(&togglePauseButton);
 }
 
 void render() {
