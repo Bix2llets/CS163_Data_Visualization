@@ -26,6 +26,9 @@ namespace mLib
     extern const char *TrieInsert[15];
     extern const char *TrieSearch[15];
     extern const char *TrieDelete[15];
+    extern const char *hashInsert[15];
+    extern const char *hashSearch[15];
+    extern const char *hashDelete[15];
     inline void DrawTextTrie(int index) {
         for (int i = 0; i < 12; i ++) DrawRectangle(1200, 300 + 40 * i, 350, 40, Fade(RED, 0.3f));
         if (index <= 5) {
@@ -65,6 +68,50 @@ namespace mLib
                 if (index == 17) DrawRectangle(1200, 300 + 400, 350, 40, Fade(GREEN, 0.3f));
                 if (index == 18) DrawRectangle(1200, 300 + 440, 350, 40, Fade(GREEN, 0.3f));
                 for (int i = 0; i < 12; i++) DrawTextEx(mFont, TrieDelete[i], (Vector2){1200, 300 + 40 * i}, 20, 2, BLACK);
+            }
+    }
+    inline void DrawTextHash(int index) {
+        for (int i = 0; i < 10; i ++) DrawRectangle(1200, 300 + 40 * i, 350, 40, Fade(RED, 0.3f));
+        if (index <= 4) {
+            if (index == 0) DrawRectangle(1200, 300, 350, 40, Fade(GREEN, 0.3f));
+            if (index == 1) DrawRectangle(1200, 300 + 40, 350, 40, Fade(GREEN, 0.3f));
+            if (index == 2) {
+                DrawRectangle(1200, 300 + 80, 350, 40, Fade(GREEN, 0.3f));
+                DrawRectangle(1200, 300 + 120, 350, 40, Fade(GREEN, 0.3f));
+            }
+            if (index == 3) {
+                DrawRectangle(1200, 300 + 160, 350, 40, Fade(GREEN, 0.3f));
+                DrawRectangle(1200, 300 + 200, 350, 40, Fade(GREEN, 0.3f));
+            }
+            if (index == 4) DrawRectangle(1200, 300 + 240, 350, 40, Fade(GREEN, 0.3f));
+            for (int i = 0; i < 10; i++) DrawTextEx(mFont, hashInsert[i], (Vector2){1200, 300 + 40 * i}, 20, 2, BLACK);
+        }
+        else
+            if (index <= 9) {
+                if (index == 5) DrawRectangle(1200, 300, 350, 40, Fade(GREEN, 0.3f));
+                if (index == 6) DrawRectangle(1200, 300 + 40, 350, 40, Fade(GREEN, 0.3f));
+                if (index == 7) {
+                    DrawRectangle(1200, 300 + 80, 350, 40, Fade(GREEN, 0.3f));
+                    DrawRectangle(1200, 300 + 120, 350, 40, Fade(GREEN, 0.3f));
+                }
+                if (index == 8) DrawRectangle(1200, 300 + 160, 350, 40, Fade(GREEN, 0.3f));
+                if (index == 9) DrawRectangle(1200, 300 + 200, 350, 40, Fade(GREEN, 0.3f));
+                for (int i = 0; i < 10; i++) DrawTextEx(mFont, hashSearch[i], (Vector2){1200, 300 + 40 * i}, 20, 2, BLACK);
+            }
+            else {
+                if (index == 10) DrawRectangle(1200, 300, 350, 40, Fade(GREEN, 0.3f));
+                if (index == 11) DrawRectangle(1200, 300 + 40, 350, 40, Fade(GREEN, 0.3f));
+                if (index == 12) {
+                    DrawRectangle(1200, 300 + 80, 350, 40, Fade(GREEN, 0.3f));
+                    DrawRectangle(1200, 300 + 120, 350, 40, Fade(GREEN, 0.3f));
+                    DrawRectangle(1200, 300 + 160, 350, 40, Fade(GREEN, 0.3f));
+                }
+                if (index == 13) {
+                    DrawRectangle(1200, 300 + 200, 350, 40, Fade(GREEN, 0.3f));
+                    DrawRectangle(1200, 300 + 240, 350, 40, Fade(GREEN, 0.3f));
+                }
+                if (index == 14) DrawRectangle(1200, 300 + 280, 350, 40, Fade(GREEN, 0.3f));
+                for (int i = 0; i < 10; i++) DrawTextEx(mFont, hashDelete[i], (Vector2){1200, 300 + 40 * i}, 20, 2, BLACK);
             }
     }
 }   

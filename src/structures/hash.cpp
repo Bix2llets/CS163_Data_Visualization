@@ -44,58 +44,58 @@ bool hash::Action(bool isReversed) {
 void hash::insert(int value) {
     ActionList actions;
     int index = value % m;
-    actions.push_back({-1, INIT, NULL});
-    actions.push_back({-1, SETLECT, root[index]});
+    actions.push_back({0, INIT, NULL});
+    actions.push_back({1, SETLECT, root[index]});
     while (root[index]->value != -1) {
         index = (index + 1) % m;
-        actions.push_back({-1, SETLECT, root[index]});
+        actions.push_back({2, SETLECT, root[index]});
         if (index == value % m) break;
     }
     if (root[index]->value == -1) {
         root[index]->targetValue = value;
-        actions.push_back({-1, target, root[index]});
-        actions.push_back({-1, changeValue, root[index]});
-        actions.push_back({-1, untarget, root[index]});
+        actions.push_back({3, target, root[index]});
+        actions.push_back({3, changeValue, root[index]});
+        actions.push_back({3, untarget, root[index]});
     }
-    actions.push_back({-1, CLEAR, NULL});
+    actions.push_back({4, CLEAR, NULL});
     core.insert(core.end(), actions.begin(), actions.end());
 }
 
 void hash::search(int value) {
     ActionList actions;
-    actions.push_back({-1, INIT, NULL});
+    actions.push_back({5, INIT, NULL});
     int index = value % m;
-    actions.push_back({-1, SETLECT, root[index]});
+    actions.push_back({6, SETLECT, root[index]});
     while (root[index]->value != value) {
-        actions.push_back({-1, SETLECT, root[index]});
         index = (index + 1) % m;
+        actions.push_back({7, SETLECT, root[index]});
         if (index == value % m) break;
     }
     if (root[index]->value == value) {
-        actions.push_back({-1, target, root[index]});
-        actions.push_back({-1, untarget, root[index]});
+        actions.push_back({8, target, root[index]});
+        actions.push_back({8, untarget, root[index]});
     }
-    actions.push_back({-1, CLEAR, NULL});
+    actions.push_back({9, CLEAR, NULL});
     core.insert(core.end(), actions.begin(), actions.end());
 }
 
 void hash::remove(int value) {
     ActionList actions;
-    actions.push_back({-1, INIT, NULL});
+    actions.push_back({10, INIT, NULL});
     int index = value % m;
-    actions.push_back({-1, SETLECT, root[index]});
+    actions.push_back({11, SETLECT, root[index]});
     while (root[index]->value != value && root[index]->value != -1) {
-        actions.push_back({-1, SETLECT, root[index]});
         index = (index + 1) % m;
+        actions.push_back({12, SETLECT, root[index]});
         if (index == value % m) break;
     }
     if (root[index]->value == value) {
-        actions.push_back({-1, target, root[index]});
+        actions.push_back({13, target, root[index]});
         root[index]->targetValue = -1;
-        actions.push_back({-1, changeValue, root[index]});
-        actions.push_back({-1, untarget, root[index]});
+        actions.push_back({13, changeValue, root[index]});
+        actions.push_back({13, untarget, root[index]});
     }
-    actions.push_back({-1, CLEAR, NULL});
+    actions.push_back({14, CLEAR, NULL});
     core.insert(core.end(), actions.begin(), actions.end());
 }
 
@@ -176,6 +176,7 @@ void hash::draw(hashNode* node) {
 }
 
 void hash::draw() {
+    if (!endLoop()) mLib::DrawTextHash(core[loop].index);
     for (int i = 0; i < m - 1; i ++) DrawArrowWithCircles(root[i]->getPosition(), root[i + 1]->getPosition(), NODE_RADIUS, RED, 2);
     for (int i = 0; i < m; i++) {
         DrawTextEx(mLib::mFont, std::to_string(i).c_str(), (Vector2){root[i]->getPosition().x - 10, root[i]->getPosition().y - 50}, 20, 2, BLACK);

@@ -38,4 +38,34 @@ namespace mLib
         "delete temp", // 17
         "End", // 18
     };
+
+    const char *hashInsert[15] = {
+        "Begin", // 0
+        "index = value % m", // 1
+        "while root[index]->value != -1", // 2
+        "index = (index + 1) % m", // 2
+        "if root[index]->value == -1", // 3
+        "root[index]->value = value", // 3
+        "End", // 4
+    };
+
+    const char *hashSearch[15] = {
+        "Begin", // 5
+        "index = value % m", // 6
+        "while root[index]->value != value", // 7
+        "index = (index + 1) % m", // 7
+        "if root[index]->value == value", // 8
+        "End", // 9
+    };
+
+    const char *hashDelete[15] = {
+        "Begin", // 10
+        "index = value % m", // 11
+        "while root[index]->value != value", // 12
+        "&& root[index]->value != -1", // 12
+        "index = (index + 1) % m", // 12
+        "if root[index]->value == value", // 13
+        "root[index]->value = -1", // 13
+        "End", // 14
+    };
 } // namespace mLib
