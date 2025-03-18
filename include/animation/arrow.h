@@ -32,8 +32,6 @@ class AnimationEdge{
     void setTargetColor(Color color);
     void setFactor(float factor);
     
-    void setUpdateRate(float rate);
-    
     bool isMotionCompleted();
     bool isColorCompleted();
 

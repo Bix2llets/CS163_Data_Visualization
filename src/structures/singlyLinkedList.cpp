@@ -315,16 +315,6 @@ void SLL::finishAnimation() {
     }
 }
 
-void SLL::setAnimationRate(float rate) {
-    animationRate = rate;
-    Node* curr = root;
-    if (curr == nullptr) return;
-    while (curr) {
-        curr->setAnimationRate(rate);
-        curr = curr->nextNode;
-    }
-}
-
 // SLL::~SLL() {
 //     while (root) {
 //         Node* curr = root;

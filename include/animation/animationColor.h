@@ -7,8 +7,8 @@ class AnimationColor {
     Color targetColor;
     Color currentColor;
     float factor;
-    float UPDATE_RATE;
-    float updateSpeed;
+    const static float BASE_RATE;
+    static float updateSpeed;
 
    public:
     AnimationColor(float updateSpeed = 1);
@@ -17,7 +17,7 @@ class AnimationColor {
     void setBaseColor(Color color);
     void setCurrentColor(Color color);
     void setFactor(float newFactor);
-    void setUpdateRate(float newSpeed);
+    static void setUpdateRate(float newSpeed);
     void update();
     
     Color getBaseColor();

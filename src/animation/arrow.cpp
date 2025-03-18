@@ -1,8 +1,8 @@
 #include "arrow.h"
 
 AnimationEdge::AnimationEdge(Vector2 beginPos, Vector2 endPos, AnimationColor currentColor, float newFac)
-: beginPosition{beginPos.x, beginPos.y, newFac},
-  endPosition{endPos.x, endPos.y, newFac},
+: beginPosition{beginPos.x, beginPos.y},
+  endPosition{endPos.x, endPos.y},
   isHighlighted{false}, currentColor{currentColor} { currentColor.setUpdateRate(newFac);};
 
 void AnimationEdge::render() {
@@ -41,11 +41,7 @@ void AnimationEdge::setEndPosition(Vector2 target) {
 void AnimationEdge::setColor(AnimationColor newColor) {
     currentColor = newColor;
 };
-void AnimationEdge::setUpdateRate(float rate) {
-    beginPosition.setUpdateRate(rate);
-    endPosition.setUpdateRate(rate);
-    currentColor.setUpdateRate(rate);
-}
+
 bool AnimationEdge::isMotionCompleted() {
     return beginPosition.isCompleted() && endPosition.isCompleted();
 };

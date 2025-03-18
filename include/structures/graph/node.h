@@ -2,6 +2,7 @@
 #include <memory>
 #include <vector>
 
+#include "raylib.h"
 #include "GUIObject.h"
 #include "animation.h"
 #include "animationColor.h"
@@ -15,7 +16,8 @@ class GraphNode : public Animation {
     int label;
     const static ColorSet PALETTE;
     static float updateRate;
-    static int radius;
+    const static int RADIUS;
+    const static int BORDER_WIDTH;
     std::vector<OutgoingEdge> adjacentNodes;
     AnimationColor borderColor;
    public:
@@ -25,11 +27,9 @@ class GraphNode : public Animation {
    
    void removeEdge(std::shared_ptr<GraphNode> dest);
    
-   void setUpdateRate(float rate);
-   
    void highlight();
    
    void deHighlight();
 
-   GraphNode(int label) : label{label}, borderColor{PALETTE.borderNormal, PALETTE.borderNormal, updateRate}, Animation{radius, radius, updateRate} {};
+   GraphNode(int label, int posX = RADIUS, int posY = RADIUS) : label{label}, borderColor{PALETTE.borderNormal, PALETTE.borderNormal, updateRate}, Animation{posX, posY} {};
 };

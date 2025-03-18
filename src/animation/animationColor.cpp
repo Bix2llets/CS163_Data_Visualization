@@ -1,19 +1,12 @@
 #include "animationColor.h"
 
+const float AnimationColor::BASE_RATE = 0.05f;
 AnimationColor::AnimationColor(float updateSpeed)
-    : baseColor{BLACK},
-      targetColor{BLACK},
-      currentColor{BLACK},
-      factor{1.f},
-      UPDATE_RATE{0.05f},
-      updateSpeed{updateSpeed} {};
+    : baseColor{BLACK}, targetColor{BLACK}, currentColor{BLACK}, factor{1.f} {};
 AnimationColor::AnimationColor(Color baseColor, Color targetColor,
                                float updateSpeed)
-    : baseColor{baseColor},
-      targetColor{targetColor},
-      factor{1.f},
-      UPDATE_RATE{0.05f},
-      updateSpeed{updateSpeed} {currentColor = ColorLerp(baseColor, targetColor, factor);
+    : baseColor{baseColor}, targetColor{targetColor}, factor{1.f} {
+    currentColor = ColorLerp(baseColor, targetColor, factor);
 };
 void AnimationColor::setTargetColor(Color color) { targetColor = color; }
 
@@ -24,7 +17,7 @@ void AnimationColor::setCurrentColor(Color color) { currentColor = color; }
 void AnimationColor::setFactor(float newFactor) { factor = newFactor; }
 
 void AnimationColor::update() {
-    factor = factor + UPDATE_RATE * updateSpeed;
+    factor = factor + BASE_RATE * updateSpeed;
     if (factor > 1.f) factor = 1.f;
 }
 
@@ -45,4 +38,4 @@ Color AnimationColor::getTargetColor() { return targetColor; }
 
 void AnimationColor::makeFinish() { setFactor(1.0f); }
 
-int AnimationColor::getAnimationRate() {return this->updateSpeed;}
+int AnimationColor::getAnimationRate() { return this->updateSpeed; }
