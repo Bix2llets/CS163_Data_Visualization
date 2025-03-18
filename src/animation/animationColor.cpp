@@ -1,10 +1,9 @@
 #include "animationColor.h"
 
 const float AnimationColor::BASE_RATE = 0.05f;
-AnimationColor::AnimationColor(float updateSpeed)
+AnimationColor::AnimationColor()
     : baseColor{BLACK}, targetColor{BLACK}, currentColor{BLACK}, factor{1.f} {};
-AnimationColor::AnimationColor(Color baseColor, Color targetColor,
-                               float updateSpeed)
+AnimationColor::AnimationColor(Color baseColor, Color targetColor)
     : baseColor{baseColor}, targetColor{targetColor}, factor{1.f} {
     currentColor = ColorLerp(baseColor, targetColor, factor);
 };

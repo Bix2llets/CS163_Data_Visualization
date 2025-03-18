@@ -11,8 +11,8 @@ class AnimationColor {
     static float updateSpeed;
 
    public:
-    AnimationColor(float updateSpeed = 1);
-    AnimationColor(Color baseColor, Color targetColor, float updateSpeed = 1);
+    AnimationColor();
+    AnimationColor(Color baseColor, Color targetColor);
     void setTargetColor(Color color);
     void setBaseColor(Color color);
     void setCurrentColor(Color color);
