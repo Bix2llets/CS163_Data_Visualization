@@ -28,14 +28,8 @@ const std::vector<std::string> SLLScene::PSEUDO_SEARCH = {
     "Return result",
 };
 void SLLScene::init() { steps.push_front({sll, -1});}
-void SLLScene::setSpecs(float _stepDelay, float _animationRate) {
+void SLLScene::setSpecs(float _stepDelay) {
     stepDelay = _stepDelay;
-    animationRate = _animationRate;
-    sll.setAnimationRate(animationRate);
-
-    for (SLLScene::SLLStorage x: steps) x.sll.setAnimationRate(animationRate);
-    for (SLLScene::SLLStorage x: past) x.sll.setAnimationRate(animationRate);
-    for (SLLScene::SLLStorage x: future) x.sll.setAnimationRate(animationRate);
 }
 void SLLScene::addEnd(std::string data) {
     int place = 0;

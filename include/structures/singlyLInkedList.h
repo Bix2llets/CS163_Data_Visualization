@@ -20,7 +20,6 @@ class SLL {
     SLL(const SLL &sll);
     // ~SLL();
     void update();
-    void setAnimationRate(float rate);
     
     void addEnd(std::string data);
     void addAt(std::string data, int place);

@@ -10,7 +10,7 @@ namespace Loop {
     enum SceneList { MAIN_MENU, LINKED_LIST, TRIE, GRAPH, AVL, HASH };
 extern float elapsedSinceLastUpdate;
 extern int frameCount;
-extern const float FRAME_TIME;
+extern const float DELTA_TIME;
 extern SceneList currentScene;
 extern bool isRunning;
 

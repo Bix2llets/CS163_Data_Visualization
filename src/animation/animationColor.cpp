@@ -1,6 +1,7 @@
 #include "animationColor.h"
 
 const float AnimationColor::BASE_RATE = 0.05f;
+float AnimationColor::updateSpeed = 1.f;
 AnimationColor::AnimationColor()
     : baseColor{BLACK}, targetColor{BLACK}, currentColor{BLACK}, factor{1.f} {};
 AnimationColor::AnimationColor(Color baseColor, Color targetColor)

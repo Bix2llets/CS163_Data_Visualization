@@ -47,7 +47,7 @@ void SLL::addEnd(std::string data) {
         root =
             new Node(data, drawArea.x + NODE_RADIUS - DISTANCE_HORIZONTAL / 3,
                      drawArea.y + NODE_RADIUS - DISTANCE_VERTICAL / 3,
-                     NODE_RADIUS, NODE_PALETTE, animationRate);
+                     NODE_RADIUS, NODE_PALETTE);
         nodeCount++;
         return;
     }
@@ -65,7 +65,7 @@ void SLL::addEnd(std::string data) {
     curr->nextNode =
         new Node(data, nextTargetPosition.x - DISTANCE_HORIZONTAL / 3,
                  nextTargetPosition.y - DISTANCE_VERTICAL / 3, NODE_RADIUS,
-                 NODE_PALETTE, animationRate);
+                 NODE_PALETTE);
     nodeCount++;
     return;
 }
@@ -113,7 +113,7 @@ void SLL::addAt(std::string data, int place) {
         Node* node =
             new Node(data, drawArea.x + NODE_RADIUS - DISTANCE_HORIZONTAL / 3,
                      drawArea.y + NODE_RADIUS - DISTANCE_VERTICAL / 3,
-                     NODE_RADIUS, NODE_PALETTE, animationRate);
+                     NODE_RADIUS, NODE_PALETTE);
         nodeCount++;
         if (root == nullptr) {
             root = node;
@@ -138,7 +138,7 @@ void SLL::addAt(std::string data, int place) {
                             DISTANCE_VERTICAL, nodePerRow, index);
     Node* node = new Node(data, newPosition.x - DISTANCE_HORIZONTAL / 3,
                           newPosition.y - DISTANCE_VERTICAL / 3, NODE_RADIUS,
-                          NODE_PALETTE, animationRate);
+                          NODE_PALETTE);
 
     node->nextNode = curr->nextNode;
     curr->nextNode = node;
@@ -276,7 +276,6 @@ SLL SLL::clone() {
     result.nodePerRow = nodePerRow;
     result.drawArea = drawArea;
     result.nodeCount = nodeCount;
-    result.animationRate = animationRate;
 
     Node* currPtr = root;
     result.root = nullptr;

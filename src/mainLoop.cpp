@@ -3,7 +3,7 @@
 namespace Loop {
 float elapsedSinceLastUpdate = 0.f;
 int frameCount = 0;
-const float FRAME_TIME = 1.0f / 24;
+const float DELTA_TIME = 1.0f / 24;
 SceneList currentScene = SceneList::MAIN_MENU;
 bool isRunning = true;
 
@@ -28,9 +28,9 @@ void checkForReturn() {
 }
 void update() {
     elapsedSinceLastUpdate += GetFrameTime();
-    while (elapsedSinceLastUpdate > FRAME_TIME) {
+    while (elapsedSinceLastUpdate > DELTA_TIME) {
         frameCount++;
-        elapsedSinceLastUpdate -= FRAME_TIME;
+        elapsedSinceLastUpdate -= DELTA_TIME;
     }
     while (frameCount) {
         if (updateFunc != nullptr && isRunning) updateFunc();

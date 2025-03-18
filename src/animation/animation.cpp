@@ -1,5 +1,6 @@
 #include "animation.h"
 
+float Animation::rate = 1.0f;
 void Animation::update() {
     if (Vector2Distance(position, targetedPosition) == 0) return;
     Vector2 displacement = Vector2Subtract(targetedPosition, position);

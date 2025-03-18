@@ -28,7 +28,7 @@ namespace SLLScene {
     // --------------------------
 
     extern const ColorSet NODE_PALETTE;
-    void setSpecs(float _stepDelay = 0.5f, float _animationRate = 1.f);
+    void setSpecs(float _stepDelay = 0.5f);
 
     void addEnd(std::string data);
 

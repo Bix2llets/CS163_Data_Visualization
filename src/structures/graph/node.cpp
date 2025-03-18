@@ -1,5 +1,10 @@
 #include "node.h"
 
+const ColorSet GraphNode::PALETTE = DEF_SET;
+const int GraphNode::RADIUS = 30;
+const int GraphNode::BORDER_WIDTH = 2;
+
+const float GraphNode::MASS = 1;
 void GraphNode::render() {
     DrawCircle(position.x, position.y, RADIUS, borderColor.getCurrentColor());
 
@@ -39,4 +44,15 @@ void GraphNode::deHighlight() {
     borderColor.setBaseColor(borderColor.getCurrentColor());
     borderColor.setTargetColor(PALETTE.borderNormal);
     borderColor.setFactor(0.f);
+}
+
+void GraphNode::setVelocity(Vector2 newVelocity) {
+    velocity  = newVelocity;
+}
+
+void GraphNode::applyForce(Vector2 force) {
+    Vector2 acceleration = Vector2Scale(force, 1.0f / MASS);
+    Vector2 deltaVelocity = Vector2Scale(acceleration, Loop::DELTA_TIME);
+
+    velocity = Vector2Add(velocity, deltaVelocity);
 }

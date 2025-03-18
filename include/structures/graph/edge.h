@@ -7,12 +7,14 @@ class GraphEdge : public GUIObject {
    private:
     std::shared_ptr<GraphNode> node1;
     std::shared_ptr<GraphNode> node2;
+    int weight;
+
+    // Drawing info
     const static int THICKNESS;
     AnimationColor color;
     const static Color NORMAL_COLOR;
     const static Color HIGHLIGHT_COLOR;
     const static Color TEXT_COLOR;
-    int weight;
 
    public:
     GraphEdge(std::shared_ptr<GraphNode> node1,
@@ -31,4 +33,5 @@ class GraphEdge : public GUIObject {
     void deHighlight();
     void makeTransparent();
     void makeOpaque();
+
 };

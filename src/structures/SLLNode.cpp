@@ -9,19 +9,17 @@ void Node::render() {
                           HorizontalAlignment::CENTERED);
 }
 
-Node::Node(std::string data, float x, float y, int radius, ColorSet palette,
-           float animationRate)
+Node::Node(std::string data, float x, float y, int radius, ColorSet palette)
     : data{data},
       Animation{x, y},
       PALETTE{palette},
       radius{radius},
-      borderColor{PALETTE.borderNormal, PALETTE.borderNormal, animationRate},
-      edgeColor{PALETTE.borderHighlight, PALETTE.borderNormal, animationRate},
+      borderColor{PALETTE.borderNormal, PALETTE.borderNormal},
+      edgeColor{PALETTE.borderHighlight, PALETTE.borderNormal},
       nextNode{nullptr} {};
 
-Node::Node(int data, float x, float y, int radius, ColorSet palette,
-           float animationRate)
-    : Node(std::to_string(data), x, y, radius, palette, animationRate) {};
+Node::Node(int data, float x, float y, int radius, ColorSet palette)
+    : Node(std::to_string(data), x, y, radius, palette) {};
 
 void Node::update() {
     Animation::update();

@@ -21,9 +21,9 @@ class Node : public Animation {
     AnimationColor edgeColor;
     Node* nextNode;
     Node(std::string data, float x, float y, int radius = 50,
-         ColorSet palette = DEF_SET, float animationRate = 1.0f);
+         ColorSet palette = DEF_SET);
     Node(int data, float x, float y, int radius = 50,
-         ColorSet palette = DEF_SET, float animationRate = 1.0f);
+         ColorSet palette = DEF_SET);
 
     // * Constructor done
 

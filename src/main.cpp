@@ -60,9 +60,11 @@ int main() {
 
     DrawUtility::init();
     AppMenu::init();
-    SLLScene::setSpecs(0.05f, 10.0f);
+    SLLScene::setSpecs(0.05f);
     SLLScene::init();
 
+    Animation::setUpdateRate(12.5f);
+    AnimationColor::setUpdateRate(12.5f);
     // * Object initialization
 
     std::vector<std::string> exampleCode = {
