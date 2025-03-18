@@ -7,7 +7,8 @@
 #include "animationColor.h"
 #include "colorPalette.h"
 #include "raylib.h"
-class GraphNode : public Animation {
+#include "utility.h"
+class GraphNode : public GUIObject {
    private:
     struct OutgoingEdge {
         std::shared_ptr<GraphNode> dest;
@@ -17,7 +18,7 @@ class GraphNode : public Animation {
     const static ColorSet PALETTE;
     const static int RADIUS;
     const static int BORDER_WIDTH;
-    std::vector<OutgoingEdge> adjacentNodes;
+    std::vector<OutgoingEdge> adjacentList;
     AnimationColor borderColor;
 
    public:
@@ -31,8 +32,10 @@ class GraphNode : public Animation {
 
     void deHighlight();
 
+    void finishAnimation();
+    void update();
     GraphNode(int label, int posX = RADIUS, int posY = RADIUS)
         : label{label},
           borderColor{PALETTE.borderNormal, PALETTE.borderNormal},
-          Animation{posX, posY} {};
+          GUIObject{posX, posY} {};
 };
