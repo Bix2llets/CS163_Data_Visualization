@@ -31,7 +31,6 @@ class Node : public Animation {
     void update();
 
     void updateAnimation();
-    void setAnimationRate(float rate);
     bool isFinished();
 
     void finishAnimation();

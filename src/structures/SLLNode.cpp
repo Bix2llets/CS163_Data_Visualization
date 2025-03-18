@@ -12,8 +12,7 @@ void Node::render() {
 Node::Node(std::string data, float x, float y, int radius, ColorSet palette,
            float animationRate)
     : data{data},
-      Animation{x, y, animationRate},
-      animationRate{animationRate},
+      Animation{x, y},
       PALETTE{palette},
       radius{radius},
       borderColor{PALETTE.borderNormal, PALETTE.borderNormal, animationRate},
@@ -28,12 +27,6 @@ void Node::update() {
     Animation::update();
     borderColor.update();
     edgeColor.update();
-}
-
-void Node::setAnimationRate(float rate) {
-    animationRate = rate;
-    borderColor.setUpdateRate(rate);
-    edgeColor.setUpdateRate(rate);
 }
 
 bool Node::isFinished() {
