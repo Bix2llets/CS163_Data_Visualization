@@ -1,5 +1,8 @@
-#include "edge.h"
+#include "graph/edge.h"
 
+const Color GraphEdge::NORMAL_COLOR = WHITE;
+const Color GraphEdge::HIGHLIGHT_COLOR = GOLD;
+const Color GraphEdge::TEXT_COLOR = WHITE;
 const int GraphEdge::THICKNESS = 2;
 void GraphEdge::update() {
     Vector2 newPosition =
@@ -36,4 +39,12 @@ void GraphEdge::makeOpaque() {
     current.a = 255;
     color.setTargetColor(current);
 
+}
+
+bool GraphEdge::isCompleted() {
+    return color.isCompleted();
+}
+
+float GraphEdge::getLength() {
+    return Vector2Distance(node1->getPosition(), node2->getPosition());
 }

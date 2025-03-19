@@ -14,6 +14,9 @@ extern const float DELTA_TIME;
 extern SceneList currentScene;
 extern bool isRunning;
 
+extern const Vector2 UPPER_LEFT;
+extern const Vector2 LOWER_RIGHT;
+
 extern void (*renderFunc)();
 extern void (*updateFunc)();
 extern void (*recordFunc)();

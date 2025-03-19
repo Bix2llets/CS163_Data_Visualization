@@ -1,4 +1,5 @@
 #include "utility.h"
+#include "mainLoop.h"
 namespace DrawUtility {
 const int SPACING = 1;
 const int NORMAL_SIZE = 20;
@@ -45,3 +46,9 @@ void drawEdge(Vector2 beginPosition, Vector2 endPosition, Color color) {
     // point2, color); DrawTriangle(endPosition, point2, point1, color);
 }
 }  // namespace DrawUtility
+
+Vector2 randomPosition() {
+    float posX = float(rand() % int(Loop::LOWER_RIGHT.x - Loop::UPPER_LEFT.x) + Loop::UPPER_LEFT.x);
+    float posY = float(rand() % int(Loop::LOWER_RIGHT.y - Loop::UPPER_LEFT.y) + Loop::UPPER_LEFT.y);
+    return Vector2{posX, posY};
+}

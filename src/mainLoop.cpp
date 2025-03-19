@@ -7,6 +7,8 @@ const float DELTA_TIME = 1.0f / 24;
 SceneList currentScene = SceneList::MAIN_MENU;
 bool isRunning = true;
 
+const Vector2 UPPER_LEFT = {50, 50};
+const Vector2 LOWER_RIGHT = {1550, 650};
 void (*renderFunc)() = nullptr;
 void (*updateFunc)() = nullptr;
 void (*recordFunc)() = nullptr;
@@ -75,6 +77,7 @@ void render() {
     if (currentScene == SceneList::MAIN_MENU) {
         WelcomeMenu::render();
     } else {
+        DrawRectangleLines(UPPER_LEFT.x, UPPER_LEFT.y, LOWER_RIGHT.x - UPPER_LEFT.x, LOWER_RIGHT.y - UPPER_LEFT.y, BLUE);
         AppMenu::render();
         if (renderFunc) renderFunc();
     }

@@ -6,11 +6,9 @@
 #include "animation.h"
 #include "animationColor.h"
 #include "colorPalette.h"
+#include "mainLoop.h"
 #include "raylib.h"
 #include "utility.h"
-#include "colorPalette.h"
-
-#include "mainLoop.h"
 class GraphNode : public GUIObject {
    private:
     struct OutgoingEdge {
@@ -27,17 +25,19 @@ class GraphNode : public GUIObject {
     // For force directed
     Vector2 velocity;
     const static float MASS;
+
    public:
-   GraphNode(int label, int posX = RADIUS, int posY = RADIUS)
-   : label{label},
-   borderColor{PALETTE.borderNormal, PALETTE.borderNormal},
-   GUIObject{posX, posY} {};
-   
-   void addEdge(std::shared_ptr<GraphNode> dest, int weight);
-   
-   void removeEdge(std::shared_ptr<GraphNode> dest);
-   
-   void render();
+    GraphNode(int label, float posX, float posY)
+        : label{label},
+          borderColor{PALETTE.borderNormal, PALETTE.borderNormal},
+          GUIObject{posX, posY},
+          velocity{0.f, 0.f} {};
+
+    void addEdge(std::shared_ptr<GraphNode> dest, int weight);
+
+    void removeEdge(std::shared_ptr<GraphNode> dest);
+
+    void render();
 
     void highlight();
 
@@ -47,9 +47,14 @@ class GraphNode : public GUIObject {
 
     void update();
 
+    int getLabel();
+
+    bool isCompleted();
     // For force directed drawing
 
     void setVelocity(Vector2 newVelocity);
 
     void applyForce(Vector2 force);
+
+    bool isConnected(std::shared_ptr<GraphNode> node);
 };

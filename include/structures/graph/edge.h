@@ -1,11 +1,14 @@
 #pragma once
 #include <memory>
 
-#include "node.h"
+// #include "graph/graph.h"
+#include "graph/node.h"
 
 class GraphEdge : public GUIObject {
-   private:
+    friend class Graph;
+
     std::shared_ptr<GraphNode> node1;
+
     std::shared_ptr<GraphNode> node2;
     int weight;
 
@@ -16,7 +19,7 @@ class GraphEdge : public GUIObject {
     const static Color HIGHLIGHT_COLOR;
     const static Color TEXT_COLOR;
 
-   public:
+    public:
     GraphEdge(std::shared_ptr<GraphNode> node1,
               std::shared_ptr<GraphNode> node2, int weight)
         : node1{node1},
@@ -34,4 +37,6 @@ class GraphEdge : public GUIObject {
     void makeTransparent();
     void makeOpaque();
 
+    float getLength();
+    bool isCompleted();
 };

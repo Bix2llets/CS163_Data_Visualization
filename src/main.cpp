@@ -6,6 +6,7 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
+#include <cstdlib>
 
 #include "SLLScene.h"
 #include "TrieState.hpp"
@@ -21,6 +22,7 @@
 #include "utility.h"
 #include "welcomeMenu.h"
 #include "mainLoop.h"
+#include "GraphScene.h"
 const int SCREEN_WIDTH = 1366;
 const int SCREEN_HEIGHT = 768;
 
@@ -57,7 +59,7 @@ int main() {
     GuiSetStyle(DEFAULT, TEXT_SIZE, 24);
 
     // * Raylib/Raygui initialization
-
+    srand(time(NULL));
     DrawUtility::init();
     AppMenu::init();
     SLLScene::setSpecs(0.05f);
@@ -77,14 +79,24 @@ int main() {
         "}"};
     AppMenu::loadCode(exampleCode);
 
-
-
+    for (int i = 1; i <= 10; i++) GraphScene::addNode(i);
+    GraphScene::addEdge(1, 2, 0);
+    GraphScene::addEdge(1, 3, 0);
+    GraphScene::addEdge(2, 4, 0);
+    GraphScene::addEdge(4, 5, 0);
+    GraphScene::addEdge(3, 5, 0);
+    GraphScene::addEdge(3, 4, 0);
+    GraphScene::addEdge(2, 5, 0);
+    GraphScene::addEdge(2, 3, 0);
+        // GraphScene::addEdge(1, 2, 2);
     while (!WindowShouldClose()) {
-        Loop::registerInput();
-        Loop::update();
+        // Loop::registerInput();
+        // Loop::update();
+        GraphScene::update();
         BeginDrawing();
         ClearBackground(backgroundColor);
-        Loop::render();
+        // Loop::render();
+        GraphScene::render();
         EndDrawing();
     }
     std::cout << "Program ran successfully\n";

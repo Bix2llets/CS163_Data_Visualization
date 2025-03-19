@@ -39,8 +39,12 @@ add_executable(
     src/structures/singlyLinkedList.cpp
     src/structures/TrieState.cpp
 
-    src/scene/SLLScene.cpp
+    src/structures/graph/edge.cpp
+    src/structures/graph/node.cpp
+    src/structures/graph/graph.cpp
 
+    src/scene/SLLScene.cpp
+    src/scene/GraphScene.cpp
     src/mainLoop.cpp
 )
 # For build and run purpose

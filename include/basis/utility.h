@@ -29,3 +29,6 @@ extern const Color EDGE_HIGHLIGHTED;
 extern const Color TEXT_COLOR;
 
 }  // namespace TextUtility
+
+
+Vector2 randomPosition();
