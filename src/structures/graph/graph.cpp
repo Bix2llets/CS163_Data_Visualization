@@ -201,4 +201,14 @@ void Graph::removeNode(int nodeLabel) {
             return;
         }
     }
+
+    for (int i = 0; i < edgeList.size(); i++) {
+        std::shared_ptr<GraphEdge> edge = edgeList[i];
+        if (edge->node1->getLabel() == nodeLabel || edge->node2->getLabel()) {
+
+            edgeList.erase(edgeList.begin() + i);
+            i--;
+        } 
+
+    }
 }

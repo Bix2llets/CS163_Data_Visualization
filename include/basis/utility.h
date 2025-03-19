@@ -32,3 +32,5 @@ extern const Color TEXT_COLOR;
 
 
 Vector2 randomPosition();
+
+bool isStrNum(std::string str);

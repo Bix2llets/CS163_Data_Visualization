@@ -54,7 +54,8 @@
         "text_encoding": "cpp",
         "variant": "cpp",
         "map": "cpp",
-        "fstream": "cpp"
+        "fstream": "cpp",
+        "sstream": "cpp"
     },
     "C_Cpp.errorSquiggles": "enabled"
 }

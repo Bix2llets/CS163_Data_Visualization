@@ -1,13 +1,13 @@
 #include "graph/node.h"
 
 const ColorSet GraphNode::PALETTE = {BLACK, GOLD, WHITE, GOLD, BLACK, GOLD};
-const int GraphNode::RADIUS = 15;
+const int GraphNode::RADIUS = 25;
 const int GraphNode::BORDER_WIDTH = 2;
 
 const float GraphNode::MASS = 1;
 void GraphNode::render() {
     DrawCircle(position.x, position.y, RADIUS, borderColor.getCurrentColor());
-    std::cerr << position.x << " " << position.y << "\n";
+    // std::cerr << position.x << " " << position.y << "\n";
     DrawCircle(position.x, position.y, RADIUS - BORDER_WIDTH,
                PALETTE.backgroundNormal);
 

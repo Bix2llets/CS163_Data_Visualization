@@ -52,3 +52,9 @@ Vector2 randomPosition() {
     float posY = float(rand() % int(Loop::LOWER_RIGHT.y - Loop::UPPER_LEFT.y) + Loop::UPPER_LEFT.y);
     return Vector2{posX, posY};
 }
+
+bool isStrNum(std::string str) {
+
+    for (char x: str) if (x < '0' || x > '9') return false;
+    return true && str.size();
+}

@@ -29,6 +29,8 @@ extern Button togglePauseButton;
 extern Form locationBox;
 extern Form valueBox;
 
+extern TextBox locationText;
+extern TextBox valueText;
 // For rendering objects
 extern std::vector<GUIObject *> renderList;
 extern std::vector<TextBox> codeList;

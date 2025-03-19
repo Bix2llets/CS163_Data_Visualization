@@ -50,6 +50,8 @@ void Form::recordKeyboard() {
             chr = keyNum - KEY_A + 'a';
     } else if (KEY_ZERO <= keyNum && keyNum <= KEY_NINE)
         chr = keyNum - KEY_ZERO + '0';
+    else if (keyNum == KEY_SPACE)
+        chr = ' ';
 
     if (chr == '\0') return;
     std::string newText = text + chr;
