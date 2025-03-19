@@ -1,7 +1,7 @@
 #include "graph/node.h"
 
-const ColorSet GraphNode::PALETTE = {WHITE, GOLD, WHITE, GOLD, WHITE, GOLD};
-const int GraphNode::RADIUS = 30;
+const ColorSet GraphNode::PALETTE = {BLACK, GOLD, WHITE, GOLD, BLACK, GOLD};
+const int GraphNode::RADIUS = 15;
 const int GraphNode::BORDER_WIDTH = 2;
 
 const float GraphNode::MASS = 1;
@@ -77,6 +77,7 @@ void GraphNode::applyForce(Vector2 force) {
     Vector2 deltaVelocity = Vector2Scale(acceleration, Loop::DELTA_TIME);
 
     velocity = Vector2Add(velocity, deltaVelocity);
+    velocity = Vector2ClampValue(velocity, -240.f, 240.f);
 }
 
 int GraphNode::getLabel() { return label; }

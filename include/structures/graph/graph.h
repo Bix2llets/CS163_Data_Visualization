@@ -20,21 +20,23 @@ class Graph {
     void update();
 
     void render();
-    void addNode(std::shared_ptr<GraphNode> node);
 
     void addNode(int label);
 
-    void addEdge(std::shared_ptr<GraphNode> node1, std::shared_ptr<GraphNode> node2, int weight);
 
     void addEdge(int node1Label, int node2Label, int weight);
 
+    void removeEdge(int node1Label, int node2Label);
+
+    void removeNode(int nodeLabel);
+
     bool isAnimationDone();
 
-    void highlightNode(std::shared_ptr<GraphNode> node);
-    void deHighlightNode(std::shared_ptr<GraphNode> node);
+    void highlightNode(int nodeLabel);
+    void deHighlightNode(int nodeLabel);
     
-    void highlightEdge(std::shared_ptr<GraphEdge> edge);
-    void deHighlightEdge(std::shared_ptr<GraphEdge> edge);
+    void highlightEdge(int node1Label, int node2Label);
+    void deHighlightEdge(int node1Label, int node2Label);
 
     void applyPushForce();
     void applyPullForce();

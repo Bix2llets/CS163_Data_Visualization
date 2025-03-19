@@ -27,10 +27,8 @@ const std::vector<std::string> SLLScene::PSEUDO_SEARCH = {
     "Traverse the linked list",
     "Return result",
 };
-void SLLScene::init() { steps.push_front({sll, -1});}
-void SLLScene::setSpecs(float _stepDelay) {
-    stepDelay = _stepDelay;
-}
+void SLLScene::init() { steps.push_front({sll, -1}); }
+void SLLScene::setSpecs(float _stepDelay) { stepDelay = _stepDelay; }
 void SLLScene::addEnd(std::string data) {
     int place = 0;
     if (steps.size())
@@ -60,8 +58,10 @@ void SLLScene::addAt(std::string data, int place) {
     steps.back().sll.highlightTo(place - 1);
     addStep(1);
     steps.back().sll.addAt(data, place);
-    addStep(2);
-    steps.back().sll.shiftForward(place + 1);
+    if (place + 1 <= steps.back().sll.nodeCount) {
+        addStep(2);
+        steps.back().sll.shiftForward(place + 1);
+    }
     addStep(2);
     steps.back().sll.moveAt(place);
     addStep(-1);
@@ -151,7 +151,7 @@ void SLLScene::find(std::string val) {
     }
 
     for (int i = 0; i < nodeIndex; i++) curr = curr->nextNode;
-    
+
     currSll.highlightTo(nodeIndex);  // since node index is actual node - 1;
     curr->borderColor.setBaseColor(SLLScene::NODE_PALETTE.borderNormal);
     curr->borderColor.setTargetColor(resultColor);
@@ -216,65 +216,41 @@ void SLLScene::recordInput() {
     }
 }
 
-void SLLScene::prevStep() {
-    if (past.size() == 0) return;
-    if (future.size() == 0) {
-        for (auto &element: steps) future.push_back(element);
-    }
-    while (steps.size()) {
-        steps.pop_back();
-    };
-    std::cerr << "Before: \n";
-    for (auto x: past) std::cerr << x.highlightIndex << " ";
-    std::cerr << "\n";
-    for (auto x: future) std::cerr << x.highlightIndex << " ";
-    std::cerr << "\n";
-    
-    while (true) {
-        future.push_front(past.back());
-        past.pop_back();
-        if (future.front().highlightIndex == -1) {
-            steps.push_front(future.front());
-            sll = steps.front().sll.clone();
-            highlightedRow = steps.front().highlightIndex;
-            break;
-        }
-    }
-    std::cerr << "After: \n";
-    for (auto x: past) std::cerr << x.highlightIndex << " ";
-    std::cerr << "\n";
-    for (auto x: future) std::cerr << x.highlightIndex << " ";
-    std::cerr << "\n";
-    std::cerr << "--------------------------\n\n";
+void SLLScene::nextStep() {
+    if (future.size()) {
+        // * Result from previous undo
+        past.push_back(steps.front());
+        steps.pop_front();
+        steps.push_back(future.front());
+        future.pop_front();
+        sll = steps.front().sll.clone();
+        highlightedRow = steps.front().highlightIndex;
+        return;
+    } else {
+        if (steps.size() == 1) return;
+        // * There are more in steps
+        past.push_back(steps.front());
+        steps.pop_front();
 
-    // ! BUG IN PREV STEP, NEXT STEP AND ADD STEP 
-    // ! URGENT FIX
+        sll = steps.front().sll.clone();
+        highlightedRow = steps.front().highlightIndex;
+    }
 }
 
-void SLLScene::nextStep() {
-    if (future.size() <= 1) return;
-    while (steps.size()) {
+void SLLScene::prevStep() {
+    if (past.size() == 0) return;
+    // * There is animation in queue, future has none
+    // * Transfer the rest into future
+    while (steps.size() > 1) {
+        future.push_front(steps.back());
         steps.pop_back();
     }
-    std::cerr << "Before: \n";
-    for (auto x: past) std::cerr << x.highlightIndex << " ";
-    std::cerr << "\n";
-    for (auto x: future) std::cerr << x.highlightIndex << " ";
-    std::cerr << "\n";
-    while (true) {
-        past.push_back(future.front());
-        future.pop_front();
-        if (future.front().highlightIndex == -1) {
-            steps.push_front(future.front());
-            sll = steps.front().sll.clone();
-            highlightedRow = steps.front().highlightIndex;
-            break;
-        }
-    }
-    std::cerr << "After: \n";
-    for (auto x: past) std::cerr << x.highlightIndex << " ";
-    std::cerr << "\n";
-    for (auto x: future) std::cerr << x.highlightIndex << " ";
-    std::cerr << "\n";
-    std::cerr << "--------------------------\n\n";
+    // * NO animation queuing
+    future.push_front(steps.front());
+    steps.pop_front();
+    steps.push_front(past.back());
+    past.pop_back();
+
+    sll = steps.front().sll.clone();
+    highlightedRow = steps.front().highlightIndex;
 }

@@ -1,13 +1,14 @@
 #define RAYGUI_IMPLEMENTATION
 #include <cmath>
+#include <cstdlib>
 #include <iostream>
 #include <memory>
 #include <queue>
 #include <string>
 #include <unordered_map>
 #include <vector>
-#include <cstdlib>
 
+#include "GraphScene.h"
 #include "SLLScene.h"
 #include "TrieState.hpp"
 #include "animation.h"
@@ -16,13 +17,12 @@
 #include "button.h"
 #include "colorPalette.h"
 #include "form.h"
+#include "mainLoop.h"
 #include "raygui.h"
 #include "raylib.h"
 #include "singlyLInkedList.h"
 #include "utility.h"
 #include "welcomeMenu.h"
-#include "mainLoop.h"
-#include "GraphScene.h"
 const int SCREEN_WIDTH = 1366;
 const int SCREEN_HEIGHT = 768;
 
@@ -79,24 +79,27 @@ int main() {
         "}"};
     AppMenu::loadCode(exampleCode);
 
-    for (int i = 1; i <= 10; i++) GraphScene::addNode(i);
-    GraphScene::addEdge(1, 2, 0);
-    GraphScene::addEdge(1, 3, 0);
-    GraphScene::addEdge(2, 4, 0);
-    GraphScene::addEdge(4, 5, 0);
-    GraphScene::addEdge(3, 5, 0);
-    GraphScene::addEdge(3, 4, 0);
-    GraphScene::addEdge(2, 5, 0);
-    GraphScene::addEdge(2, 3, 0);
-        // GraphScene::addEdge(1, 2, 2);
+    // GraphScene::addEdge(1, 2, rand());
+    // GraphScene::addEdge(2, 3, rand());
+    // GraphScene::addEdge(3, 4, rand());
+    // GraphScene::addEdge(5, 4, rand());
+    // GraphScene::addEdge(5, 6, rand());
+    // GraphScene::addEdge(1, 6, rand());
+    // GraphScene::addEdge(1, 4, rand());
+    // GraphScene::addEdge(3, 7, rand());
+    // GraphScene::addEdge(4, 8, rand());
+    // GraphScene::addEdge(7, 8, rand());
+    // GraphScene::addEdge(2, 8, rand());
+    // GraphScene::addEdge(7, 6, rand());
+    // GraphScene::addEdge(7, 2, rand());
     while (!WindowShouldClose()) {
-        // Loop::registerInput();
-        // Loop::update();
-        GraphScene::update();
+        Loop::registerInput();
+        Loop::update();
+        // GraphScene::update();
         BeginDrawing();
         ClearBackground(backgroundColor);
-        // Loop::render();
-        GraphScene::render();
+        Loop::render();
+        // GraphScene::render();
         EndDrawing();
     }
     std::cout << "Program ran successfully\n";

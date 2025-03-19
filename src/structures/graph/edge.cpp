@@ -2,7 +2,7 @@
 
 const Color GraphEdge::NORMAL_COLOR = WHITE;
 const Color GraphEdge::HIGHLIGHT_COLOR = GOLD;
-const Color GraphEdge::TEXT_COLOR = WHITE;
+const Color GraphEdge::TEXT_COLOR = GOLD;
 const int GraphEdge::THICKNESS = 2;
 void GraphEdge::update() {
     Vector2 newPosition =
