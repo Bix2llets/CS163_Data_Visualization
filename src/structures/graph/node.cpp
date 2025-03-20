@@ -58,16 +58,16 @@ void GraphNode::removeEdge(std::shared_ptr<GraphNode> dest) {
 }
 
 void GraphNode::finishAnimation() { borderColor.setFactor(1.0f); }
-void GraphNode::highlight() {
+void GraphNode::highlight(bool isImmediate) {
     borderColor.setBaseColor(borderColor.getCurrentColor());
     borderColor.setTargetColor(PALETTE.borderHighlight);
-    borderColor.setFactor(0.f);
+    borderColor.setFactor(float(isImmediate));
 }
 
-void GraphNode::deHighlight() {
+void GraphNode::deHighlight(bool isImmediate) {
     borderColor.setBaseColor(borderColor.getCurrentColor());
     borderColor.setTargetColor(PALETTE.borderNormal);
-    borderColor.setFactor(0.f);
+    borderColor.setFactor(float(isImmediate));
 }
 
 void GraphNode::setVelocity(Vector2 newVelocity) { velocity = newVelocity; }
@@ -88,4 +88,8 @@ bool GraphNode::isConnected(std::shared_ptr<GraphNode> node) {
     for (auto existedNode: adjacentList) 
         if (existedNode.dest == node) return false;
     return true;
+}
+
+AnimationColor &GraphNode::getBorderColor() {
+    return borderColor;
 }

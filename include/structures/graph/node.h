@@ -39,9 +39,9 @@ class GraphNode : public GUIObject {
 
     void render();
 
-    void highlight();
+    void highlight(bool isImmediate);
 
-    void deHighlight();
+    void deHighlight(bool isImmediate);
 
     void finishAnimation();
 
@@ -57,4 +57,6 @@ class GraphNode : public GUIObject {
     void applyForce(Vector2 force);
 
     bool isConnected(std::shared_ptr<GraphNode> node);
+
+    AnimationColor &getBorderColor();
 };

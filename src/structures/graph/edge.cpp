@@ -9,6 +9,7 @@ void GraphEdge::update() {
         Vector2Add(node1->getPosition(), node2->getPosition());
     newPosition = Vector2Scale(newPosition, 0.5f);
     setPosition(newPosition);
+    color.update();
 }
 
 void GraphEdge::render() {
@@ -16,28 +17,32 @@ void GraphEdge::render() {
     DrawUtility::drawText(std::to_string(weight), position, DrawUtility::inter20, TEXT_COLOR, DrawUtility::NORMAL_SIZE, DrawUtility::SPACING, VerticalAlignment::TOP, HorizontalAlignment::LEFT);
 }
 
-void GraphEdge::highlight() {
+void GraphEdge::highlight(bool isImmediate) {
     color.setBaseColor(color.getCurrentColor());
     color.setTargetColor(HIGHLIGHT_COLOR);   
+    color.setFactor(float(isImmediate));
 }
 
-void GraphEdge::deHighlight() {
+void GraphEdge::deHighlight(bool isImmediate) {
     color.setBaseColor(color.getCurrentColor());
     color.setTargetColor(NORMAL_COLOR);
+    color.setFactor(float(isImmediate));
 }
 
-void GraphEdge::makeTransparent() {
+void GraphEdge::makeTransparent(bool isImmediate) {
     Color current = color.getCurrentColor();
     color.setBaseColor(current);
     current.a = 0;
     color.setTargetColor(current);
+    color.setFactor(float(isImmediate));
 }
 
-void GraphEdge::makeOpaque() {
+void GraphEdge::makeOpaque(bool isImmediate) {
     Color current = color.getCurrentColor();
     color.setBaseColor(current);
     current.a = 255;
     color.setTargetColor(current);
+    color.setFactor(float(isImmediate));
 
 }
 
@@ -47,4 +52,8 @@ bool GraphEdge::isCompleted() {
 
 float GraphEdge::getLength() {
     return Vector2Distance(node1->getPosition(), node2->getPosition());
+}
+
+int GraphEdge::getWeight() {
+    return weight;
 }

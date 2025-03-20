@@ -23,7 +23,6 @@ class Graph {
 
     void addNode(int label);
 
-
     void addEdge(int node1Label, int node2Label, int weight);
 
     void removeEdge(int node1Label, int node2Label);
@@ -32,15 +31,17 @@ class Graph {
 
     bool isAnimationDone();
 
-    void highlightNode(int nodeLabel);
-    void deHighlightNode(int nodeLabel);
+    void deHighlight(bool isImmediate);
+    void highlightNode(int nodeLabel, bool isImmediate);
+    void deHighlightNode(int nodeLabel, bool isImmediate);
     
-    void highlightEdge(int node1Label, int node2Label);
-    void deHighlightEdge(int node1Label, int node2Label);
+    void highlightEdge(int node1Label, int node2Label, bool isImmediate);
+    void deHighlightEdge(int node1Label, int node2Label, bool isImmediate);
 
     void applyPushForce();
     void applyPullForce();
     void applyCentricForce();
 
     std::vector<std::shared_ptr<GraphEdge>> getEdgeList();
+    std::vector<std::shared_ptr<GraphNode>> getNodeList();
 };

@@ -88,11 +88,10 @@ void Graph::render() {
     for (std::shared_ptr<GraphNode> node : nodeList) node->render();
 };
 
-
 void Graph::addNode(int label) {
     Vector2 newPosition = randomPosition();
     std::shared_ptr<GraphNode> newNode =
-    std::make_shared<GraphNode>(label, newPosition.x, newPosition.y);
+        std::make_shared<GraphNode>(label, newPosition.x, newPosition.y);
     for (std::shared_ptr<GraphNode> existedNode : nodeList) {
         if (existedNode->getLabel() == newNode->getLabel()) return;
     }
@@ -114,54 +113,56 @@ void Graph::addEdge(int node1Label, int node2Label, int weight) {
     edgeList.push_back(newEdge);
 }
 
-void Graph::highlightNode(int nodeLabel) {
+void Graph::highlightNode(int nodeLabel, bool isImmediate) {
     std::shared_ptr<GraphNode> node = nullptr;
-    for (auto existedNode: nodeList) {
+    for (auto existedNode : nodeList) {
         if (existedNode->getLabel() == nodeLabel) {
             node = existedNode;
             break;
         }
     }
     if (node == nullptr) return;
-    node->highlight();
+    node->highlight(isImmediate);
 }
 
-void Graph::deHighlightNode(int nodeLabel) {
+void Graph::deHighlightNode(int nodeLabel, bool isImmediate) {
     std::shared_ptr<GraphNode> node = nullptr;
-    for (auto existedNode: nodeList) {
+    for (auto existedNode : nodeList) {
         if (existedNode->getLabel() == nodeLabel) {
             node = existedNode;
             break;
         }
     }
     if (node == nullptr) return;
-    node->deHighlight();
+    node->deHighlight(isImmediate);
 }
 
-void Graph::highlightEdge(int node1Label, int node2Label) {
+void Graph::highlightEdge(int node1Label, int node2Label, bool isImmediate) {
     if (node1Label > node2Label) std::swap(node1Label, node2Label);
     std::shared_ptr<GraphEdge> edge = nullptr;
-    for (auto existedEdge: edgeList) {
-        if (existedEdge->node1->getLabel() == node1Label && existedEdge->node2->getLabel() == node2Label) {
+    for (auto existedEdge : edgeList) {
+        if (existedEdge->node1->getLabel() == node1Label &&
+            existedEdge->node2->getLabel() == node2Label) {
             edge = existedEdge;
             break;
         }
     }
     if (edge == nullptr) return;
-    edge->highlight();
+    edge->highlight(isImmediate);
 }
 
-void Graph::deHighlightEdge(int node1Label, int node2Label) {
+void Graph::deHighlightEdge(int node1Label, int node2Label, bool isImmediate) {
     if (node1Label > node2Label) std::swap(node1Label, node2Label);
     std::shared_ptr<GraphEdge> edge = nullptr;
-    for (auto existedEdge: edgeList) {
-        if (existedEdge->node1->getLabel() == node1Label && existedEdge->node2->getLabel() == node2Label) {
+    for (auto existedEdge : edgeList) {
+        if (existedEdge->node1->getLabel() == node1Label &&
+            existedEdge->node2->getLabel() == node2Label) {
             edge = existedEdge;
             break;
         }
     }
     if (edge == nullptr) return;
-    edge->deHighlight();
+    edge->deHighlight(isImmediate);
 }
 
 bool Graph::isAnimationDone() {
@@ -178,6 +179,9 @@ std::vector<std::shared_ptr<GraphEdge>> Graph::getEdgeList() {
     return edgeList;
 }
 
+std::vector<std::shared_ptr<GraphNode>> Graph::getNodeList() {
+    return nodeList;
+}
 
 void Graph::removeEdge(int node1Label, int node2Label) {
     if (node1Label == node2Label) return;
@@ -192,7 +196,6 @@ void Graph::removeEdge(int node1Label, int node2Label) {
     }
 }
 
-
 void Graph::removeNode(int nodeLabel) {
     for (int i = 0; i < nodeList.size(); i++) {
         std::shared_ptr<GraphNode> node = nodeList[i];
@@ -205,10 +208,11 @@ void Graph::removeNode(int nodeLabel) {
     for (int i = 0; i < edgeList.size(); i++) {
         std::shared_ptr<GraphEdge> edge = edgeList[i];
         if (edge->node1->getLabel() == nodeLabel || edge->node2->getLabel()) {
-
             edgeList.erase(edgeList.begin() + i);
             i--;
-        } 
-
+        }
     }
+}
+
+void Graph::deHighlight(bool isImmediate) {
 }
