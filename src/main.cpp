@@ -79,20 +79,24 @@ int main() {
         "}"};
     AppMenu::loadCode(exampleCode);
 
-    GraphScene::addEdge(1, 2, rand());
-    GraphScene::addEdge(2, 3, rand());
-    GraphScene::addEdge(3, 4, rand());
-    GraphScene::addEdge(5, 4, rand());
-    GraphScene::addEdge(5, 6, rand());
-    GraphScene::addEdge(1, 6, rand());
-    GraphScene::addEdge(1, 4, rand());
-    GraphScene::addEdge(3, 7, rand());
-    GraphScene::addEdge(4, 8, rand());
-    GraphScene::addEdge(7, 8, rand());
-    GraphScene::addEdge(2, 8, rand());
-    GraphScene::addEdge(7, 6, rand());
-    GraphScene::addEdge(7, 2, rand());
+    // GraphScene::addEdge(1, 2, rand());
+    // GraphScene::addEdge(2, 3, rand());
+    // GraphScene::addEdge(3, 4, rand());
+    // GraphScene::addEdge(5, 4, rand());
+    // GraphScene::addEdge(5, 6, rand());
+    // GraphScene::addEdge(1, 6, rand());
+    // GraphScene::addEdge(1, 4, rand());
+    // GraphScene::addEdge(3, 7, rand());
+    // GraphScene::addEdge(4, 8, rand());
+    // GraphScene::addEdge(7, 8, rand());
+    // GraphScene::addEdge(2, 8, rand());
+    // GraphScene::addEdge(7, 6, rand());
+    // GraphScene::addEdge(7, 2, rand());
 
+    GraphScene::addStep();
+    for (int i = 0; i <= 10; i++)
+    for (int j = 0; j <= 2; j++)
+    GraphScene::addEdgeAdd(i, j, rand());
     while (!WindowShouldClose()) {
         Loop::registerInput();
         Loop::update();
