@@ -55,7 +55,13 @@
         "variant": "cpp",
         "map": "cpp",
         "fstream": "cpp",
-        "sstream": "cpp"
+        "sstream": "cpp",
+        "chrono": "cpp",
+        "ratio": "cpp",
+        "iomanip": "cpp",
+        "semaphore": "cpp",
+        "stop_token": "cpp",
+        "thread": "cpp"
     },
     "C_Cpp.errorSquiggles": "enabled"
 }

@@ -59,4 +59,7 @@ class GraphNode : public GUIObject {
     bool isConnected(std::shared_ptr<GraphNode> node);
 
     AnimationColor &getBorderColor();
+
+    void makeOpaque(bool isImmediate);
+    void makeTransparent(bool isImmediate);
 };

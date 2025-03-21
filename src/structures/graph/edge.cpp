@@ -1,8 +1,8 @@
 #include "graph/edge.h"
 
-const Color GraphEdge::NORMAL_COLOR = WHITE;
-const Color GraphEdge::HIGHLIGHT_COLOR = GOLD;
-const Color GraphEdge::TEXT_COLOR = GOLD;
+const Color GraphEdge::NORMAL_COLOR = Color{59, 66, 82, 255};
+const Color GraphEdge::HIGHLIGHT_COLOR = Color{229, 189, 80, 255};
+const Color GraphEdge::TEXT_COLOR = Color{186, 180, 163, 255};
 const int GraphEdge::THICKNESS = 2;
 void GraphEdge::update() {
     Vector2 newPosition =
@@ -13,47 +13,53 @@ void GraphEdge::update() {
 }
 
 void GraphEdge::render() {
-    DrawUtility::drawEdge(node1->getPosition(), node2->getPosition(), color.getCurrentColor());
-    DrawUtility::drawText(std::to_string(weight), position, DrawUtility::inter20, TEXT_COLOR, DrawUtility::NORMAL_SIZE, DrawUtility::SPACING, VerticalAlignment::TOP, HorizontalAlignment::LEFT);
+    DrawUtility::drawEdge(node1->getPosition(), node2->getPosition(),
+                          color.getCurrentColor());
 }
-
+void GraphEdge::renderText() {
+    Color textColor = TEXT_COLOR;
+    textColor.a = color.getCurrentColor().a;
+    DrawUtility::drawText(std::to_string(weight), position,
+                          DrawUtility::inter20, textColor,
+                          DrawUtility::NORMAL_SIZE, DrawUtility::SPACING,
+                          VerticalAlignment::TOP, HorizontalAlignment::LEFT);
+}
 void GraphEdge::highlight(bool isImmediate) {
     color.setBaseColor(color.getCurrentColor());
-    color.setTargetColor(HIGHLIGHT_COLOR);   
+    color.setTargetColor({HIGHLIGHT_COLOR.r, HIGHLIGHT_COLOR.g, HIGHLIGHT_COLOR.b, color.getTargetColor().a});
     color.setFactor(float(isImmediate));
 }
 
 void GraphEdge::deHighlight(bool isImmediate) {
     color.setBaseColor(color.getCurrentColor());
-    color.setTargetColor(NORMAL_COLOR);
+    color.setTargetColor({NORMAL_COLOR.r, NORMAL_COLOR.g, NORMAL_COLOR.b, color.getTargetColor().a});
     color.setFactor(float(isImmediate));
 }
 
 void GraphEdge::makeTransparent(bool isImmediate) {
     Color current = color.getCurrentColor();
+    Color target = color.getTargetColor();
+    target.a = 0;
     color.setBaseColor(current);
-    current.a = 0;
-    color.setTargetColor(current);
+    color.setTargetColor(target);
     color.setFactor(float(isImmediate));
 }
 
 void GraphEdge::makeOpaque(bool isImmediate) {
     Color current = color.getCurrentColor();
+    Color target = color.getTargetColor();
+    target.a = 255;
     color.setBaseColor(current);
-    current.a = 255;
-    color.setTargetColor(current);
+    color.setTargetColor(target);
     color.setFactor(float(isImmediate));
-
 }
 
-bool GraphEdge::isCompleted() {
-    return color.isCompleted();
-}
+bool GraphEdge::isCompleted() { return color.isCompleted(); }
 
 float GraphEdge::getLength() {
     return Vector2Distance(node1->getPosition(), node2->getPosition());
 }
 
-int GraphEdge::getWeight() {
-    return weight;
-}
+int GraphEdge::getWeight() { return weight; }
+
+void GraphEdge::finishAnimation() { color.setFactor(1.0f); }

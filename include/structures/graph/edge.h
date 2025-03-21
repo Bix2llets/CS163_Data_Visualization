@@ -33,7 +33,7 @@ class GraphEdge : public GUIObject {
 
     void update();
     void render();
-
+    void renderText();
     void highlight(bool isImmediate);
     void deHighlight(bool isImmediate);
     void makeTransparent(bool isImmediate);
@@ -42,4 +42,5 @@ class GraphEdge : public GUIObject {
     float getLength();
     int getWeight();
     bool isCompleted();
+    void finishAnimation();
 };
