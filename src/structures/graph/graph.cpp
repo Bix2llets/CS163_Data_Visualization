@@ -4,7 +4,7 @@
 const float Graph::IDEAL_LENGTH = 150.f;
 const float Graph::PUSH_FACTOR = 1.f;
 const float Graph::PULL_FACTOR = 1.f;
-const float Graph::CENTRIC_FACTOR = 1.0f;
+const float Graph::CENTRIC_FACTOR = 10.0f;
 void Graph::applyPushForce() {
     // Electrostatic force model
     for (std::shared_ptr<GraphNode> node1 : nodeList)
@@ -193,13 +193,6 @@ void Graph::removeNode(int nodeLabel) {
         }
     }
 
-    for (int i = 0; i < edgeList.size(); i++) {
-        std::shared_ptr<GraphEdge> edge = edgeList[i];
-        if (edge->node1->getLabel() == nodeLabel || edge->node2->getLabel()) {
-            edgeList.erase(edgeList.begin() + i);
-            i--;
-        }
-    }
 }
 
 void Graph::finishAnimation() {

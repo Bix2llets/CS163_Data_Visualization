@@ -21,6 +21,9 @@ class GraphEdge : public GUIObject {
     const static Color HIGHLIGHT_COLOR;
     const static Color TEXT_COLOR;
 
+    bool isHighlighted;
+    bool isOpaque;
+
    public:
     GraphEdge(std::shared_ptr<GraphNode> node1,
               std::shared_ptr<GraphNode> node2, int weight)
@@ -29,7 +32,9 @@ class GraphEdge : public GUIObject {
           weight{weight},
           color{NORMAL_COLOR, NORMAL_COLOR},
           GUIObject(Vector2Scale(
-              Vector2Add(node1->getPosition(), node2->getPosition()), 0.5f)) {};
+              Vector2Add(node1->getPosition(), node2->getPosition()), 0.5f)),
+          isHighlighted{false},
+          isOpaque{true} {};
 
     void update();
     void render();
@@ -43,4 +48,7 @@ class GraphEdge : public GUIObject {
     int getWeight();
     bool isCompleted();
     void finishAnimation();
+
+    bool getOpaque();
+    bool getHighlighted();
 };

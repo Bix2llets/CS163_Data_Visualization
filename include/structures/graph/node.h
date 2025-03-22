@@ -25,13 +25,17 @@ class GraphNode : public GUIObject {
     // For force directed
     Vector2 velocity;
     const static float MASS;
+    bool isHighlighted;
+    bool isOpaque;
 
    public:
     GraphNode(int label, float posX, float posY)
         : label{label},
           borderColor{PALETTE.borderNormal, PALETTE.borderNormal},
           GUIObject{posX, posY},
-          velocity{0.f, 0.f} {};
+          velocity{0.f, 0.f},
+          isHighlighted{false},
+          isOpaque{true} {};
 
     void addEdge(std::shared_ptr<GraphNode> dest, int weight);
 
@@ -62,4 +66,7 @@ class GraphNode : public GUIObject {
 
     void makeOpaque(bool isImmediate);
     void makeTransparent(bool isImmediate);
+
+    bool getOpaque();
+    bool getHighlighted();
 };

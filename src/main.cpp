@@ -66,7 +66,7 @@ int main() {
     SLLScene::init();
 
     Animation::setUpdateRate(12.5f);
-    AnimationColor::setUpdateRate(1.5f);
+    AnimationColor::setUpdateRate(4.f);
     // * Object initialization
 
     std::vector<std::string> exampleCode = {
@@ -94,9 +94,12 @@ int main() {
     // GraphScene::addEdge(7, 2, rand());
 
     GraphScene::addStep();
-    for (int i = 0; i <= 10; i++)
-    for (int j = 0; j <= 2; j++)
-    GraphScene::addEdgeAdd(i, j, rand());
+    // for (int i = 0; i <= 10; i++)
+    // for (int j = 0; j <= 20; j++)
+    // GraphScene::addEdgeAdd(i, j, rand());
+
+    for (int i = 1; i <= 20; i++)
+        GraphScene::addEdgeAdd(0, i, i);
     while (!WindowShouldClose()) {
         Loop::registerInput();
         Loop::update();

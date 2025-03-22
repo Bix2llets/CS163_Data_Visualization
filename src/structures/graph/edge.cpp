@@ -21,22 +21,25 @@ void GraphEdge::renderText() {
     textColor.a = color.getCurrentColor().a;
     DrawUtility::drawText(std::to_string(weight), position,
                           DrawUtility::inter20, textColor,
-                          DrawUtility::NORMAL_SIZE, DrawUtility::SPACING,
+                          16, DrawUtility::SPACING,
                           VerticalAlignment::TOP, HorizontalAlignment::LEFT);
 }
 void GraphEdge::highlight(bool isImmediate) {
+    isHighlighted = true;
     color.setBaseColor(color.getCurrentColor());
     color.setTargetColor({HIGHLIGHT_COLOR.r, HIGHLIGHT_COLOR.g, HIGHLIGHT_COLOR.b, color.getTargetColor().a});
     color.setFactor(float(isImmediate));
 }
 
 void GraphEdge::deHighlight(bool isImmediate) {
+    isHighlighted = false;
     color.setBaseColor(color.getCurrentColor());
     color.setTargetColor({NORMAL_COLOR.r, NORMAL_COLOR.g, NORMAL_COLOR.b, color.getTargetColor().a});
     color.setFactor(float(isImmediate));
 }
 
 void GraphEdge::makeTransparent(bool isImmediate) {
+    isOpaque = false;
     Color current = color.getCurrentColor();
     Color target = color.getTargetColor();
     target.a = 0;
@@ -46,7 +49,9 @@ void GraphEdge::makeTransparent(bool isImmediate) {
 }
 
 void GraphEdge::makeOpaque(bool isImmediate) {
+    isOpaque = true;
     Color current = color.getCurrentColor();
+
     Color target = color.getTargetColor();
     target.a = 255;
     color.setBaseColor(current);
@@ -63,3 +68,11 @@ float GraphEdge::getLength() {
 int GraphEdge::getWeight() { return weight; }
 
 void GraphEdge::finishAnimation() { color.setFactor(1.0f); }
+
+bool GraphEdge::getOpaque() {
+    return isOpaque;
+}
+
+bool GraphEdge::getHighlighted() {
+    return isHighlighted;
+}

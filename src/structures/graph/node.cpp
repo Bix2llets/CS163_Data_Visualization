@@ -68,6 +68,7 @@ void GraphNode::removeEdge(std::shared_ptr<GraphNode> dest) {
 
 void GraphNode::finishAnimation() { borderColor.setFactor(1.0f); }
 void GraphNode::highlight(bool isImmediate) {
+    isHighlighted = true;
     borderColor.setBaseColor(borderColor.getCurrentColor());
     Color target = borderColor.getTargetColor();
     target.r = PALETTE.borderHighlight.r;
@@ -78,6 +79,7 @@ void GraphNode::highlight(bool isImmediate) {
 }
 
 void GraphNode::deHighlight(bool isImmediate) {
+    isHighlighted = false;
     borderColor.setBaseColor(borderColor.getCurrentColor());
     Color target = borderColor.getTargetColor();
     target.r = PALETTE.borderHighlight.r;
@@ -95,7 +97,7 @@ void GraphNode::applyForce(Vector2 force) {
     Vector2 deltaVelocity = Vector2Scale(acceleration, Loop::DELTA_TIME);
 
     velocity = Vector2Add(velocity, deltaVelocity);
-    velocity = Vector2ClampValue(velocity, -240.f, 240.f);
+    velocity = Vector2ClampValue(velocity, -2400.f / 10, 2400.f / 10);
 }
 
 int GraphNode::getLabel() { return label; }
@@ -113,8 +115,8 @@ AnimationColor &GraphNode::getBorderColor() {
 }
 
 void GraphNode::makeOpaque(bool isImmediate) {
-    Color target = borderColor.getTargetColor();
-
+    Color target = borderColor. getTargetColor();
+    isOpaque = true;
     target.a = 255;
 
     borderColor.setBaseColor(borderColor.getCurrentColor());
@@ -125,6 +127,7 @@ void GraphNode::makeOpaque(bool isImmediate) {
 }
 
 void GraphNode::makeTransparent(bool isImmediate) {
+    isOpaque = false;
     Color target = borderColor.getTargetColor();
 
     target.a = 0;
@@ -132,4 +135,12 @@ void GraphNode::makeTransparent(bool isImmediate) {
     borderColor.setBaseColor(borderColor.getCurrentColor());
     borderColor.setTargetColor(target);
     borderColor.setFactor(float(isImmediate));
+}
+
+bool GraphNode::getOpaque() {
+    return isOpaque;
+}
+
+bool GraphNode::getHighlighted() {
+    return isHighlighted;
 }
