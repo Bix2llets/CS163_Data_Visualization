@@ -68,9 +68,13 @@ void TrieState::handleInput() {
         }
         if (GuiButton((Rectangle){10 + 50 + 150, 750, 100, 40}, "Random")) {
             mTrie = Trie();
-            for (int i = 0; i < GetRandomValue(0, 5); i ++)  {
+            for (int i = 0; i < GetRandomValue(5, 10); i ++)  {
                 mLib::GenerateRandomText(requestText);
                 mTrie.insert(requestText);
+                while (mTrie.completedAllActions() == 0) {
+                    mTrie.update(1e-15, 1e-15);
+                    mTrie.Action(0);
+                }
             }
         }
         if (GuiButton((Rectangle){10 + 50 + 150, 800, 100, 40}, "Custom")) {

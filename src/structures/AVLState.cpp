@@ -69,9 +69,14 @@ void AVLState::handleInput() {
         }
         if (GuiButton((Rectangle){10 + 50 + 150, 750, 100, 40}, "Random")) {
             mAVL = AVL();
-            for (int i = 0; i < GetRandomValue(0, 5); i ++)  {
-                mLib::GenerateRandomNum(requestText);
-                mAVL.insert(std::atoi(requestText));
+            for (int i = 0; i < GetRandomValue(5, 10); i ++)  {
+                int x = GetRandomValue(0, 1000000000) % 1000;
+                mAVL.insert(x);
+                std::cout << "insert success" <<  ' '<< x << std::endl;
+                while (mAVL.completedAllActions() == 0) {
+                    mAVL.update(1e-15, 1e-15);
+                    mAVL.Action(0);
+                }
             }
         }
         if (GuiButton((Rectangle){10 + 50 + 150, 800, 100, 40}, "Custom")) {

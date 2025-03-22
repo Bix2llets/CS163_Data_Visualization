@@ -167,22 +167,23 @@ void hash::update(double currTime, double rate) {
 
 void hash::draw(hashNode* node) {
     if (node == NULL) return;
-    DrawCircleV(node->getPosition(), NODE_RADIUS, node->targeted ? ORANGE : BLUE);
+    DrawCircleV(node->getPosition(), NODE_RADIUS - 5, node->targeted ? ORANGE : (Color) {0, 160, 216, 241});
+    DrawRing(node->getPosition(), NODE_RADIUS - 5, NODE_RADIUS, 0, 360, 20, BLUE);
     std::string value = std::to_string(node->value);
     if (node->value == -1) value = "null";
     char *text = new char[value.length() + 1];
     strcpy(text, value.c_str());
-    DrawTextEx(mLib::mFont, text, (Vector2){node->getPosition().x - 10, node->getPosition().y - 10}, 20, 2, WHITE);
+    DrawTextEx(mLib::mFont, text, (Vector2){node->getPosition().x - 12, node->getPosition().y - 12}, 20, 2, WHITE);
 }
 
 void hash::draw() {
     if (!endLoop()) mLib::DrawTextHash(core[loop].index);
-    for (int i = 0; i < m - 1; i ++) DrawArrowWithCircles(root[i]->getPosition(), root[i + 1]->getPosition(), NODE_RADIUS, RED, 2);
+    for (int i = 0; i < m - 1; i ++) DrawArrowWithCircles(root[i]->getPosition(), root[i + 1]->getPosition(), NODE_RADIUS, (Color) {0, 160, 216, 241}, 2.5);
     for (int i = 0; i < m; i++) {
         DrawTextEx(mLib::mFont, std::to_string(i).c_str(), (Vector2){root[i]->getPosition().x - 10, root[i]->getPosition().y - 50}, 20, 2, BLACK);
         draw(root[i]);
     }
-    if (Itr.show) DrawRing(Itr.animation->getPosition(), NODE_RADIUS, NODE_RADIUS + 5, 0, 360, 20, GREEN);
+    if (Itr.show) DrawRing(Itr.animation->getPosition(), NODE_RADIUS, NODE_RADIUS + 5, 0, 360, 20, (Color) {255, 116, 109, 255});
 }
 
 void hash::DrawArrowWithCircles(Vector2 start, Vector2 end, float radius, Color color, float thickness) {
@@ -193,7 +194,7 @@ void hash::DrawArrowWithCircles(Vector2 start, Vector2 end, float radius, Color 
     Vector2 arrowStart = { start.x + radius * dir.x, start.y + radius * dir.y };
     Vector2 arrowEnd = { end.x - radius * dir.x, end.y - radius * dir.y };
     DrawLineEx(arrowStart, arrowEnd, thickness, color);
-    float arrowSize = 20.0f;
+    float arrowSize = 10.0f;
     Vector2 left = { arrowEnd.x - arrowSize * (dir.x - dir.y), arrowEnd.y - arrowSize * (dir.y + dir.x) };
     Vector2 right = { arrowEnd.x - arrowSize * (dir.x + dir.y), arrowEnd.y - arrowSize * (dir.y - dir.x) };
     DrawTriangle(arrowEnd, left, right, color);

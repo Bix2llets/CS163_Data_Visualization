@@ -70,11 +70,16 @@ void hashState::handleInput() {
             textDestionation = 4;
         }
         if (GuiButton((Rectangle){10 + 50 + 150, 750, 100, 40}, "Random")) {
-            int n = GetRandomValue(0, 10);
+            int n = GetRandomValue(1, 15);
             mhash = hash(n);
-            for (int i = 0; i < n; i ++)  {
+            int m = GetRandomValue(1, std::min(3, n));
+            for (int i = 0; i < m; i ++)  {
                 mLib::GenerateRandomNum(requestText);
                 mhash.insert(std::atoi(requestText));
+                while (mhash.completedAllActions() == 0) {
+                    mhash.update(1e-15, 1e-15);
+                    mhash.Action(0);
+                }
             }
         }
         if (GuiButton((Rectangle){10 + 50 + 150, 800, 100, 40}, "Custom")) {
@@ -108,7 +113,7 @@ void hashState::handleInput() {
                 if (textDestionation == 2) mhash.insert(std::atoi(requestText));
                 if (textDestionation == 3) mhash.remove(std::atoi(requestText));
                 if (textDestionation == 4) {
-                    mhash = hash(std::min(15, std::atoi(requestText)));
+                    mhash = hash(std::max(1, std::min(15, std::atoi(requestText))));
                 }
             }
         }

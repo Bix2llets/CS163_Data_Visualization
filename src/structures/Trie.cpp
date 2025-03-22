@@ -227,23 +227,24 @@ void Trie::update(double currTime, double rate) {
 void Trie::draw(TrieNode *root) {
     if (root == NULL) return;
     for (auto &child : root->children) draw(child.second);
-    DrawCircleV(root->getPosition(), NODE_RADIUS, root->isEndOfWord ? ORANGE : BLUE);
+    DrawCircleV(root->getPosition(), NODE_RADIUS - 5, root->isEndOfWord ? ORANGE : (Color) {0, 160, 216, 241});
+    DrawRing(root->getPosition(), NODE_RADIUS - 5, NODE_RADIUS, 0, 360, 20, BLUE);
     char str[2] = {root->character, '\0'};
-    DrawTextEx(mLib::mFont, str, (Vector2){root->getPosition().x - 10, root->getPosition().y - 10}, 20, 2, WHITE);
+    DrawTextEx(mLib::mFont, str, (Vector2){root->getPosition().x - 12, root->getPosition().y - 12}, 20, 2, WHITE);
 }
 
 void Trie::draw() {
     if (!endLoop()) mLib::DrawTextTrie(core[loop].index);
     drawArrow(root);
     draw(root);
-    if (Itr.show) DrawRing(Itr.animation->getPosition(), NODE_RADIUS, NODE_RADIUS + 5, 0, 360, 20, GREEN);
+    if (Itr.show) DrawRing(Itr.animation->getPosition(), NODE_RADIUS, NODE_RADIUS + 5, 0, 360, 20, (Color) {255, 116, 109, 255});
 }
 
 void Trie::drawArrow(TrieNode* root) {
     if (root == NULL) return;
     for (auto &child : root->children) 
         if (child.second->valid) {
-            DrawArrowWithCircles(root->getPosition(), child.second->getPosition(), NODE_RADIUS, RED, 2);
+            DrawArrowWithCircles(root->getPosition(), child.second->getPosition(), NODE_RADIUS, (Color) {0, 160, 216, 241}, 2.5);
             drawArrow(child.second);
         }
 }
@@ -256,7 +257,7 @@ void Trie::DrawArrowWithCircles(Vector2 start, Vector2 end, float radius, Color 
     Vector2 arrowStart = { start.x + radius * dir.x, start.y + radius * dir.y };
     Vector2 arrowEnd = { end.x - radius * dir.x, end.y - radius * dir.y };
     DrawLineEx(arrowStart, arrowEnd, thickness, color);
-    float arrowSize = 20.0f;
+    float arrowSize = 10.0f;
     Vector2 left = { arrowEnd.x - arrowSize * (dir.x - dir.y), arrowEnd.y - arrowSize * (dir.y + dir.x) };
     Vector2 right = { arrowEnd.x - arrowSize * (dir.x + dir.y), arrowEnd.y - arrowSize * (dir.y - dir.x) };
     DrawTriangle(arrowEnd, left, right, color);

@@ -30,6 +30,7 @@ bool AVL::Action(bool isReversed) {
 std::vector<AVLNode*> AVL::getNodes(AVLNode *root) {
     std::vector<AVLNode*> nodes;
     if (root == NULL) return nodes;
+    if (root->valid == false) return nodes;
     if (root->left != NULL) root->left->setTargetedPosition((Vector2){0, root->getTargetedPosition().y + yOFFSET});
     if (root->right != NULL) root->right->setTargetedPosition((Vector2){0, root->getTargetedPosition().y + yOFFSET});
     std::vector<AVLNode*> left = getNodes(root->left), right = getNodes(root->right);
@@ -60,8 +61,8 @@ void AVL::calcPosition(AVLNode*root) {
 
 std::pair<int, int> AVL::insert(AVLNode *par, AVLNode *&root, int value, ActionList &actions) {
     if (root == NULL) {
-        if (par == NULL) root = new AVLNode(700, 100, value, par);
-        else root = new AVLNode(par->getPosition().x, par->getPosition().y, value, par);
+        if (par == NULL) root = new AVLNode(700, 100, value, par, 0);
+        else root = new AVLNode(par->getPosition().x, par->getPosition().y, value, par, par->value < value);
         actions.push_back({2, CREATE, root});
         actions.push_back({2, SETLECT, root});
         return {1, 0};
@@ -226,8 +227,7 @@ bool AVL::Undo(action Action) {
             if (rotateList.size() && rotateList.back() == loop - 1) {
                 rotateList.pop_back();
                 if (Action.node->parent == NULL) root = Action.node;
-                else 
-                if (Action.node->left == Action.node->parent->left) Action.node->parent->left = Action.node;
+                else if (Action.node->PosInParent == 0) Action.node->parent->left = Action.node;
                 else Action.node->parent->right = Action.node;
                 calcPosition(root);
             }
@@ -245,56 +245,101 @@ bool AVL::Undo(action Action) {
         case LL:
             if (rotateList.size() && rotateList.back() == loop - 1) {
                 rotateList.pop_back();
-                AVLNode* temp = Action.node->left;
-                Action.node->left = temp->left;
-                temp->left->parent = Action.node;
-                temp->left = temp->left->right;
-                temp->left->parent = temp;
-                Action.node->left->right = temp;
-                temp->parent = Action.node->left;
+                AVLNode *leftChild = Action.node->left;
+                AVLNode *left_LeftChild = leftChild->left;
+                AVLNode *right_left_LeftChild = left_LeftChild->right;
+
+                Action.node->left = left_LeftChild;
+                left_LeftChild->parent = Action.node, left_LeftChild->PosInParent = 0;
+                leftChild->left = right_left_LeftChild;
+                if (right_left_LeftChild != NULL) right_left_LeftChild->parent = leftChild, right_left_LeftChild->PosInParent = 0;
+                left_LeftChild->right = leftChild;
+                leftChild->parent = left_LeftChild, leftChild->PosInParent = 1;
                 calcPosition(root);
+
+
+                // AVLNode* temp = Action.node->left;
+                // Action.node->left = temp->left;
+                // temp->left->parent = Action.node;
+                // temp->left = temp->left->right;
+                // temp->left->parent = temp;
+                // Action.node->left->right = temp;
+                // temp->parent = Action.node->left;
             }
             return isCompleted(root);
         case RR:
             if (rotateList.size() && rotateList.back() == loop - 1) {
                 rotateList.pop_back();
-                AVLNode* temp = Action.node->right;
-                Action.node->right = temp->right;
-                temp->right->parent = Action.node;
-                temp->right = temp->right->left;
-                temp->right->parent = temp;
-                Action.node->right->left = temp;
-                temp->parent = Action.node->right;
+                AVLNode *rightChild = Action.node->right;
+                AVLNode *right_RightChild = rightChild->right;
+                AVLNode *left_right_RightChild = right_RightChild->left;
+
+                Action.node->right = right_RightChild;
+                right_RightChild->parent = Action.node, right_RightChild->PosInParent = 1;
+                rightChild->right = left_right_RightChild;
+                if (left_right_RightChild != NULL) left_right_RightChild->parent = rightChild, left_right_RightChild->PosInParent = 1;
+                right_RightChild->left = rightChild;
+                rightChild->parent = right_RightChild, rightChild->PosInParent = 0;
                 calcPosition(root);
+
+                // AVLNode* temp = Action.node->right;
+                // Action.node->right = temp->right;
+                // temp->right->parent = Action.node;
+                // temp->right = temp->right->left;
+                // temp->right->parent = temp;
+                // Action.node->right->left = temp;
+                // temp->parent = Action.node->right;
             }
             return isCompleted(root);
         case Left:
             if (rotateList.size() && rotateList.back() == loop - 1) {
                 rotateList.pop_back();
-                AVLNode *temp = Action.node->parent;
-                Action.node->parent = temp->parent;
-                if (temp->parent == NULL) root = Action.node;
-                else if (temp == temp->parent->left) temp->parent->left = Action.node;
-                else temp->parent->right = Action.node; 
-                temp->left = Action.node->right;
-                if (Action.node->right != NULL) Action.node->right->parent = temp;
-                Action.node->right = temp;
-                temp->parent = Action.node;
+                AVLNode *par = Action.node->parent;
+                AVLNode *rightChild = Action.node->right;
+
+                if (par -> parent == NULL) root = Action.node, Action.node -> parent = NULL, Action.node -> PosInParent = 0;
+                else if (par -> PosInParent == 0) par -> parent -> left = Action.node, Action.node -> parent = par -> parent, Action.node -> PosInParent = 0;
+                else par -> parent -> right = Action.node, Action.node -> parent = par -> parent, Action.node -> PosInParent = 1;
+
+                par -> left = rightChild;
+                if (rightChild != NULL) rightChild -> parent = par, rightChild -> PosInParent = 0;
+                Action.node -> right = par, par -> parent = Action.node, par -> PosInParent = 1;
+
+                // AVLNode *temp = Action.node->parent;
+                // Action.node->parent = temp->parent;
+                // if (temp->parent == NULL) root = Action.node;
+                // else if (temp == temp->parent->left) temp->parent->left = Action.node;
+                // else temp->parent->right = Action.node; 
+                // temp->left = Action.node->right;
+                // if (Action.node->right != NULL) Action.node->right->parent = temp;
+                // Action.node->right = temp;
+                // temp->parent = Action.node;
                 calcPosition(root);
             }
             return isCompleted(root);
         case Right:
             if (rotateList.size() && rotateList.back() == loop - 1) {
                 rotateList.pop_back();
-                AVLNode *temp = Action.node->parent;
-                Action.node->parent = temp->parent;
-                if (temp->parent == NULL) root = Action.node;
-                else if (temp == temp->parent->left) temp->parent->left = Action.node;
-                else temp->parent->right = Action.node;
-                temp->right = Action.node->left;
-                if (Action.node->left != NULL) Action.node->left->parent = temp;
-                Action.node->left = temp;
-                temp->parent = Action.node;
+                AVLNode *par = Action.node->parent;
+                AVLNode *leftChild = Action.node->left;
+
+                if (par -> parent == NULL) root = Action.node, Action.node -> parent = NULL, Action.node -> PosInParent = 0;
+                else if (par -> PosInParent == 0) par -> parent -> left = Action.node, Action.node -> parent = par -> parent, Action.node -> PosInParent = 0;
+                else par -> parent -> right = Action.node, Action.node -> parent = par -> parent, Action.node -> PosInParent = 1;
+
+                par -> right = leftChild;
+                if (leftChild != NULL) leftChild -> parent = par, leftChild -> PosInParent = 1;
+                Action.node -> left = par, par -> parent = Action.node, par -> PosInParent = 0;
+
+                // AVLNode *temp = Action.node->parent;
+                // Action.node->parent = temp->parent;
+                // if (temp->parent == NULL) root = Action.node;
+                // else if (temp == temp->parent->left) temp->parent->left = Action.node;
+                // else temp->parent->right = Action.node;
+                // temp->right = Action.node->left;
+                // if (Action.node->left != NULL) Action.node->left->parent = temp;
+                // Action.node->left = temp;
+                // temp->parent = Action.node;
                 calcPosition(root);
             }
             return isCompleted(root);
@@ -347,14 +392,15 @@ bool AVL::doAction(action Action) {
             if (rotateList.size() == 0 || rotateList.back() != loop) {
                 rotateList.push_back(loop);
                 AVLNode *leftChild = Action.node->left;
+                AVLNode *righ_LeftChild = leftChild->right;
+                AVLNode *left_Right_LeftChild = righ_LeftChild->left;
                 // left rotation on leftChild
-                AVLNode *temp = leftChild->right;
-                leftChild->right = temp->left;
-                if (temp->left != NULL) temp->left->parent = leftChild;
-                temp->left = leftChild;
-                leftChild->parent = temp;
-                temp->parent = Action.node;
-                Action.node->left = temp;
+                leftChild->right = left_Right_LeftChild;
+                if (left_Right_LeftChild != NULL) left_Right_LeftChild->parent = leftChild;
+                righ_LeftChild->left = leftChild;
+                leftChild->parent = righ_LeftChild;
+                righ_LeftChild->parent = Action.node, righ_LeftChild->PosInParent = 0;
+                Action.node->left = righ_LeftChild;
                 calcPosition(root);
             }
             return isCompleted(root);
@@ -363,14 +409,15 @@ bool AVL::doAction(action Action) {
             if (rotateList.size() == 0 || rotateList.back() != loop) {
                 rotateList.push_back(loop);
                 AVLNode *rightChild = Action.node->right;
+                AVLNode *left_RightChild = rightChild->left;
+                AVLNode *right_Left_RightChild = left_RightChild->right;
                 // right rotation on rightChild
-                AVLNode *temp = rightChild->left;
-                rightChild->left = temp->right;
-                if (temp->right != NULL) temp->right->parent = rightChild;
-                temp->right = rightChild;
-                rightChild->parent = temp;
-                temp->parent = Action.node;
-                Action.node->right = temp;
+                rightChild->left = right_Left_RightChild;
+                if (right_Left_RightChild != NULL) right_Left_RightChild->parent = rightChild;
+                left_RightChild->right = rightChild;
+                rightChild->parent = left_RightChild;
+                left_RightChild->parent = Action.node, left_RightChild->PosInParent = 1;
+                Action.node->right = left_RightChild;
                 calcPosition(root);
             }
             return isCompleted(root);
@@ -378,15 +425,18 @@ bool AVL::doAction(action Action) {
         case Left: {
             if (rotateList.size() == 0 || rotateList.back() != loop) {
                 rotateList.push_back(loop);
-                AVLNode *temp = Action.node->right;
-                Action.node->right = temp->left;
-                if (temp->left != NULL) temp->left->parent = Action.node;
-                temp->left = Action.node;
-                temp->parent = Action.node->parent;
-                if (Action.node->parent == NULL) root = temp;
-                else if (Action.node == Action.node->parent->left) Action.node->parent->left = temp;
-                else Action.node->parent->right = temp;
-                Action.node->parent = temp;
+                AVLNode *rightChild = Action.node->right;
+                AVLNode *Left_RightChild = rightChild->left;
+
+                Action.node->right = Left_RightChild;
+                if (Left_RightChild != NULL) Left_RightChild->parent = Action.node, Left_RightChild->PosInParent = 1;
+                rightChild->left = Action.node;
+                rightChild->parent = Action.node->parent;
+                if (Action.node->parent == NULL) root = rightChild;
+                else if (Action.node->PosInParent == 0) Action.node->parent->left = rightChild, rightChild->PosInParent = 0;
+                else Action.node->parent->right = rightChild, rightChild->PosInParent = 1;
+                Action.node->parent = rightChild;
+                Action.node->PosInParent = 0;
                 calcPosition(root);
             }
             return isCompleted(root);
@@ -394,15 +444,18 @@ bool AVL::doAction(action Action) {
         case Right: {
             if (rotateList.size() == 0 || rotateList.back() != loop) {
                 rotateList.push_back(loop);
-                AVLNode *temp = Action.node->left;
-                Action.node->left = temp->right;
-                if (temp->right != NULL) temp->right->parent = Action.node;
-                temp->right = Action.node;
-                temp->parent = Action.node->parent;
-                if (Action.node->parent == NULL) root = temp;
-                else if (Action.node == Action.node->parent->left) Action.node->parent->left = temp;
-                else Action.node->parent->right = temp;
-                Action.node->parent = temp;
+                AVLNode *leftChild = Action.node->left;
+                AVLNode *Right_LeftChild = leftChild->right;
+
+                Action.node->left = Right_LeftChild;
+                if (Right_LeftChild != NULL) Right_LeftChild->parent = Action.node, Right_LeftChild->PosInParent = 0;
+                leftChild->right = Action.node;
+                leftChild->parent = Action.node->parent;
+                if (Action.node->parent == NULL) root = leftChild;
+                else if (Action.node->PosInParent == 0) Action.node->parent->left = leftChild, leftChild->PosInParent = 0;
+                else Action.node->parent->right = leftChild, leftChild->PosInParent = 1;
+                Action.node->parent = leftChild;
+                Action.node->PosInParent = 1;
                 calcPosition(root);
             }
             return isCompleted(root);
@@ -437,31 +490,32 @@ void AVL::update(double currTime, double rate) {
 #include <cstring>
 
 void AVL::draw(AVLNode*root) {
-    if (root == NULL) return;
+    if (root == NULL || root -> valid == false) return;
     draw(root->left);
     draw(root->right);
-    DrawCircleV(root->getPosition(), NODE_RADIUS, root->targeted ? ORANGE : BLUE);
+    DrawCircleV(root->getPosition(), NODE_RADIUS - 5, root->targeted ? ORANGE : (Color) {0, 160, 216, 241});
+    DrawRing(root->getPosition(), NODE_RADIUS - 5, NODE_RADIUS, 0, 360, 20, BLUE);
     std::string value = std::to_string(root->value);
     char *text = new char[value.length() + 1];
     strcpy(text, value.c_str());
-    DrawTextEx(mLib::mFont, text, (Vector2){root->getPosition().x - 10, root->getPosition().y - 10}, 20, 2, WHITE);
+    DrawTextEx(mLib::mFont, text, (Vector2){root->getPosition().x - 12, root->getPosition().y - 12}, 20, 2, WHITE);
 }
 
 void AVL::draw() {
     if (!endLoop()) mLib::DrawTextAVL(core[loop].index);
     drawArrow(root);
     draw(root);
-    if (Itr.show) DrawRing(Itr.animation->getPosition(), NODE_RADIUS, NODE_RADIUS + 5, 0, 360, 20, GREEN);
+    if (Itr.show) DrawRing(Itr.animation->getPosition(), NODE_RADIUS, NODE_RADIUS + 5, 0, 360, 20, (Color) {255, 116, 109, 255});
 }
 
 void AVL::drawArrow(AVLNode* root) {
     if (root == NULL) return;
     if (root->left != NULL && root->left->valid) {
-        DrawArrowWithCircles(root->getPosition(), root->left->getPosition(), NODE_RADIUS, RED, 2);
+        DrawArrowWithCircles(root->getPosition(), root->left->getPosition(), NODE_RADIUS, (Color) {0, 160, 216, 241}, 2.5);
         drawArrow(root->left);
     }
     if (root->right != NULL && root->right->valid) {
-        DrawArrowWithCircles(root->getPosition(), root->right->getPosition(), NODE_RADIUS, RED, 2);
+        DrawArrowWithCircles(root->getPosition(), root->right->getPosition(), NODE_RADIUS, (Color) {0, 160, 216, 241}, 2.5);
         drawArrow(root->right);
     }
 }
@@ -474,13 +528,14 @@ void AVL::DrawArrowWithCircles(Vector2 start, Vector2 end, float radius, Color c
     Vector2 arrowStart = { start.x + radius * dir.x, start.y + radius * dir.y };
     Vector2 arrowEnd = { end.x - radius * dir.x, end.y - radius * dir.y };
     DrawLineEx(arrowStart, arrowEnd, thickness, color);
-    float arrowSize = 20.0f;
+    float arrowSize = 10.0f;
     Vector2 left = { arrowEnd.x - arrowSize * (dir.x - dir.y), arrowEnd.y - arrowSize * (dir.y + dir.x) };
     Vector2 right = { arrowEnd.x - arrowSize * (dir.x + dir.y), arrowEnd.y - arrowSize * (dir.y - dir.x) };
     DrawTriangle(arrowEnd, left, right, color);
 }
 
 bool AVL::completedAllActions() {
+    if (loop < core.size()) std::cout << core[loop].action << std::endl;
     return loop == core.size();
 }
 
@@ -499,8 +554,9 @@ bool AVL::reachedStart() {
 void AVL::ClearOperator() {
     while (core.size() > loop) {
         if (core.back().action == CREATE) {
-            if (core.back().node->parent->left == core.back().node) core.back().node->parent->left = NULL;
-            else core.back().node->parent->right = NULL;
+            if (core.back().node->parent == NULL) root = NULL;
+            else if (core.back().node->parent->left == core.back().node) core.back().node->parent->left = NULL;
+            else if (core.back().node->parent->right == core.back().node) core.back().node->parent->right = NULL;
             delete core.back().node;
         }
         core.pop_back();
