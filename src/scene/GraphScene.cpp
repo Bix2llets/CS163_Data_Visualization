@@ -66,6 +66,7 @@ void update() {
 void render() { graph.render(); }
 
 void addNode(int nodeLabel) {
+    resetGraphColor();
     addStep();
     addNodeAdd(nodeLabel);
 }
@@ -73,6 +74,7 @@ void addNode(int nodeLabel) {
 void addNode(std::shared_ptr<GraphNode> node) { addNode(node->getLabel()); }
 
 void addEdge(int node1Label, int node2Label, int weight) {
+    resetGraphColor();
     addStep();
     addEdgeAdd(node1Label, node2Label, weight);
 }
@@ -84,6 +86,7 @@ void addEdge(std::shared_ptr<GraphNode> node1, std::shared_ptr<GraphNode> node2,
 
 void removeNode(int nodeLabel) {
     if (graph.findNode(nodeLabel) == nullptr) return;
+    resetGraphColor();
     addStep();
     addNodeDelete(nodeLabel);
     auto edgeList = graph.getEdgeList();
@@ -103,6 +106,7 @@ void removeNode(std::shared_ptr<GraphNode> node) {
 void removeEdge(int node1Label, int node2Label) {
     auto edge = graph.findEdge(node1Label, node2Label);
     if (edge == nullptr) return;
+    resetGraphColor();
     addStep();
     addEdgeDelete(node1Label, node2Label, edge->getWeight());
 }
@@ -112,29 +116,6 @@ void removeEdge(std::shared_ptr<GraphNode> node1,
     removeEdge(node1->getLabel(), node2->getLabel());
 }
 
-void highlightNode(int nodeLabel, bool isImmediate) {
-    if (graph.findNode(nodeLabel) == nullptr) return;
-    addStep();
-    addNodeChange(nodeLabel, {0, 1, 1, 1, isImmediate});
-}
-
-void deHighlightNode(int nodeLabel, bool isImmediate) {
-    if (graph.findNode(nodeLabel) == nullptr) return;
-    addStep();
-    addNodeChange(nodeLabel, {1, 0, 1, 1, isImmediate});
-}
-
-void highlightEdge(int node1Label, int node2Label, bool isImmediate) {
-    if (graph.findEdge(node1Label, node2Label) == nullptr) return;
-    addStep();
-    addEdgeChange(node1Label, node2Label, {0, 1, 1, 1, isImmediate});
-}
-
-void deHighlightEdge(int node1Label, int node2Label, bool isImmediate) {
-    if (graph.findEdge(node1Label, node2Label) == nullptr) return;
-    addStep();
-    addEdgeChange(node1Label, node2Label, {1, 0, 1, 1, isImmediate});
-}
 
 void prevStep() {
     if (past.empty()) return;
@@ -245,7 +226,17 @@ void registerInput() {
     if (AppMenu::buttonPanel[2][0].isPressed()) {
         MST();
     }
-
+    if (AppMenu::buttonPanel[2][1].isPressed()) {
+        auto result = AppMenu::valueBox.getText();
+        std::stringstream ss;
+        std::string node1Text;
+        ss << result;
+        ss >> node1Text;
+        if (ss.rdbuf()->in_avail() != 0) return;
+        if (!isStrNum(node1Text)) return;
+        int node1Label = std::stoi(node1Text);
+        dijkstra(node1Label);
+    }
     if (AppMenu::undoButton.isPressed()) {
         prevStep();
     }
@@ -270,6 +261,7 @@ bool join(int label1, int label2, std::unordered_map<int, int> &parList) {
     return true;
 }
 void MST() {
+    resetGraphColor();
     std::vector<std::shared_ptr<GraphEdge>> edgeList = graph.getEdgeList();
     std::vector<std::shared_ptr<GraphNode>> nodeList = graph.getNodeList();
     sort(edgeList.begin(), edgeList.end(),
@@ -318,11 +310,60 @@ void MST() {
     addStep();
     for (auto edge : restoreList) {
         addEdgeChange(edge->node1->getLabel(), edge->node2->getLabel(),
-                      getInfo(edge, 0, 1, 0));
+                      {0, 0, 0, 1, 0});
     }
 }
 
-void dijkstra(int source, int dest) {}
+void dijkstra(int source) {
+    // * Build the adjacency list (undirected) and init the minimumDistance to
+    // nodes
+    if (graph.findNode(source) == nullptr) return;
+    resetGraphColor();
+    std::unordered_map<int, std::vector<std::pair<int, int>>> adjList;
+    std::unordered_map<int, int> minimumDistance;
+    const int INF = int(1e9 + 7);
+    for (auto node : graph.getNodeList()) {
+        adjList[node->getLabel()].resize(0);
+        minimumDistance[node->getLabel()] = INF;
+    }
+
+    minimumDistance[source] = 0;
+    for (auto edge : graph.getEdgeList()) {
+        int label1 = edge->node1->getLabel();
+        int label2 = edge->node2->getLabel();
+        int weight = edge->getWeight();
+        adjList[label1].push_back({label2, weight});
+        adjList[label2].push_back({label1, weight});
+    }
+
+    std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>,
+                        djikstraCmp>
+        pq;
+
+    pq.push({source, 0});
+    addStep();
+    addNodeChange(source, {0, 1, 1, 1, 0});
+    while (pq.size()) {
+        std::pair<int, int> curr = pq.top();
+        pq.pop();
+        // * Traverse the adjacency list
+        for (std::pair<int, int> edge : adjList[curr.first]) {
+            int nextWeight = curr.second + edge.second;
+            if (nextWeight < minimumDistance[edge.first]) {
+                // * Calculate the minimum Distance
+                minimumDistance[edge.first] = nextWeight;
+                pq.push({edge.first, nextWeight});
+                
+                // * Animation
+                addStep();
+                addEdgeChange(curr.first, edge.first, {0, 1, 1, 1, 0});
+                addNodeChange(edge.first, {0, 1, 1, 1, 0});
+                // if (edge.first == dest) return;
+
+            }
+        }
+    }
+}
 void addStep() { steps.push_back(Action()); }
 
 void addNodeChange(int label, ChangeInfo info) {
@@ -366,5 +407,14 @@ ChangeInfo getInfo(std::shared_ptr<GraphNode> node, bool isResultHighlight,
     res.isHighlightedAfter = isResultHighlight;
     res.isImmediate = isImmediate;
     return res;
+}
+
+void resetGraphColor() {
+    addStep();
+    for (auto edge : graph.getEdgeList())
+        addEdgeChange(edge->node1->getLabel(), edge->node2->getLabel(),
+                      getInfo(edge, 0, 1, 1));
+    for (auto node : graph.getNodeList())
+        addNodeChange(node->getLabel(), getInfo(node, 0, 1, 1));
 }
 }  // namespace GraphScene

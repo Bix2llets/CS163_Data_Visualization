@@ -1,8 +1,8 @@
 #include "graph/graph.h"
 
 #include <cstdlib>
-const float Graph::IDEAL_LENGTH = 150.f;
-const float Graph::PUSH_FACTOR = 1.f;
+const float Graph::IDEAL_LENGTH = 100.f;
+const float Graph::PUSH_FACTOR = 10.f;
 const float Graph::PULL_FACTOR = 1.f;
 const float Graph::CENTRIC_FACTOR = 10.0f;
 void Graph::applyPushForce() {
@@ -84,7 +84,10 @@ void Graph::update() {
 };
 
 void Graph::render() {
-    for (std::shared_ptr<GraphEdge> edge : edgeList) edge->render();
+    for (std::shared_ptr<GraphEdge> edge : edgeList)
+        if (edge->isHighlighted == false) edge->render();
+    for (std::shared_ptr<GraphEdge> edge : edgeList)
+        if (edge->isHighlighted == true) edge->render();
     for (std::shared_ptr<GraphNode> node : nodeList) node->render();
     for (std::shared_ptr<GraphEdge> edge : edgeList) edge->renderText();
 };
@@ -192,7 +195,6 @@ void Graph::removeNode(int nodeLabel) {
             return;
         }
     }
-
 }
 
 void Graph::finishAnimation() {

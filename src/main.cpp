@@ -65,8 +65,8 @@ int main() {
     SLLScene::setSpecs(0.05f);
     SLLScene::init();
 
-    Animation::setUpdateRate(12.5f);
-    AnimationColor::setUpdateRate(4.f);
+    Animation::setUpdateRate(10.f);
+    AnimationColor::setUpdateRate(1.f);
     // * Object initialization
 
     std::vector<std::string> exampleCode = {
@@ -79,27 +79,27 @@ int main() {
         "}"};
     AppMenu::loadCode(exampleCode);
 
-    // GraphScene::addEdge(1, 2, rand());
-    // GraphScene::addEdge(2, 3, rand());
-    // GraphScene::addEdge(3, 4, rand());
-    // GraphScene::addEdge(5, 4, rand());
-    // GraphScene::addEdge(5, 6, rand());
-    // GraphScene::addEdge(1, 6, rand());
-    // GraphScene::addEdge(1, 4, rand());
-    // GraphScene::addEdge(3, 7, rand());
-    // GraphScene::addEdge(4, 8, rand());
-    // GraphScene::addEdge(7, 8, rand());
-    // GraphScene::addEdge(2, 8, rand());
-    // GraphScene::addEdge(7, 6, rand());
-    // GraphScene::addEdge(7, 2, rand());
+    GraphScene::addEdge(1, 2, rand());
+    GraphScene::addEdge(2, 3, rand());
+    GraphScene::addEdge(3, 4, rand());
+    GraphScene::addEdge(5, 4, rand());
+    GraphScene::addEdge(5, 6, rand());
+    GraphScene::addEdge(1, 6, rand());
+    GraphScene::addEdge(1, 4, rand());
+    GraphScene::addEdge(3, 7, rand());
+    GraphScene::addEdge(4, 8, rand());
+    GraphScene::addEdge(7, 8, rand());
+    GraphScene::addEdge(2, 8, rand());
+    GraphScene::addEdge(7, 6, rand());
+    GraphScene::addEdge(7, 2, rand());
 
-    GraphScene::addStep();
+    // GraphScene::addStep();
     // for (int i = 0; i <= 10; i++)
     // for (int j = 0; j <= 20; j++)
     // GraphScene::addEdgeAdd(i, j, rand());
 
-    for (int i = 1; i <= 20; i++)
-        GraphScene::addEdgeAdd(0, i, i);
+    // for (int i = 1; i <= 20; i++)
+    //     GraphScene::addEdgeAdd(0, i, i);
     while (!WindowShouldClose()) {
         Loop::registerInput();
         Loop::update();

@@ -4,7 +4,7 @@
 namespace Loop {
 float elapsedSinceLastUpdate = 0.f;
 int frameCount = 0;
-const float DELTA_TIME = 1.0f / 24;
+const float DELTA_TIME = 1.0f / 60;
 SceneList currentScene = SceneList::MAIN_MENU;
 bool isRunning = true;
 
