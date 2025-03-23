@@ -65,7 +65,7 @@ int main() {
     SLLScene::setSpecs(0.05f);
     SLLScene::init();
 
-    Animation::setUpdateRate(10.f);
+    Animation::setUpdateRate(5.f);
     AnimationColor::setUpdateRate(1.f);
     // * Object initialization
 

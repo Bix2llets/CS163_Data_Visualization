@@ -8,7 +8,7 @@ std::deque<Action> past;
 std::deque<Action> future;
 std::deque<Action> steps;
 float timeLeft = 0.0f;
-const float TIME_DELAY = 0.05f;  // Adjust the delay as needed
+const float TIME_DELAY = 0.1f;  // Adjust the delay as needed
 int currentHighlighting = -1;
 
 std::set<int> nodeList;
@@ -101,12 +101,15 @@ void removeNode(int nodeLabel) {
     addStep(-1);
     resetGraphColor();
     addNodeDelete(nodeLabel);
-
+    std::vector<std::pair<std::pair<int, int>, int>> deleteList;
     for (auto edge : edgeList) {
         if (edge.first.first == nodeLabel ||
             edge.first.second == nodeLabel)
-            addEdgeDelete(edge.first.first, edge.first.second, edge.second);
+            deleteList.push_back(edge);
     }
+
+    for (auto edge: deleteList)
+        addEdgeDelete(edge.first.first, edge.first.second, edge.second);
 }
 
 void removeNode(std::shared_ptr<GraphNode> node) {
