@@ -23,7 +23,6 @@ add_executable(
     src/basis/GUIObject.cpp
     src/basis/colorPalette.cpp
     src/basis/textBox.cpp
-
     src/basis/overload.cpp
     
     src/animation/animation.cpp
