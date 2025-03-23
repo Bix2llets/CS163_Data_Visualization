@@ -1,5 +1,5 @@
-#ifndef TRIE_HPP
-#define TRIE_HPP
+#ifndef hash_HPP
+#define hash_HPP
 
 #include <iostream>
 #include <vector>
@@ -7,24 +7,24 @@
 #include <queue>
 #include <cmath>
 #include "raylib.h"
-#include "TrieNode.hpp"
+#include "hashNode.hpp"
 
-class Trie {
-    private:
-        enum TrieAction {
+
+class hash {
+    private: 
+        enum hashAction {
             INIT,
             CLEAR,
             SETLECT,
-            CREATE,
-            DELETE,
-            SETEND,
-            UNSETEND,
+            target,
+            untarget,
+            changeValue,
         };
-        
+
         struct ItrAction {
             Animation *animation;
             bool show;
-            TrieNode *targetedNode;
+            hashNode *targetedNode;
             void setTarget() {
                 if (targetedNode == NULL) animation->setTargetedPosition((Vector2){0, 0});
                 else animation->setTargetedPosition(targetedNode->getTargetedPosition());
@@ -35,28 +35,30 @@ class Trie {
                 show = false;
             }
         };
-        
+
         struct action {
             int index;
-            TrieAction action;
-            TrieNode* node;
+            hashAction action;
+            hashNode* node;
         };
-        
+
         typedef std::vector<action> ActionList;
     private:
         float xOFFSET = 100, yOFFSET = 130, NODE_RADIUS = 30;
-        TrieNode* root;
+        int m;
+        std::vector<hashNode *> root;
     public: 
-        Trie() ;
+        void printTable();
+        hash(int _m) ;
         bool Action(bool isReversed);
         bool doAction(action Action);
         bool Undo(action Action);
-        void insert(std::string word);
-        void search(std::string word);
-        void remove(std::string word);
+        void insert(int value);
+        void search(int value);
+        void remove(int value);
         void draw();
         void update(double currTime, double rate);
-        ~Trie();
+        ~hash();
         bool completedAllActions();
         bool completeAnimation();
         bool reachedEnd();
@@ -65,18 +67,14 @@ class Trie {
         inline bool endLoop() { return loop == core.size(); }
         inline bool startLoop() { return loop == 0; }
     private:
-        Vector2 calcPosition(TrieNode *root);
-        void APosition(TrieNode *root);
-        void draw(TrieNode *root);
-        void drawArrow(TrieNode *root);
-        void update(TrieNode *root, double currTime, double rate);
-        bool isCompleted(TrieNode *root);
+        void draw(hashNode *root);
         void DrawArrowWithCircles(Vector2 start, Vector2 end, float radius, Color color, float thickness);
         ItrAction Itr;
         int loop;
         ActionList core;
-        std::vector<std::pair<TrieNode*, int>> ItrHistory;
+        std::vector<std::pair<hashNode*, int>> ItrHistory;
+        std::vector<int> changeList;
 };
 
 
-#endif // TRIE_HPP
+#endif // hash_HPP

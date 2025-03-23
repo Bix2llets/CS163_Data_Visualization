@@ -1,5 +1,5 @@
-#ifndef TRIE_HPP
-#define TRIE_HPP
+#ifndef AVL_HPP
+#define AVL_HPP
 
 #include <iostream>
 #include <vector>
@@ -7,24 +7,30 @@
 #include <queue>
 #include <cmath>
 #include "raylib.h"
-#include "TrieNode.hpp"
+#include "AVLNode.hpp"
 
-class Trie {
-    private:
-        enum TrieAction {
+
+class AVL {
+    private: 
+        enum AVLAction {
             INIT,
             CLEAR,
             SETLECT,
             CREATE,
             DELETE,
-            SETEND,
-            UNSETEND,
+            RR, 
+            LL,
+            Right,
+            Left,
+            target,
+            untarget,
+            changeValue,
         };
-        
+
         struct ItrAction {
             Animation *animation;
             bool show;
-            TrieNode *targetedNode;
+            AVLNode *targetedNode;
             void setTarget() {
                 if (targetedNode == NULL) animation->setTargetedPosition((Vector2){0, 0});
                 else animation->setTargetedPosition(targetedNode->getTargetedPosition());
@@ -35,28 +41,28 @@ class Trie {
                 show = false;
             }
         };
-        
+
         struct action {
             int index;
-            TrieAction action;
-            TrieNode* node;
+            AVLAction action;
+            AVLNode* node;
         };
-        
+
         typedef std::vector<action> ActionList;
     private:
         float xOFFSET = 100, yOFFSET = 130, NODE_RADIUS = 30;
-        TrieNode* root;
+        AVLNode* root;
     public: 
-        Trie() ;
+        AVL() ;
         bool Action(bool isReversed);
         bool doAction(action Action);
         bool Undo(action Action);
-        void insert(std::string word);
-        void search(std::string word);
-        void remove(std::string word);
+        void insert(int value);
+        void search(int value);
+        void remove(int value);
         void draw();
         void update(double currTime, double rate);
-        ~Trie();
+        ~AVL();
         bool completedAllActions();
         bool completeAnimation();
         bool reachedEnd();
@@ -65,18 +71,23 @@ class Trie {
         inline bool endLoop() { return loop == core.size(); }
         inline bool startLoop() { return loop == 0; }
     private:
-        Vector2 calcPosition(TrieNode *root);
-        void APosition(TrieNode *root);
-        void draw(TrieNode *root);
-        void drawArrow(TrieNode *root);
-        void update(TrieNode *root, double currTime, double rate);
-        bool isCompleted(TrieNode *root);
+        void calcPosition(AVLNode *root);
+        std::vector<AVLNode*> getNodes(AVLNode *root);
+        std::pair<int, int> insert(AVLNode* par, AVLNode *&root, int value, std::vector<action> &actions);
+        int getLeftmost(AVLNode *root);
+        void search(AVLNode *root, int value, std::vector<action> &actions);   
+        std::pair<int, int> remove(AVLNode *par, AVLNode *root, int value, std::vector<action> &actions);
+        void draw(AVLNode *root);
+        void drawArrow(AVLNode *root);
+        void update(AVLNode *root, double currTime, double rate);
+        bool isCompleted(AVLNode *root);
         void DrawArrowWithCircles(Vector2 start, Vector2 end, float radius, Color color, float thickness);
         ItrAction Itr;
         int loop;
         ActionList core;
-        std::vector<std::pair<TrieNode*, int>> ItrHistory;
+        std::vector<std::pair<AVLNode*, int>> ItrHistory;
+        std::vector<int> changeList, rotateList;
 };
 
 
-#endif // TRIE_HPP
+#endif // AVL_HPP

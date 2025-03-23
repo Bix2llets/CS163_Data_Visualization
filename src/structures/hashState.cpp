@@ -1,15 +1,16 @@
-#include "TrieState.hpp"
+#include "hashState.hpp"
 #include "raygui.h"
 #include <mLib/Utility.hpp>
 #include <cstring>
 #include <fstream>
 #include <mLib/tinyfiledialogs.h>
+#include <cstdlib>
 
-const int MAX_TEXT_LENGTH = 5;
+const int MAX_TEXT_LENGTH = 3;
 
 #include <iostream>
 
-TrieState::TrieState() : mTrie() {
+hashState::hashState() : mhash(10) {
     showOptions = false;
     showCreateOptions = false;
     showTextBox = false;
@@ -28,10 +29,10 @@ TrieState::TrieState() : mTrie() {
     sliderValue = 50;
 }
 
-TrieState::~TrieState() {
+hashState::~hashState() {
 }
 
-void TrieState::handleInput() {
+void hashState::handleInput() {
     if (GuiButton((Rectangle){10, 700, 30, 190}, ">")) {
         showOptions = !showOptions;
         if (showOptions == 0) 
@@ -61,38 +62,46 @@ void TrieState::handleInput() {
             showCreateOptions = 0;
         }
     }
-    if (showCreateOptions & mTrie.completedAllActions())
+    if (showCreateOptions & mhash.completedAllActions())
     {
         if (GuiButton((Rectangle){10 + 50 + 150, 700, 100, 40}, "Clear")) {
-            mTrie = Trie();
+            showCreateOptions = 0;
+            showTextBox = 1;
+            textDestionation = 4;
         }
         if (GuiButton((Rectangle){10 + 50 + 150, 750, 100, 40}, "Random")) {
-            mTrie = Trie();
-            for (int i = 0; i < GetRandomValue(5, 10); i ++)  {
-                mLib::GenerateRandomText(requestText);
-                mTrie.insert(requestText);
-                while (mTrie.completedAllActions() == 0) {
-                    mTrie.update(1e-15, 1e-15);
-                    mTrie.Action(0);
+            int n = GetRandomValue(1, 15);
+            mhash = hash(n);
+            int m = GetRandomValue(1, std::min(3, n));
+            for (int i = 0; i < m; i ++)  {
+                mLib::GenerateRandomNum(requestText);
+                mhash.insert(std::atoi(requestText));
+                while (mhash.completedAllActions() == 0) {
+                    mhash.update(1e-15, 1e-15);
+                    mhash.Action(0);
                 }
             }
         }
         if (GuiButton((Rectangle){10 + 50 + 150, 800, 100, 40}, "Custom")) {
-            mTrie = Trie();
             const char *filter[2] = {"*.txt", "*.inp"};
             const char *path = tinyfd_openFileDialog("Open File", "", 2, filter, "txt or inp files", 0);
             std::cout << "File path: " << path << std::endl;
             std::cout << path << std::endl;
             if (path != NULL) {
                 std::ifstream file(path);
-                std::string line;
-                while (std::getline(file, line)) mTrie.insert(line);
+                int n;
+                file >> n;
+                mhash = hash(n);
+                while (file >> n) {
+                    mhash.insert(n);
+                }
+                file.close();
             }
         }
     }
-    if (showTextBox & mTrie.completedAllActions()) {
+    if (showTextBox & mhash.completedAllActions()) {
         if (GuiTextBox((Rectangle){10 + 50 + 150, 800, 200, 40}, textBox, MAX_TEXT_LENGTH + 1, editMode)) editMode = !editMode;
-        if (CheckCollisionPointRec(GetMousePosition(), (Rectangle){10 + 50 + 400, 800, 40, 40}) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) mLib::GenerateRandomText(textBox);
+        if (CheckCollisionPointRec(GetMousePosition(), (Rectangle){10 + 50 + 400, 800, 40, 40}) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) mLib::GenerateRandomNum(textBox);
         if ((CheckCollisionPointRec(GetMousePosition(), (Rectangle){10 + 50 + 440, 800, 40, 40}) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) 
         || GetKeyPressed() == KEY_ENTER) 
         {
@@ -100,50 +109,53 @@ void TrieState::handleInput() {
             textBox[0] = '\0';
             editMode = 0;
             if (strlen(requestText) > 0) {
-                if (textDestionation == 1) mTrie.search(requestText);
-                if (textDestionation == 2) mTrie.insert(requestText);
-                if (textDestionation == 3) mTrie.remove(requestText);
+                if (textDestionation == 1) mhash.search(std::atoi(requestText));
+                if (textDestionation == 2) mhash.insert(std::atoi(requestText));
+                if (textDestionation == 3) mhash.remove(std::atoi(requestText));
+                if (textDestionation == 4) {
+                    mhash = hash(std::max(1, std::min(15, std::atoi(requestText))));
+                }
             }
         }
     }
     if (GuiButton((Rectangle){10 + 50 + 750, 800, 100, 40}, animationPlaying ? "Pause" : "Play")) {
         if (animationPlaying == 0) animationPlaying = 1;
         else {
-            if (mTrie.completedAllActions()) animationPlaying = 0;
+            if (mhash.completedAllActions()) animationPlaying = 0;
             else pendingPause = 1;
         }
     }
     if (showRunStepByStep && animationPlaying == 0) ;
     else GuiDisable();
 
-    if (mTrie.startLoop()) GuiDisable();
+    if (mhash.startLoop()) GuiDisable();
     if (GuiButton((Rectangle){10 + 50 + 750 - 100, 800, 100, 40}, "Prev")) {
         isReversed = 1;
     }
-    if (mTrie.startLoop()) GuiEnable();
-    if (mTrie.endLoop()) GuiDisable();
+    if (mhash.startLoop()) GuiEnable();
+    if (mhash.endLoop()) GuiDisable();
     if (GuiButton((Rectangle){10 + 50 + 750 + 100, 800, 100, 40}, "Next")) {
         isReversed = 0;
     }
-    if (mTrie.endLoop()) GuiEnable();
+    if (mhash.endLoop()) GuiEnable();
 
     if (showRunStepByStep && animationPlaying == 0) ;
     else GuiEnable();
 
-    if (mTrie.endLoop()) GuiDisable();
+    if (mhash.endLoop()) GuiDisable();
     if (GuiButton((Rectangle){10 + 50 + 750 + 200, 800, 100, 40}, "Forward")) {
         forward = 1;
         mTimeStep = 1e-15;
         isReversed = 0;
     }
-    if (mTrie.endLoop()) GuiEnable();
-    if (mTrie.startLoop()) GuiDisable();
+    if (mhash.endLoop()) GuiEnable();
+    if (mhash.startLoop()) GuiDisable();
     if (GuiButton((Rectangle){10 + 50 + 750 - 200, 800, 100, 40}, "Backward")) {
         backward = 1;
         mTimeStep = 1e-15;
         isReversed = 1;
     }
-    if (mTrie.startLoop()) GuiEnable();
+    if (mhash.startLoop()) GuiEnable();
     
     if (mTimeStep >= 0.1f) {
         float minValue = 0.0f;     
@@ -156,42 +168,45 @@ void TrieState::handleInput() {
     }
 }
 
-void TrieState::update() {
+void hashState::update() {
     if (editMode) {
         if (strlen(textBox) == 0) ;
         else
-            if ('A' <= textBox[strlen(textBox) - 1] && textBox[strlen(textBox) - 1] <= 'Z') ;
-            else
-                if ('a' <= textBox[strlen(textBox) - 1] && textBox[strlen(textBox) - 1] <= 'z') textBox[strlen(textBox) - 1] -= 32;
-                else textBox[strlen(textBox) - 1] = '\0';
+            if ('0' <= textBox[strlen(textBox) - 1] && textBox[strlen(textBox) - 1] <= '9') ;
+            else textBox[strlen(textBox) - 1] = '\0';
     }
-    showRunStepByStep = mTrie.completeAnimation();
+    showRunStepByStep = mhash.completeAnimation();
 }
 
-void TrieState::render() {
-    if (showTextBox & mTrie.completedAllActions())
+void hashState::render() {
+    if (showTextBox & mhash.completedAllActions())
     {
         if (textDestionation == 1) DrawTextEx(mLib::mFont, "Searching", (Vector2) {10 + 50 + 150, 750}, 30, 2, BLACK);
         else if (textDestionation == 2) DrawTextEx(mLib::mFont, "Inserting", (Vector2) {10 + 50 + 150, 750}, 30, 2, BLACK);
         else if (textDestionation == 3) DrawTextEx(mLib::mFont, "Deleting", (Vector2) {10 + 50 + 150, 750}, 30, 2, BLACK);
+        else if (textDestionation == 4) DrawTextEx(mLib::mFont, "New size", (Vector2) {10 + 50 + 150, 750}, 30, 2, BLACK);
         DrawRectangle(10 + 50 + 400, 800, 40, 40, Fade(RED, 0.3f));
         DrawRectangle(10 + 50 + 440, 800, 40, 40, Fade(GREEN, 0.3f));
         DrawTextEx(mLib::mFont, "RD", (Vector2) {10 + 50 + 400, 800}, 30, 2, BLACK);
         DrawTextEx(mLib::mFont, "GO", (Vector2) {10 + 50 + 440, 800}, 30, 2, BLACK);
     }
-    mTrie.draw();
+    mhash.draw();
 }
 
-void TrieState::run() {
+void hashState::printTable() {
+    mhash.printTable();
+}
+
+void hashState::run() {
     handleInput();
     mTime += GetFrameTime();
     update();
-    mTrie.update(mTime, mTimeStep);
+    mhash.update(mTime, mTimeStep);
     if (mTime >= mTimeStep && (animationPlaying || isReversed != -1)) {
         mTime = 0;
         if (isReversed == -1)
         {
-            if (mTrie.Action(0))
+            if (mhash.Action(0))
             {
                 showRunStepByStep = 1;
                 if (pendingPause) {
@@ -202,9 +217,9 @@ void TrieState::run() {
         }
         else
         {
-            if (mTrie.Action(isReversed)) {
+            if (mhash.Action(isReversed)) {
                 if (forward) {
-                    if (mTrie.reachedEnd()) {
+                    if (mhash.reachedEnd()) {
                         forward = 0;
                         mTimeStep = 0.5f;
                         isReversed = -1;
@@ -212,15 +227,15 @@ void TrieState::run() {
                 }
                 else
                     if (backward) {
-                        if (mTrie.reachedStart()) {
-                            mTrie.ClearOperator();
+                        if (mhash.reachedStart()) {
+                            mhash.ClearOperator();
                             backward = 0;
                             mTimeStep = 0.5f;
                             isReversed = -1;
                         }
                     }
                     else {
-                        if (isReversed == 1 && mTrie.reachedStart()) mTrie.ClearOperator();
+                        if (isReversed == 1 && mhash.reachedStart()) mhash.ClearOperator();
                         isReversed = -1;
                     }
             }

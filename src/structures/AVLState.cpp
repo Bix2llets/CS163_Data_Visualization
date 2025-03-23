@@ -1,15 +1,16 @@
-#include "TrieState.hpp"
+#include "AVLState.hpp"
 #include "raygui.h"
 #include <mLib/Utility.hpp>
 #include <cstring>
 #include <fstream>
 #include <mLib/tinyfiledialogs.h>
+#include <cstdlib>
 
-const int MAX_TEXT_LENGTH = 5;
+const int MAX_TEXT_LENGTH = 3;
 
 #include <iostream>
 
-TrieState::TrieState() : mTrie() {
+AVLState::AVLState() : mAVL() {
     showOptions = false;
     showCreateOptions = false;
     showTextBox = false;
@@ -28,10 +29,10 @@ TrieState::TrieState() : mTrie() {
     sliderValue = 50;
 }
 
-TrieState::~TrieState() {
+AVLState::~AVLState() {
 }
 
-void TrieState::handleInput() {
+void AVLState::handleInput() {
     if (GuiButton((Rectangle){10, 700, 30, 190}, ">")) {
         showOptions = !showOptions;
         if (showOptions == 0) 
@@ -61,38 +62,42 @@ void TrieState::handleInput() {
             showCreateOptions = 0;
         }
     }
-    if (showCreateOptions & mTrie.completedAllActions())
+    if (showCreateOptions & mAVL.completedAllActions())
     {
         if (GuiButton((Rectangle){10 + 50 + 150, 700, 100, 40}, "Clear")) {
-            mTrie = Trie();
+            mAVL = AVL();
         }
         if (GuiButton((Rectangle){10 + 50 + 150, 750, 100, 40}, "Random")) {
-            mTrie = Trie();
+            mAVL = AVL();
             for (int i = 0; i < GetRandomValue(5, 10); i ++)  {
-                mLib::GenerateRandomText(requestText);
-                mTrie.insert(requestText);
-                while (mTrie.completedAllActions() == 0) {
-                    mTrie.update(1e-15, 1e-15);
-                    mTrie.Action(0);
+                int x = GetRandomValue(0, 1000000000) % 1000;
+                mAVL.insert(x);
+                std::cout << "insert success" <<  ' '<< x << std::endl;
+                while (mAVL.completedAllActions() == 0) {
+                    mAVL.update(1e-15, 1e-15);
+                    mAVL.Action(0);
                 }
             }
         }
         if (GuiButton((Rectangle){10 + 50 + 150, 800, 100, 40}, "Custom")) {
-            mTrie = Trie();
+            mAVL = AVL();
             const char *filter[2] = {"*.txt", "*.inp"};
             const char *path = tinyfd_openFileDialog("Open File", "", 2, filter, "txt or inp files", 0);
             std::cout << "File path: " << path << std::endl;
             std::cout << path << std::endl;
             if (path != NULL) {
                 std::ifstream file(path);
-                std::string line;
-                while (std::getline(file, line)) mTrie.insert(line);
+                int n;
+                while (file >> n) {
+                    mAVL.insert(n);
+                }
+                file.close();
             }
         }
     }
-    if (showTextBox & mTrie.completedAllActions()) {
+    if (showTextBox & mAVL.completedAllActions()) {
         if (GuiTextBox((Rectangle){10 + 50 + 150, 800, 200, 40}, textBox, MAX_TEXT_LENGTH + 1, editMode)) editMode = !editMode;
-        if (CheckCollisionPointRec(GetMousePosition(), (Rectangle){10 + 50 + 400, 800, 40, 40}) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) mLib::GenerateRandomText(textBox);
+        if (CheckCollisionPointRec(GetMousePosition(), (Rectangle){10 + 50 + 400, 800, 40, 40}) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) mLib::GenerateRandomNum(textBox);
         if ((CheckCollisionPointRec(GetMousePosition(), (Rectangle){10 + 50 + 440, 800, 40, 40}) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) 
         || GetKeyPressed() == KEY_ENTER) 
         {
@@ -100,50 +105,50 @@ void TrieState::handleInput() {
             textBox[0] = '\0';
             editMode = 0;
             if (strlen(requestText) > 0) {
-                if (textDestionation == 1) mTrie.search(requestText);
-                if (textDestionation == 2) mTrie.insert(requestText);
-                if (textDestionation == 3) mTrie.remove(requestText);
+                if (textDestionation == 1) mAVL.search(std::atoi(requestText));
+                if (textDestionation == 2) mAVL.insert(std::atoi(requestText));
+                if (textDestionation == 3) mAVL.remove(std::atoi(requestText));
             }
         }
     }
     if (GuiButton((Rectangle){10 + 50 + 750, 800, 100, 40}, animationPlaying ? "Pause" : "Play")) {
         if (animationPlaying == 0) animationPlaying = 1;
         else {
-            if (mTrie.completedAllActions()) animationPlaying = 0;
+            if (mAVL.completedAllActions()) animationPlaying = 0;
             else pendingPause = 1;
         }
     }
     if (showRunStepByStep && animationPlaying == 0) ;
     else GuiDisable();
 
-    if (mTrie.startLoop()) GuiDisable();
+    if (mAVL.startLoop()) GuiDisable();
     if (GuiButton((Rectangle){10 + 50 + 750 - 100, 800, 100, 40}, "Prev")) {
         isReversed = 1;
     }
-    if (mTrie.startLoop()) GuiEnable();
-    if (mTrie.endLoop()) GuiDisable();
+    if (mAVL.startLoop()) GuiEnable();
+    if (mAVL.endLoop()) GuiDisable();
     if (GuiButton((Rectangle){10 + 50 + 750 + 100, 800, 100, 40}, "Next")) {
         isReversed = 0;
     }
-    if (mTrie.endLoop()) GuiEnable();
+    if (mAVL.endLoop()) GuiEnable();
 
     if (showRunStepByStep && animationPlaying == 0) ;
     else GuiEnable();
 
-    if (mTrie.endLoop()) GuiDisable();
+    if (mAVL.endLoop()) GuiDisable();
     if (GuiButton((Rectangle){10 + 50 + 750 + 200, 800, 100, 40}, "Forward")) {
         forward = 1;
         mTimeStep = 1e-15;
         isReversed = 0;
     }
-    if (mTrie.endLoop()) GuiEnable();
-    if (mTrie.startLoop()) GuiDisable();
+    if (mAVL.endLoop()) GuiEnable();
+    if (mAVL.startLoop()) GuiDisable();
     if (GuiButton((Rectangle){10 + 50 + 750 - 200, 800, 100, 40}, "Backward")) {
         backward = 1;
         mTimeStep = 1e-15;
         isReversed = 1;
     }
-    if (mTrie.startLoop()) GuiEnable();
+    if (mAVL.startLoop()) GuiEnable();
     
     if (mTimeStep >= 0.1f) {
         float minValue = 0.0f;     
@@ -156,20 +161,18 @@ void TrieState::handleInput() {
     }
 }
 
-void TrieState::update() {
+void AVLState::update() {
     if (editMode) {
         if (strlen(textBox) == 0) ;
         else
-            if ('A' <= textBox[strlen(textBox) - 1] && textBox[strlen(textBox) - 1] <= 'Z') ;
-            else
-                if ('a' <= textBox[strlen(textBox) - 1] && textBox[strlen(textBox) - 1] <= 'z') textBox[strlen(textBox) - 1] -= 32;
-                else textBox[strlen(textBox) - 1] = '\0';
+            if ('0' <= textBox[strlen(textBox) - 1] && textBox[strlen(textBox) - 1] <= '9') ;
+            else textBox[strlen(textBox) - 1] = '\0';
     }
-    showRunStepByStep = mTrie.completeAnimation();
+    showRunStepByStep = mAVL.completeAnimation();
 }
 
-void TrieState::render() {
-    if (showTextBox & mTrie.completedAllActions())
+void AVLState::render() {
+    if (showTextBox & mAVL.completedAllActions())
     {
         if (textDestionation == 1) DrawTextEx(mLib::mFont, "Searching", (Vector2) {10 + 50 + 150, 750}, 30, 2, BLACK);
         else if (textDestionation == 2) DrawTextEx(mLib::mFont, "Inserting", (Vector2) {10 + 50 + 150, 750}, 30, 2, BLACK);
@@ -179,19 +182,19 @@ void TrieState::render() {
         DrawTextEx(mLib::mFont, "RD", (Vector2) {10 + 50 + 400, 800}, 30, 2, BLACK);
         DrawTextEx(mLib::mFont, "GO", (Vector2) {10 + 50 + 440, 800}, 30, 2, BLACK);
     }
-    mTrie.draw();
+    mAVL.draw();
 }
 
-void TrieState::run() {
+void AVLState::run() {
     handleInput();
     mTime += GetFrameTime();
     update();
-    mTrie.update(mTime, mTimeStep);
+    mAVL.update(mTime, mTimeStep);
     if (mTime >= mTimeStep && (animationPlaying || isReversed != -1)) {
         mTime = 0;
         if (isReversed == -1)
         {
-            if (mTrie.Action(0))
+            if (mAVL.Action(0))
             {
                 showRunStepByStep = 1;
                 if (pendingPause) {
@@ -202,9 +205,9 @@ void TrieState::run() {
         }
         else
         {
-            if (mTrie.Action(isReversed)) {
+            if (mAVL.Action(isReversed)) {
                 if (forward) {
-                    if (mTrie.reachedEnd()) {
+                    if (mAVL.reachedEnd()) {
                         forward = 0;
                         mTimeStep = 0.5f;
                         isReversed = -1;
@@ -212,15 +215,15 @@ void TrieState::run() {
                 }
                 else
                     if (backward) {
-                        if (mTrie.reachedStart()) {
-                            mTrie.ClearOperator();
+                        if (mAVL.reachedStart()) {
+                            mAVL.ClearOperator();
                             backward = 0;
                             mTimeStep = 0.5f;
                             isReversed = -1;
                         }
                     }
                     else {
-                        if (isReversed == 1 && mTrie.reachedStart()) mTrie.ClearOperator();
+                        if (isReversed == 1 && mAVL.reachedStart()) mAVL.ClearOperator();
                         isReversed = -1;
                     }
             }

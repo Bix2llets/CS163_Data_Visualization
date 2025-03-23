@@ -1,21 +1,21 @@
-#ifndef TRIESTATE_HPP
-#define TRIESTATE_HPP
+#ifndef AVLSTATE_HPP
+#define AVLSTATE_HPP
 
 #include "raylib.h"
 #include <cstring>
-#include "Trie.hpp"
+#include "AVL.hpp"
 
-class TrieState
+class AVLState
 {
     public:
-        TrieState();
+        AVLState();
         void handleInput();
         void update();
         void render();
         void run();
-        ~TrieState();
+        ~AVLState();
     private:
-        Trie mTrie;
+        AVL mAVL;
         bool showOptions;
         bool showCreateOptions;
         bool showTextBox;
@@ -28,4 +28,4 @@ class TrieState
         float sliderValue;
 };
 
-#endif // TRIESTATE_HPP
+#endif // AVLSTATE_HPP

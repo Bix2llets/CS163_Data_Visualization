@@ -1,21 +1,22 @@
-#ifndef TRIESTATE_HPP
-#define TRIESTATE_HPP
+#ifndef hashState_HPP
+#define hashState_HPP
 
 #include "raylib.h"
 #include <cstring>
-#include "Trie.hpp"
+#include "hash.hpp"
 
-class TrieState
+class hashState
 {
     public:
-        TrieState();
+        hashState();
         void handleInput();
         void update();
         void render();
         void run();
-        ~TrieState();
+        ~hashState();
+        void printTable();
     private:
-        Trie mTrie;
+        hash mhash;
         bool showOptions;
         bool showCreateOptions;
         bool showTextBox;
@@ -28,4 +29,4 @@ class TrieState
         float sliderValue;
 };
 
-#endif // TRIESTATE_HPP
+#endif // hashState_HPP
