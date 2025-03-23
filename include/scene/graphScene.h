@@ -1,7 +1,9 @@
 #pragma once
 #include <deque>
-#include <unordered_map>
 #include <queue>
+#include <set>
+#include <unordered_map>
+
 #include "graph/graph.h"
 
 namespace GraphScene {
@@ -36,9 +38,10 @@ struct Action {
     std::vector<int> nodeDeleted;
     std::vector<EdgeInfo> edgeAdded;
     std::vector<EdgeInfo> edgeDeleted;
+    int highlightedLine = -1;
 };
 
-struct djikstraCmp{
+struct djikstraCmp {
     bool operator()(std::pair<int, int> node1, std::pair<int, int> node2) {
         return node1.second > node2.second;
     }
@@ -48,6 +51,14 @@ extern std::deque<Action> future;
 extern std::deque<Action> steps;
 extern float accumulatedTime;
 extern const float TIME_DELAY;
+extern int currentHighlighting;
+
+const extern std::vector<std::string> PSEUDO_BLANK;
+const extern std::vector<std::string> PSEUDO_MST;
+const extern std::vector<std::string> PSEUDO_DIJKSTRA;
+
+extern std::set<int> nodeList;
+extern std::set<std::pair<std::pair<int, int>, int>> edgeList;
 
 void update();
 void render();
@@ -77,7 +88,7 @@ void dijkstra(int source);
 
 void registerInput();
 
-void addStep();
+void addStep(int highlightedLine);
 // With animation
 void addNodeChange(int label, ChangeInfo info);
 void addEdgeChange(int label1, int label2, ChangeInfo info);

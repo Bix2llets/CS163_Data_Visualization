@@ -192,7 +192,6 @@ void Graph::removeNode(int nodeLabel) {
         std::shared_ptr<GraphNode> node = nodeList[i];
         if (node->getLabel() == nodeLabel) {
             nodeList.erase(nodeList.begin() + i);
-            return;
         }
     }
 }

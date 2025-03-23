@@ -63,6 +63,7 @@ void registerInput() {
             updateFunc = &GraphScene::update;
 
             recordFunc = &GraphScene::registerInput;
+            AppMenu::highlightValue = &GraphScene::currentHighlighting;
         }
         if (WelcomeMenu::isHashTablePressed()) currentScene = SceneList::HASH;
         if (WelcomeMenu::isLinkedListPressed()) {
