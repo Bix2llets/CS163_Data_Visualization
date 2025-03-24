@@ -35,6 +35,7 @@ void update() {
 
         for (NodeChange nodeChange : nextAction.nodeChange) {
             auto node = graph.findNode(nodeChange.label);
+            if (node == nullptr) continue;
             bool isImmediate = nodeChange.info.isImmediate;
 
             if (nodeChange.info.isHighlightedAfter) {
@@ -50,6 +51,7 @@ void update() {
 
         for (EdgeChange edgeChange : nextAction.edgeChange) {
             auto edge = graph.findEdge(edgeChange.label1, edgeChange.label2);
+            if (edge == nullptr) continue;
             bool isImmediate = edgeChange.info.isImmediate;
             ChangeInfo info = edgeChange.info;
 
@@ -159,6 +161,7 @@ void prevStep() {
 
     for (NodeChange nodeChange : lastAction.nodeChange) {
         auto node = graph.findNode(nodeChange.label);
+        if (node == nullptr) continue;
         bool isImmediate = nodeChange.info.isImmediate;
         ChangeInfo info = nodeChange.info;
         if (info.isHighlightedBefore)
@@ -173,6 +176,7 @@ void prevStep() {
 
     for (EdgeChange edgeChange : lastAction.edgeChange) {
         auto edge = graph.findEdge(edgeChange.label1, edgeChange.label2);
+        if (edge == nullptr) continue;
         bool isImmediate = edgeChange.info.isImmediate;
         ChangeInfo info = edgeChange.info;
         if (info.isHighlightedBefore)
@@ -204,14 +208,16 @@ void registerInput() {
     if (AppMenu::buttonPanel[0][0].isPressed()) {
         auto result = AppMenu::valueBox.getValue();
         if (result.first == false) return;
+        AppMenu::valueBox.clear();
 
         AppMenu::loadCode(PSEUDO_BLANK);
         addNode(result.second);
     }
-
+    
     if (AppMenu::buttonPanel[1][0].isPressed()) {
         auto result = AppMenu::valueBox.getValue();
         if (result.first == false) return;
+        AppMenu::valueBox.clear();
 
         AppMenu::loadCode(PSEUDO_BLANK);
         removeNode(result.second);
@@ -227,6 +233,8 @@ void registerInput() {
         if (!isStrNum(node1Str)) return;
         if (!isStrNum(node2Str)) return;
         if (!isStrNum(weightStr)) return;
+        AppMenu::valueBox.clear();
+        
         AppMenu::loadCode(PSEUDO_BLANK);
         int node1lLabel = std::stoi(node1Str);
         int node2lLabel = std::stoi(node2Str);
@@ -244,6 +252,8 @@ void registerInput() {
         if (!isStrNum(node1Str)) return;
         if (!isStrNum(node2Str)) return;
         AppMenu::loadCode(PSEUDO_BLANK);
+        AppMenu::valueBox.clear();
+
         int node1Label = std::stoi(node1Str);
         int node2Label = std::stoi(node2Str);
         removeEdge(node1Label, node2Label);
@@ -262,6 +272,8 @@ void registerInput() {
         if (ss.rdbuf()->in_avail() != 0) return;
         if (!isStrNum(node1Text)) return;
         AppMenu::loadCode(PSEUDO_DIJKSTRA);
+        AppMenu::valueBox.clear();
+
         int node1Label = std::stoi(node1Text);
         dijkstra(node1Label);
     }

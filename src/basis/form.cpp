@@ -82,7 +82,12 @@ void Form::update() {
 }
 
 std::pair<bool, int> Form::getValue() {
+    if (text.size() > 8) return {0, 0};
     if (text.size() == 0) return {0, 0};
     for (char chr: text) if (chr < '0' || '9' < chr) return {0, 0};
     return {1, std::stoi(text)};
+}
+
+void Form::clear() {
+    text = "";
 }

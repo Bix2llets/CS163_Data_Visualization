@@ -189,6 +189,7 @@ void SLLScene::recordInput() {
         if (value.first) {
             SLLScene::addEnd(std::to_string(value.second));
             AppMenu::loadCode(SLLScene::PSEUDO_INSERT);
+            AppMenu::valueBox.clear();
         }
     }
     if (buttonPanel[1][0].isPressed()) {
@@ -200,18 +201,22 @@ void SLLScene::recordInput() {
         if (value.first && location.first) {
             SLLScene::addAt(std::to_string(value.second), location.second);
             AppMenu::loadCode(SLLScene::PSEUDO_INSERT);
+            AppMenu::locationBox.clear();
+            AppMenu::valueBox.clear();
         }
     }
     if (buttonPanel[1][1].isPressed()) {
         if (location.first) {
             SLLScene::removeAt(location.second);
             AppMenu::loadCode(SLLScene::PSEUDO_DELETE);
+            AppMenu::locationBox.clear();
         }
     }
     if (buttonPanel[2][1].isPressed()) {
         if (value.first) {
             SLLScene::find(std::to_string(value.second));
             AppMenu::loadCode(SLLScene::PSEUDO_SEARCH);
+            AppMenu::valueBox.clear();
         }
     }
     if (AppMenu::undoButton.isPressed()) {
