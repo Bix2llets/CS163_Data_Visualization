@@ -3,6 +3,7 @@
 #include "animation.h"
 #include "animationColor.h"
 #include "utility.h"
+#include "raylib.h"
 class AnimationEdge{
    private:
     Animation beginPosition;

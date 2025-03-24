@@ -29,7 +29,7 @@ add_executable(
     src/basis/toggleable.cpp
     
     src/animation/animation.cpp
-    src/animation/arrow.cpp
+    # src/animation/arrow.cpp
     src/animation/animationColor.cpp
     
     src/GUI/welcomeMenu.cpp
@@ -37,11 +37,18 @@ add_executable(
     
     src/structures/SLLNode.cpp
     src/structures/singlyLinkedList.cpp
+    src/structures/Trie.cpp
     src/structures/TrieState.cpp
 
     src/structures/graph/edge.cpp
     src/structures/graph/node.cpp
     src/structures/graph/graph.cpp
+    src/structures/AVL.cpp 
+    src/structures/AVLState.cpp
+    src/structures/hash.cpp
+    src/structures/hashState.cpp
+    src/mLib/Utility.cpp
+    src/mLib/tinyfiledialogs.cpp
 
     src/scene/SLLScene.cpp
     src/scene/GraphScene.cpp
@@ -54,7 +61,7 @@ file(COPY ${RAYLIB}
 # For releasing
 
 
-target_link_libraries(${PROJECT_NAME} PUBLIC ${RAYLIB})
+target_link_libraries(${PROJECT_NAME} PUBLIC ${RAYLIB} comdlg32)
 
 # file(MAKE_DIRECTORY ${PROJECT_SOURCE_DIR}/build/assets)
 file (COPY ${PROJECT_SOURCE_DIR}/assets DESTINATION ${PROJECT_SOURCE_DIR}/build)

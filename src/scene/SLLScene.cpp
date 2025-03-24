@@ -46,25 +46,25 @@ void SLLScene::addAt(std::string data, int place) {
     else
         size = sll.nodeCount;
     if (place > size) {
-        addStep(0);
+        addStep(0, &PSEUDO_INSERT);
         steps.back().sll.deHighlight();
         steps.back().sll.highlightTo(size);
-        addStep(-1);
+        addStep(-1, &PSEUDO_INSERT);
         steps.back().sll.deHighlight();
         return;
     }
-    addStep(0);
+    addStep(0, &PSEUDO_INSERT);
     steps.back().sll.deHighlight();
     steps.back().sll.highlightTo(place - 1);
-    addStep(1);
+    addStep(1, &PSEUDO_INSERT);
     steps.back().sll.addAt(data, place);
     if (place + 1 <= steps.back().sll.nodeCount) {
-        addStep(2);
+        addStep(2, &PSEUDO_INSERT);
         steps.back().sll.shiftForward(place + 1);
     }
-    addStep(2);
+    addStep(2, &PSEUDO_INSERT);
     steps.back().sll.moveAt(place);
-    addStep(-1);
+    addStep(-1, &PSEUDO_INSERT);
     steps.back().sll.deHighlight();
 };
 void SLLScene::removeEnd() {
@@ -84,23 +84,23 @@ void SLLScene::removeAt(int place) {
     else
         size = sll.nodeCount;
     if (place > size || size == 0) {
-        addStep(0);
+        addStep(0, &PSEUDO_DELETE);
         steps.back().sll.deHighlight();
         steps.back().sll.highlightTo(size);
-        addStep(-1);
+        addStep(-1, &PSEUDO_DELETE);
         steps.back().sll.deHighlight();
         return;
     }
-    addStep(0);
+    addStep(0, &PSEUDO_DELETE);
     steps.back().sll.deHighlight();
     steps.back().sll.highlightTo(place);
-    addStep(1);
+    addStep(1, &PSEUDO_DELETE);
     steps.back().sll.moveAt(place);
-    addStep(1);
+    addStep(1, &PSEUDO_DELETE);
     steps.back().sll.removeAt(place);
-    addStep(2);
+    addStep(2, &PSEUDO_DELETE);
     steps.back().sll.shiftBackward(place);
-    addStep(-1);
+    addStep(-1, &PSEUDO_DELETE);
     steps.back().sll.deHighlight();
 };
 void SLLScene::update() {
@@ -117,11 +117,13 @@ void SLLScene::update() {
 
         sll = steps.front().sll.clone();
         highlightedRow = steps.front().highlightIndex;
-
+        if (steps.front().highlightRef != nullptr)
+            AppMenu::loadCode(*steps.front().highlightRef);
         timeLeft = steps.size() ? stepDelay : 0;
     }
 };
-void SLLScene::addStep(int highlightIndex) {
+void SLLScene::addStep(int highlightIndex,
+                       std::vector<std::string> const* ref) {
     while (future.size()) {
         future.pop_back();
     }
@@ -131,22 +133,26 @@ void SLLScene::addStep(int highlightIndex) {
     else
         newSll = sll.clone();
     newSll.finishAnimation();
-    steps.push_back({newSll, highlightIndex});
-    if (highlightIndex == -1) future.push_front({newSll, highlightIndex});
+    SLLStorage newStorage;
+    newStorage.sll = newSll;
+    newStorage.highlightIndex = highlightIndex;
+    newStorage.highlightRef = ref;
+    steps.push_back(newStorage);
+    // if (highlightIndex == -1) future.push_front(newStorage);
 }
 
 void SLLScene::render() { sll.render(); }
 
 void SLLScene::find(std::string val) {
     if (steps.size() > 1) return;
-    addStep(0);
+    addStep(0, &PSEUDO_SEARCH);
     SLL& currSll = steps.back().sll;
     Node* curr = currSll.root;
     currSll.deHighlight();
     int nodeIndex = sll.locate(val);
     if (nodeIndex == -1) {
         currSll.highlightTo(sll.nodeCount);
-        addStep(-1);
+        addStep(-1, &PSEUDO_SEARCH);
         return;
     }
 
@@ -156,8 +162,8 @@ void SLLScene::find(std::string val) {
     curr->borderColor.setBaseColor(SLLScene::NODE_PALETTE.borderNormal);
     curr->borderColor.setTargetColor(resultColor);
     curr->borderColor.setFactor(0.f);
-    addStep(1);
-    addStep(-1);
+    addStep(1, &PSEUDO_SEARCH);
+    addStep(-1, &PSEUDO_SEARCH);
 }
 
 void SLLScene::clearScene() {
@@ -210,21 +216,21 @@ void SLLScene::recordInput() {
     }
     if (AppMenu::undoButton.isPressed()) {
         prevStep();
+        // Loop::isRunning = false;
     }
     if (AppMenu::redoButton.isPressed()) {
         nextStep();
+        // Loop::isRunning = true;
     }
 }
 
 void SLLScene::nextStep() {
     if (future.size()) {
         // * Result from previous undo
-        past.push_back(steps.front());
-        steps.pop_front();
         steps.push_back(future.front());
         future.pop_front();
-        sll = steps.front().sll.clone();
-        highlightedRow = steps.front().highlightIndex;
+        // sll = steps.front().sll.clone();
+        // highlightedRow = steps.front().highlightIndex;
         return;
     } else {
         if (steps.size() == 1) return;
@@ -234,6 +240,8 @@ void SLLScene::nextStep() {
 
         sll = steps.front().sll.clone();
         highlightedRow = steps.front().highlightIndex;
+        if (steps.front().highlightRef)
+        AppMenu::loadCode(*steps.front().highlightRef);
     }
 }
 
@@ -253,4 +261,7 @@ void SLLScene::prevStep() {
 
     sll = steps.front().sll.clone();
     highlightedRow = steps.front().highlightIndex;
+    if (steps.front().highlightRef)
+        AppMenu::loadCode(*steps.front().highlightRef);
+    sll.finishAnimation();
 }

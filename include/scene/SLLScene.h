@@ -9,6 +9,7 @@ namespace SLLScene {
     struct SLLStorage {
         SLL sll;
         int highlightIndex;
+        std::vector<std::string> const *highlightRef = nullptr;
     };
     
     extern float stepDelay;
@@ -40,7 +41,7 @@ namespace SLLScene {
 
     void update();
 
-    void addStep(int highlightIndex);
+    void addStep(int highlightIndex, std::vector<std::string> const *ref);
     
     void render();
 
