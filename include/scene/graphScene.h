@@ -39,6 +39,7 @@ struct Action {
     std::vector<EdgeInfo> edgeAdded;
     std::vector<EdgeInfo> edgeDeleted;
     int highlightedLine = -1;
+    std::vector<std::string> const *highlightRef;
 };
 
 struct djikstraCmp {
@@ -88,7 +89,7 @@ void dijkstra(int source);
 
 void registerInput();
 
-void addStep(int highlightedLine);
+void addStep(int highlightedLine, std::vector<std::string> const *ref);
 // With animation
 void addNodeChange(int label, ChangeInfo info);
 void addEdgeChange(int label1, int label2, ChangeInfo info);
