@@ -22,6 +22,7 @@
 #include "singlyLInkedList.h"
 #include "utility.h"
 #include "welcomeMenu.h"
+#include "mLib/Utility.hpp"
 const int SCREEN_WIDTH = 1366;
 const int SCREEN_HEIGHT = 768;
 
@@ -64,18 +65,20 @@ Color backgroundColor = Color{51, 49, 45, 255};
 int main() {
     InitWindow(1600, 900, "CS163 Data visualizer");
     SetTargetFPS(60);
-
-    GuiSetStyle(BUTTON, BORDER_COLOR_NORMAL, 0x008080FF);  
-    GuiSetStyle(BUTTON, BASE_COLOR_NORMAL, 0x20B2AAFF);    //light sea green
-    GuiSetStyle(BUTTON, TEXT_COLOR_NORMAL, 0xFFFFFFFF);    //white
-    GuiSetStyle(DEFAULT, TEXT_SIZE, 24);
-
-    Font font = LoadFont("assets/inter-black.ttf");
-    GuiSetFont(font);
-    mLib::InitFont("assets/inter-black.ttf");
-    trieState = TrieState();
-    avlState = AVLState();
-    _hashState = hashState();
+    GuiSetStyle(DEFAULT, BORDER_COLOR_NORMAL, ColorToInt(Color{229, 189, 80, 255}));
+    GuiSetStyle(DEFAULT, BORDER_COLOR_FOCUSED, ColorToInt(Color{229, 189, 80, 255}));
+    GuiSetStyle(DEFAULT, BORDER_COLOR_PRESSED, ColorToInt(Color{229, 189, 80, 255}));
+    GuiSetStyle(DEFAULT, BORDER_WIDTH, 2);
+    GuiSetStyle(DEFAULT, BASE_COLOR_NORMAL, ColorToInt(Color{51, 49, 45, 255}));  
+    GuiSetStyle(DEFAULT, BASE_COLOR_PRESSED, ColorToInt(Color{42, 114, 47, 255}));
+    GuiSetStyle(DEFAULT, BASE_COLOR_FOCUSED, ColorToInt(Color{51, 49, 45, 255}));
+    GuiSetStyle(BUTTON, BASE_COLOR_FOCUSED, ColorToInt(Color{42, 114, 47, 255}));
+    GuiSetStyle(DEFAULT, TEXT_COLOR_NORMAL, ColorToInt(Color{186, 180, 163, 255}));  
+    GuiSetStyle(DEFAULT, TEXT_COLOR_PRESSED, ColorToInt(Color{186, 180, 163, 255}));  
+    GuiSetStyle(DEFAULT, TEXT_COLOR_FOCUSED, ColorToInt(Color{186, 180, 163, 255}));
+    GuiSetStyle(DEFAULT, TEXT_SIZE, 20);
+    mLib::InitFont();
+    GuiSetFont(mLib::mFont);
     // * Raylib/Raygui initialization
     srand(time(NULL));
     DrawUtility::init();

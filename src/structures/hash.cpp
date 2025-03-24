@@ -13,6 +13,7 @@ hash::hash(int _m = 10) : Itr(), m(_m) {
     }
     ItrHistory.clear(); 
     changeList.clear();
+    flag = flagUndo = -1;
 }
 
 void hash::printTable() {
@@ -72,8 +73,7 @@ void hash::search(int value) {
         if (index == value % m) break;
     }
     if (root[index]->value == value) {
-        actions.push_back({8, target, root[index]});
-        actions.push_back({8, untarget, root[index]});
+        actions.push_back({8, FadeEffect, root[index]});
     }
     actions.push_back({9, CLEAR, NULL});
     core.insert(core.end(), actions.begin(), actions.end());
@@ -124,6 +124,10 @@ bool hash::Undo(action Action) {
             Action.node->value = changeList.back();
             changeList.pop_back();
             return true;
+        case FadeEffect:
+            if (flagUndo == -1) flagUndo = 0;
+            else if (flagUndo == 1) flagUndo = -1;
+            return flagUndo;
     }
 }
 
@@ -153,7 +157,16 @@ bool hash::doAction(action Action) {
             Action.node->value = Action.node->targetValue;
             Action.node->targetValue = -1;
             return true;
+        case FadeEffect:
+            if (flag == -1) flag = 0;
+            else if (flag == 1) flag = -1;
+            return flag;
     }
+}
+
+std::pair<bool, bool> hash::doFadeEffect(double curr, double Trans, hashNode *target) {
+    for (int i = 0; i < m; i++) 
+        if (root[i] == target) return {root[i]->fadeEffect(curr, Trans), true};
 }
 
 void hash::update(double currTime, double rate) {
@@ -161,13 +174,20 @@ void hash::update(double currTime, double rate) {
         Itr.setTarget();
         Itr.animation->displace(currTime, rate);
     }
+    if (loop < core.size() && core[loop].action == FadeEffect && flag == 0) {
+        std::cout << "fade effect\n";
+        flag = doFadeEffect(currTime, rate, core[loop].node).first;
+    }
+    if (loop > 0 && core[loop - 1].action == FadeEffect && flagUndo == 0) {
+        flagUndo = doFadeEffect(currTime, rate, core[loop - 1].node).first;
+    }
 }
 
 #include <cstring>
 
 void hash::draw(hashNode* node) {
     if (node == NULL) return;
-    DrawCircleV(node->getPosition(), NODE_RADIUS - 5, node->targeted ? ORANGE : (Color) {0, 160, 216, 241});
+    DrawCircleV(node->getPosition(), NODE_RADIUS - 5, node->targeted ? ORANGE : (Color) {0, 160, 216, node->getAlpha()});
     DrawRing(node->getPosition(), NODE_RADIUS - 5, NODE_RADIUS, 0, 360, 20, BLUE);
     std::string value = std::to_string(node->value);
     if (node->value == -1) value = "null";
@@ -178,9 +198,10 @@ void hash::draw(hashNode* node) {
 
 void hash::draw() {
     if (!endLoop()) mLib::DrawTextHash(core[loop].index);
+    else mLib::DrawTextHash(-1);
     for (int i = 0; i < m - 1; i ++) DrawArrowWithCircles(root[i]->getPosition(), root[i + 1]->getPosition(), NODE_RADIUS, (Color) {0, 160, 216, 241}, 2.5);
     for (int i = 0; i < m; i++) {
-        DrawTextEx(mLib::mFont, std::to_string(i).c_str(), (Vector2){root[i]->getPosition().x - 10, root[i]->getPosition().y - 50}, 20, 2, BLACK);
+        DrawTextEx(mLib::mFont, std::to_string(i).c_str(), (Vector2){root[i]->getPosition().x - 10, root[i]->getPosition().y - 50}, 20, 2, WHITE);
         draw(root[i]);
     }
     if (Itr.show) DrawRing(Itr.animation->getPosition(), NODE_RADIUS, NODE_RADIUS + 5, 0, 360, 20, (Color) {255, 116, 109, 255});

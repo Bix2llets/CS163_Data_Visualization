@@ -25,6 +25,7 @@ class AVL {
             target,
             untarget,
             changeValue,
+            FadeEffect,
         };
 
         struct ItrAction {
@@ -52,6 +53,7 @@ class AVL {
     private:
         float xOFFSET = 100, yOFFSET = 130, NODE_RADIUS = 30;
         AVLNode* root;
+        int flag, flagUndo;
     public: 
         AVL() ;
         bool Action(bool isReversed);
@@ -87,6 +89,7 @@ class AVL {
         ActionList core;
         std::vector<std::pair<AVLNode*, int>> ItrHistory;
         std::vector<int> changeList, rotateList;
+        std::pair<bool, bool> doFadeEffect(AVLNode *root, double currTime, double TransTime, AVLNode *targetedNode);
 };
 
 

@@ -62,11 +62,8 @@
         "semaphore": "cpp",
         "stop_token": "cpp",
         "thread": "cpp",
-        "stdio.h": "c",
-        "tinyfiledialogs.h": "c",
         "codecvt": "cpp",
-        "list": "cpp",
-        "set": "cpp"
+        "list": "cpp"
     },
     "C_Cpp.errorSquiggles": "enabled"
 }

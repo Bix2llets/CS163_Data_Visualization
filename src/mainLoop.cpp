@@ -1,5 +1,6 @@
 #include "mainLoop.h"
 #include "graphScene.h"
+#include <mLib/mScene.hpp>
 
 namespace Loop {
 float elapsedSinceLastUpdate = 0.f;
@@ -46,7 +47,19 @@ void update() {
 
 void registerInput() {
     if (currentScene == SceneList::MAIN_MENU) {
-        if (WelcomeMenu::isAVLTreePressed()) currentScene = SceneList::AVL;
+        if (WelcomeMenu::isAVLTreePressed()) {
+            currentScene = SceneList::AVL;
+            for (int i = 0; i < 3; i++)
+                for (int j = 0; j < 2; j++) AppMenu::buttonPanel[i][j].disable();
+            AppMenu::locationBox.disable();
+            AppMenu::locationText.disable();
+            AppMenu::valueBox.disable();
+            AppMenu::valueText.disable();
+            AppMenu::undoButton.disable();
+            AppMenu::redoButton.disable();
+            AppMenu::togglePauseButton.disable();
+            renderFunc = &mScene::runAVL;
+        }
         if (WelcomeMenu::isGraphPressed()) {
             currentScene = SceneList::GRAPH;
 
@@ -65,7 +78,19 @@ void registerInput() {
             recordFunc = &GraphScene::registerInput;
             AppMenu::highlightValue = &GraphScene::currentHighlighting;
         }
-        if (WelcomeMenu::isHashTablePressed()) currentScene = SceneList::HASH;
+        if (WelcomeMenu::isHashTablePressed()) {
+            currentScene = SceneList::HASH;
+            for (int i = 0; i < 3; i++)
+                for (int j = 0; j < 2; j++) AppMenu::buttonPanel[i][j].disable();
+            AppMenu::locationBox.disable();
+            AppMenu::locationText.disable();
+            AppMenu::valueBox.disable();
+            AppMenu::valueText.disable();
+            AppMenu::undoButton.disable();
+            AppMenu::redoButton.disable();
+            AppMenu::togglePauseButton.disable();
+            renderFunc = &mScene::runHash;
+        }
         if (WelcomeMenu::isLinkedListPressed()) {
             currentScene = SceneList::LINKED_LIST;
 
@@ -80,7 +105,19 @@ void registerInput() {
             recordFunc = &SLLScene::recordInput;
             AppMenu::highlightValue = &SLLScene::highlightedRow;
         }
-        if (WelcomeMenu::isTriePressed()) currentScene = TRIE;
+        if (WelcomeMenu::isTriePressed()) {
+            currentScene = TRIE;
+            for (int i = 0; i < 3; i++)
+                for (int j = 0; j < 2; j++) AppMenu::buttonPanel[i][j].disable();
+            AppMenu::locationBox.disable();
+            AppMenu::locationText.disable();
+            AppMenu::valueBox.disable();
+            AppMenu::valueText.disable();
+            AppMenu::undoButton.disable();
+            AppMenu::redoButton.disable();
+            AppMenu::togglePauseButton.disable();
+            renderFunc = &mScene::runTrie;
+        }
         return;
     }
     checkForReturn();
@@ -98,7 +135,8 @@ void render() {
     if (currentScene == SceneList::MAIN_MENU) {
         WelcomeMenu::render();
     } else {
-        DrawRectangleLines(UPPER_LEFT.x, UPPER_LEFT.y, LOWER_RIGHT.x - UPPER_LEFT.x, LOWER_RIGHT.y - UPPER_LEFT.y, BLUE);
+        if (currentScene == SceneList::AVL || currentScene == SceneList::HASH || currentScene == SceneList::TRIE) ;
+        else DrawRectangleLines(UPPER_LEFT.x, UPPER_LEFT.y, LOWER_RIGHT.x - UPPER_LEFT.x, LOWER_RIGHT.y - UPPER_LEFT.y, BLUE);
         AppMenu::render();
         if (renderFunc) renderFunc();
     }

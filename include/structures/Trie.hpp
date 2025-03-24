@@ -19,6 +19,7 @@ class Trie {
             DELETE,
             SETEND,
             UNSETEND,
+            FadeEffect,
         };
         
         struct ItrAction {
@@ -46,6 +47,7 @@ class Trie {
     private:
         float xOFFSET = 100, yOFFSET = 130, NODE_RADIUS = 30;
         TrieNode* root;
+        int flag, flagUndo;
     public: 
         Trie() ;
         bool Action(bool isReversed);
@@ -76,6 +78,7 @@ class Trie {
         int loop;
         ActionList core;
         std::vector<std::pair<TrieNode*, int>> ItrHistory;
+        std::pair<bool, bool> doFadeEffect(TrieNode *root, double currTime, double TransTime, TrieNode *targetedNode);
 };
 
 

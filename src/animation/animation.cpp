@@ -36,6 +36,40 @@ bool Animation::displace(double currTime, double TRANS_TIME) {
 
 
 float Animation::rate = 1.0f;
+double Animation::bezier(double t) {
+    std::pair<double,double> A(0.0, 0.0);
+    std::pair<double,double> B(0.42, 0.0);
+    std::pair<double,double> C(0.58, 1.0);
+    std::pair<double,double> D(1.0, 1.0);
+    double tA = -t*t*t + 3*t*t - 3*t + 1;
+    double tB = 3*t*t*t - 6*t*t + 3*t;
+    double tC = -3*t*t*t + 3*t*t;
+    double tD = t*t*t;
+    double rY = A.second * tA + B.second * tB + C.second * tC + D.second * tD;
+    return rY;
+}
+
+#include <iostream>
+
+bool Animation::displace(double currTime, double TRANS_TIME) {
+    if (Vector2Distance(position, targetedPosition) < 1e-6) {
+        position = targetedPosition;
+        return true;
+    }
+    if (currTime >= TRANS_TIME) {
+        position = targetedPosition;
+        return true;
+    }
+    double Sx = position.x, Sy = position.y;
+    double Dx = targetedPosition.x, Dy = targetedPosition.y;
+    double Ux = Dx - Sx;
+    double Uy = Dy - Sy;
+    double leng = sqrt(Ux*Ux + Uy*Uy);
+    double distance = leng * bezier(std::min((double)TRANS_TIME, currTime) / TRANS_TIME);
+    position = (Vector2){Sx + Ux / leng * distance, Sy + Uy / leng * distance};
+    return false;
+}
+
 void Animation::update() {
     if (Vector2Distance(position, targetedPosition) == 0) return;
     Vector2 displacement = Vector2Subtract(targetedPosition, position);
@@ -97,6 +131,22 @@ void Animation::setUpdateRate(float newRate) {
 
 Vector2 Animation::getTargetedPosition() { return targetedPosition; }
 
+Vector2 Animation::getPosition() { return position; }
+
+void Animation::setPosition(Vector2 newPosition) { position = newPosition; }
+
 void Animation::makeFinish() {
     position = targetedPosition;
+}
+
+bool Animation::fadeEffect(double currentTime, double TRANS_TIME) {
+    if (currentTime >= TRANS_TIME) {
+        std::cout << "passed\n";
+        this->alpha = 255.f;
+        return true;
+    }
+    float halfTime = TRANS_TIME / 2;
+    if (currentTime <= halfTime) this->alpha = 255.f - (currentTime / halfTime) * 255.f;
+    else this->alpha = (currentTime - halfTime) / halfTime * 255.f;
+    return false;
 }

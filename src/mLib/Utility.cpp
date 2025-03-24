@@ -3,73 +3,66 @@
 namespace mLib
 {
     Font mFont;
-    const char *TrieInsert[15] = {
+    int row;
+    const std::vector<std::string> TrieInsert = {
         "Begin",  // 0      
         "cur = root", // 1
         "for char x in word",   
-        "if cur->children[x] == NULL",      // 2
-        "cur->children[x] = new TrieNode",  // 2
-        "cur = cur->children[x]", // 3
+        "   if cur->c[x] == NULL, cur->c[x] = new TrieNode",  // 2
+        "   cur = cur->c[x]", // 3
         "cur->isEndOfWord = true", // 4
         "End", // 5
     };
 
-    const char *TrieSearch[15] = {
+    const std::vector<std::string> TrieSearch = {
         "Begin",    //6
         "cur = root", //7
         "for char x in word", 
-        "if cur->children[x] == NULL", //8
-        "End", //8
-        "cur = cur->children[x]", //9
-        "End", // 10
+        "   if cur->c[x] == NULL, End", //8
+        "   else cur = cur->c[x]", //9
+        "if cur->isEndOfWord, return cur", //10
+        "End", // 11
     };
 
-    const char *TrieDelete[15] = {
-        "Begin",  // 11
-        "cur = root", // 12
+    const std::vector<std::string> TrieDelete = {
+        "Begin",  // 12
+        "cur = root", // 13
         "for char x in word",
-        "if cur->children[x] == NULL", // 13
-        "return false", // 13
-        "cur = cur->children[x]", // 14
-        "cur->isEndOfWord = false", // 15
-        "while cur->children.size() == 0", 
-        "and cur != root",
-        "temp = cur, cur = cur->parent", // 16
-        "delete temp", // 17
-        "End", // 18
+        "   if cur->c[x] == NULL, return false", // 14
+        "   cur = cur->c[x]", // 15
+        "if cur->isEndOfWord = false, return false", 
+        "cur->isEndOfWord = false", // 16
+        "while cur->c.size() = 0 and cur != root, ",
+        "   temp = cur, cur = cur->parent", // 17
+        "   delete temp", // 18
+        "End", // 19
     };
 
-    const char *hashInsert[15] = {
+    const std::vector<std::string> hashInsert = {
         "Begin", // 0
-        "index = value % m", // 1
-        "while root[index]->value != -1", // 2
-        "index = (index + 1) % m", // 2
-        "if root[index]->value == -1", // 3
-        "root[index]->value = value", // 3
+        "i = v % m", // 1
+        "while a[i]->v != -1, i = (i + 1) % m", // 2
+        "if a[i]->v = -1, a[i]->v = v", // 3
         "End", // 4
     };
 
-    const char *hashSearch[15] = {
+    const std::vector<std::string> hashSearch = {
         "Begin", // 5
-        "index = value % m", // 6
-        "while root[index]->value != value", // 7
-        "index = (index + 1) % m", // 7
-        "if root[index]->value == value", // 8
+        "i = v % m", // 6
+        "while a[i]->v != v, i = (i + 1) % m", // 7
+        "if a[i]->v == v, return i", // 8
         "End", // 9
     };
 
-    const char *hashDelete[15] = {
+    const std::vector<std::string> hashDelete = {
         "Begin", // 10
-        "index = value % m", // 11
-        "while root[index]->value != value", // 12
-        "&& root[index]->value != -1", // 12
-        "index = (index + 1) % m", // 12
-        "if root[index]->value == value", // 13
-        "root[index]->value = -1", // 13
+        "i = v % m", // 11
+        "while a[i]->v != (v, -1), i = (i + 1) % m", // 12
+        "if a[i]->v == v, a[i]->v = -1", // 13
         "End", // 14
     };
 
-    const char *AVLInsert[15] = {
+    const std::vector<std::string> AVLInsert = {
         "Begin", // 0
         "search for insert position", // 1
         "insert node", // 2
@@ -81,25 +74,27 @@ namespace mLib
         "End", // 8
     };
 
-    const char *AVLSearch[15] = {
+    const std::vector<std::string> AVLSearch = {
         "Begin", // 9
-        "search for node", // 10
-        "End", // 11
+        "if node.data = value, return node", // 10
+        "if node.data < value, search right", // 11
+        "if node.data > value, search left", // 12
+        "End", // 13
     };
 
-    const char *AVLDelete[15] = {
-        "Begin", // 12
-        "search for node", // 13
-        "if node is internal node", // 14
-        "find successor S, node.v = S.v", // 14
-        "delete successor S", // 14
-        "else delete node", // 15
-        "endif",
-        "rebalance", // 16
-        "Case 1: Left rotation", // 17
-        "Case 2: Right rotation", // 18
-        "Case 3: Left-Right rotation", // 19
-        "Case 4: Right-Left rotation", // 20
-        "End", // 21
+    const std::vector<std::string> AVLDelete = {
+        "Begin", // 14
+        "search for node", // 15
+        "if node is internal node",
+        "   find successor S", // 16
+        "   node.data = S.data", // 17
+        "   delete successor S", // 18
+        "else delete node", // 19
+        "rebalance", // 20
+        "Case 1: Left rotation", // 21
+        "Case 2: Right rotation", // 22
+        "Case 3: Left-Right rotation", // 23
+        "Case 4: Right-Left rotation", // 24
+        "End", // 25
     };
 } // namespace mLib

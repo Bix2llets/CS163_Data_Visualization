@@ -35,10 +35,19 @@ add_executable(
     src/GUI/welcomeMenu.cpp
     src/GUI/appMenu.cpp
     
+    src/mLib/Utility.cpp 
+    src/mLib/tinyfiledialogs.cpp
+    src/mLib/mScene.cpp
+
     src/structures/SLLNode.cpp
     src/structures/singlyLinkedList.cpp
     src/structures/Trie.cpp
     src/structures/TrieState.cpp
+    src/structures/Trie.cpp
+    src/structures/AVL.cpp
+    src/structures/AVLState.cpp
+    src/structures/hash.cpp
+    src/structures/hashState.cpp
 
     src/structures/graph/edge.cpp
     src/structures/graph/node.cpp
