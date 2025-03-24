@@ -19,6 +19,7 @@ class hash {
             target,
             untarget,
             changeValue,
+            FadeEffect,
         };
 
         struct ItrAction {
@@ -45,7 +46,7 @@ class hash {
         typedef std::vector<action> ActionList;
     private:
         float xOFFSET = 100, yOFFSET = 130, NODE_RADIUS = 30;
-        int m;
+        int m, flag, flagUndo;
         std::vector<hashNode *> root;
     public: 
         void printTable();
@@ -74,6 +75,8 @@ class hash {
         ActionList core;
         std::vector<std::pair<hashNode*, int>> ItrHistory;
         std::vector<int> changeList;
+        std::pair<bool, bool> doFadeEffect(double currTime, double TransTime, hashNode *targetedNode);
+
 };
 
 

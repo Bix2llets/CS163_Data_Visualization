@@ -8,6 +8,7 @@ AVL::AVL() : Itr() {
     ItrHistory.clear(); 
     rotateList.clear();
     changeList.clear();
+    flag = flagUndo = -1;
 }
 
 bool AVL::Action(bool isReversed) {
@@ -106,8 +107,11 @@ void AVL::insert(int value) {
 
 void AVL::search(AVLNode *root, int value, ActionList &actions) {
     if (root == NULL) return ;
-    actions.push_back({10, SETLECT, root});
-    if (root->value == value) return ;
+    actions.push_back({root->parent == NULL ? 9 : root->PosInParent == 0 ? 12 : 11, SETLECT, root});
+    if (root->value == value) {
+        actions.push_back({10, FadeEffect, root});
+        return ;
+    }
     if (value < root->value) search(root->left, value, actions);
     else search(root->right, value, actions);
 }
@@ -116,7 +120,7 @@ void AVL::search(int value) {
     ActionList actions;
     actions.push_back({9, INIT, NULL});
     search(root, value, actions);
-    actions.push_back({11, CLEAR, NULL});
+    actions.push_back({13, CLEAR, NULL});
     core.insert(core.end(), actions.begin(), actions.end());
 }
 
@@ -127,13 +131,13 @@ int AVL::getLeftmost(AVLNode *root) {
 
 std::pair<int, int> AVL::remove(AVLNode *par, AVLNode *root, int value, ActionList &actions) {
     if (root == NULL) return {0, 0};
-    actions.push_back({13, SETLECT, root});
+    actions.push_back({15, SETLECT, root});
     if (value < root->value) std::tie(root->heightLeft, root->balanceLeft) = remove(root, root->left, value, actions);
     else if (value > root->value) std::tie(root->heightRight, root->balanceRight) = remove(root, root->right, value, actions);
     else {
-        actions.push_back({13, target, root});
+        actions.push_back({15, target, root});
         if (root->left == NULL || root->right == NULL) {
-            actions.push_back({15, DELETE, root});
+            actions.push_back({19, DELETE, root});
             return {std::max(root->left == NULL ? 0 : root->heightLeft, root->right == NULL ? 0 : root->heightRight), 0};
         }
         else {
@@ -147,24 +151,24 @@ std::pair<int, int> AVL::remove(AVLNode *par, AVLNode *root, int value, ActionLi
             }
         }
     }
-    actions.push_back({16, SETLECT, root});
-    if (root->value == value) actions.push_back({16, untarget, root});
+    actions.push_back({20, SETLECT, root});
+    if (root->value == value) actions.push_back({20, untarget, root});
     int balance = root->heightLeft - root->heightRight;
     if (balance > 1) {
         if (root->left->balance >= 0) {
-            actions.push_back({18, Right, root});
+            actions.push_back({22, Right, root});
         } else {
-            actions.push_back({19, LL, root});
-            actions.push_back({19, Right, root});
+            actions.push_back({23, LL, root});
+            actions.push_back({23, Right, root});
         }
         return {std::max(root->heightLeft, root->heightRight), 1};
     }
     else if (balance < -1) {
         if (root->right->balance <= 0) {
-            actions.push_back({17, Left, root});
+            actions.push_back({21, Left, root});
         } else {
-            actions.push_back({20, RR, root});
-            actions.push_back({20, Left, root});
+            actions.push_back({24, RR, root});
+            actions.push_back({24, Left, root});
         }
         return {std::max(root->heightLeft, root->heightRight), -1};
     }
@@ -175,17 +179,18 @@ std::pair<int, int> AVL::remove(AVLNode *par, AVLNode *root, int value, ActionLi
 
 void AVL::remove(int value) {
     ActionList actions;
-    actions.push_back({12, INIT, NULL});
+    actions.push_back({14, INIT, NULL});
     remove(NULL, root, value, actions);
-    actions.push_back({21, CLEAR, NULL});
+    actions.push_back({25, CLEAR, NULL});
     for (int i = actions.size() - 1; i >= 0; i --)
         if (actions[i].action == changeValue) {
             assert(i < actions.size() - 1);
             assert(actions[i + 1].action == DELETE);
-            actions[i + 1].index = 14;
+            actions[i + 1].index = 18;
             for (int j = i; j >= 0; j --)
                 if (actions[j].node == actions[i].node && j < i) break;
-                else actions[j].index = 14;
+                else actions[j].index = 16;
+            actions[i].index = 17;
             break ;
         }
     for (int i = 0; i < actions.size() - 1; i ++) 
@@ -195,7 +200,7 @@ void AVL::remove(int value) {
                 actions[i].index = actions[i + 1].index;
             }
             else {
-                actions.push_back({15, SETLECT, NULL});
+                actions.push_back({19, SETLECT, NULL});
                 std::swap(actions.back(), actions[i + 1]);
                 std::swap(actions[i], actions[i + 1]);
             }
@@ -256,15 +261,6 @@ bool AVL::Undo(action Action) {
                 left_LeftChild->right = leftChild;
                 leftChild->parent = left_LeftChild, leftChild->PosInParent = 1;
                 calcPosition(root);
-
-
-                // AVLNode* temp = Action.node->left;
-                // Action.node->left = temp->left;
-                // temp->left->parent = Action.node;
-                // temp->left = temp->left->right;
-                // temp->left->parent = temp;
-                // Action.node->left->right = temp;
-                // temp->parent = Action.node->left;
             }
             return isCompleted(root);
         case RR:
@@ -281,14 +277,6 @@ bool AVL::Undo(action Action) {
                 right_RightChild->left = rightChild;
                 rightChild->parent = right_RightChild, rightChild->PosInParent = 0;
                 calcPosition(root);
-
-                // AVLNode* temp = Action.node->right;
-                // Action.node->right = temp->right;
-                // temp->right->parent = Action.node;
-                // temp->right = temp->right->left;
-                // temp->right->parent = temp;
-                // Action.node->right->left = temp;
-                // temp->parent = Action.node->right;
             }
             return isCompleted(root);
         case Left:
@@ -304,16 +292,6 @@ bool AVL::Undo(action Action) {
                 par -> left = rightChild;
                 if (rightChild != NULL) rightChild -> parent = par, rightChild -> PosInParent = 0;
                 Action.node -> right = par, par -> parent = Action.node, par -> PosInParent = 1;
-
-                // AVLNode *temp = Action.node->parent;
-                // Action.node->parent = temp->parent;
-                // if (temp->parent == NULL) root = Action.node;
-                // else if (temp == temp->parent->left) temp->parent->left = Action.node;
-                // else temp->parent->right = Action.node; 
-                // temp->left = Action.node->right;
-                // if (Action.node->right != NULL) Action.node->right->parent = temp;
-                // Action.node->right = temp;
-                // temp->parent = Action.node;
                 calcPosition(root);
             }
             return isCompleted(root);
@@ -330,19 +308,13 @@ bool AVL::Undo(action Action) {
                 par -> right = leftChild;
                 if (leftChild != NULL) leftChild -> parent = par, leftChild -> PosInParent = 1;
                 Action.node -> left = par, par -> parent = Action.node, par -> PosInParent = 0;
-
-                // AVLNode *temp = Action.node->parent;
-                // Action.node->parent = temp->parent;
-                // if (temp->parent == NULL) root = Action.node;
-                // else if (temp == temp->parent->left) temp->parent->left = Action.node;
-                // else temp->parent->right = Action.node;
-                // temp->right = Action.node->left;
-                // if (Action.node->left != NULL) Action.node->left->parent = temp;
-                // Action.node->left = temp;
-                // temp->parent = Action.node;
                 calcPosition(root);
             }
             return isCompleted(root);
+        case FadeEffect:
+            if (flagUndo == -1) flagUndo = 0;
+            else if (flagUndo == 1) flagUndo = -1;
+            return flagUndo;
     }
 }
 
@@ -460,6 +432,10 @@ bool AVL::doAction(action Action) {
             }
             return isCompleted(root);
         }
+        case FadeEffect:
+            if (flag == -1) flag = 0;
+            else if (flag == 1) flag = -1;
+            return flag;
     }
 }
 
@@ -485,7 +461,13 @@ void AVL::update(double currTime, double rate) {
         Itr.setTarget();
         Itr.animation->displace(currTime, rate);
     }
-}
+    if (loop < core.size() && core[loop].action == FadeEffect && flag == 0) {
+        flag = doFadeEffect(root, currTime, rate, core[loop].node).first;
+    }
+    if (loop > 0 && core[loop - 1].action == FadeEffect && flagUndo == 0) {
+        flagUndo = doFadeEffect(root, currTime, rate, core[loop - 1].node).first;
+    }
+}   
 
 #include <cstring>
 
@@ -493,7 +475,7 @@ void AVL::draw(AVLNode*root) {
     if (root == NULL || root -> valid == false) return;
     draw(root->left);
     draw(root->right);
-    DrawCircleV(root->getPosition(), NODE_RADIUS - 5, root->targeted ? ORANGE : (Color) {0, 160, 216, 241});
+    DrawCircleV(root->getPosition(), NODE_RADIUS - 5, root->targeted ? ORANGE : (Color) {0, 160, 216, root->getAlpha()});
     DrawRing(root->getPosition(), NODE_RADIUS - 5, NODE_RADIUS, 0, 360, 20, BLUE);
     std::string value = std::to_string(root->value);
     char *text = new char[value.length() + 1];
@@ -503,6 +485,7 @@ void AVL::draw(AVLNode*root) {
 
 void AVL::draw() {
     if (!endLoop()) mLib::DrawTextAVL(core[loop].index);
+    else mLib::DrawTextAVL(-1);
     drawArrow(root);
     draw(root);
     if (Itr.show) DrawRing(Itr.animation->getPosition(), NODE_RADIUS, NODE_RADIUS + 5, 0, 360, 20, (Color) {255, 116, 109, 255});
@@ -560,6 +543,24 @@ void AVL::ClearOperator() {
             delete core.back().node;
         }
         core.pop_back();
+    }
+}
+
+std::pair<bool, bool> AVL::doFadeEffect(AVLNode *root, double curr, double Trans, AVLNode *target) {
+    if (root == NULL) return {true, false};
+    if (root->valid == false) return {true, false};
+    if (root == target) return {root->fadeEffect(curr, Trans), true};
+    if (target->value < root->value) {
+        std::pair<bool, bool> res = doFadeEffect(root->left, curr, Trans, target);
+        if (res.second == false) return res;
+        res.first &= root->fadeEffect(curr, Trans);
+        return res;
+    }
+    if (target->value > root->value) {
+        std::pair<bool, bool> res = doFadeEffect(root->right, curr, Trans, target);
+        if (res.second == false) return res;
+        res.first &= root->fadeEffect(curr, Trans);
+        return res;
     }
 }
 

@@ -1,12 +1,19 @@
-#ifndef TRIESTATE_HPP
-#define TRIESTATE_HPP
+#ifndef TrieSTATE_HPP
+#define TrieSTATE_HPP
 
 #include "raylib.h"
 #include <cstring>
 #include "Trie.hpp"
+#include "button.h"
 
 class TrieState
 {
+    ColorSet buttonPalette = {
+        Color{186, 180, 163, 255}, Color{186, 180, 163, 255},
+        Color{51, 49, 45, 255},    Color{42, 114, 47, 255},
+        Color{229, 189, 80, 255},  Color{229, 189, 80, 255},
+    };
+    
     public:
         TrieState();
         void handleInput();
@@ -16,7 +23,6 @@ class TrieState
         ~TrieState();
     private:
         Trie mTrie;
-        bool showOptions;
         bool showCreateOptions;
         bool showTextBox;
         bool editMode;
@@ -24,8 +30,12 @@ class TrieState
         int textDestionation;
         char textBox[100], requestText[100];
         double mTime, mTimeStep, mTimeStepSlider;
-        bool animationPlaying, pendingPause, showRunStepByStep, forward, backward;
+        bool animationPlaying, pendingPause, showRunStepByStep;
         float sliderValue;
+
+        Button *mCreateButton, *mSearchButton, *mInsertButton, *mDeleteButton;
+        Button *mClearButton, *mRandomButton, *mCustomButton;
+        Button *mRandomValueButton, *mEnterButton;
 };
 
-#endif // TRIESTATE_HPP
+#endif // TrieSTATE_HPP

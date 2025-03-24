@@ -2,6 +2,8 @@
 #define UTILITY_HPP
 
 #include "raylib.h"
+#include "appMenu.h"
+#include <cstring>
 
 namespace mLib
 {
@@ -20,138 +22,86 @@ namespace mLib
         text[length] = '\0'; 
     }
     extern Font mFont;
-    inline void InitFont(const char *path) {
-        mFont = LoadFont(path);
+    extern int row;
+    inline void InitFont() {
+        mFont = LoadFontEx("assets/Inter-Black.ttf", 30, nullptr, 0);
+        row = -1;
     }
-    extern const char *TrieInsert[15];
-    extern const char *TrieSearch[15];
-    extern const char *TrieDelete[15];
-    extern const char *hashInsert[15];
-    extern const char *hashSearch[15];
-    extern const char *hashDelete[15];
-    extern const char *AVLInsert[15];
-    extern const char *AVLSearch[15];
-    extern const char *AVLDelete[15];
+    extern const std::vector<std::string> TrieInsert;
+    extern const std::vector<std::string> TrieSearch;
+    extern const std::vector<std::string> TrieDelete;
+    extern const std::vector<std::string> hashInsert;
+    extern const std::vector<std::string> hashSearch;
+    extern const std::vector<std::string> hashDelete;
+    extern const std::vector<std::string> AVLInsert;
+    extern const std::vector<std::string> AVLSearch;
+    extern const std::vector<std::string> AVLDelete;
     inline void DrawTextTrie(int index) {
-        for (int i = 0; i < 12; i ++) DrawRectangle(1200, 300 + 40 * i, 350, 40, Fade(RED, 0.3f));
-        if (index <= 5) {
-            if (index == 0) DrawRectangle(1200, 300, 350, 40, Fade(GREEN, 0.3f));
-            if (index == 1) DrawRectangle(1200, 300 + 40, 350, 40, Fade(GREEN, 0.3f));
-            if (index == 2) {
-                DrawRectangle(1200, 300 + 120, 350, 40, Fade(GREEN, 0.3f));
-                DrawRectangle(1200, 300 + 160, 350, 40, Fade(GREEN, 0.3f));
-            }
-            if (index == 3) DrawRectangle(1200, 300 + 200 , 350, 40, Fade(GREEN, 0.3f));
-            if (index == 4) DrawRectangle(1200, 300 + 240, 350, 40, Fade(GREEN, 0.3f));
-            if (index == 5) DrawRectangle(1200, 300 + 280, 350, 40, Fade(GREEN, 0.3f));
-            for (int i = 0; i < 12; i++) DrawTextEx(mFont, TrieInsert[i], (Vector2){1200, 300 + 40 * i}, 20, 2, BLACK);
+        if (index == -1) {
+            row = index;
+            return;
         }
-        else
-            if (index <= 10) {
-                if (index == 6) DrawRectangle(1200, 300, 350, 40, Fade(GREEN, 0.3f));
-                if (index == 7) DrawRectangle(1200, 300 + 40, 350, 40, Fade(GREEN, 0.3f));
-                if (index == 8) {
-                    DrawRectangle(1200, 300 + 120, 350, 40, Fade(GREEN, 0.3f));
-                    DrawRectangle(1200, 300 + 160, 350, 40, Fade(GREEN, 0.3f));
-                }
-                if (index == 9) DrawRectangle(1200, 300 + 200 , 350, 40, Fade(GREEN, 0.3f));
-                if (index == 10) DrawRectangle(1200, 300 + 240, 350, 40, Fade(GREEN, 0.3f));
-                for (int i = 0; i < 12; i++) DrawTextEx(mFont, TrieSearch[i], (Vector2){1200, 300 + 40 * i}, 20, 2, BLACK);
+        if (index <= 5) {
+            row = index;
+            if (row > 1) row++;
+            AppMenu::loadCode(TrieInsert);
+            AppMenu::setHighlight(&row);
+        }   
+        else if (index <= 11) {
+                row = index - 6;
+                if (row > 1) row++;
+                AppMenu::loadCode(TrieSearch);
+                AppMenu::setHighlight(&row);
             }
             else {
-                if (index == 11) DrawRectangle(1200, 300, 350, 40, Fade(GREEN, 0.3f));
-                if (index == 12) DrawRectangle(1200, 300 + 40, 350, 40, Fade(GREEN, 0.3f));
-                if (index == 13) {
-                    DrawRectangle(1200, 300 + 120, 350, 40, Fade(GREEN, 0.3f));
-                    DrawRectangle(1200, 300 + 160, 350, 40, Fade(GREEN, 0.3f));
-                }
-                if (index == 14) DrawRectangle(1200, 300 + 200 , 350, 40, Fade(GREEN, 0.3f));
-                if (index == 15) DrawRectangle(1200, 300 + 240, 350, 40, Fade(GREEN, 0.3f));
-                if (index == 16) DrawRectangle(1200, 300 + 360, 350, 40, Fade(GREEN, 0.3f));
-                if (index == 17) DrawRectangle(1200, 300 + 400, 350, 40, Fade(GREEN, 0.3f));
-                if (index == 18) DrawRectangle(1200, 300 + 440, 350, 40, Fade(GREEN, 0.3f));
-                for (int i = 0; i < 12; i++) DrawTextEx(mFont, TrieDelete[i], (Vector2){1200, 300 + 40 * i}, 20, 2, BLACK);
+                row = index - 12;
+                if (row > 1) row++;
+                if (row > 4) row++;
+                if (row > 6) row++;
+                AppMenu::loadCode(TrieDelete);
+                AppMenu::setHighlight(&row);
             }
     }
     inline void DrawTextHash(int index) {
-        for (int i = 0; i < 10; i ++) DrawRectangle(1200, 300 + 40 * i, 350, 40, Fade(RED, 0.3f));
-        if (index <= 4) {
-            if (index == 0) DrawRectangle(1200, 300, 350, 40, Fade(GREEN, 0.3f));
-            if (index == 1) DrawRectangle(1200, 300 + 40, 350, 40, Fade(GREEN, 0.3f));
-            if (index == 2) {
-                DrawRectangle(1200, 300 + 80, 350, 40, Fade(GREEN, 0.3f));
-                DrawRectangle(1200, 300 + 120, 350, 40, Fade(GREEN, 0.3f));
-            }
-            if (index == 3) {
-                DrawRectangle(1200, 300 + 160, 350, 40, Fade(GREEN, 0.3f));
-                DrawRectangle(1200, 300 + 200, 350, 40, Fade(GREEN, 0.3f));
-            }
-            if (index == 4) DrawRectangle(1200, 300 + 240, 350, 40, Fade(GREEN, 0.3f));
-            for (int i = 0; i < 10; i++) DrawTextEx(mFont, hashInsert[i], (Vector2){1200, 300 + 40 * i}, 20, 2, BLACK);
+        if (index == -1) {
+            row = index;
+            return;
         }
-        else
-            if (index <= 9) {
-                if (index == 5) DrawRectangle(1200, 300, 350, 40, Fade(GREEN, 0.3f));
-                if (index == 6) DrawRectangle(1200, 300 + 40, 350, 40, Fade(GREEN, 0.3f));
-                if (index == 7) {
-                    DrawRectangle(1200, 300 + 80, 350, 40, Fade(GREEN, 0.3f));
-                    DrawRectangle(1200, 300 + 120, 350, 40, Fade(GREEN, 0.3f));
-                }
-                if (index == 8) DrawRectangle(1200, 300 + 160, 350, 40, Fade(GREEN, 0.3f));
-                if (index == 9) DrawRectangle(1200, 300 + 200, 350, 40, Fade(GREEN, 0.3f));
-                for (int i = 0; i < 10; i++) DrawTextEx(mFont, hashSearch[i], (Vector2){1200, 300 + 40 * i}, 20, 2, BLACK);
+        if (index <= 4) {
+            row = index;
+            AppMenu::loadCode(hashInsert);
+            AppMenu::setHighlight(&row);
+        }
+        else if (index <= 9) {
+                row = index - 5;
+                AppMenu::loadCode(hashSearch);
+                AppMenu::setHighlight(&row);
             }
-            else {
-                if (index == 10) DrawRectangle(1200, 300, 350, 40, Fade(GREEN, 0.3f));
-                if (index == 11) DrawRectangle(1200, 300 + 40, 350, 40, Fade(GREEN, 0.3f));
-                if (index == 12) {
-                    DrawRectangle(1200, 300 + 80, 350, 40, Fade(GREEN, 0.3f));
-                    DrawRectangle(1200, 300 + 120, 350, 40, Fade(GREEN, 0.3f));
-                    DrawRectangle(1200, 300 + 160, 350, 40, Fade(GREEN, 0.3f));
-                }
-                if (index == 13) {
-                    DrawRectangle(1200, 300 + 200, 350, 40, Fade(GREEN, 0.3f));
-                    DrawRectangle(1200, 300 + 240, 350, 40, Fade(GREEN, 0.3f));
-                }
-                if (index == 14) DrawRectangle(1200, 300 + 280, 350, 40, Fade(GREEN, 0.3f));
-                for (int i = 0; i < 10; i++) DrawTextEx(mFont, hashDelete[i], (Vector2){1200, 300 + 40 * i}, 20, 2, BLACK);
-            }
+        else {
+            row = index - 10;
+            AppMenu::loadCode(hashDelete);
+            AppMenu::setHighlight(&row);
+        }
     }
     inline void DrawTextAVL(int index) {
-        for (int i = 0; i < 15; i ++) DrawRectangle(1200, 300 + 40 * i, 350, 40, Fade(RED, 0.3f));
+        if (index == -1) {
+            row = index;
+            return;
+        }
         if (index <= 8) {
-            if (index == 0) DrawRectangle(1200, 300, 350, 40, Fade(GREEN, 0.3f));
-            if (index == 1) DrawRectangle(1200, 300 + 40, 350, 40, Fade(GREEN, 0.3f));
-            if (index == 2) DrawRectangle(1200, 300 + 80, 350, 40, Fade(GREEN, 0.3f));
-            if (index == 3) DrawRectangle(1200, 300 + 120, 350, 40, Fade(GREEN, 0.3f));
-            if (index == 4) DrawRectangle(1200, 300 + 160, 350, 40, Fade(GREEN, 0.3f));
-            if (index == 5) DrawRectangle(1200, 300 + 200, 350, 40, Fade(GREEN, 0.3f));
-            if (index == 6) DrawRectangle(1200, 300 + 240, 350, 40, Fade(GREEN, 0.3f));
-            if (index == 7) DrawRectangle(1200, 300 + 280, 350, 40, Fade(GREEN, 0.3f));
-            if (index == 8) DrawRectangle(1200, 300 + 320, 350, 40, Fade(GREEN, 0.3f));
-            for (int i = 0; i < 15; i++) DrawTextEx(mFont, AVLInsert[i], (Vector2){1200, 300 + 40 * i}, 20, 2, BLACK);
-        } if (index <= 11) {
-            if (index == 9) DrawRectangle(1200, 300, 350, 40, Fade(GREEN, 0.3f));
-            if (index == 10) DrawRectangle(1200, 300 + 40, 350, 40, Fade(GREEN, 0.3f));
-            if (index == 11) DrawRectangle(1200, 300 + 80, 350, 40, Fade(GREEN, 0.3f));
-            for (int i = 0; i < 15; i++) DrawTextEx(mFont, AVLSearch[i], (Vector2){1200, 300 + 40 * i}, 20, 2, BLACK);
+            AppMenu::loadCode(AVLInsert);
+            row = index;
+            AppMenu::setHighlight(&row);
+        } else if (index <= 13) {
+            AppMenu::loadCode(AVLSearch);
+            row = index - 9;
+            AppMenu::setHighlight(&row);
         }
         else {
-            if (index == 12) DrawRectangle(1200, 300, 350, 40, Fade(GREEN, 0.3f));
-            if (index == 13) DrawRectangle(1200, 300 + 40, 350, 40, Fade(GREEN, 0.3f));
-            if (index == 14) {
-                DrawRectangle(1200, 300 + 80, 350, 40, Fade(GREEN, 0.3f));
-                DrawRectangle(1200, 300 + 120, 350, 40, Fade(GREEN, 0.3f));
-                DrawRectangle(1200, 300 + 160, 350, 40, Fade(GREEN, 0.3f));
-            }
-            if (index == 15) DrawRectangle(1200, 300 + 200, 350, 40, Fade(GREEN, 0.3f));
-            if (index == 16) DrawRectangle(1200, 300 + 280, 350, 40, Fade(GREEN, 0.3f));
-            if (index == 17) DrawRectangle(1200, 300 + 320, 350, 40, Fade(GREEN, 0.3f));
-            if (index == 18) DrawRectangle(1200, 300 + 360, 350, 40, Fade(GREEN, 0.3f));
-            if (index == 19) DrawRectangle(1200, 300 + 400, 350, 40, Fade(GREEN, 0.3f));
-            if (index == 20) DrawRectangle(1200, 300 + 440, 350, 40, Fade(GREEN, 0.3f));
-            if (index == 21) DrawRectangle(1200, 300 + 480, 350, 40, Fade(GREEN, 0.3f));
-            for (int i = 0; i < 15; i++) DrawTextEx(mFont, AVLDelete[i], (Vector2){1200, 300 + 40 * i}, 20, 2, BLACK);
+            AppMenu::loadCode(AVLDelete);
+            row = index - 14;
+            if (row > 1) row ++;
+            AppMenu::setHighlight(&row);
         }
     }
 }   

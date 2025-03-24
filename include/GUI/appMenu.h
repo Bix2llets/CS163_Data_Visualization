@@ -41,4 +41,5 @@ void init();
 void render();
 
 void loadCode(const std::vector<std::string> &strVect);
+void setHighlight(int *index);
 }  // namespace AppMenu

@@ -5,7 +5,9 @@ Trie::Trie() : Itr() {
     loop = 0;
     core = ActionList();
     root = new TrieNode(700, 100, '\0', NULL);
+    //root->valid = true;
     ItrHistory.clear();
+    flag = flagUndo = -1;
 }
 
 bool Trie::Action(bool isReversed) {
@@ -87,41 +89,42 @@ void Trie::search(std::string word) {
     actions.push_back({7, SETLECT, current});
     for (int i = 0; i < word.size(); i++) {
         if (current->children.find(word[i]) == current->children.end()) {
-            actions.push_back({8, CLEAR, current});
+            actions.push_back({11, CLEAR, current});
             core.insert(core.end(), actions.begin(), actions.end());
             return ;
         }
         current = current->children[word[i]];
         actions.push_back({9, SETLECT, current});
     }
-    actions.push_back({10, CLEAR, current});
+    if (current->isEndOfWord) actions.push_back({10, FadeEffect, current});
+    actions.push_back({11, CLEAR, current});
     core.insert(core.end(), actions.begin(), actions.end());
 }
 
 void Trie::remove(std::string word) {
     ActionList actions;
     TrieNode *current = root;
-    actions.push_back({11, INIT, current});
-    actions.push_back({12, SETLECT, current});
+    actions.push_back({12, INIT, current});
+    actions.push_back({13, SETLECT, current});
     for (int i = 0; i < word.size(); i++) {
         if (current->children.find(word[i]) == current->children.end()) {
-            actions.push_back({13, CLEAR, current});
+            actions.push_back({19, CLEAR, current});
             core.insert(core.end(), actions.begin(), actions.end());
             return ;
         }
         current = current->children[word[i]];
-        actions.push_back({14, SETLECT, current});
+        actions.push_back({15, SETLECT, current});
     }
-    actions.push_back({15, UNSETEND, current});
+    if (current->isEndOfWord) actions.push_back({16, UNSETEND, current});
     bool flag = current->isEndOfWord & current->children.size() == 0;
     while (flag && current != root) {
         TrieNode *parent = current->parent;
-        actions.push_back({16, SETLECT, parent});
-        actions.push_back({17, DELETE, current});
+        actions.push_back({17, SETLECT, parent});
+        actions.push_back({18, DELETE, current});
         current = parent;
         if (current->children.size() > 1) flag = false;
     }
-    actions.push_back({18, CLEAR, current});
+    actions.push_back({19, CLEAR, current});
     core.insert(core.end(), actions.begin(), actions.end());
 }
 
@@ -156,6 +159,10 @@ bool Trie::Undo(action Action) {
         case UNSETEND:
             Action.node->isEndOfWord = true;
             return true;
+        case FadeEffect:
+            if (flagUndo == -1) flagUndo = 0;
+            else if (flagUndo == 1) flagUndo = -1;
+            return flagUndo;
     }
 }
 
@@ -190,6 +197,10 @@ bool Trie::doAction(action Action) {
         case UNSETEND:
             Action.node->isEndOfWord = false;
             return true;
+        case FadeEffect:
+            if (flag == -1) flag = 0;
+            else if (flag == 1) flag = -1;
+            return flag;
     }
 }
 
@@ -222,12 +233,18 @@ void Trie::update(double currTime, double rate) {
         Itr.setTarget();
         Itr.animation->displace(currTime, rate);
     }
+    if (loop < core.size() && core[loop].action == FadeEffect && flag == 0) {
+        flag = doFadeEffect(root, currTime, rate, core[loop].node).first;
+    }
+    if (loop > 0 && core[loop - 1].action == FadeEffect && flagUndo == 0) {
+        flagUndo = doFadeEffect(root, currTime, rate, core[loop - 1].node).first;
+    }
 }
 
 void Trie::draw(TrieNode *root) {
     if (root == NULL) return;
     for (auto &child : root->children) draw(child.second);
-    DrawCircleV(root->getPosition(), NODE_RADIUS - 5, root->isEndOfWord ? ORANGE : (Color) {0, 160, 216, 241});
+    DrawCircleV(root->getPosition(), NODE_RADIUS - 5, root->isEndOfWord ? ORANGE : (Color) {0, 160, 216, root->getAlpha()});
     DrawRing(root->getPosition(), NODE_RADIUS - 5, NODE_RADIUS, 0, 360, 20, BLUE);
     char str[2] = {root->character, '\0'};
     DrawTextEx(mLib::mFont, str, (Vector2){root->getPosition().x - 12, root->getPosition().y - 12}, 20, 2, WHITE);
@@ -235,6 +252,7 @@ void Trie::draw(TrieNode *root) {
 
 void Trie::draw() {
     if (!endLoop()) mLib::DrawTextTrie(core[loop].index);
+    else mLib::DrawTextTrie(-1);
     drawArrow(root);
     draw(root);
     if (Itr.show) DrawRing(Itr.animation->getPosition(), NODE_RADIUS, NODE_RADIUS + 5, 0, 360, 20, (Color) {255, 116, 109, 255});
@@ -287,6 +305,19 @@ void Trie::ClearOperator() {
         }
         core.pop_back();
     }
+}
+
+std::pair<bool, bool> Trie::doFadeEffect(TrieNode *root, double curr, double Trans, TrieNode *target) {
+    if (root == NULL) return {true, false};
+    if (root == target) return {root->fadeEffect(curr, Trans), true};
+    for (auto &child : root->children) {
+        std::pair<bool, bool> result = doFadeEffect(child.second, curr, Trans, target);
+        if (result.second) {
+            result.first &= root->fadeEffect(curr, Trans);
+            return result;
+        }
+    }
+    return {true, false};
 }
 
 Trie::~Trie() {

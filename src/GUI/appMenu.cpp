@@ -16,7 +16,7 @@ ColorSet codeBlockColor{
 
 Vector2 panelPosition{50, 760};
 Vector2 buttonDimension = {200, 40};
-Vector2 codeBlockPosition{1050, 620};
+Vector2 codeBlockPosition{1050, 520};
 Vector2 codeLineSize{500, 25};
 
 std::vector<std::vector<Button>> buttonPanel;
@@ -47,7 +47,7 @@ int verticalCellCount = 3;
 int horizontalCellCount = 2;
 
 void init() {
-    codeList.resize(10);
+    codeList.resize(15);
     for (int i = 0; i < codeList.size(); i++) {
         float x = codeBlockPosition.x;
         float y = codeBlockPosition.y + i * codeLineSize.y;
@@ -85,16 +85,15 @@ void init() {
 }
 
 void render() {
-    for (GUIObject* object : renderList) {
-        object->render();
-        // std::cerr << "Rendering: " << object << "\n";
-    }
     if (highlightValue != nullptr) {
         for (int i = 0; i < codeList.size(); i++)
-            codeList[i].setHighlight(false);
+        codeList[i].setHighlight(false);
         if (*highlightValue >= 0) codeList[*highlightValue].setHighlight(true);
     }
-
+    
+    for (GUIObject* object : renderList) {
+        object->render();
+    }
     for (TextBox box : codeList) box.render();
 }
 
@@ -105,5 +104,7 @@ void loadCode(const std::vector<std::string>& strVect) {
         else
             codeList[i].setText("");
 }
+
+void setHighlight(int* index) { highlightValue = index;}
 
 }  // namespace AppMenu
