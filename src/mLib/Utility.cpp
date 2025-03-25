@@ -49,7 +49,7 @@ namespace mLib
     const std::vector<std::string> hashSearch = {
         "Begin", // 5
         "i = v % m", // 6
-        "while a[i]->v != v, i = (i + 1) % m", // 7
+        "while a[i]->v != (v and -1), i = (i + 1) % m", // 7
         "if a[i]->v == v, return i", // 8
         "End", // 9
     };
@@ -57,7 +57,7 @@ namespace mLib
     const std::vector<std::string> hashDelete = {
         "Begin", // 10
         "i = v % m", // 11
-        "while a[i]->v != (v, -1), i = (i + 1) % m", // 12
+        "while a[i]->v != (v and -1), i = (i + 1) % m", // 12
         "if a[i]->v == v, a[i]->v = -1", // 13
         "End", // 14
     };

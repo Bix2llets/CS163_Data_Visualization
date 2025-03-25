@@ -244,8 +244,9 @@ void Trie::update(double currTime, double rate) {
 void Trie::draw(TrieNode *root) {
     if (root == NULL) return;
     for (auto &child : root->children) draw(child.second);
-    DrawCircleV(root->getPosition(), NODE_RADIUS - 5, root->isEndOfWord ? ORANGE : (Color) {0, 160, 216, root->getAlpha()});
-    DrawRing(root->getPosition(), NODE_RADIUS - 5, NODE_RADIUS, 0, 360, 20, BLUE);
+    DrawCircleV(root->getPosition(), NODE_RADIUS - 5, root->isEndOfWord ? (Color) {255, 121, 0, 255} : (Color) {0, 160, 216, 241});
+    DrawCircleV(root->getPosition(), NODE_RADIUS - 5, (Color) {128, 239, 128, 255.f - root->getAlpha()});
+    DrawRing(root->getPosition(), NODE_RADIUS - 5, NODE_RADIUS, 0, 360, 20, (Color) {197, 207, 94, 255});
     char str[2] = {root->character, '\0'};
     DrawTextEx(mLib::mFont, str, (Vector2){root->getPosition().x - 12, root->getPosition().y - 12}, 20, 2, WHITE);
 }

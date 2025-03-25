@@ -19,8 +19,9 @@ double Animation::bezier(double t) {
 bool Animation::displace(double currTime, double TRANS_TIME) {
     if (Vector2Distance(position, targetedPosition) < 1e-6) {
         position = targetedPosition;
-        return true;
+        return alpha != 255.f ? fadeEffect(currTime, TRANS_TIME) : 1;
     }
+    fadeEffect(currTime, TRANS_TIME);
     if (currTime >= TRANS_TIME) {
         position = targetedPosition;
         return true;
