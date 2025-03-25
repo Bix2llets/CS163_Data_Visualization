@@ -211,6 +211,8 @@ void hashState::render() {
         mRandomButton->render();
         mCustomButton->render();
     }
+    DrawTextEx(mLib::mFont, mhash.completedAllActions() ? "Animation Completed" : animationPlaying ? "Animation Running" : "Animation Paused", (Vector2) {1200, 10}, 30, 2, 
+    mhash.completedAllActions() ? WHITE : animationPlaying ? GREEN : RED);
 }
 
 void hashState::run() {

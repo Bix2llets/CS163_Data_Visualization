@@ -204,6 +204,8 @@ void TrieState::render() {
         mRandomButton->render();
         mCustomButton->render();
     }
+    DrawTextEx(mLib::mFont, mTrie.completedAllActions() ? "Animation Completed" : animationPlaying ? "Animation Running" : "Animation Paused", (Vector2) {1200, 10}, 30, 2, 
+    mTrie.completedAllActions() ? WHITE : animationPlaying ? GREEN : RED);
 }
 
 void TrieState::run() {
