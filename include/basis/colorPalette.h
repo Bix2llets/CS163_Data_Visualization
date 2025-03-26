@@ -71,35 +71,36 @@ namespace GBDark {
 }
 
 namespace GBLight {
-    extern const Color BACKGROUND;
-    extern const Color BACKGROUND0H;
-    extern const Color BACKGROUND0;
-    extern const Color BACKGROUND1;
-    extern const Color BACKGROUND2;
-    extern const Color BACKGROUND3;
-    extern const Color BACKGROUND4;
-    extern const Color BACKGROUND0S;
-    extern const Color DARK_RED;
-    extern const Color LIGHT_RED;
-    extern const Color DARK_GREEN;
-    extern const Color LIGHT_GREEN;
-    extern const Color DARK_YELLOW;
-    extern const Color LIGHT_YELLOW;
-    extern const Color DARK_BLUE;
-    extern const Color LIGHT_BLUE;
-    extern const Color DARK_PURPLE;
-    extern const Color LIGHT_PURPLE;
-    extern const Color DARK_AQUA;
-    extern const Color LIGHT_AQUA;
-    extern const Color DARK_GRAY;
-    extern const Color LIGHT_GRAY;
-    extern const Color DARK_ORANGE;
-    extern const Color LIGHT_ORANGE;
-    extern const Color FOREGROUND;
-    extern const Color FOREGROUND0;
-    extern const Color FOREGROUND1;
-    extern const Color FOREGROUND2;
-    extern const Color FOREGROUND3;
-    extern const Color FOREGROUND4;
+    void init();
+    extern Color BACKGROUND;
+    extern Color BACKGROUND0H;
+    extern Color BACKGROUND0;
+    extern Color BACKGROUND1;
+    extern Color BACKGROUND2;
+    extern Color BACKGROUND3;
+    extern Color BACKGROUND4;
+    extern Color BACKGROUND0S;
+    extern Color DARK_RED;
+    extern Color LIGHT_RED;
+    extern Color DARK_GREEN;
+    extern Color LIGHT_GREEN;
+    extern Color DARK_YELLOW;
+    extern Color LIGHT_YELLOW;
+    extern Color DARK_BLUE;
+    extern Color LIGHT_BLUE;
+    extern Color DARK_PURPLE;
+    extern Color LIGHT_PURPLE;
+    extern Color DARK_AQUA;
+    extern Color LIGHT_AQUA;
+    extern Color DARK_GRAY;
+    extern Color LIGHT_GRAY;
+    extern Color DARK_ORANGE;
+    extern Color LIGHT_ORANGE;
+    extern Color FOREGROUND;
+    extern Color FOREGROUND0;
+    extern Color FOREGROUND1;
+    extern Color FOREGROUND2;
+    extern Color FOREGROUND3;
+    extern Color FOREGROUND4;
     
 }

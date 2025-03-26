@@ -1,21 +1,24 @@
 #include "graph/node.h"
 
-const ColorSet GraphNode::PALETTE = {
-    Color{186, 180, 163, 255}, Color{186, 180, 163, 255},
-    Color{51, 49, 45, 255},    Color{42, 114, 47, 255},
-    Color{186, 180, 163, 255}, Color{229, 189, 80, 255},
-};
-const Color GraphNode::HOVER = {255, 255, 255, 255};
 const int GraphNode::RADIUS = 25;
-const int GraphNode::BORDER_WIDTH = 2;
-
+const int GraphNode::BORDER_WIDTH = 4;
+ColorSet GraphNode::PALETTE;
+Color GraphNode::HOVER;
 const float GraphNode::MASS = 1;
 
-
+void GraphNode::initColor() {
+    
+    GraphNode::PALETTE = {
+        GBLight::FOREGROUND2, GBLight::FOREGROUND0, 
+        GBLight::BACKGROUND2, GBLight::BACKGROUND4,
+        GBLight::FOREGROUND0, GBLight::DARK_YELLOW,
+    };
+        GraphNode::HOVER = {255, 255, 255, 255};
+};
 void GraphNode::render() {
     Color border = borderColor.getCurrentColor();
     if (dragged)
-        border = HOVER;
+        border = GBLight::LIGHT_YELLOW;
     DrawCircle(position.x, position.y, RADIUS, border);
     // std::cerr << position.x << " " << position.y << "\n";
     Color backgroundColor = PALETTE.backgroundNormal;
@@ -35,9 +38,12 @@ void GraphNode::update() {
     borderColor.update();
 
     // * Motion update
-    Vector2 displacement = Vector2Scale(velocity, Loop::DELTA_TIME);
-    position = Vector2Add(position, displacement);
-    velocity = Vector2Scale(velocity, 0.90f);
+    if (!dragged) {
+
+        Vector2 displacement = Vector2Scale(velocity, Loop::DELTA_TIME);
+        position = Vector2Add(position, displacement);
+        velocity = Vector2Scale(velocity, 0.90f);
+    }
 
     if (position.x < Loop::UPPER_LEFT.x + RADIUS) {
         position.x = Loop::UPPER_LEFT.x + RADIUS;

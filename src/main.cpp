@@ -65,6 +65,9 @@ Color backgroundColor = GBDark::FOREGROUND0;
 int main() {
     InitWindow(1600, 900, "CS163 Data visualizer");
     SetTargetFPS(60);
+    GBLight::init();
+    GraphNode::initColor();
+    SetConfigFlags(FLAG_MSAA_4X_HINT);
     GuiSetStyle(DEFAULT, BORDER_COLOR_NORMAL, ColorToInt(Color{229, 189, 80, 255}));
     GuiSetStyle(DEFAULT, BORDER_COLOR_FOCUSED, ColorToInt(Color{229, 189, 80, 255}));
     GuiSetStyle(DEFAULT, BORDER_COLOR_PRESSED, ColorToInt(Color{229, 189, 80, 255}));

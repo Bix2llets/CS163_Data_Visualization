@@ -18,8 +18,8 @@ class GraphNode : public GUIObject {
     int label;
     std::vector<OutgoingEdge> adjacentList;
     // Drawing info
-    const static ColorSet PALETTE;
-    const static Color HOVER;
+    static ColorSet PALETTE;
+    static Color HOVER;
     const static int BORDER_WIDTH;
     AnimationColor borderColor;
     // For force directed
@@ -31,6 +31,7 @@ class GraphNode : public GUIObject {
     
     public:
     const static int RADIUS;
+    static void initColor();
     GraphNode(int label, float posX, float posY)
         : label{label},
           borderColor{PALETTE.borderNormal, PALETTE.borderNormal},

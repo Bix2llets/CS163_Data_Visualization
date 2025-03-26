@@ -103,9 +103,9 @@ void Graph::update() {
     applyPullForce();
     applyCentricForce();
     for (std::shared_ptr<GraphNode> node : nodeList) {
-        if (!node->isDragging()) { // Only update nodes not being dragged
+        // if (!node->isDragging()) { // Only update nodes not being dragged
             node->update();
-        }
+        // }
     }
     for (std::shared_ptr<GraphEdge> edge : edgeList) edge->update();
 }
