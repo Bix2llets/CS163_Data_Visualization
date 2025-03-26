@@ -12,18 +12,16 @@ Vector2 getNextNodePosition(Vector2 currentPosition, int horizontalDistance, int
 class Node : public Animation {
     // ! Support up to 4 digits number
     std::string data;
-    const ColorSet PALETTE;
     int radius;
     float animationRate;
     friend class SLL;
     public:
+    static ColorSet const *PALETTE;
     AnimationColor borderColor;
     AnimationColor edgeColor;
     Node* nextNode;
-    Node(std::string data, float x, float y, int radius = 50,
-         ColorSet palette = COLOR_SET_1);
-    Node(int data, float x, float y, int radius = 50,
-         ColorSet palette = COLOR_SET_1);
+    Node(std::string data, float x, float y, int radius = 50);
+    Node(int data, float x, float y, int radius = 50);
 
     // * Constructor done
 

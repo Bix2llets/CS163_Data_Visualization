@@ -48,7 +48,7 @@ void SLL::addEnd(std::string data) {
         root =
             new Node(data, drawArea.x + NODE_RADIUS - DISTANCE_HORIZONTAL / 3,
                      drawArea.y + NODE_RADIUS - DISTANCE_VERTICAL / 3,
-                     NODE_RADIUS, *NODE_PALETTE);
+                     NODE_RADIUS);
         nodeCount++;
         return;
     }
@@ -65,8 +65,7 @@ void SLL::addEnd(std::string data) {
 
     curr->nextNode =
         new Node(data, nextTargetPosition.x - DISTANCE_HORIZONTAL / 3,
-                 nextTargetPosition.y - DISTANCE_VERTICAL / 3, NODE_RADIUS,
-                 *NODE_PALETTE);
+                 nextTargetPosition.y - DISTANCE_VERTICAL / 3, NODE_RADIUS);
     nodeCount++;
     return;
 }
@@ -114,7 +113,7 @@ void SLL::addAt(std::string data, int place) {
         Node* node =
             new Node(data, drawArea.x + NODE_RADIUS - DISTANCE_HORIZONTAL / 3,
                      drawArea.y + NODE_RADIUS - DISTANCE_VERTICAL / 3,
-                     NODE_RADIUS, *NODE_PALETTE);
+                     NODE_RADIUS);
         nodeCount++;
         if (root == nullptr) {
             root = node;
@@ -138,8 +137,7 @@ void SLL::addAt(std::string data, int place) {
         getNextNodePosition(curr->getTargetedPosition(), DISTANCE_HORIZONTAL,
                             DISTANCE_VERTICAL, nodePerRow, index);
     Node* node = new Node(data, newPosition.x - DISTANCE_HORIZONTAL / 3,
-                          newPosition.y - DISTANCE_VERTICAL / 3, NODE_RADIUS,
-                          *NODE_PALETTE);
+                          newPosition.y - DISTANCE_VERTICAL / 3, NODE_RADIUS);
 
     node->nextNode = curr->nextNode;
     curr->nextNode = node;
@@ -338,19 +336,13 @@ void SLL::highlightTo(int place) {
     if (place < 0) return;
     Node* curr = root;
     while (curr && place) {
-        curr->borderColor.setBaseColor(NODE_PALETTE->borderNormal);
-        curr->borderColor.setTargetColor(NODE_PALETTE->borderHighlight);
-        curr->borderColor.setFactor(0.f);
-        curr->edgeColor.setBaseColor(NODE_PALETTE->borderNormal);
-        curr->edgeColor.setTargetColor(NODE_PALETTE->borderHighlight);
-        curr->edgeColor.setFactor(0.f);
+        curr->borderColor.transitionToward(NODE_PALETTE->borderHighlight);
+        curr->edgeColor.transitionToward(NODE_PALETTE->borderHighlight);
         curr = curr->nextNode;
         place--;
     }
     if (curr == nullptr) return;
-    curr->borderColor.setBaseColor(NODE_PALETTE->borderNormal);
-    curr->borderColor.setTargetColor(NODE_PALETTE->borderHighlight);
-    curr->borderColor.setFactor(0.f);
+    curr->borderColor.transitionToward(NODE_PALETTE->borderHighlight);
 }
 
 void SLL::deHighlight() {

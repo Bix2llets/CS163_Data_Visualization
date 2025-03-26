@@ -17,6 +17,8 @@ class AnimationColor {
     void setBaseColor(Color color);
     void setCurrentColor(Color color);
     void setFactor(float newFactor);
+    
+    void transitionToward(Color color);
     static void setUpdateRate(float newSpeed);
     void update();
     

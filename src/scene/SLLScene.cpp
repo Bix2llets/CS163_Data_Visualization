@@ -6,7 +6,6 @@ float SLLScene::timeLeft = 0.f;
 const Rectangle SLLScene::CANVAS = {100, 100, 1400, 600};
 ColorSet const *SLLScene::NODE_PALETTE = &COLOR_SET_1;
 
-const Color resultColor = {191, 97, 106, 255};
 float SLLScene::animationRate = 1.0f;
 SLL SLLScene::sll(CANVAS, animationRate);
 int SLLScene::highlightedRow = -1;
@@ -141,6 +140,7 @@ void SLLScene::render() { sll.render(); }
 
 void SLLScene::find(std::string val) {
     if (steps.size() > 1) return;
+    Color resultColor = GBLight::LIGHT_RED;
     addStep(0, &PSEUDO_SEARCH);
     SLL& currSll = steps.back().sll;
     Node* curr = currSll.root;
@@ -155,9 +155,7 @@ void SLLScene::find(std::string val) {
     for (int i = 0; i < nodeIndex; i++) curr = curr->nextNode;
 
     currSll.highlightTo(nodeIndex);  // since node index is actual node - 1;
-    curr->borderColor.setBaseColor(NODE_PALETTE->borderNormal);
-    curr->borderColor.setTargetColor(resultColor);
-    curr->borderColor.setFactor(0.f);
+    curr->borderColor.transitionToward(resultColor);
     addStep(1, &PSEUDO_SEARCH);
     addStep(-1, &PSEUDO_SEARCH);
 }

@@ -39,3 +39,9 @@ Color AnimationColor::getTargetColor() { return targetColor; }
 void AnimationColor::makeFinish() { setFactor(1.0f); }
 
 int AnimationColor::getAnimationRate() { return this->updateSpeed; }
+
+void AnimationColor::transitionToward(Color color) {
+    baseColor = getCurrentColor();
+    targetColor = color;
+    factor = 0.f;
+}

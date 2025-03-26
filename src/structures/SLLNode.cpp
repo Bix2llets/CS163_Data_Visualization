@@ -1,25 +1,26 @@
 #include "SLLNode.h"
+
+ColorSet const *Node::PALETTE = &COLOR_SET_1;
 void Node::render() {
     DrawCircle(position.x, position.y, radius, borderColor.getCurrentColor());
-    DrawCircleV(position, radius - 3, PALETTE.backgroundNormal);
+    DrawCircleV(position, radius - 3, PALETTE->backgroundNormal);
 
     DrawUtility::drawText(data, position, DrawUtility::inter20,
-                          PALETTE.textNormal, DrawUtility::NORMAL_SIZE,
+                          PALETTE->textNormal, DrawUtility::NORMAL_SIZE,
                           DrawUtility::SPACING, VerticalAlignment::CENTERED,
                           HorizontalAlignment::CENTERED);
 }
 
-Node::Node(std::string data, float x, float y, int radius, ColorSet palette)
+Node::Node(std::string data, float x, float y, int radius)
     : data{data},
       Animation{x, y},
-      PALETTE{palette},
       radius{radius},
-      borderColor{PALETTE.borderNormal, PALETTE.borderNormal},
-      edgeColor{PALETTE.borderHighlight, PALETTE.borderNormal},
+      borderColor{PALETTE->borderNormal, PALETTE->borderNormal},
+      edgeColor{PALETTE->borderHighlight, PALETTE->borderNormal},
       nextNode{nullptr} {};
 
-Node::Node(int data, float x, float y, int radius, ColorSet palette)
-    : Node(std::to_string(data), x, y, radius, palette) {};
+Node::Node(int data, float x, float y, int radius)
+    : Node(std::to_string(data), x, y, radius) {};
 
 void Node::update() {
     Animation::update();
