@@ -17,9 +17,9 @@ class GraphEdge : public GUIObject {
     // Drawing info
     const static int THICKNESS;
     AnimationColor color;
-    const static Color NORMAL_COLOR;
-    const static Color HIGHLIGHT_COLOR;
-    const static Color TEXT_COLOR;
+    const static Color& NORMAL_COLOR;
+    const static Color& HIGHLIGHT_COLOR;
+    const static Color& TEXT_COLOR;
 
     bool isHighlighted;
     bool isOpaque;

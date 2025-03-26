@@ -4,11 +4,7 @@ float SLLScene::stepDelay = 1.f;
 float SLLScene::timeLeft = 0.f;
 
 const Rectangle SLLScene::CANVAS = {100, 100, 1400, 600};
-const ColorSet SLLScene::NODE_PALETTE = {
-    Color{186, 180, 163, 255}, Color{186, 180, 163, 255},
-    Color{51, 49, 45, 255},    Color{42, 114, 47, 255},
-    Color{186, 180, 163, 255}, Color{229, 189, 80, 255},
-};
+ColorSet const *SLLScene::NODE_PALETTE = &COLOR_SET_1;
 
 const Color resultColor = {191, 97, 106, 255};
 float SLLScene::animationRate = 1.0f;
@@ -159,7 +155,7 @@ void SLLScene::find(std::string val) {
     for (int i = 0; i < nodeIndex; i++) curr = curr->nextNode;
 
     currSll.highlightTo(nodeIndex);  // since node index is actual node - 1;
-    curr->borderColor.setBaseColor(SLLScene::NODE_PALETTE.borderNormal);
+    curr->borderColor.setBaseColor(NODE_PALETTE->borderNormal);
     curr->borderColor.setTargetColor(resultColor);
     curr->borderColor.setFactor(0.f);
     addStep(1, &PSEUDO_SEARCH);

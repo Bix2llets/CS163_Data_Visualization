@@ -68,71 +68,39 @@ const Color FOREGROUND4 = GetColor(0xa89984ff);
 };  // namespace GBDark
 
 namespace GBLight {
-void init() {
-    BACKGROUND = GetColor(0xFBF1C7ff);
-    BACKGROUND0H = GetColor(0xF9F5D7ff);
-    BACKGROUND0 = GetColor(0xFBF1C7ff);
-    BACKGROUND1 = GetColor(0xEBDBB2ff);
-    BACKGROUND2 = GetColor(0xD5C4A1ff);
-    BACKGROUND3 = GetColor(0xBDAE93ff);
-    BACKGROUND4 = GetColor(0xA89984ff);
-    BACKGROUND0S = GetColor(0xF2E5BCff);
-    DARK_RED = GetColor(0x9D0006ff);
-    LIGHT_RED = GetColor(0xCC241Dff);
-    DARK_GREEN = GetColor(0x79740Eff);
-    LIGHT_GREEN = GetColor(0x98971Aff);
-    DARK_YELLOW = GetColor(0xB57614ff);
-    LIGHT_YELLOW = GetColor(0xD79921ff);
-    DARK_BLUE = GetColor(0x076678ff);
-    LIGHT_BLUE = GetColor(0x458588ff);
-    DARK_PURPLE = GetColor(0x8F3F71ff);
-    LIGHT_PURPLE = GetColor(0xB16286ff);
-    DARK_AQUA = GetColor(0x427B58ff);
-    LIGHT_AQUA = GetColor(0x689D6Aff);
-    DARK_GRAY = GetColor(0x7C6F64ff);
-    LIGHT_GRAY = GetColor(0x928374ff);
-    DARK_ORANGE = GetColor(0xAF3A03ff);
-    LIGHT_ORANGE = GetColor(0xD65D0Eff);
-    FOREGROUND = GetColor(0x3C3836ff);
-    FOREGROUND0 = GetColor(0x282828ff);
-    FOREGROUND1 = GetColor(0x3C3836ff);
-    FOREGROUND2 = GetColor(0x504945ff);
-    FOREGROUND3 = GetColor(0x665C54ff);
-    FOREGROUND4 = GetColor(0x7C6F64ff);
-}
-Color BACKGROUND;
-Color BACKGROUND0H;
-Color BACKGROUND0;
-Color BACKGROUND1;
-Color BACKGROUND2;
-Color BACKGROUND3;
-Color BACKGROUND4;
-Color BACKGROUND0S;
-Color DARK_RED;
-Color LIGHT_RED;
-Color DARK_GREEN;
-Color LIGHT_GREEN;
-Color DARK_YELLOW;
-Color LIGHT_YELLOW;
-Color DARK_BLUE;
-Color LIGHT_BLUE;
-Color DARK_PURPLE;
-Color LIGHT_PURPLE;
-Color DARK_AQUA;
-Color LIGHT_AQUA;
-Color DARK_GRAY;
-Color LIGHT_GRAY;
-Color DARK_ORANGE;
-Color LIGHT_ORANGE;
-Color FOREGROUND;
-Color FOREGROUND0;
-Color FOREGROUND1;
-Color FOREGROUND2;
-Color FOREGROUND3;
-Color FOREGROUND4;
+    Color BACKGROUND = GetColor(0xFBF1C7ff);
+    Color BACKGROUND0H = GetColor(0xF9F5D7ff);
+    Color BACKGROUND0 = GetColor(0xFBF1C7ff);
+    Color BACKGROUND1 = GetColor(0xEBDBB2ff);
+    Color BACKGROUND2 = GetColor(0xD5C4A1ff);
+    Color BACKGROUND3 = GetColor(0xBDAE93ff);
+    Color BACKGROUND4 = GetColor(0xA89984ff);
+    Color BACKGROUND0S = GetColor(0xF2E5BCff);
+    Color DARK_RED = GetColor(0x9D0006ff);
+    Color LIGHT_RED = GetColor(0xCC241Dff);
+    Color DARK_GREEN = GetColor(0x79740Eff);
+    Color LIGHT_GREEN = GetColor(0x98971Aff);
+    Color DARK_YELLOW = GetColor(0xB57614ff);
+    Color LIGHT_YELLOW = GetColor(0xD79921ff);
+    Color DARK_BLUE = GetColor(0x076678ff);
+    Color LIGHT_BLUE = GetColor(0x458588ff);
+    Color DARK_PURPLE = GetColor(0x8F3F71ff);
+    Color LIGHT_PURPLE = GetColor(0xB16286ff);
+    Color DARK_AQUA = GetColor(0x427B58ff);
+    Color LIGHT_AQUA = GetColor(0x689D6Aff);
+    Color DARK_GRAY = GetColor(0x7C6F64ff);
+    Color LIGHT_GRAY = GetColor(0x928374ff);
+    Color DARK_ORANGE = GetColor(0xAF3A03ff);
+    Color LIGHT_ORANGE = GetColor(0xD65D0Eff);
+    Color FOREGROUND = GetColor(0x3C3836ff);
+    Color FOREGROUND0 = GetColor(0x282828ff);
+    Color FOREGROUND1 = GetColor(0x3C3836ff);
+    Color FOREGROUND2 = GetColor(0x504945ff);
+    Color FOREGROUND3 = GetColor(0x665C54ff);
+    Color FOREGROUND4 = GetColor(0x7C6F64ff);
 
 }  // namespace GBLight
-const ColorSet DEF_SET = {
-    ColorPalette::FlatUI::CONCRETE,      ColorPalette::FlatUI::ASBESTOS,
-    ColorPalette::FlatUI::CLOUDS,        ColorPalette::FlatUI::SILVER,
-    ColorPalette::FlatUI::MIDNIGHT_BLUE, ColorPalette::FlatUI::MIDNIGHT_BLUE};
+const ColorSet COLOR_SET_1 = {
+    GBLight::FOREGROUND2, GBLight::FOREGROUND0, 
+    GBLight::BACKGROUND2, GBLight::BACKGROUND4, 
+    GBLight::FOREGROUND0, GBLight::DARK_YELLOW,};

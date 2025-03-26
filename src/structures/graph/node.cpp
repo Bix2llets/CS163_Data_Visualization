@@ -2,31 +2,21 @@
 
 const int GraphNode::RADIUS = 25;
 const int GraphNode::BORDER_WIDTH = 4;
-ColorSet GraphNode::PALETTE;
-Color GraphNode::HOVER;
+ColorSet const *GraphNode::PALETTE  = &COLOR_SET_1;
+
+Color const *GraphNode::HOVER = &GBLight::LIGHT_GREEN;
 const float GraphNode::MASS = 1;
 
-void GraphNode::initColor() {
-    
-    GraphNode::PALETTE = {
-        GBLight::FOREGROUND2, GBLight::FOREGROUND0, 
-        GBLight::BACKGROUND2, GBLight::BACKGROUND4,
-        GBLight::FOREGROUND0, GBLight::DARK_YELLOW,
-    };
-        GraphNode::HOVER = {255, 255, 255, 255};
-};
 void GraphNode::render() {
     Color border = borderColor.getCurrentColor();
-    if (dragged)
-        border = GBLight::LIGHT_YELLOW;
+    if (dragged) border = *HOVER;
     DrawCircle(position.x, position.y, RADIUS, border);
     // std::cerr << position.x << " " << position.y << "\n";
-    Color backgroundColor = PALETTE.backgroundNormal;
+    Color backgroundColor = PALETTE->backgroundNormal;
     backgroundColor.a = border.a;
-    DrawCircle(position.x, position.y, RADIUS - BORDER_WIDTH,
-               backgroundColor);
+    DrawCircle(position.x, position.y, RADIUS - BORDER_WIDTH, backgroundColor);
 
-    Color textColor = PALETTE.textNormal;
+    Color textColor = PALETTE->textNormal;
     textColor.a = border.a;
     DrawUtility::drawText(std::to_string(label), position, DrawUtility::inter20,
                           textColor, DrawUtility::NORMAL_SIZE,
@@ -39,7 +29,6 @@ void GraphNode::update() {
 
     // * Motion update
     if (!dragged) {
-
         Vector2 displacement = Vector2Scale(velocity, Loop::DELTA_TIME);
         position = Vector2Add(position, displacement);
         velocity = Vector2Scale(velocity, 0.90f);
@@ -82,9 +71,9 @@ void GraphNode::highlight(bool isImmediate) {
     isHighlighted = true;
     borderColor.setBaseColor(borderColor.getCurrentColor());
     Color target = borderColor.getTargetColor();
-    target.r = PALETTE.borderHighlight.r;
-    target.g = PALETTE.borderHighlight.g;
-    target.b = PALETTE.borderHighlight.b;
+    target.r = PALETTE->borderHighlight.r;
+    target.g = PALETTE->borderHighlight.g;
+    target.b = PALETTE->borderHighlight.b;
     borderColor.setTargetColor(target);
     borderColor.setFactor(float(isImmediate));
 }
@@ -93,11 +82,11 @@ void GraphNode::deHighlight(bool isImmediate) {
     isHighlighted = false;
     borderColor.setBaseColor(borderColor.getCurrentColor());
     Color target = borderColor.getTargetColor();
-    target.r = PALETTE.borderHighlight.r;
-    target.g = PALETTE.borderHighlight.g;
-    target.b = PALETTE.borderHighlight.b;
+    target.r = PALETTE->borderHighlight.r;
+    target.g = PALETTE->borderHighlight.g;
+    target.b = PALETTE->borderHighlight.b;
     borderColor.setTargetColor(target);
-    borderColor.setTargetColor(PALETTE.borderNormal);
+    borderColor.setTargetColor(PALETTE->borderNormal);
     borderColor.setFactor(float(isImmediate));
 }
 
@@ -116,25 +105,21 @@ int GraphNode::getLabel() { return label; }
 bool GraphNode::isCompleted() { return borderColor.isCompleted(); }
 
 bool GraphNode::isConnected(std::shared_ptr<GraphNode> node) {
-    for (auto existedNode: adjacentList) 
+    for (auto existedNode : adjacentList)
         if (existedNode.dest == node) return false;
     return true;
 }
 
-AnimationColor &GraphNode::getBorderColor() {
-    return borderColor;
-}
+AnimationColor &GraphNode::getBorderColor() { return borderColor; }
 
 void GraphNode::makeOpaque(bool isImmediate) {
-    Color target = borderColor. getTargetColor();
+    Color target = borderColor.getTargetColor();
     isOpaque = true;
     target.a = 255;
 
     borderColor.setBaseColor(borderColor.getCurrentColor());
     borderColor.setTargetColor(target);
     borderColor.setFactor(float(isImmediate));
-
-
 }
 
 void GraphNode::makeTransparent(bool isImmediate) {
@@ -148,10 +133,6 @@ void GraphNode::makeTransparent(bool isImmediate) {
     borderColor.setFactor(float(isImmediate));
 }
 
-bool GraphNode::getOpaque() {
-    return isOpaque;
-}
+bool GraphNode::getOpaque() { return isOpaque; }
 
-bool GraphNode::getHighlighted() {
-    return isHighlighted;
-}
+bool GraphNode::getHighlighted() { return isHighlighted; }

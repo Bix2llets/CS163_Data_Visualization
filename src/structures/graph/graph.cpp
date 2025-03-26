@@ -1,7 +1,7 @@
 #include "graph/graph.h"
 
 #include <cstdlib>
-const float Graph::IDEAL_LENGTH = 100.f;
+const float Graph::IDEAL_LENGTH = 50.f;
 const float Graph::PUSH_FACTOR = 10.f;
 const float Graph::PULL_FACTOR = 1.f;
 const float Graph::CENTRIC_FACTOR = 10.0f;
@@ -28,21 +28,38 @@ void Graph::applyPushForce() {
 
 void Graph::applyPullForce() {
     // * Spring model
-    for (std::shared_ptr<GraphEdge> edge : edgeList) {
-        float length = edge->getLength();
-        // float baseLength = 50 * (1 + log10(edge->weight));
-        float baseLength = IDEAL_LENGTH;
-        if (length <= baseLength) continue;
-        float lengthDiff = length - baseLength;
-        float force = PULL_FACTOR * (lengthDiff);
-        Vector2 r12 = Vector2Subtract(edge->node2->getPosition(),
-                                      edge->node1->getPosition());
+    // for (std::shared_ptr<GraphEdge> edge : edgeList) {
+    //     float length = edge->getLength();
+    //     // float baseLength = 50 * (1 + log10(edge->weight));
+    //     float baseLength = IDEAL_LENGTH;
+    //     if (length <= baseLength) continue;
+    //     float lengthDiff = length - baseLength;
+    //     float force = PULL_FACTOR * (lengthDiff);
+    //     Vector2 r12 = Vector2Subtract(edge->node2->getPosition(),
+    //                                   edge->node1->getPosition());
 
-        r12 = Vector2ClampValue(r12, 1.f, 1.f);
+    //     r12 = Vector2ClampValue(r12, 1.f, 1.f);
 
-        edge->node1->applyForce(Vector2Scale(r12, force));
-        edge->node2->applyForce(Vector2Scale(r12, -force));
-    }
+    //     edge->node1->applyForce(Vector2Scale(r12, force));
+    //     edge->node2->applyForce(Vector2Scale(r12, -force));
+    // }
+
+    for (std::shared_ptr<GraphNode> node1: nodeList) {
+        for (std::shared_ptr<GraphNode> node2: nodeList) {
+            if (node1->getLabel() >= node2->getLabel()) continue;
+            float length = Vector2Distance(node1->getPosition(), node2->getPosition());
+            float baseLength = IDEAL_LENGTH;
+            if (length <= baseLength) continue;
+            float lengthDiff = length - baseLength;
+            float force = PULL_FACTOR * lengthDiff;
+            Vector2 r12 = Vector2Subtract(node2->getPosition(), node1->getPosition());
+            r12 = Vector2ClampValue(r12, 1.f, 1.f);
+
+            node1->applyForce(Vector2Scale(r12, force));
+            node2->applyForce(Vector2Scale(r12, -force));
+
+        }
+    } 
 
     // * Charge model
 }
@@ -78,7 +95,7 @@ void Graph::applyCentricForce() {
 
 void Graph::handleMouseEvents() {
     Vector2 mousePosition = GetMousePosition();
-    bool isMouseDown = IsMouseButtonDown(MOUSE_LEFT_BUTTON);
+    bool isMouseDown = IsMouseButtonPressed(MOUSE_LEFT_BUTTON);
     bool isMouseReleased = IsMouseButtonReleased(MOUSE_LEFT_BUTTON);
 
     for (auto &node : nodeList) {
@@ -98,14 +115,12 @@ void Graph::handleMouseEvents() {
 }
 
 void Graph::update() {
-    handleMouseEvents(); // Handle mouse interactions
+    handleMouseEvents();
     applyPushForce();
     applyPullForce();
     applyCentricForce();
     for (std::shared_ptr<GraphNode> node : nodeList) {
-        // if (!node->isDragging()) { // Only update nodes not being dragged
             node->update();
-        // }
     }
     for (std::shared_ptr<GraphEdge> edge : edgeList) edge->update();
 }

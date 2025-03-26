@@ -1,7 +1,8 @@
 
 #include "singlyLinkedList.h"
 #include "SLLScene.h"
-const ColorSet SLL::NODE_PALETTE = SLLScene::NODE_PALETTE;
+#include "colorPalette.h"
+ColorSet const *SLL::NODE_PALETTE = &COLOR_SET_1;
 const int SLL::NODE_RADIUS = 30;
 const int SLL::DISTANCE_HORIZONTAL = 120;
 const int SLL::DISTANCE_VERTICAL = 120;
@@ -47,7 +48,7 @@ void SLL::addEnd(std::string data) {
         root =
             new Node(data, drawArea.x + NODE_RADIUS - DISTANCE_HORIZONTAL / 3,
                      drawArea.y + NODE_RADIUS - DISTANCE_VERTICAL / 3,
-                     NODE_RADIUS, NODE_PALETTE);
+                     NODE_RADIUS, *NODE_PALETTE);
         nodeCount++;
         return;
     }
@@ -65,7 +66,7 @@ void SLL::addEnd(std::string data) {
     curr->nextNode =
         new Node(data, nextTargetPosition.x - DISTANCE_HORIZONTAL / 3,
                  nextTargetPosition.y - DISTANCE_VERTICAL / 3, NODE_RADIUS,
-                 NODE_PALETTE);
+                 *NODE_PALETTE);
     nodeCount++;
     return;
 }
@@ -74,7 +75,7 @@ void SLL::render() {
     if (root == nullptr) return;
     DrawUtility::drawText(
         "Root", Vector2Add(root->getPosition(), {0, DISTANCE_HORIZONTAL / 3}),
-        DrawUtility::inter20, NODE_PALETTE.textNormal, DrawUtility::NORMAL_SIZE,
+        DrawUtility::inter20, NODE_PALETTE->textNormal, DrawUtility::NORMAL_SIZE,
         DrawUtility::SPACING, VerticalAlignment::CENTERED,
         HorizontalAlignment::CENTERED);
     Node* currEdge = root;
@@ -113,7 +114,7 @@ void SLL::addAt(std::string data, int place) {
         Node* node =
             new Node(data, drawArea.x + NODE_RADIUS - DISTANCE_HORIZONTAL / 3,
                      drawArea.y + NODE_RADIUS - DISTANCE_VERTICAL / 3,
-                     NODE_RADIUS, NODE_PALETTE);
+                     NODE_RADIUS, *NODE_PALETTE);
         nodeCount++;
         if (root == nullptr) {
             root = node;
@@ -138,7 +139,7 @@ void SLL::addAt(std::string data, int place) {
                             DISTANCE_VERTICAL, nodePerRow, index);
     Node* node = new Node(data, newPosition.x - DISTANCE_HORIZONTAL / 3,
                           newPosition.y - DISTANCE_VERTICAL / 3, NODE_RADIUS,
-                          NODE_PALETTE);
+                          *NODE_PALETTE);
 
     node->nextNode = curr->nextNode;
     curr->nextNode = node;
@@ -337,24 +338,24 @@ void SLL::highlightTo(int place) {
     if (place < 0) return;
     Node* curr = root;
     while (curr && place) {
-        curr->borderColor.setBaseColor(NODE_PALETTE.borderNormal);
-        curr->borderColor.setTargetColor(NODE_PALETTE.borderHighlight);
+        curr->borderColor.setBaseColor(NODE_PALETTE->borderNormal);
+        curr->borderColor.setTargetColor(NODE_PALETTE->borderHighlight);
         curr->borderColor.setFactor(0.f);
-        curr->edgeColor.setBaseColor(NODE_PALETTE.borderNormal);
-        curr->edgeColor.setTargetColor(NODE_PALETTE.borderHighlight);
+        curr->edgeColor.setBaseColor(NODE_PALETTE->borderNormal);
+        curr->edgeColor.setTargetColor(NODE_PALETTE->borderHighlight);
         curr->edgeColor.setFactor(0.f);
         curr = curr->nextNode;
         place--;
     }
     if (curr == nullptr) return;
-    curr->borderColor.setBaseColor(NODE_PALETTE.borderNormal);
-    curr->borderColor.setTargetColor(NODE_PALETTE.borderHighlight);
+    curr->borderColor.setBaseColor(NODE_PALETTE->borderNormal);
+    curr->borderColor.setTargetColor(NODE_PALETTE->borderHighlight);
     curr->borderColor.setFactor(0.f);
 }
 
 void SLL::deHighlight() {
     Node* curr = root;
-    Color normalColor = NODE_PALETTE.borderNormal;
+    Color normalColor = NODE_PALETTE->borderNormal;
     while (curr) {
         curr->borderColor.setBaseColor(normalColor);
         curr->borderColor.setCurrentColor(normalColor);

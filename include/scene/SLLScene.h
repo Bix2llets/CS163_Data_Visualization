@@ -28,7 +28,7 @@ namespace SLLScene {
     extern const std::vector<std::string> PSEUDO_SEARCH;
     // --------------------------
 
-    extern const ColorSet NODE_PALETTE;
+    extern ColorSet const *NODE_PALETTE;
     void setSpecs(float _stepDelay = 0.5f);
 
     void addEnd(std::string data);

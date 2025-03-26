@@ -23,7 +23,7 @@ class Form : public GUIObject, public Toggleable {
 
    public:
     Form(Rectangle drawInfo,
-            ColorSet palette = DEF_SET)
+            ColorSet palette = COLOR_SET_1)
         : GUIObject{drawInfo.x, drawInfo.y},
           width{drawInfo.width},
           height{drawInfo.height},

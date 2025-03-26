@@ -4,7 +4,7 @@
 #include "SLLNode.h"
 class SLL {
      public:
-    const static ColorSet NODE_PALETTE;
+    static ColorSet const *NODE_PALETTE;
     const static int NODE_RADIUS;
     const static int DISTANCE_HORIZONTAL;
     const static int DISTANCE_VERTICAL;

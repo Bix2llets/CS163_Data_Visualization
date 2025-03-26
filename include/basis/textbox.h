@@ -24,7 +24,7 @@ class TextBox : public GUIObject, public Toggleable {
     HorizontalAlignment horizontalAlign;
 
    public:
-    TextBox(Rectangle minimumBox = {0, 0, 0, 0}, ColorSet color = DEF_SET,
+    TextBox(Rectangle minimumBox = {0, 0, 0, 0}, ColorSet color = COLOR_SET_1,
             Font* renderFont = nullptr, std::string text = "",
             HorizontalAlignment horizontalAlign = HorizontalAlignment::CENTERED,
             VerticalAlignment verticalAlign = VerticalAlignment::CENTERED)

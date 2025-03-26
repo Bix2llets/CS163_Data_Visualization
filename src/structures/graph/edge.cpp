@@ -1,8 +1,8 @@
 #include "graph/edge.h"
 
-const Color GraphEdge::NORMAL_COLOR = Color{59, 66, 82, 255};
-const Color GraphEdge::HIGHLIGHT_COLOR = Color{229, 189, 80, 255};
-const Color GraphEdge::TEXT_COLOR = Color{186, 180, 163, 255};
+const Color &GraphEdge::NORMAL_COLOR = GBLight::FOREGROUND0;
+const Color &GraphEdge::HIGHLIGHT_COLOR = GBLight::LIGHT_YELLOW;
+const Color &GraphEdge::TEXT_COLOR = GBLight::FOREGROUND2;
 const int GraphEdge::THICKNESS = 2;
 void GraphEdge::update() {
     Vector2 newPosition =
@@ -18,11 +18,17 @@ void GraphEdge::render() {
 }
 void GraphEdge::renderText() {
     Color textColor = TEXT_COLOR;
+    Color backTextColor = GBLight::LIGHT_GRAY;
     textColor.a = color.getCurrentColor().a;
+    backTextColor.a = 180 * color.getCurrentColor().a / 255;
+    Vector2 textDimension = MeasureTextEx(DrawUtility::inter20, std::to_string(weight).c_str(), 16, DrawUtility::SPACING);
+    textDimension.x += 10;
+    textDimension.y += 10;
+    DrawRectangle(position.x - textDimension.x / 2, position.y - textDimension.y / 2, textDimension.x, textDimension.y, backTextColor);
     DrawUtility::drawText(std::to_string(weight), position,
-                          DrawUtility::inter20, textColor,
+                          DrawUtility::inter16, textColor,
                           16, DrawUtility::SPACING,
-                          VerticalAlignment::TOP, HorizontalAlignment::LEFT);
+                          VerticalAlignment::CENTERED, HorizontalAlignment::CENTERED);
 }
 void GraphEdge::highlight(bool isImmediate) {
     isHighlighted = true;

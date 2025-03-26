@@ -22,7 +22,7 @@ class Button : public GUIObject, public Toggleable {
 
    public:
     Button(Vector2 position, Vector2 dimension, std::string text = "",
-           int fontSize = 20, ColorSet palette = DEF_SET)
+           int fontSize = 20, ColorSet palette = COLOR_SET_1)
         : GUIObject(position),
           dimension{dimension},
           text{text},
@@ -32,13 +32,13 @@ class Button : public GUIObject, public Toggleable {
           Toggleable() {};
 
     Button(Rectangle rectangle = {0, 0, 0, 0}, std::string text = "", int fontSize = 20,
-           ColorSet palette = DEF_SET)
+           ColorSet palette = COLOR_SET_1)
         : Button{Vector2{rectangle.x, rectangle.y},
                  Vector2{rectangle.width, rectangle.height}, text, fontSize,
                  palette} {};
 
     Button(float x, float y, float width, float height, std::string text = "",
-           int fontSize = 20, ColorSet palette = DEF_SET)
+           int fontSize = 20, ColorSet palette = COLOR_SET_1)
         : Button{Vector2{x, y}, Vector2{width, height}, text, fontSize,
                  palette} {};
 
