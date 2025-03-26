@@ -5,12 +5,17 @@ const ColorSet GraphNode::PALETTE = {
     Color{51, 49, 45, 255},    Color{42, 114, 47, 255},
     Color{186, 180, 163, 255}, Color{229, 189, 80, 255},
 };
+const Color GraphNode::HOVER = {255, 255, 255, 255};
 const int GraphNode::RADIUS = 25;
 const int GraphNode::BORDER_WIDTH = 2;
 
 const float GraphNode::MASS = 1;
+
+
 void GraphNode::render() {
     Color border = borderColor.getCurrentColor();
+    if (dragged)
+        border = HOVER;
     DrawCircle(position.x, position.y, RADIUS, border);
     // std::cerr << position.x << " " << position.y << "\n";
     Color backgroundColor = PALETTE.backgroundNormal;

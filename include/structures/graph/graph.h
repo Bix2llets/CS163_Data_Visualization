@@ -16,6 +16,8 @@ class Graph {
     static const float PUSH_FACTOR;
     static const float PULL_FACTOR;
     static const float CENTRIC_FACTOR;
+    void handleMouseEvents(); // Handles mouse interactions for dragging nodes
+
     public:
     void update();
 

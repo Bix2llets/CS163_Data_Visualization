@@ -61,7 +61,7 @@ ColorSet elementTheme = {WET_ASPHALT,
                          DrawUtility::EDGE_NORMAL,
                          DrawUtility::EDGE_HIGHLIGHTED};
 
-Color backgroundColor = Color{51, 49, 45, 255};
+Color backgroundColor = GBDark::FOREGROUND0;
 int main() {
     InitWindow(1600, 900, "CS163 Data visualizer");
     SetTargetFPS(60);
@@ -172,6 +172,6 @@ int main() {
         EndDrawing();
     }
     std::cout << "Program ran successfully\n";
-    UnloadFont(font);
+    // UnloadFont(font);
     CloseWindow();
 }

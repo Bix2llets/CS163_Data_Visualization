@@ -19,7 +19,7 @@ class GraphNode : public GUIObject {
     std::vector<OutgoingEdge> adjacentList;
     // Drawing info
     const static ColorSet PALETTE;
-    const static int RADIUS;
+    const static Color HOVER;
     const static int BORDER_WIDTH;
     AnimationColor borderColor;
     // For force directed
@@ -27,15 +27,18 @@ class GraphNode : public GUIObject {
     const static float MASS;
     bool isHighlighted;
     bool isOpaque;
-
-   public:
+    bool dragged; // Track if the node is being dragged
+    
+    public:
+    const static int RADIUS;
     GraphNode(int label, float posX, float posY)
         : label{label},
           borderColor{PALETTE.borderNormal, PALETTE.borderNormal},
           GUIObject{posX, posY},
           velocity{0.f, 0.f},
           isHighlighted{false},
-          isOpaque{true} {};
+          isOpaque{true},
+          dragged{false} {};
 
     void addEdge(std::shared_ptr<GraphNode> dest, int weight);
 
@@ -69,4 +72,8 @@ class GraphNode : public GUIObject {
 
     bool getOpaque();
     bool getHighlighted();
+
+    void setDragging(bool dragging) { dragged = dragging; }
+    bool isDragging() const { return dragged; }
+    void setPosition(Vector2 newPosition) { position = newPosition; }
 };

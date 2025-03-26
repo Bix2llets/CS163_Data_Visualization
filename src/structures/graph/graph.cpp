@@ -75,13 +75,40 @@ void Graph::applyCentricForce() {
     for (std::shared_ptr<GraphNode> node : nodeList)
         node->applyForce(centricForce);
 }
+
+void Graph::handleMouseEvents() {
+    Vector2 mousePosition = GetMousePosition();
+    bool isMouseDown = IsMouseButtonDown(MOUSE_LEFT_BUTTON);
+    bool isMouseReleased = IsMouseButtonReleased(MOUSE_LEFT_BUTTON);
+
+    for (auto &node : nodeList) {
+        if (isMouseDown && CheckCollisionPointCircle(mousePosition, node->getPosition(), GraphNode::RADIUS)) {
+            node->setDragging(true);
+        }
+
+        if (isMouseReleased) {
+            node->setDragging(false);
+        }
+
+        if (node->isDragging()) {
+            node->setPosition(mousePosition); // Update position to follow the mouse
+            node->setVelocity({0, 0});       // Reset velocity while dragging
+        }
+    }
+}
+
 void Graph::update() {
+    handleMouseEvents(); // Handle mouse interactions
     applyPushForce();
     applyPullForce();
     applyCentricForce();
-    for (std::shared_ptr<GraphNode> node : nodeList) node->update();
+    for (std::shared_ptr<GraphNode> node : nodeList) {
+        if (!node->isDragging()) { // Only update nodes not being dragged
+            node->update();
+        }
+    }
     for (std::shared_ptr<GraphEdge> edge : edgeList) edge->update();
-};
+}
 
 void Graph::render() {
     for (std::shared_ptr<GraphEdge> edge : edgeList)

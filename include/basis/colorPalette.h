@@ -36,3 +36,70 @@ extern ::Color ASBESTOS;
 };  // namespace FlatUI
 Color getTransparency(Color color, float tranperencyRatio);
 }  // namespace ColorPalette
+
+namespace GBDark {
+    extern const Color BACKGROUND;
+    extern const Color BACKGROUND0H;
+    extern const Color BACKGROUND0;
+    extern const Color BACKGROUND1;
+    extern const Color BACKGROUND2;
+    extern const Color BACKGROUND3;
+    extern const Color BACKGROUND4;
+    extern const Color BACKGROUND0S;
+    extern const Color DARK_RED;
+    extern const Color LIGHT_RED;
+    extern const Color DARK_GREEN;
+    extern const Color LIGHT_GREEN;
+    extern const Color DARK_YELLOW;
+    extern const Color LIGHT_YELLOW;
+    extern const Color DARK_BLUE;
+    extern const Color LIGHT_BLUE;
+    extern const Color DARK_PURPLE;
+    extern const Color LIGHT_PURPLE;
+    extern const Color DARK_AQUA;
+    extern const Color LIGHT_AQUA;
+    extern const Color DARK_GRAY;
+    extern const Color LIGHT_GRAY;
+    extern const Color DARK_ORANGE;
+    extern const Color LIGHT_ORANGE;
+    extern const Color FOREGROUND;
+    extern const Color FOREGROUND0;
+    extern const Color FOREGROUND1;
+    extern const Color FOREGROUND2;
+    extern const Color FOREGROUND3;
+    extern const Color FOREGROUND4;
+}
+
+namespace GBLight {
+    extern const Color BACKGROUND;
+    extern const Color BACKGROUND0H;
+    extern const Color BACKGROUND0;
+    extern const Color BACKGROUND1;
+    extern const Color BACKGROUND2;
+    extern const Color BACKGROUND3;
+    extern const Color BACKGROUND4;
+    extern const Color BACKGROUND0S;
+    extern const Color DARK_RED;
+    extern const Color LIGHT_RED;
+    extern const Color DARK_GREEN;
+    extern const Color LIGHT_GREEN;
+    extern const Color DARK_YELLOW;
+    extern const Color LIGHT_YELLOW;
+    extern const Color DARK_BLUE;
+    extern const Color LIGHT_BLUE;
+    extern const Color DARK_PURPLE;
+    extern const Color LIGHT_PURPLE;
+    extern const Color DARK_AQUA;
+    extern const Color LIGHT_AQUA;
+    extern const Color DARK_GRAY;
+    extern const Color LIGHT_GRAY;
+    extern const Color DARK_ORANGE;
+    extern const Color LIGHT_ORANGE;
+    extern const Color FOREGROUND;
+    extern const Color FOREGROUND0;
+    extern const Color FOREGROUND1;
+    extern const Color FOREGROUND2;
+    extern const Color FOREGROUND3;
+    extern const Color FOREGROUND4;
+    
+}
