@@ -480,7 +480,8 @@ void AVL::draw(AVLNode*root) {
     std::string value = std::to_string(root->value);
     char *text = new char[value.length() + 1];
     strcpy(text, value.c_str());
-    DrawTextEx(mLib::mFont, text, (Vector2){root->getPosition().x - 12, root->getPosition().y - 12}, 20, 2, WHITE);
+    DrawUtility::drawText(value.c_str(), root->getPosition(), mLib::mFont, WHITE, 20, DrawUtility::SPACING, VerticalAlignment::CENTERED, HorizontalAlignment::CENTERED);
+    // DrawTextEx(mLib::mFont, text, (Vector2){root->getPosition().x - 12, root->getPosition().y - 12}, 20, 2, WHITE);
 }
 
 void AVL::draw() {
