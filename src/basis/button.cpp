@@ -12,13 +12,13 @@ void Button::render() {
     float innerOffset;
     float outerOffset;
     if (isHovered()) {
-        borderColor = PALETTE.borderHighlight;
-        backgroundColor = PALETTE.backgroundHighlight;
-        textColor = PALETTE.textHighlight;
+        borderColor = PALETTE->borderHighlight;
+        backgroundColor = PALETTE->backgroundHighlight;
+        textColor = PALETTE->textHighlight;
     } else {
-        borderColor = PALETTE.borderNormal;
-        backgroundColor = PALETTE.backgroundNormal;
-        textColor = PALETTE.textNormal;
+        borderColor = PALETTE->borderNormal;
+        backgroundColor = PALETTE->backgroundNormal;
+        textColor = PALETTE->textNormal;
     }
 
     Rectangle renderInfo = {position.x - BORDER_OFFSET, position.y - BORDER_OFFSET,

@@ -18,24 +18,24 @@ const int UPPER_MARGIN = 50;
 const int BUTTON_DISTANCE = 40;
 const ColorSet BUTTON_COLOR{WET_ASPHALT, MIDNIGHT_BLUE, CLOUDS, SILVER, BLACK, BLACK};
 Button trie(LEFT_MARGIN, BANNER_HEIGHT + UPPER_MARGIN, BUTTON_WIDTH,
-            BUTTON_HEIGHT, "Trie", FONT_SIZE, BUTTON_COLOR);
+            BUTTON_HEIGHT, "Trie", FONT_SIZE, &BUTTON_SET_1);
 Button linkedList(LEFT_MARGIN,
                   BANNER_HEIGHT + UPPER_MARGIN +
                       1 * (BUTTON_HEIGHT + BUTTON_DISTANCE),
                   BUTTON_WIDTH, BUTTON_HEIGHT, "Linked List", FONT_SIZE,
-                  BUTTON_COLOR);
+                  &BUTTON_SET_1);
 Button graph(LEFT_MARGIN,
              BANNER_HEIGHT + UPPER_MARGIN +
                  2 * (BUTTON_HEIGHT + BUTTON_DISTANCE),
-             BUTTON_WIDTH, BUTTON_HEIGHT, "Graph", FONT_SIZE, BUTTON_COLOR);
+             BUTTON_WIDTH, BUTTON_HEIGHT, "Graph", FONT_SIZE, &BUTTON_SET_1);
 Button hashTable(LEFT_MARGIN,
                  BANNER_HEIGHT + UPPER_MARGIN +
                      3 * (BUTTON_HEIGHT + BUTTON_DISTANCE),
-                 BUTTON_WIDTH, BUTTON_HEIGHT, "Hash table", FONT_SIZE, BUTTON_COLOR);
+                 BUTTON_WIDTH, BUTTON_HEIGHT, "Hash table", FONT_SIZE, &BUTTON_SET_1);
 Button AVLTree(LEFT_MARGIN,
                BANNER_HEIGHT + UPPER_MARGIN +
                    4 * (BUTTON_HEIGHT + BUTTON_DISTANCE),
-               BUTTON_WIDTH, BUTTON_HEIGHT, "AVL Tree", FONT_SIZE, BUTTON_COLOR);
+               BUTTON_WIDTH, BUTTON_HEIGHT, "AVL Tree", FONT_SIZE, &BUTTON_SET_1);
 
 void render() {
     DrawRectangleGradientEx({0, 0, BANNER_WIDTH, BANNER_HEIGHT}, BELIZE_HOLE,

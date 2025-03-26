@@ -8,11 +8,7 @@
 
 class AVLState
 {
-    ColorSet buttonPalette = {
-        Color{186, 180, 163, 255}, Color{186, 180, 163, 255},
-        Color{51, 49, 45, 255},    Color{42, 114, 47, 255},
-        Color{229, 189, 80, 255},  Color{229, 189, 80, 255},
-    };
+    static ColorSet const *buttonPalette;
     
     public:
         AVLState();

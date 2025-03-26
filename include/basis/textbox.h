@@ -16,7 +16,7 @@ class TextBox : public GUIObject, public Toggleable {
     float height;
     std::string text;
     Font* font;
-    ColorSet color;
+    ColorSet const *color;
     constexpr static float OFFSET = 5;
     constexpr static float BORDER_OFFSET = 1;
 
@@ -24,7 +24,7 @@ class TextBox : public GUIObject, public Toggleable {
     HorizontalAlignment horizontalAlign;
 
    public:
-    TextBox(Rectangle minimumBox = {0, 0, 0, 0}, ColorSet color = COLOR_SET_1,
+    TextBox(Rectangle minimumBox = {0, 0, 0, 0}, ColorSet const *color = &BUTTON_SET_1,
             Font* renderFont = nullptr, std::string text = "",
             HorizontalAlignment horizontalAlign = HorizontalAlignment::CENTERED,
             VerticalAlignment verticalAlign = VerticalAlignment::CENTERED)

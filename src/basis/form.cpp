@@ -5,7 +5,7 @@ void Form::render() {
     if (!enabled) return;
     update();
     DrawRectangleV(position, Vector2{width, height},
-                   PALETTE.backgroundHighlight);
+                   PALETTE->backgroundHighlight);
     Vector2 textPosition = position;
     textPosition.y += height / 2;
     textPosition.x += LEFT_MARGIN;
@@ -13,14 +13,14 @@ void Form::render() {
 
     std::string textRender = text;
     if (isFocusedOn) {
-        textColor = PALETTE.textHighlight;
+        textColor = PALETTE->textHighlight;
         textRender += '_';
-        groundColor = PALETTE.backgroundHighlight;
-        borderColor = PALETTE.borderHighlight;
+        groundColor = PALETTE->backgroundHighlight;
+        borderColor = PALETTE->borderHighlight;
     } else {
-        textColor = PALETTE.textNormal;
-        groundColor = PALETTE.backgroundNormal;
-        borderColor = PALETTE.borderNormal;
+        textColor = PALETTE->textNormal;
+        groundColor = PALETTE->backgroundNormal;
+        borderColor = PALETTE->borderNormal;
     }
     Rectangle drawInfo = {position.x - BORDER_OFFSET, position.y - BORDER_OFFSET, width + 2 * BORDER_OFFSET, height + 2 * BORDER_OFFSET};
     DrawRectangle(drawInfo.x, drawInfo.y, drawInfo.width, drawInfo.height, groundColor);

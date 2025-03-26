@@ -15,14 +15,14 @@ class Button : public GUIObject, public Toggleable {
     int fontSize;
     constexpr static float TEXT_OFFSET = 5;
     constexpr static float BORDER_OFFSET = 1;
-    ColorSet PALETTE;
+    ColorSet const *PALETTE;
     std::string text;
 
     AnimationColor edgeColor;
 
    public:
     Button(Vector2 position, Vector2 dimension, std::string text = "",
-           int fontSize = 20, ColorSet palette = COLOR_SET_1)
+           int fontSize = 20, ColorSet const *palette = &BUTTON_SET_1)
         : GUIObject(position),
           dimension{dimension},
           text{text},
@@ -32,13 +32,13 @@ class Button : public GUIObject, public Toggleable {
           Toggleable() {};
 
     Button(Rectangle rectangle = {0, 0, 0, 0}, std::string text = "", int fontSize = 20,
-           ColorSet palette = COLOR_SET_1)
+           ColorSet const *palette = &BUTTON_SET_1)
         : Button{Vector2{rectangle.x, rectangle.y},
                  Vector2{rectangle.width, rectangle.height}, text, fontSize,
                  palette} {};
 
     Button(float x, float y, float width, float height, std::string text = "",
-           int fontSize = 20, ColorSet palette = COLOR_SET_1)
+           int fontSize = 20, ColorSet const *palette = &BUTTON_SET_1)
         : Button{Vector2{x, y}, Vector2{width, height}, text, fontSize,
                  palette} {};
 

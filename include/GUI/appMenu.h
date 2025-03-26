@@ -10,10 +10,10 @@ namespace AppMenu {
 // Render info
 extern Vector2 codeBlockPosition;
 extern Vector2 codeLineSize;
-extern ColorSet codeBlockColor;
+extern ColorSet const *codeBlockColor;
 
 extern Vector2 buttonDimension;
-extern ColorSet buttonPalette;
+extern ColorSet const *buttonPalette;
 extern Vector2 panelPosition;
 
 extern int horizontalCellCount;

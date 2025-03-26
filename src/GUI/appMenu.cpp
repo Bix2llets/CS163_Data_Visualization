@@ -2,13 +2,10 @@
 
 namespace AppMenu {
 
-ColorSet buttonPalette = {
-    Color{186, 180, 163, 255}, Color{186, 180, 163, 255},
-    Color{51, 49, 45, 255},    Color{42, 114, 47, 255},
-    Color{229, 189, 80, 255},  Color{229, 189, 80, 255},
-};
+ColorSet const *buttonPalette = &BUTTON_SET_1;
 
-ColorSet codeBlockColor{
+
+ColorSet const *codeBlockColor = new ColorSet{
     Color{46, 52, 64, 255},    Color{46, 52, 64, 255},
     Color{216, 222, 233, 255}, Color{211, 255, 206, 255},
     Color{59, 66, 82, 255},    Color{59, 66, 82, 255},
@@ -70,7 +67,7 @@ void init() {
                     buttonDimension.x,
                     buttonDimension.y,
                 },
-                "", DrawUtility::NORMAL_SIZE, buttonPalette);
+                "", DrawUtility::NORMAL_SIZE, &BUTTON_SET_1);
             buttonPanel[i][j].enable();
             renderList.push_back(&buttonPanel[i][j]);
         }

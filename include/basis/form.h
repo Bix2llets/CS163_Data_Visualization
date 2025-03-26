@@ -16,14 +16,14 @@ class Form : public GUIObject, public Toggleable {
     int RIGHT_MARGIN;
     int ABOVE_MARGIN;
     int BOTTOM_MARGIN;
-    ColorSet PALETTE;
+    ColorSet const *PALETTE;
     constexpr static float BORDER_OFFSET = 1;
     void recordKeyboard();
     void recordFocus();
 
    public:
     Form(Rectangle drawInfo,
-            ColorSet palette = COLOR_SET_1)
+            ColorSet const *palette = &BUTTON_SET_1)
         : GUIObject{drawInfo.x, drawInfo.y},
           width{drawInfo.width},
           height{drawInfo.height},

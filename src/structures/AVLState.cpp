@@ -11,6 +11,7 @@ const int MAX_TEXT_LENGTH = 3;
 
 #include <iostream>
 
+ColorSet const *AVLState::buttonPalette = &BUTTON_SET_1;
 
 AVLState::AVLState() : mAVL() {
     showCreateOptions = false;

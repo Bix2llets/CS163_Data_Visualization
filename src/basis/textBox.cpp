@@ -16,13 +16,13 @@ void TextBox::render() {
     Color textColor;
     Color borderColor;
     if (isHighlighted) {
-        backgroundColor = color.backgroundHighlight;
-        textColor = color.textHighlight;
-        borderColor = color.borderHighlight;
+        backgroundColor = color->backgroundHighlight;
+        textColor = color->textHighlight;
+        borderColor = color->borderHighlight;
     } else {
-        backgroundColor = color.backgroundNormal;
-        textColor = color.textNormal;
-        borderColor = color.borderNormal;
+        backgroundColor = color->backgroundNormal;
+        textColor = color->textNormal;
+        borderColor = color->borderNormal;
     }
     Rectangle drawInfo{position.x - BORDER_OFFSET, position.y - BORDER_OFFSET,
                        renderWidth + 2 * BORDER_OFFSET,
