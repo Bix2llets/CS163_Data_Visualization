@@ -38,8 +38,8 @@ Button AVLTree(LEFT_MARGIN,
                BUTTON_WIDTH, BUTTON_HEIGHT, "AVL Tree", FONT_SIZE, &BUTTON_SET_1);
 
 void render() {
-    DrawRectangleGradientEx({0, 0, BANNER_WIDTH, BANNER_HEIGHT}, BELIZE_HOLE,
-                            PETER_RIVER, PETER_RIVER, BELIZE_HOLE);
+    DrawRectangleGradientEx({0, 0, BANNER_WIDTH, BANNER_HEIGHT}, GBDark::BACKGROUND0,
+        GBDark::FOREGROUND0, GBDark::FOREGROUND0, GBDark::BACKGROUND0);
     trie.render();
     linkedList.render();
     graph.render();
