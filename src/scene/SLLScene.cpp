@@ -4,7 +4,7 @@ float SLLScene::stepDelay = 1.f;
 float SLLScene::timeLeft = 0.f;
 
 const Rectangle SLLScene::CANVAS = {100, 100, 1400, 600};
-ColorSet const *SLLScene::NODE_PALETTE = &COLOR_SET_1;
+ColorSet const* SLLScene::NODE_PALETTE = &COLOR_SET_1;
 
 float SLLScene::animationRate = 1.0f;
 SLL SLLScene::sll(CANVAS, animationRate);
@@ -224,6 +224,14 @@ void SLLScene::recordInput() {
         nextStep();
         // Loop::isRunning = true;
     }
+    if (AppMenu::backwardButton.isPressed()) {
+        backward();
+        // Loop::isRunning = false;
+    }
+    if (AppMenu::forwardButton.isPressed()) {
+        forward();
+        // Loop::isRunning = true;
+    }
 }
 
 void SLLScene::nextStep() {
@@ -243,7 +251,7 @@ void SLLScene::nextStep() {
         sll = steps.front().sll.clone();
         highlightedRow = steps.front().highlightIndex;
         if (steps.front().highlightRef)
-        AppMenu::loadCode(*steps.front().highlightRef);
+            AppMenu::loadCode(*steps.front().highlightRef);
     }
 }
 
@@ -270,6 +278,28 @@ void SLLScene::prevStep() {
 
 void SLLScene::correctAnimation() {
     if (future.size() == 0) return;
-    while(steps.front().highlightIndex != -1)
-          nextStep();
+    while (steps.front().highlightIndex != -1) nextStep();
+}
+
+void SLLScene::backward() {
+    while (past.size()) {
+        prevStep();
+        if (steps.front().highlightIndex == -1) break;
+    }
+    sll = steps.front().sll;
+    sll.finishAnimation();
+    highlightedRow = steps.front().highlightIndex;
+    if (steps.front().highlightRef)
+        AppMenu::loadCode(*steps.front().highlightRef);
+}
+
+void SLLScene::forward() {
+    if (steps.size() > 1 || future.size()) {
+        auto& temp = steps.front();
+        while (steps.size() > 1 || future.size()) {
+            nextStep();
+            if (&temp != &steps.front() && steps.front().highlightIndex == -1)
+                break;
+        }
+    }
 }

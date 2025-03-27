@@ -2,10 +2,9 @@
 
 namespace AppMenu {
 
-ColorSet const *buttonPalette = &BUTTON_SET_1;
+ColorSet const* buttonPalette = &BUTTON_SET_1;
 
-
-ColorSet const *codeBlockColor = new ColorSet{
+ColorSet const* codeBlockColor = new ColorSet{
     Color{46, 52, 64, 255},    Color{46, 52, 64, 255},
     Color{216, 222, 233, 255}, Color{211, 255, 206, 255},
     Color{59, 66, 82, 255},    Color{59, 66, 82, 255},
@@ -23,6 +22,10 @@ Button backButton({10, 10, buttonDimension.x, buttonDimension.y}, "Back",
 Button undoButton({800, 0}, buttonDimension, "undo", DrawUtility::NORMAL_SIZE,
                   buttonPalette);
 Button redoButton({800, buttonDimension.y}, buttonDimension, "redo",
+                  DrawUtility::NORMAL_SIZE, buttonPalette);
+Button backwardButton({1000, 0}, buttonDimension, "undo", DrawUtility::NORMAL_SIZE,
+                  buttonPalette);
+Button forwardButton({1000, buttonDimension.y}, buttonDimension, "redo",
                   DrawUtility::NORMAL_SIZE, buttonPalette);
 Button togglePauseButton({800, buttonDimension.y * 2}, buttonDimension,
                          "toggle Pause", DrawUtility::NORMAL_SIZE,
@@ -62,8 +65,10 @@ void init() {
         for (int j = 0; j < buttonPanel[i].size(); j++) {
             buttonPanel[i][j] = Button(
                 {
-                    panelPosition.x + buttonDimension.x * j + buttonDistance.x * j,
-                    panelPosition.y + buttonDimension.y * i + buttonDistance.y * i,
+                    panelPosition.x + buttonDimension.x * j +
+                        buttonDistance.x * j,
+                    panelPosition.y + buttonDimension.y * i +
+                        buttonDistance.y * i,
                     buttonDimension.x,
                     buttonDimension.y,
                 },
@@ -78,16 +83,18 @@ void init() {
     renderList.push_back(&locationText);
     renderList.push_back(&undoButton);
     renderList.push_back(&redoButton);
+    renderList.push_back(&backwardButton);
+    renderList.push_back(&forwardButton);
     renderList.push_back(&togglePauseButton);
 }
 
 void render() {
     if (highlightValue != nullptr) {
         for (int i = 0; i < codeList.size(); i++)
-        codeList[i].setHighlight(false);
+            codeList[i].setHighlight(false);
         if (*highlightValue >= 0) codeList[*highlightValue].setHighlight(true);
     }
-    
+
     for (GUIObject* object : renderList) {
         object->render();
     }
@@ -102,6 +109,6 @@ void loadCode(const std::vector<std::string>& strVect) {
             codeList[i].setText("");
 }
 
-void setHighlight(int* index) { highlightValue = index;}
+void setHighlight(int* index) { highlightValue = index; }
 
 }  // namespace AppMenu

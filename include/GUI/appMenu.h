@@ -25,6 +25,8 @@ extern std::vector<std::vector<Button>> buttonPanel;
 extern Button backButton;
 extern Button undoButton;
 extern Button redoButton;
+extern Button backwardButton;
+extern Button forwardButton;
 extern Button togglePauseButton;
 // Forms
 extern Form locationBox;

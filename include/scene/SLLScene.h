@@ -52,10 +52,14 @@ namespace SLLScene {
     void recordInput();
 
     void prevStep();
-
+    void backward();
+    
     void nextStep();
+    void forward();
 
     void init();
 
     void correctAnimation();
+
+
 }
