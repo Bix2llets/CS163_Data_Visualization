@@ -35,6 +35,7 @@ void SLLScene::addEnd(std::string data) {
 };
 void SLLScene::addAt(std::string data, int place) {
     if (steps.size() > 1) return;
+    correctAnimation();
     int size = 0;
     if (steps.size())
         size = steps.back().sll.nodeCount;
@@ -73,6 +74,7 @@ void SLLScene::removeEnd() {
 };
 void SLLScene::removeAt(int place) {
     if (steps.size() > 1) return;
+    correctAnimation();
     int size = 0;
     if (steps.size())
         size = steps.back().sll.nodeCount;
@@ -140,6 +142,7 @@ void SLLScene::render() { sll.render(); }
 
 void SLLScene::find(std::string val) {
     if (steps.size() > 1) return;
+    correctAnimation();
     Color resultColor = GBLight::LIGHT_RED;
     addStep(0, &PSEUDO_SEARCH);
     SLL& currSll = steps.back().sll;
@@ -263,4 +266,10 @@ void SLLScene::prevStep() {
     if (steps.front().highlightRef)
         AppMenu::loadCode(*steps.front().highlightRef);
     sll.finishAnimation();
+}
+
+void SLLScene::correctAnimation() {
+    if (future.size() == 0) return;
+    while(steps.front().highlightIndex != -1)
+          nextStep();
 }

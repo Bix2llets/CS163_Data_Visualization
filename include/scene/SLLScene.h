@@ -56,4 +56,6 @@ namespace SLLScene {
     void nextStep();
 
     void init();
+
+    void correctAnimation();
 }
