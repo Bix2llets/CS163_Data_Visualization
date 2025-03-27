@@ -22,12 +22,14 @@ void Button::render() {
     }
 
     Rectangle renderInfo = {position.x - BORDER_OFFSET, position.y - BORDER_OFFSET,
-                            dimension.x + 2 * (BORDER_OFFSET),
+                            dimension.x + 2 * (BORDER_OFFSET) ,
                             dimension.y + 2 * (BORDER_OFFSET)};
 
-    DrawRectangle(renderInfo.x, renderInfo.y, renderInfo.width,
-                  renderInfo.height, backgroundColor);
-    DrawRectangleLinesEx(renderInfo, BORDER_OFFSET * 2, borderColor);
+    DrawRectangleRounded(renderInfo, 0.5f, 100, backgroundColor);
+    // DrawRectangle(renderInfo.x, renderInfo.y, renderInfo.width,
+                //   renderInfo.height, backgroundColor);
+
+    DrawRectangleRoundedLinesEx(renderInfo, 0.5f, 0, BORDER_OFFSET * 2, borderColor);
     DrawUtility::drawText(
         text, {position.x + dimension.x / 2, position.y + dimension.y / 2},
         DrawUtility::inter20, textColor, DrawUtility::NORMAL_SIZE,

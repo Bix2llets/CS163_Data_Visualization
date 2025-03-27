@@ -15,7 +15,7 @@ Vector2 panelPosition{50, 760};
 Vector2 buttonDimension = {200, 40};
 Vector2 codeBlockPosition{1050, 520};
 Vector2 codeLineSize{500, 25};
-
+Vector2 buttonDistance = {8, 8};
 std::vector<std::vector<Button>> buttonPanel;
 Button backButton({10, 10, buttonDimension.x, buttonDimension.y}, "Back",
                   DrawUtility::NORMAL_SIZE, buttonPalette);
@@ -62,8 +62,8 @@ void init() {
         for (int j = 0; j < buttonPanel[i].size(); j++) {
             buttonPanel[i][j] = Button(
                 {
-                    panelPosition.x + buttonDimension.x * j,
-                    panelPosition.y + buttonDimension.y * i,
+                    panelPosition.x + buttonDimension.x * j + buttonDistance.x * j,
+                    panelPosition.y + buttonDimension.y * i + buttonDistance.y * i,
                     buttonDimension.x,
                     buttonDimension.y,
                 },

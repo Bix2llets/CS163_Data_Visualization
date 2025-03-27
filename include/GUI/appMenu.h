@@ -19,6 +19,7 @@ extern Vector2 panelPosition;
 extern int horizontalCellCount;
 extern int verticalCellCount;
 
+extern Vector2 buttonDistance;
 // Buttons
 extern std::vector<std::vector<Button>> buttonPanel;
 extern Button backButton;
