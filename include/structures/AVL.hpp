@@ -8,7 +8,7 @@
 #include <cmath>
 #include "raylib.h"
 #include "AVLNode.hpp"
-
+#include "colorPalette.h"
 
 class AVL {
     private: 
@@ -72,6 +72,8 @@ class AVL {
         void ClearOperator();
         inline bool endLoop() { return loop == core.size(); }
         inline bool startLoop() { return loop == 0; }
+
+        static ColorSet const *PALETTE;
     private:
         void calcPosition(AVLNode *root);
         std::vector<AVLNode*> getNodes(AVLNode *root);

@@ -52,7 +52,7 @@ void init() {
                      codeBlockColor, &DrawUtility::jbm20, "amogus",
                      HorizontalAlignment::LEFT);
         codeList[i] = temp;
-        // if (i % 2 == 0) codeList[i].setHighlight(true);
+        // ;if (i % 2 == 0) codeList[i].setHighlight(true);
     }
 
     buttonPanel.resize(verticalCellCount);
