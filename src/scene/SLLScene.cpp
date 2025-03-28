@@ -143,6 +143,7 @@ void SLLScene::render() {
     AddMenu::render();
     DeleteMenu::render();
     AlgorithmMenu::render();
+    MiscMenu::render();
 }
 
 void SLLScene::find(std::string val) {
@@ -315,6 +316,7 @@ const Vector2 BUTTON_DIMENSION = {160, 20};
 const Vector2 BUTTON_DISTANCE = {30, 30};
 const Vector2 FORM_DIMENSION = {160, 25};
 const Vector2 STARTING_POSITION = {120, 500};
+const Color *MENU_BACKGROUND = &GBLight::BACKGROUND1;
 }  // namespace SLLScene
 namespace SLLScene::AddMenu {
 Button addEndButton(STARTING_POSITION, BUTTON_DIMENSION, "Add at End", 12,
@@ -343,7 +345,7 @@ void render() {
     DrawRectangle(STARTING_POSITION.x - 10, STARTING_POSITION.y - 10,
                   BUTTON_DIMENSION.x * 2 + 20 + BUTTON_DISTANCE.x,
                   FORM_DIMENSION.y * 2 + 20 + BUTTON_DISTANCE.y,
-                  GBLight::BACKGROUND3);
+                  *MENU_BACKGROUND);
 
     addEndButton.render();
     addAtButton.render();
@@ -405,7 +407,7 @@ void render() {
     DrawRectangle(STARTING_POSITION.x - 10, STARTING_POSITION.y - 10,
                   BUTTON_DIMENSION.x * 2 + 20 + BUTTON_DISTANCE.x,
                   FORM_DIMENSION.y * 2 + 20 + BUTTON_DISTANCE.y,
-                  GBLight::BACKGROUND3);
+                  *MENU_BACKGROUND);
 
     deleteEndButton.render();
     deleteAtButton.render();
@@ -443,6 +445,7 @@ void setToggle(bool state) {
 }  // namespace SLLScene::DeleteMenu
 
 namespace SLLScene::AlgorithmMenu {
+
 Button searchButton{STARTING_POSITION, BUTTON_DIMENSION,     "Search", 16,
                     &BUTTON_SET_1,     &DrawUtility::inter16};
 
@@ -460,7 +463,7 @@ void render() {
         STARTING_POSITION.x - 10, STARTING_POSITION.y - 10,
         20 + BUTTON_DIMENSION.x,
         20 + BUTTON_DIMENSION.y + BUTTON_DISTANCE.y + FORM_DIMENSION.y,
-        GBLight::BACKGROUND1);
+        *MENU_BACKGROUND);
     searchButton.render();
     valueForm.render();
     Vector2 textPosition = valueForm.getPosition();
@@ -479,4 +482,32 @@ void setToggle(bool state) {
     searchButton.set(state);
     valueForm.set(state);
 }  // namespace SLLScene::AlgorithmMenu
+}
+
+namespace SLLScene::MiscMenu {
+    Button randomButton = {STARTING_POSITION, BUTTON_DIMENSION, "Random", 16, &BUTTON_SET_1, &DrawUtility::inter16};
+
+    Button saveButton = {{STARTING_POSITION.x, STARTING_POSITION.y + BUTTON_DIMENSION.y + BUTTON_DISTANCE.y}, BUTTON_DIMENSION, "Save", 16, &BUTTON_SET_1, &DrawUtility::inter16};
+    
+    Button loadButton = {{STARTING_POSITION.x, STARTING_POSITION.y + 2 * (BUTTON_DISTANCE.y + BUTTON_DIMENSION.y)}, BUTTON_DIMENSION, "Load", 16, &BUTTON_SET_1, &DrawUtility::inter16};
+
+    bool enabled = false;
+
+    void render() {
+        if (!enabled) return;
+        DrawRectangle(STARTING_POSITION.x - 10, STARTING_POSITION.y - 10, BUTTON_DIMENSION.x + 20, BUTTON_DIMENSION.y * 3 + BUTTON_DISTANCE.y * 2 + 20, *MENU_BACKGROUND);
+
+        randomButton.render();
+        saveButton.render();
+        loadButton.render();
+    }
+
+    void toggle() {setToggle(!enabled);};
+
+    void setToggle(bool state) {
+        enabled = state;
+        randomButton.set(state);
+        saveButton.set(state);
+        loadButton.set(state);
+    }
 }

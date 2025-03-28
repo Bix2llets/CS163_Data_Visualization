@@ -17,6 +17,8 @@ namespace SLLScene {
     extern const Vector2 BUTTON_DIMENSION;
     extern const Vector2 BUTTON_DISTANCE;
     extern const Vector2 STARTING_POSITION;
+
+    extern const Color *MENU_BACKGROUND;
     namespace AddMenu{
 
         extern Button addEndButton;
@@ -43,6 +45,16 @@ namespace SLLScene {
     namespace AlgorithmMenu{
         extern Button searchButton;
         extern Form valueForm;
+        extern bool enabled;
+        void render();
+        void setToggle(bool state);
+        void toggle();
+    }
+
+    namespace MiscMenu{
+        extern Button randomButton;
+        extern Button saveButton;
+        extern Button loadButton;
         extern bool enabled;
         void render();
         void setToggle(bool state);
