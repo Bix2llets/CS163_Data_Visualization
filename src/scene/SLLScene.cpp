@@ -141,7 +141,8 @@ void SLLScene::addStep(int highlightIndex,
 void SLLScene::render() {
     sll.render();
     // AddMenu::render();
-    DeleteMenu::render();
+    // DeleteMenu::render();
+    AlgorithmMenu::render();
 }
 
 void SLLScene::find(std::string val) {
@@ -334,20 +335,12 @@ Form valueForm({STARTING_POSITION.x + BUTTON_DIMENSION.x + BUTTON_DISTANCE.x,
                 FORM_DIMENSION.x, FORM_DIMENSION.y},
                &BUTTON_SET_1);
 
-bool isEnabled = true;
-
 void recordInput() {
-    if (isEnabled == 0) {
-        locationForm.deFocus();
-        valueForm.deFocus();
-        return;
-    }
     locationForm.update();
     valueForm.update();
 }
 
 void render() {
-    if (isEnabled == 0) return;
     DrawRectangle(STARTING_POSITION.x - 10, STARTING_POSITION.y - 10,
                   BUTTON_DIMENSION.x * 2 + 20 + BUTTON_DISTANCE.x,
                   FORM_DIMENSION.y * 2 + 20 + BUTTON_DISTANCE.y,
@@ -397,17 +390,11 @@ Form valueForm({STARTING_POSITION.x + BUTTON_DIMENSION.x + BUTTON_DISTANCE.x,
                &BUTTON_SET_1);
 
 void recordInput() {
-    if (isEnabled == 0) {
-        locationForm.deFocus();
-        valueForm.deFocus();
-        return;
-    }
     locationForm.update();
     valueForm.update();
 }
 
 void render() {
-    if (isEnabled == 0) return;
     DrawRectangle(STARTING_POSITION.x - 10, STARTING_POSITION.y - 10,
                   BUTTON_DIMENSION.x * 2 + 20 + BUTTON_DISTANCE.x,
                   FORM_DIMENSION.y * 2 + 20 + BUTTON_DISTANCE.y,
@@ -437,3 +424,31 @@ void render() {
                           HorizontalAlignment::CENTERED);
 }
 }  // namespace SLLScene::DeleteMenu
+
+namespace SLLScene::AlgorithmMenu {
+Button searchButton{STARTING_POSITION, BUTTON_DIMENSION,     "Search", 16,
+                    &BUTTON_SET_1,     &DrawUtility::inter16};
+
+Form valueForm{{STARTING_POSITION.x,
+                STARTING_POSITION.y + BUTTON_DIMENSION.y + BUTTON_DISTANCE.y,                   
+                FORM_DIMENSION.x, FORM_DIMENSION.y},
+               &BUTTON_SET_1};
+
+void recordInput() { valueForm.update(); }
+void render() {
+    DrawRectangle(
+        STARTING_POSITION.x - 10, STARTING_POSITION.y - 10,
+        20 + BUTTON_DIMENSION.x,
+        20 + BUTTON_DIMENSION.y + BUTTON_DISTANCE.y + FORM_DIMENSION.y,
+        GBLight::BACKGROUND1);
+    searchButton.render();
+    valueForm.render();
+    Vector2 textPosition = valueForm.getPosition();
+    textPosition.x += FORM_DIMENSION.x / 2;
+    textPosition.y -= 10;
+    DrawUtility::drawText("Value", textPosition, DrawUtility::inter16,
+                          COLOR_SET_1.textNormal, 16, DrawUtility::SPACING,
+                          VerticalAlignment::CENTERED,
+                          HorizontalAlignment::CENTERED);
+}
+}  // namespace SLLScene::AlgorithmMenu

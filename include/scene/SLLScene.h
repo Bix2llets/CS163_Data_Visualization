@@ -38,6 +38,13 @@ namespace SLLScene {
         void render();
     }
 
+    namespace AlgorithmMenu{
+        extern Button searchButton;
+        extern Form valueForm;
+
+        void recordInput();
+        void render();
+    }
     extern float stepDelay;
     extern float timeLeft;
     extern SLL sll;
