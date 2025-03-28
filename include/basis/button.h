@@ -19,6 +19,7 @@ class Button : public GUIObject, public Toggleable {
     std::string text;
 
     AnimationColor edgeColor;
+    bool open;
 
    public:
     Button(Vector2 position, Vector2 dimension, std::string text = "",
@@ -49,5 +50,7 @@ class Button : public GUIObject, public Toggleable {
     void setText(std::string newText);
 
     bool isPressed() const;
-    bool isHovered() const;
+    bool isHovered() const;    
+    void changeOpen() { open = !open; }
+   bool isOpen() const { return open; }
 };

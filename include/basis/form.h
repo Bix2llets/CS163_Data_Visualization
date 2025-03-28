@@ -7,13 +7,16 @@
 #include "raylib.h"
 #include "utility.h"
 #include "toggleable.h"
+
 class Form : public GUIObject, public Toggleable {
+    protected:
     std::string text;
     bool isFocusedOn;
     float width;
     float height;
     int LEFT_MARGIN;
     int RIGHT_MARGIN;
+    private:
     int ABOVE_MARGIN;
     int BOTTOM_MARGIN;
     ColorSet PALETTE;
@@ -38,8 +41,7 @@ class Form : public GUIObject, public Toggleable {
 
     void render();
     void update();
-    void deFocus();
+    virtual void deFocus();
     std::string getText();
     std::pair<bool, int> getValue();
-
 };

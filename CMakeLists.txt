@@ -27,6 +27,7 @@ add_executable(
 
     src/basis/overload.cpp
     src/basis/toggleable.cpp
+    src/basis/mForm.cpp
     
     src/animation/animation.cpp
     src/animation/arrow.cpp
