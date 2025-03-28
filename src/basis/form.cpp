@@ -91,3 +91,14 @@ std::pair<bool, int> Form::getValue() {
 void Form::clear() {
     text = "";
 }
+
+void Form::disable() {
+    deFocus();
+    enabled = false;
+}
+
+void Form::set(bool newState) {
+    if (newState == false) 
+        disable();
+    else enable();
+}

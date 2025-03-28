@@ -8,10 +8,10 @@ class Toggleable{
     public:
     Toggleable() : enabled{true} {}
     
-    void enable();
-    void disable();
-    void toggle();
-    void set(bool newState);
+    virtual void enable();
+    virtual void disable();
+    virtual void toggle();
+    virtual void set(bool newState);
 
     bool getState();
 

@@ -40,6 +40,9 @@ class Form : public GUIObject, public Toggleable {
     void update();
     void deFocus();
     void clear();
+
+    void disable();
+    void set(bool newState);
     std::string getText();
     std::pair<bool, int> getValue();
 

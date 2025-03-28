@@ -23,9 +23,10 @@ namespace SLLScene {
         extern Button addAtButton;
         extern Form locationForm;
         extern Form valueForm;
-
-        void recordInput();
+        extern bool enabled;
         void render();
+        void setToggle(bool state);
+        void toggle();
     }
     namespace DeleteMenu{
 
@@ -33,17 +34,19 @@ namespace SLLScene {
         extern Button deleteAtButton;
         extern Form locationForm;
         extern Form valueForm;
-
-        void recordInput();
+        extern bool enabled;
         void render();
+        void setToggle(bool state);
+        void toggle();
     }
 
     namespace AlgorithmMenu{
         extern Button searchButton;
         extern Form valueForm;
-
-        void recordInput();
+        extern bool enabled;
         void render();
+        void setToggle(bool state);
+        void toggle();
     }
     extern float stepDelay;
     extern float timeLeft;
