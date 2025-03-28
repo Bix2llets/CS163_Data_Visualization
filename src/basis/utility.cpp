@@ -9,6 +9,7 @@ const Color TEXT_COLOR = BLACK;
 Font inter20;
 Font jbm20;
 Font inter16;
+Font inter12;
 void drawText(std::string text, Vector2 position, Font font, Color textColor,
               int fontSize, int spacing, VerticalAlignment verticalAlign,
               HorizontalAlignment horizontalAlign) {
@@ -29,6 +30,7 @@ void drawText(std::string text, Vector2 position, Font font, Color textColor,
 void init() {
     inter20 = LoadFontEx("assets/Inter-Black.ttf", 20, NULL, 0);
     inter16 = LoadFontEx("assets/Inter-Black.ttf", 16, NULL, 0);
+    inter12 = LoadFontEx("assets/Inter-Black.ttf", 12, NULL, 0);
     jbm20 = LoadFontEx("assets/jetbrainsMono.ttf", 20, NULL, 0);
 }
 void drawEdge(Vector2 beginPosition, Vector2 endPosition, Color color) {

@@ -140,7 +140,8 @@ void SLLScene::addStep(int highlightIndex,
 
 void SLLScene::render() {
     sll.render();
-    AddMenu::render();
+    // AddMenu::render();
+    DeleteMenu::render();
 }
 
 void SLLScene::find(std::string val) {
@@ -307,21 +308,26 @@ void SLLScene::forward() {
     }
 }
 
-namespace SLLScene::AddMenu {
-const Vector2 BUTTON_DIMENSION = {120, 20};
+namespace SLLScene {
+
+const Vector2 BUTTON_DIMENSION = {160, 20};
 const Vector2 BUTTON_DISTANCE = {30, 30};
-const Vector2 FORM_DIMENSION = {120, 20};
+const Vector2 FORM_DIMENSION = {160, 25};
 const Vector2 STARTING_POSITION = {120, 500};
-Button addEndButton(STARTING_POSITION, BUTTON_DIMENSION, "Add at End", 16,
-                    &BUTTON_SET_1, &DrawUtility::inter16);
+}  // namespace SLLScene
+namespace SLLScene::AddMenu {
+Button addEndButton(STARTING_POSITION, BUTTON_DIMENSION, "Add at End", 12,
+                    &BUTTON_SET_1, &DrawUtility::inter12);
 
 Button addAtButton({STARTING_POSITION.x + BUTTON_DIMENSION.x +
-    BUTTON_DISTANCE.x, STARTING_POSITION.y},
-                   BUTTON_DIMENSION, "Add at End", 16, &BUTTON_SET_1,
-                   &DrawUtility::inter16);
+                        BUTTON_DISTANCE.x,
+                    STARTING_POSITION.y},
+                   BUTTON_DIMENSION, "Add at Location", 12, &BUTTON_SET_1,
+                   &DrawUtility::inter12);
 
 Form locationForm({STARTING_POSITION.x,
-                   STARTING_POSITION.y + BUTTON_DIMENSION.y + BUTTON_DISTANCE.y, FORM_DIMENSION.x, FORM_DIMENSION.y},
+                   STARTING_POSITION.y + BUTTON_DIMENSION.y + BUTTON_DISTANCE.y,
+                   FORM_DIMENSION.x, FORM_DIMENSION.y},
                   &BUTTON_SET_1);
 Form valueForm({STARTING_POSITION.x + BUTTON_DIMENSION.x + BUTTON_DISTANCE.x,
                 STARTING_POSITION.y + BUTTON_DIMENSION.y + BUTTON_DISTANCE.y,
@@ -347,22 +353,87 @@ void render() {
                   FORM_DIMENSION.y * 2 + 20 + BUTTON_DISTANCE.y,
                   GBLight::BACKGROUND3);
 
-    
     addEndButton.render();
     addAtButton.render();
     locationForm.render();
-    valueForm.render(); 
+    valueForm.render();
     // * Render necessary text
 
     Vector2 textLocationPos = locationForm.getPosition();
     textLocationPos.x += FORM_DIMENSION.x / 2;
     textLocationPos.y -= 10;
-    
+
     Vector2 textValuePos = valueForm.getPosition();
     textValuePos.x += FORM_DIMENSION.x / 2;
     textValuePos.y -= 10;
 
-    DrawUtility::drawText("Location", textLocationPos, DrawUtility::inter16, BUTTON_SET_1.textNormal, 16, DrawUtility::SPACING, VerticalAlignment::CENTERED, HorizontalAlignment::CENTERED);
-    DrawUtility::drawText("Value", textValuePos, DrawUtility::inter16, BUTTON_SET_1.textNormal, 16, DrawUtility::SPACING, VerticalAlignment::CENTERED, HorizontalAlignment::CENTERED);
+    DrawUtility::drawText("Location", textLocationPos, DrawUtility::inter16,
+                          BUTTON_SET_1.textNormal, 16, DrawUtility::SPACING,
+                          VerticalAlignment::CENTERED,
+                          HorizontalAlignment::CENTERED);
+    DrawUtility::drawText("Value", textValuePos, DrawUtility::inter16,
+                          BUTTON_SET_1.textNormal, 16, DrawUtility::SPACING,
+                          VerticalAlignment::CENTERED,
+                          HorizontalAlignment::CENTERED);
 }
 }  // namespace SLLScene::AddMenu
+namespace SLLScene::DeleteMenu {
+Button deleteEndButton(STARTING_POSITION, BUTTON_DIMENSION, "Delete at End", 12,
+                       &BUTTON_SET_1, &DrawUtility::inter12);
+
+Button deleteAtButton({STARTING_POSITION.x + BUTTON_DIMENSION.x +
+                           BUTTON_DISTANCE.x,
+                       STARTING_POSITION.y},
+                      BUTTON_DIMENSION, "Delete at Location", 12, &BUTTON_SET_1,
+                      &DrawUtility::inter12);
+
+Form locationForm({STARTING_POSITION.x,
+                   STARTING_POSITION.y + BUTTON_DIMENSION.y + BUTTON_DISTANCE.y,
+                   FORM_DIMENSION.x, FORM_DIMENSION.y},
+                  &BUTTON_SET_1);
+Form valueForm({STARTING_POSITION.x + BUTTON_DIMENSION.x + BUTTON_DISTANCE.x,
+                STARTING_POSITION.y + BUTTON_DIMENSION.y + BUTTON_DISTANCE.y,
+                FORM_DIMENSION.x, FORM_DIMENSION.y},
+               &BUTTON_SET_1);
+
+void recordInput() {
+    if (isEnabled == 0) {
+        locationForm.deFocus();
+        valueForm.deFocus();
+        return;
+    }
+    locationForm.update();
+    valueForm.update();
+}
+
+void render() {
+    if (isEnabled == 0) return;
+    DrawRectangle(STARTING_POSITION.x - 10, STARTING_POSITION.y - 10,
+                  BUTTON_DIMENSION.x * 2 + 20 + BUTTON_DISTANCE.x,
+                  FORM_DIMENSION.y * 2 + 20 + BUTTON_DISTANCE.y,
+                  GBLight::BACKGROUND3);
+
+    deleteEndButton.render();
+    deleteAtButton.render();
+    locationForm.render();
+    valueForm.render();
+    // * Render necessary text
+
+    Vector2 textLocationPos = locationForm.getPosition();
+    textLocationPos.x += FORM_DIMENSION.x / 2;
+    textLocationPos.y -= 10;
+
+    Vector2 textValuePos = valueForm.getPosition();
+    textValuePos.x += FORM_DIMENSION.x / 2;
+    textValuePos.y -= 10;
+
+    DrawUtility::drawText("Location", textLocationPos, DrawUtility::inter16,
+                          BUTTON_SET_1.textNormal, 16, DrawUtility::SPACING,
+                          VerticalAlignment::CENTERED,
+                          HorizontalAlignment::CENTERED);
+    DrawUtility::drawText("Value", textValuePos, DrawUtility::inter16,
+                          BUTTON_SET_1.textNormal, 16, DrawUtility::SPACING,
+                          VerticalAlignment::CENTERED,
+                          HorizontalAlignment::CENTERED);
+}
+}  // namespace SLLScene::DeleteMenu
