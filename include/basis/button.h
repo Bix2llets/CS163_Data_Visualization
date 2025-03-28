@@ -20,6 +20,7 @@ class Button : public GUIObject, public Toggleable {
 
     AnimationColor edgeColor;
     bool open;
+   float alpha;
 
    public:
     Button(Vector2 position, Vector2 dimension, std::string text = "",
@@ -30,6 +31,8 @@ class Button : public GUIObject, public Toggleable {
           fontSize{fontSize},
           PALETTE{palette},
           edgeColor{},
+          open(false),
+            alpha{255.f},
           Toggleable() {};
 
     Button(Rectangle rectangle = {0, 0, 0, 0}, std::string text = "", int fontSize = 20,
@@ -53,4 +56,7 @@ class Button : public GUIObject, public Toggleable {
     bool isHovered() const;    
     void changeOpen() { open = !open; }
    bool isOpen() const { return open; }
+   void setPosition(Vector2 position) { this->position = position; }
+   void setDimension(Vector2 dimension) { this->dimension = dimension; }
+   void setAlpha(float alpha) { this->alpha = alpha; }
 };

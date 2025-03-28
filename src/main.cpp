@@ -66,7 +66,7 @@ int main() {
     GuiSetStyle(DEFAULT, TEXT_COLOR_PRESSED, ColorToInt(Color{186, 180, 163, 255}));  
     GuiSetStyle(DEFAULT, TEXT_COLOR_FOCUSED, ColorToInt(Color{186, 180, 163, 255}));
     GuiSetStyle(DEFAULT, TEXT_SIZE, 20);
-    mLib::InitFont();
+    mLib::Init();
     GuiSetFont(mLib::mFont);
     // * Raylib/Raygui initialization
     srand(time(NULL));

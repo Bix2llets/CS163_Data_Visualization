@@ -23,9 +23,16 @@ namespace mLib
     }
     extern Font mFont;
     extern int row;
-    inline void InitFont() {
+    extern Texture2D diceTexture[6];
+    inline void Init() {
         mFont = LoadFontEx("assets/Inter-Black.ttf", 30, nullptr, 0);
         row = -1;
+        diceTexture[0] = LoadTexture("assets/dice/1_dot.png");
+        diceTexture[1] = LoadTexture("assets/dice/2_dots.png");
+        diceTexture[2] = LoadTexture("assets/dice/3_dots.png");
+        diceTexture[3] = LoadTexture("assets/dice/4_dots.png");
+        diceTexture[4] = LoadTexture("assets/dice/5_dots.png");
+        diceTexture[5] = LoadTexture("assets/dice/6_dots.png");
     }
     extern const std::vector<std::string> TrieInsert;
     extern const std::vector<std::string> TrieSearch;

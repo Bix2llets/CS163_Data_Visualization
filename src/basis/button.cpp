@@ -26,8 +26,8 @@ void Button::render() {
                             dimension.y + 2 * (BORDER_OFFSET)};
 
     DrawRectangle(renderInfo.x, renderInfo.y, renderInfo.width,
-                  renderInfo.height, backgroundColor);
-    DrawRectangleLinesEx(renderInfo, BORDER_OFFSET * 2, borderColor);
+                  renderInfo.height, Fade(backgroundColor, alpha));
+    DrawRectangleLinesEx(renderInfo, BORDER_OFFSET * 2, Fade(borderColor, alpha));
     DrawUtility::drawText(
         text, {position.x + dimension.x / 2, position.y + dimension.y / 2},
         DrawUtility::inter20, textColor, DrawUtility::NORMAL_SIZE,

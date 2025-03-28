@@ -129,6 +129,8 @@ void registerInput() {
     if (recordFunc) recordFunc();
 }
 
+DiceButton diceButton(Vector2{100, 100});
+
 void render() {
     DrawText(std::to_string(GetFPS()).c_str(), 1000, 10, 20, GREEN);
     if (currentScene == SceneList::MAIN_MENU) {
@@ -139,6 +141,7 @@ void render() {
         AppMenu::render();
         if (renderFunc) renderFunc();
     }
+    diceButton.render();
 }
 
 }  // namespace Loop
