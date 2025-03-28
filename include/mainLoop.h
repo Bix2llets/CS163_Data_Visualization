@@ -2,6 +2,7 @@
 #include "appMenu.h"
 #include "raylib.h"
 #include "singlyLInkedList.h"
+#include "mForm.h"
 
 // Component scenes 
 #include "SLLScene.h"

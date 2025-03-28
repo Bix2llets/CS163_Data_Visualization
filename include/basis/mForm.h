@@ -1,14 +1,14 @@
 #ifndef FORM_HPP
 #define FORM_HPP
 
-#include "Form.h" // Ensure the correct case matches the actual file name
+#include "Form.h" 
 
-class mForm : public Form { // Ensure 'Form' is a valid base class
+class mForm : public Form { 
     private : 
         bool mode;
         int maxSize;
     public :
-        mForm(Rectangle drawInfo, bool mode, int maxSize, ColorSet palette = DEF_SET) 
+        mForm(Rectangle drawInfo, ColorSet palette = DEF_SET, bool mode = 0, int maxSize = 100) 
         : Form(drawInfo, palette), 
         mode{mode}, 
         maxSize{maxSize} {};

@@ -21,7 +21,7 @@ class Form : public GUIObject, public Toggleable {
     int BOTTOM_MARGIN;
     ColorSet PALETTE;
     constexpr static float BORDER_OFFSET = 1;
-    void recordKeyboard();
+    virtual void recordKeyboard();
     void recordFocus();
 
    public:
@@ -41,7 +41,7 @@ class Form : public GUIObject, public Toggleable {
 
     void render();
     void update();
-    virtual void deFocus();
+    void deFocus();
     std::string getText();
     std::pair<bool, int> getValue();
 };
