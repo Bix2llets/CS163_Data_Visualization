@@ -2,6 +2,7 @@
 #include "singlyLinkedList.h"
 #include "appMenu.h"
 #include "mainLoop.h"
+#include "utility.h"
 #include <deque>
 #include <vector>
 #include <string> 

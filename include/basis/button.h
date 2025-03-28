@@ -8,6 +8,7 @@
 #include "raylib.h"
 #include "raymath.h"
 #include "toggleable.h"
+#include "utility.h"
 class Button : public GUIObject, public Toggleable {
    protected:
     Vector2 dimension;
@@ -22,7 +23,7 @@ class Button : public GUIObject, public Toggleable {
 
    public:
     Button(Vector2 position, Vector2 dimension, std::string text = "",
-           int fontSize = 20, ColorSet const *palette = &BUTTON_SET_1)
+           int fontSize = 20, ColorSet const *palette = &BUTTON_SET_1, Font* renderFont = &DrawUtility::inter20)
         : GUIObject(position),
           dimension{dimension},
           text{text},
@@ -32,15 +33,15 @@ class Button : public GUIObject, public Toggleable {
           Toggleable() {};
 
     Button(Rectangle rectangle = {0, 0, 0, 0}, std::string text = "", int fontSize = 20,
-           ColorSet const *palette = &BUTTON_SET_1)
+           ColorSet const *palette = &BUTTON_SET_1, Font* renderFont = &DrawUtility::inter20)
         : Button{Vector2{rectangle.x, rectangle.y},
                  Vector2{rectangle.width, rectangle.height}, text, fontSize,
-                 palette} {};
+                 palette, renderFont} {};
 
     Button(float x, float y, float width, float height, std::string text = "",
-           int fontSize = 20, ColorSet const *palette = &BUTTON_SET_1)
+           int fontSize = 20, ColorSet const *palette = &BUTTON_SET_1, Font* renderFont = &DrawUtility::inter20)
         : Button{Vector2{x, y}, Vector2{width, height}, text, fontSize,
-                 palette} {};
+                 palette, renderFont} {};
 
     Vector2 getDimension() const { return dimension; }
 
