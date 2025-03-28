@@ -7,6 +7,25 @@
 
 namespace mLib
 {
+    inline std::string GenerateRandomText(int length) {
+        length = GetRandomValue(1, length);
+        std::string text;
+        for (int i = 0; i < length; i++) {
+            text.push_back((GetRandomValue(1, 1000000000) % 26) + 'A');  
+        }
+        return text;
+    }
+
+    inline int GenerateRandomNum(int length) {
+        length = GetRandomValue(1, length);
+        std::cout << length << std::endl;
+        int num = 0;
+        for (int i = 0; i < length; i++) {
+            num = num * 10 + GetRandomValue(0 + (i == 0), 9);  
+        }
+        return num;
+    }
+
     inline void GenerateRandomText(char *text) {
         int length = GetRandomValue(1, 10) % 5 + 1;
         for (int i = 0; i < length; i++) {
@@ -23,7 +42,7 @@ namespace mLib
     }
     extern Font mFont;
     extern int row;
-    extern Texture2D diceTexture[6];
+    extern Texture2D diceTexture[6], dice;
     inline void Init() {
         mFont = LoadFontEx("assets/Inter-Black.ttf", 30, nullptr, 0);
         row = -1;
@@ -33,6 +52,7 @@ namespace mLib
         diceTexture[3] = LoadTexture("assets/dice/4_dots.png");
         diceTexture[4] = LoadTexture("assets/dice/5_dots.png");
         diceTexture[5] = LoadTexture("assets/dice/6_dots.png");
+        dice = LoadTexture("assets/dice/dice.png");
     }
     extern const std::vector<std::string> TrieInsert;
     extern const std::vector<std::string> TrieSearch;

@@ -9,18 +9,18 @@ void DiceButton::setPosition(Vector2 position) {
 }
 
 void DiceButton::render() {
+    button.render();
     if (button.isHovered()) {
         Timer += GetFrameTime();
         std::cout << Timer << ' '<< loop << '\n';
-        if (Timer > 0.2f) loop = (loop + 1) % 6, Timer = 0;
+        if (Timer > 0.2f) loop = (loop + 1) % 16, Timer = 0;
     }
     if (button.isPressed()) {
-        loop = rand() % 6;
+        loop = rand() % 16;
     }
     std::cout << loop << std::endl;
-    //DrawTexture(mLib::diceTexture[loop], position.x, position.y, WHITE);
-    DrawTexturePro(mLib::diceTexture[loop], {position.x, position.y, position.x + 128, position.y + 128}, 
-    {position.x, position.y, position.x + 40, position.y + 40}, {0, 0}, 0, WHITE);
+    DrawTexturePro(mLib::dice, {loop * 260.f, 0, 260.f, 260.f}, 
+    {position.x, position.y, dimension.x, dimension.y}, {0, 0}, 0, WHITE);
 }
 
 bool DiceButton::isPressed() const { return button.isPressed(); }

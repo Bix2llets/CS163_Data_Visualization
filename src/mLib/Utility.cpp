@@ -4,7 +4,7 @@ namespace mLib
 {
     Font mFont;
     int row;
-    Texture2D diceTexture[6];
+    Texture2D diceTexture[6], dice;
     const std::vector<std::string> TrieInsert = {
         "Begin",  // 0      
         "cur = root", // 1

@@ -2,7 +2,7 @@
 #include "appMenu.h"
 #include "raylib.h"
 #include "singlyLInkedList.h"
-#include "diceButton.hpp"
+#include "edgeInsertBox.hpp"
 
 // Component scenes 
 #include "SLLScene.h"
@@ -18,7 +18,7 @@ extern bool isRunning;
 extern const Vector2 UPPER_LEFT;
 extern const Vector2 LOWER_RIGHT;
 
-extern DiceButton diceButton;
+extern edgeInsertBox edgeBox;
 
 extern void (*renderFunc)();
 extern void (*updateFunc)();

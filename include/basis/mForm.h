@@ -13,6 +13,14 @@ class mForm : public Form {
         mode{mode}, 
         maxSize{maxSize} {};
         virtual void recordKeyboard();
+        virtual std::string getText() {
+            std::string res = text;
+            text = "";
+            return res;
+        }
+        void setText(std::string text) {
+            this->text = text;
+        };
 };
 
 #endif // FORM_HPP

@@ -42,6 +42,6 @@ class Form : public GUIObject, public Toggleable {
     void render();
     void update();
     void deFocus();
-    std::string getText();
+    virtual std::string getText();
     std::pair<bool, int> getValue();
 };

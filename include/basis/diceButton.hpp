@@ -11,12 +11,12 @@ class DiceButton{
         float Timer;
         int loop;
         Vector2 position;
+        Vector2 dimension;
     public:
-    DiceButton(Vector2 position, std::string text = "",
+    DiceButton(Vector2 position, Vector2 dimension, std::string text = "",
         int fontSize = 20, ColorSet palette = DEF_SET)
-     : button{position, Vector2{0, 0}, text, fontSize,
-              palette}, Timer{0}, loop{0}, position{position} {
-                  button.setDimension((Vector2){40, 40});
+     : button{position, dimension, text, fontSize,
+              palette}, Timer{0}, loop{0}, position{position}, dimension{dimension} {
               };
     void setDimension(Vector2 dimension);
     void setPosition(Vector2 position);

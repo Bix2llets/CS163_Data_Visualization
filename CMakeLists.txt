@@ -29,6 +29,8 @@ add_executable(
     src/basis/toggleable.cpp
     src/basis/mForm.cpp
     src/basis/diceButton.cpp
+    src/basis/insertBox.cpp
+    src/basis/edgeInsertBox.cpp
 
     src/animation/animation.cpp
     src/animation/arrow.cpp
