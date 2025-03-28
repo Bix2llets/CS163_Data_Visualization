@@ -12,6 +12,21 @@ namespace SLLScene {
         std::vector<std::string> const *highlightRef = nullptr;
     };
     
+    namespace AddMenu{
+
+        extern const Vector2 FORM_DIMENSION;
+        extern const Vector2 BUTTON_DIMENSION;
+        extern const Vector2 BUTTON_DISTANCE;
+        extern const Vector2 STARTING_POSITION;
+        extern Button addEndButton;
+        extern Button addAtButton;
+        extern Form locationForm;
+        extern Form valueForm;
+        extern bool isEnabled;
+
+        void recordInput();
+        void render();
+    }
     extern float stepDelay;
     extern float timeLeft;
     extern SLL sll;

@@ -138,7 +138,10 @@ void SLLScene::addStep(int highlightIndex,
     // if (highlightIndex == -1) future.push_front(newStorage);
 }
 
-void SLLScene::render() { sll.render(); }
+void SLLScene::render() {
+    sll.render();
+    AddMenu::render();
+}
 
 void SLLScene::find(std::string val) {
     if (steps.size() > 1) return;
@@ -303,3 +306,48 @@ void SLLScene::forward() {
         }
     }
 }
+
+namespace SLLScene::AddMenu {
+const Vector2 BUTTON_DIMENSION = {30, 20};
+const Vector2 BUTTON_DISTANCE = {10, 5};
+const Vector2 FORM_DIMENSION = {50, 20};
+const Vector2 STARTING_POSITION = {120, 500};
+Button addEndButton(STARTING_POSITION, BUTTON_DIMENSION, "Add at End", 16,
+                    &BUTTON_SET_1);
+
+Button addAtButton({STARTING_POSITION.x, STARTING_POSITION.y +
+                                             BUTTON_DIMENSION.y +
+                                             BUTTON_DISTANCE.y},
+                   BUTTON_DIMENSION, "Add at End", 16, &BUTTON_SET_1);
+
+Form locationForm({STARTING_POSITION.x + BUTTON_DIMENSION.x + BUTTON_DISTANCE.x,
+                   STARTING_POSITION.y, FORM_DIMENSION.x, FORM_DIMENSION.y},
+                  &BUTTON_SET_1);
+Form valueForm({STARTING_POSITION.x + BUTTON_DIMENSION.x + BUTTON_DISTANCE.x,
+                STARTING_POSITION.y + BUTTON_DIMENSION.y + BUTTON_DISTANCE.y,
+                FORM_DIMENSION.x, FORM_DIMENSION.y},
+               &BUTTON_SET_1);
+
+bool isEnabled = true;
+
+void recordInput() {
+    if (isEnabled == 0) {
+        locationForm.deFocus();
+        valueForm.deFocus();
+        return;
+    }
+    locationForm.update();
+    valueForm.update();
+}
+
+void render() {
+    if (isEnabled == 0) return;
+    DrawRectangle(STARTING_POSITION.x - 10, STARTING_POSITION.y - 10, 100, 60,
+                  GBLight::BACKGROUND0H);
+
+    addEndButton.render();
+    addAtButton.render();
+    locationForm.render();
+    valueForm.render();
+}
+}  // namespace SLLScene::AddMenu
