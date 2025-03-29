@@ -53,14 +53,14 @@ namespace mLib
         diceTexture[4] = LoadTexture("assets/dice/5_dots.png");
         diceTexture[5] = LoadTexture("assets/dice/6_dots.png");
         dice = LoadTexture("assets/dice/dice.png");
-        pause = LoadTexture("assets/animationButtom/pause.png");
-        play = LoadTexture("assets/animationButtom/play.png");
-        prev = LoadTexture("assets/animationButtom/prev.png");
-        next = LoadTexture("assets/animationButtom/next.png");
-        forward = LoadTexture("assets/animationButtom/forward.png");
-        backward = LoadTexture("assets/animationButtom/backward.png");
-        expand = LoadTexture("assets/animationButtom/expand.png");
-        collapse = LoadTexture("assets/animationButtom/collapse.png");
+        pause = LoadTexture("assets/animationButton/pause.png");
+        play = LoadTexture("assets/animationButton/play.png");
+        prev = LoadTexture("assets/animationButton/prev.png");
+        next = LoadTexture("assets/animationButton/next.png");
+        forward = LoadTexture("assets/animationButton/forward.png");
+        backward = LoadTexture("assets/animationButton/backward.png");
+        expand = LoadTexture("assets/animationButton/expand.png");
+        collapse = LoadTexture("assets/animationButton/collapse.png");
     }
     extern const std::vector<std::string> TrieInsert;
     extern const std::vector<std::string> TrieSearch;

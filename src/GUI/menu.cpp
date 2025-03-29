@@ -11,12 +11,12 @@ namespace MenuTable
     float minValue = 1.f, maxValue = 100.f, sliderValue = 50.f;
     
     int MaxSizeNum = 3, MaxSizeText = 5, MaxSizeWeight = 5;
-    TextureBox backwardButton = TextureBox(sliderBarPos, sliderBarDimension, (Rectangle){0, 0, 100, 100}, mLib::backward);
-    TextureBox forwardButton = TextureBox((Vector2){sliderBarPos.x + sliderBarDimension.x, sliderBarPos.y}, sliderBarDimension, (Rectangle){0, 0, 100, 100}, mLib::forward, "", 20, AppMenu::buttonPalette);
+    TextureBox backwardButton = TextureBox(sliderBarPos, sliderBarDimension, (Rectangle){0, 0, 100, 100}, mLib::backward, "", 20, AppMenu::buttonPalette);
+    TextureBox forwardButton = TextureBox((Vector2){sliderBarPos.x + sliderBarDimension.x * 4, sliderBarPos.y}, sliderBarDimension, (Rectangle){0, 0, 100, 100}, mLib::forward, "", 20, AppMenu::buttonPalette);
     TextureBox playButton = TextureBox((Vector2){sliderBarPos.x + sliderBarDimension.x * 2, sliderBarPos.y}, sliderBarDimension, (Rectangle){0, 0, 100, 100}, mLib::play, "", 20, AppMenu::buttonPalette);
     TextureBox pauseButton = TextureBox((Vector2){sliderBarPos.x + sliderBarDimension.x * 2, sliderBarPos.y}, sliderBarDimension, (Rectangle){0, 0, 100, 100}, mLib::pause, "", 20, AppMenu::buttonPalette);
-    TextureBox prevButton = TextureBox((Vector2){sliderBarPos.x + sliderBarDimension.x * 3, sliderBarPos.y}, sliderBarDimension, (Rectangle){0, 0, 100, 100}, mLib::prev, "", 20, AppMenu::buttonPalette);
-    TextureBox nextButton = TextureBox((Vector2){sliderBarPos.x + sliderBarDimension.x * 4, sliderBarPos.y}, sliderBarDimension, (Rectangle){0, 0, 100, 100}, mLib::next, "", 20, AppMenu::buttonPalette);
+    TextureBox prevButton = TextureBox((Vector2){sliderBarPos.x + sliderBarDimension.x, sliderBarPos.y}, sliderBarDimension, (Rectangle){0, 0, 100, 100}, mLib::prev, "", 20, AppMenu::buttonPalette);
+    TextureBox nextButton = TextureBox((Vector2){sliderBarPos.x + sliderBarDimension.x * 3, sliderBarPos.y}, sliderBarDimension, (Rectangle){0, 0, 100, 100}, mLib::next, "", 20, AppMenu::buttonPalette);
     Button showMenu = Button(optionPosition, (Vector2){sliderBarDimension.y, sliderBarDimension.x}, ">", 20, AppMenu::buttonPalette);
     Button clearButton = Button(optionPosition, sliderBarDimension, "Clear", 20, AppMenu::buttonPalette);
     Button importButton = Button(optionPosition, sliderBarDimension, "Import", 20, AppMenu::buttonPalette);
@@ -29,7 +29,8 @@ namespace MenuTable
     bool showMenuFlag = false, requestClear = false, requestImport = false, requestRandom = false, inAnimationProcess = false, isPlaying = true;
     std::vector<std::pair<Button *, Type>> GUIObjects = {};
     
-    void Constructor(Vector2 _optionPosition, Vector2 _optionDimension, Vector2 _sliderBarPos, Vector2 _sliderBarDimension) {
+    void Constructor(Vector2 _optionPosition = {10, 600}, Vector2 _optionDimension = {200, 50}, 
+        Vector2 _sliderBarPos = {500, 400}, Vector2 _sliderBarDimension = {50, 50}) {
         optionPosition = _optionPosition;
         optionDimension = _optionDimension;
         sliderBarPos = _sliderBarPos;
@@ -38,12 +39,12 @@ namespace MenuTable
         minValue = 1.f, maxValue = 100.f, sliderValue = 50.f;
         
         MaxSizeNum = 3, MaxSizeText = 5, MaxSizeWeight = 5;
-        backwardButton = TextureBox(sliderBarPos, sliderBarDimension, (Rectangle){0, 0, 100, 100}, mLib::backward);
-        forwardButton = TextureBox((Vector2){sliderBarPos.x + sliderBarDimension.x, sliderBarPos.y}, sliderBarDimension, (Rectangle){0, 0, 100, 100}, mLib::forward, "", 20, AppMenu::buttonPalette);
+        backwardButton = TextureBox(sliderBarPos, sliderBarDimension, (Rectangle){0, 0, 100, 100}, mLib::backward, "", 20, AppMenu::buttonPalette);
+        forwardButton = TextureBox((Vector2){sliderBarPos.x + sliderBarDimension.x * 4, sliderBarPos.y}, sliderBarDimension, (Rectangle){0, 0, 100, 100}, mLib::forward, "", 20, AppMenu::buttonPalette);
         playButton = TextureBox((Vector2){sliderBarPos.x + sliderBarDimension.x * 2, sliderBarPos.y}, sliderBarDimension, (Rectangle){0, 0, 100, 100}, mLib::play, "", 20, AppMenu::buttonPalette);
         pauseButton = TextureBox((Vector2){sliderBarPos.x + sliderBarDimension.x * 2, sliderBarPos.y}, sliderBarDimension, (Rectangle){0, 0, 100, 100}, mLib::pause, "", 20, AppMenu::buttonPalette);
-        prevButton = TextureBox((Vector2){sliderBarPos.x + sliderBarDimension.x * 3, sliderBarPos.y}, sliderBarDimension, (Rectangle){0, 0, 100, 100}, mLib::prev, "", 20, AppMenu::buttonPalette);
-        nextButton = TextureBox((Vector2){sliderBarPos.x + sliderBarDimension.x * 4, sliderBarPos.y}, sliderBarDimension, (Rectangle){0, 0, 100, 100}, mLib::next, "", 20, AppMenu::buttonPalette);
+        prevButton = TextureBox((Vector2){sliderBarPos.x + sliderBarDimension.x, sliderBarPos.y}, sliderBarDimension, (Rectangle){0, 0, 100, 100}, mLib::prev, "", 20, AppMenu::buttonPalette);
+        nextButton = TextureBox((Vector2){sliderBarPos.x + sliderBarDimension.x * 3, sliderBarPos.y}, sliderBarDimension, (Rectangle){0, 0, 100, 100}, mLib::next, "", 20, AppMenu::buttonPalette);
         showMenu = Button(optionPosition, (Vector2){sliderBarDimension.y, sliderBarDimension.x}, ">", 20, AppMenu::buttonPalette);
         clearButton = Button(optionPosition, sliderBarDimension, "Clear", 20, AppMenu::buttonPalette);
         importButton = Button(optionPosition, sliderBarDimension, "Import", 20, AppMenu::buttonPalette);
@@ -121,8 +122,23 @@ namespace MenuTable
         if (isPlaying) pauseButton.render();
         else playButton.render();
         prevButton.render();
-        nextButton.render();
-        GuiSliderBar((Rectangle){sliderBarPos.x, sliderBarPos.y + sliderBarDimension.y + sliderBarDimension.y / 2, sliderBarDimension.x * 3, sliderBarDimension.y / 2}, "Time Step", TextFormat("%.2f", sliderValue), &sliderValue, minValue, maxValue);
+        nextButton.render(); 
+        ///* Slider bar **/
+            GuiSetStyle(SLIDER, BORDER_COLOR_NORMAL, ColorToInt(AppMenu::buttonPalette.borderNormal));
+            GuiSetStyle(SLIDER, BORDER_COLOR_FOCUSED, ColorToInt(AppMenu::buttonPalette.borderNormal));
+            GuiSetStyle(SLIDER, BORDER_COLOR_PRESSED, ColorToInt(AppMenu::buttonPalette.borderNormal));
+            GuiSetStyle(SLIDER, BORDER_WIDTH, 2);
+            GuiSetStyle(SLIDER, BASE_COLOR_NORMAL, ColorToInt(AppMenu::buttonPalette.backgroundNormal));
+            GuiSetStyle(SLIDER, BASE_COLOR_FOCUSED, ColorToInt(AppMenu::buttonPalette.backgroundHighlight));
+            GuiSetStyle(SLIDER, BASE_COLOR_PRESSED, ColorToInt(AppMenu::buttonPalette.backgroundHighlight));
+            GuiSetStyle(SLIDER, TEXT_COLOR_NORMAL, ColorToInt(AppMenu::buttonPalette.textNormal));
+            GuiSetStyle(SLIDER, TEXT_COLOR_FOCUSED, ColorToInt(AppMenu::buttonPalette.textHighlight));
+            GuiSetStyle(SLIDER, TEXT_COLOR_PRESSED, ColorToInt(AppMenu::buttonPalette.textHighlight));
+            GuiSetStyle(DEFAULT, TEXT_SIZE, DrawUtility::NORMAL_SIZE);
+            GuiSetFont(DrawUtility::inter20);
+        ///
+
+        GuiSliderBar((Rectangle){sliderBarPos.x + sliderBarDimension.x, sliderBarPos.y + sliderBarDimension.y + sliderBarDimension.y / 2, sliderBarDimension.x * 3, sliderBarDimension.y / 2}, "Time Step", TextFormat("%.2f", sliderValue), &sliderValue, minValue, maxValue);
     }
     
     void handleInput() {
