@@ -21,6 +21,8 @@ namespace MenuTable {
     extern TextureBox backwardButton, forwardButton, prevButton, nextButton, playButton, pauseButton; 
     extern Vector2 optionPosition;
     extern Vector2 optionDimension;
+    extern Vector2 optionDistance;
+
     extern Vector2 sliderBarPos, sliderBarDimension;
     extern Button showMenu;
     extern Button clearButton, importButton, randomButton;

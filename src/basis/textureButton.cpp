@@ -10,7 +10,7 @@ void TextureBox::setPosition(Vector2 position) {
 
 void TextureBox::render() {
     button.render();
-    DrawTexturePro(texture, ori, {position.x, position.y, dimension.x, dimension.y}, {0, 0}, 0, getState() ? WHITE : Color{255, 255, 255, 100});
+    DrawTexturePro(*texture, ori, {position.x, position.y, dimension.x, dimension.y}, {0, 0}, 0, getState() ? WHITE : Color{255, 255, 255, 100});
 }
 
 bool TextureBox::isPressed() const { return button.isPressed(); }

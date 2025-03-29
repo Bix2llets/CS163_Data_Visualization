@@ -8,29 +8,34 @@ Vector2 optionDimension = {200, 50};
 Vector2 sliderBarPos = {500, 400};
 Vector2 sliderBarDimension = {50, 50};
 
+Vector2 buttonPos = {600, 700};
+Vector2 buttonDimension = {50, 50};
+Vector2 buttonDistance = {10, 0};
+
+
 float minValue = 1.f, maxValue = 100.f, sliderValue = 50.f;
 
 int MaxSizeNum = 3, MaxSizeText = 5, MaxSizeWeight = 5;
 TextureBox backwardButton =
-    TextureBox(sliderBarPos, sliderBarDimension, (Rectangle){0, 0, 100, 100},
-               mLib::backward, &BUTTON_SET_1);
+    TextureBox(buttonPos, sliderBarDimension, (Rectangle){0, 0, 100, 100},
+               &mLib::backward, &BUTTON_SET_1);
 TextureBox forwardButton = TextureBox(
-    (Vector2){sliderBarPos.x + sliderBarDimension.x * 4, sliderBarPos.y},
-    sliderBarDimension, (Rectangle){0, 0, 100, 100}, mLib::forward,
+    (Vector2){buttonPos.x + (buttonDimension.x + buttonDistance.x) * 4, buttonPos.y},
+    buttonDimension, (Rectangle){0, 0, 100, 100}, &mLib::forward,
     &BUTTON_SET_1);
 TextureBox playButton = TextureBox(
-    (Vector2){sliderBarPos.x + sliderBarDimension.x * 2, sliderBarPos.y},
-    sliderBarDimension, (Rectangle){0, 0, 100, 100}, mLib::play, &BUTTON_SET_1);
+    (Vector2){buttonPos.x + (buttonDimension.x + buttonDistance.x) * 2, buttonPos.y},
+    buttonDimension, (Rectangle){0, 0, 100, 100}, &mLib::play, &BUTTON_SET_1);
 TextureBox pauseButton = TextureBox(
-    (Vector2){sliderBarPos.x + sliderBarDimension.x * 2, sliderBarPos.y},
-    sliderBarDimension, (Rectangle){0, 0, 100, 100}, mLib::pause,
+    (Vector2){buttonPos.x + (buttonDimension.x + buttonDistance.x) * 2, buttonPos.y},
+    buttonDimension, (Rectangle){0, 0, 100, 100}, &mLib::pause,
     &BUTTON_SET_1);
 TextureBox prevButton = TextureBox(
-    (Vector2){sliderBarPos.x + sliderBarDimension.x, sliderBarPos.y},
-    sliderBarDimension, (Rectangle){0, 0, 100, 100}, mLib::prev, &BUTTON_SET_1);
+    (Vector2){buttonPos.x + (buttonDimension.x + buttonDistance.x), buttonPos.y},
+    buttonDimension, (Rectangle){0, 0, 100, 100}, &mLib::prev, &BUTTON_SET_1);
 TextureBox nextButton = TextureBox(
-    (Vector2){sliderBarPos.x + sliderBarDimension.x * 3, sliderBarPos.y},
-    sliderBarDimension, (Rectangle){0, 0, 100, 100}, mLib::next, &BUTTON_SET_1);
+    (Vector2){buttonPos.x + (buttonDimension.x + buttonDistance.x) * 3, buttonPos.y},
+    buttonDimension, (Rectangle){0, 0, 100, 100}, &mLib::next, &BUTTON_SET_1);
 Button showMenu = Button(optionPosition,
                          (Vector2){sliderBarDimension.y, sliderBarDimension.x},
                          ">", 20, &BUTTON_SET_1);
@@ -64,32 +69,7 @@ void Constructor(Vector2 _optionPosition = {10, 600},
     minValue = 1.f, maxValue = 100.f, sliderValue = 50.f;
 
     MaxSizeNum = 3, MaxSizeText = 5, MaxSizeWeight = 5;
-    backwardButton = TextureBox(sliderBarPos, sliderBarDimension,
-                                (Rectangle){0, 0, 100, 100}, mLib::backward,
-                                AppMenu::buttonPalette);
-    forwardButton = TextureBox(
-        (Vector2){sliderBarPos.x + sliderBarDimension.x * 4, sliderBarPos.y},
-        sliderBarDimension, (Rectangle){0, 0, 100, 100}, mLib::forward,
-        AppMenu::buttonPalette);
-    playButton = TextureBox(
-        (Vector2){sliderBarPos.x + sliderBarDimension.x * 2, sliderBarPos.y},
-        sliderBarDimension, (Rectangle){0, 0, 100, 100}, mLib::play,
-        AppMenu::buttonPalette);
-    pauseButton = TextureBox(
-        (Vector2){sliderBarPos.x + sliderBarDimension.x * 2, sliderBarPos.y},
-        sliderBarDimension, (Rectangle){0, 0, 100, 100}, mLib::pause,
-        AppMenu::buttonPalette);
-    prevButton = TextureBox(
-        (Vector2){sliderBarPos.x + sliderBarDimension.x, sliderBarPos.y},
-        sliderBarDimension, (Rectangle){0, 0, 100, 100}, mLib::prev,
-        AppMenu::buttonPalette);
-    nextButton = TextureBox(
-        (Vector2){sliderBarPos.x + sliderBarDimension.x * 3, sliderBarPos.y},
-        sliderBarDimension, (Rectangle){0, 0, 100, 100}, mLib::next,
-        AppMenu::buttonPalette);
-    showMenu = Button(optionPosition,
-                      (Vector2){sliderBarDimension.y, sliderBarDimension.x},
-                      ">", 20, AppMenu::buttonPalette);
+    
     clearButton = Button(optionPosition, sliderBarDimension, "Clear", 20,
                          AppMenu::buttonPalette);
     importButton = Button(optionPosition, sliderBarDimension, "Import", 20,
