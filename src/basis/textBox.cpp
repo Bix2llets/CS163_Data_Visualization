@@ -58,6 +58,7 @@ void TextBox::render() {
     DrawUtility::drawText(text, textPosition, *font, textColor,
                           DrawUtility::NORMAL_SIZE, DrawUtility::SPACING,
                           verticalAlign, horizontalAlign);
+                          std::cout << "rendering text box\n";
 }
 
 void TextBox::setText(std::string newText) { text = newText; }

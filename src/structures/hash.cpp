@@ -67,7 +67,7 @@ void hash::search(int value) {
     actions.push_back({5, INIT, NULL});
     int index = value % m;
     actions.push_back({6, SETLECT, root[index]});
-    while (root[index]->value != value) {
+    while (root[index]->value != value && root[index]->value != -1) {
         index = (index + 1) % m;
         actions.push_back({7, SETLECT, root[index]});
         if (index == value % m) break;
@@ -187,8 +187,9 @@ void hash::update(double currTime, double rate) {
 
 void hash::draw(hashNode* node) {
     if (node == NULL) return;
-    DrawCircleV(node->getPosition(), NODE_RADIUS - 5, node->targeted ? ORANGE : (Color) {0, 160, 216, node->getAlpha()});
-    DrawRing(node->getPosition(), NODE_RADIUS - 5, NODE_RADIUS, 0, 360, 20, BLUE);
+    DrawCircleV(node->getPosition(), NODE_RADIUS - 5, node->targeted ? (Color) {255, 121, 0, 255} : (Color) {0, 160, 216, 241});
+    DrawCircleV(node->getPosition(), NODE_RADIUS - 5, (Color) {128, 239, 128, 255.f - node->getAlpha()});
+    DrawRing(node->getPosition(), NODE_RADIUS - 5, NODE_RADIUS, 0, 360, 20, (Color) {197, 207, 94, 255});
     std::string value = std::to_string(node->value);
     if (node->value == -1) value = "null";
     char *text = new char[value.length() + 1];

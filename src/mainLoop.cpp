@@ -9,6 +9,8 @@ const float DELTA_TIME = 1.0f / 60;
 SceneList currentScene = SceneList::MAIN_MENU;
 bool isRunning = true;
 
+edgeInsertBox edgeBox = edgeInsertBox({50, 50}, {200, 50}, 20, AppMenu::buttonPalette, 0, 3, 5);
+
 const Vector2 UPPER_LEFT = {50, 50};
 const Vector2 LOWER_RIGHT = {1550, 650};
 void (*renderFunc)() = nullptr;
@@ -140,6 +142,7 @@ void render() {
         AppMenu::render();
         if (renderFunc) renderFunc();
     }
+    edgeBox.render();
 }
 
 }  // namespace Loop
