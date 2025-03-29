@@ -205,85 +205,86 @@ void nextStep() {
 }
 
 void registerInput() {
-    if (AppMenu::buttonPanel[0][0].isPressed()) {
-        auto result = AppMenu::valueBox.getValue();
-        if (result.first == false) return;
-        AppMenu::valueBox.clear();
+    // ! THIS NEED REVAMP TO ADAPT TO NEW BUTTON SYSTEM
+    // if (AppMenu::buttonPanel[0][0].isPressed()) {
+    //     auto result = AppMenu::valueBox.getValue();
+    //     if (result.first == false) return;
+    //     AppMenu::valueBox.clear();
 
-        AppMenu::loadCode(PSEUDO_BLANK);
-        addNode(result.second);
-    }
+    //     AppMenu::loadCode(PSEUDO_BLANK);
+    //     addNode(result.second);
+    // }
     
-    if (AppMenu::buttonPanel[1][0].isPressed()) {
-        auto result = AppMenu::valueBox.getValue();
-        if (result.first == false) return;
-        AppMenu::valueBox.clear();
+    // if (AppMenu::buttonPanel[1][0].isPressed()) {
+    //     auto result = AppMenu::valueBox.getValue();
+    //     if (result.first == false) return;
+    //     AppMenu::valueBox.clear();
 
-        AppMenu::loadCode(PSEUDO_BLANK);
-        removeNode(result.second);
-    }
+    //     AppMenu::loadCode(PSEUDO_BLANK);
+    //     removeNode(result.second);
+    // }
 
-    if (AppMenu::buttonPanel[0][1].isPressed()) {
-        auto result = AppMenu::valueBox.getText();
-        std::string node1Str, node2Str, weightStr;
-        std::stringstream ss;
-        ss << result;
-        ss >> node1Str >> node2Str >> weightStr;
-        if (ss.rdbuf()->in_avail() != 0) return;
-        if (!isStrNum(node1Str)) return;
-        if (!isStrNum(node2Str)) return;
-        if (!isStrNum(weightStr)) return;
-        AppMenu::valueBox.clear();
+    // if (AppMenu::buttonPanel[0][1].isPressed()) {
+    //     auto result = AppMenu::valueBox.getText();
+    //     std::string node1Str, node2Str, weightStr;
+    //     std::stringstream ss;
+    //     ss << result;
+    //     ss >> node1Str >> node2Str >> weightStr;
+    //     if (ss.rdbuf()->in_avail() != 0) return;
+    //     if (!isStrNum(node1Str)) return;
+    //     if (!isStrNum(node2Str)) return;
+    //     if (!isStrNum(weightStr)) return;
+    //     AppMenu::valueBox.clear();
         
-        AppMenu::loadCode(PSEUDO_BLANK);
-        int node1lLabel = std::stoi(node1Str);
-        int node2lLabel = std::stoi(node2Str);
-        int weightLabel = std::stoi(weightStr);
-        addEdge(node1lLabel, node2lLabel, weightLabel);
-    }
+    //     AppMenu::loadCode(PSEUDO_BLANK);
+    //     int node1lLabel = std::stoi(node1Str);
+    //     int node2lLabel = std::stoi(node2Str);
+    //     int weightLabel = std::stoi(weightStr);
+    //     addEdge(node1lLabel, node2lLabel, weightLabel);
+    // }
 
-    if (AppMenu::buttonPanel[1][1].isPressed()) {
-        auto result = AppMenu::valueBox.getText();
-        std::string node1Str, node2Str;
-        std::stringstream ss;
-        ss << result;
-        ss >> node1Str >> node2Str;
-        if (ss.rdbuf()->in_avail() != 0) return;
-        if (!isStrNum(node1Str)) return;
-        if (!isStrNum(node2Str)) return;
-        AppMenu::loadCode(PSEUDO_BLANK);
-        AppMenu::valueBox.clear();
+    // if (AppMenu::buttonPanel[1][1].isPressed()) {
+    //     auto result = AppMenu::valueBox.getText();
+    //     std::string node1Str, node2Str;
+    //     std::stringstream ss;
+    //     ss << result;
+    //     ss >> node1Str >> node2Str;
+    //     if (ss.rdbuf()->in_avail() != 0) return;
+    //     if (!isStrNum(node1Str)) return;
+    //     if (!isStrNum(node2Str)) return;
+    //     AppMenu::loadCode(PSEUDO_BLANK);
+    //     AppMenu::valueBox.clear();
 
-        int node1Label = std::stoi(node1Str);
-        int node2Label = std::stoi(node2Str);
-        removeEdge(node1Label, node2Label);
-    }
+    //     int node1Label = std::stoi(node1Str);
+    //     int node2Label = std::stoi(node2Str);
+    //     removeEdge(node1Label, node2Label);
+    // }
 
-    if (AppMenu::buttonPanel[2][0].isPressed()) {
-        AppMenu::loadCode(PSEUDO_MST);
-        MST();
-    }
-    if (AppMenu::buttonPanel[2][1].isPressed()) {
-        auto result = AppMenu::valueBox.getText();
-        std::stringstream ss;
-        std::string node1Text;
-        ss << result;
-        ss >> node1Text;
-        if (ss.rdbuf()->in_avail() != 0) return;
-        if (!isStrNum(node1Text)) return;
-        AppMenu::loadCode(PSEUDO_DIJKSTRA);
-        AppMenu::valueBox.clear();
+    // if (AppMenu::buttonPanel[2][0].isPressed()) {
+    //     AppMenu::loadCode(PSEUDO_MST);
+    //     MST();
+    // }
+    // if (AppMenu::buttonPanel[2][1].isPressed()) {
+    //     auto result = AppMenu::valueBox.getText();
+    //     std::stringstream ss;
+    //     std::string node1Text;
+    //     ss << result;
+    //     ss >> node1Text;
+    //     if (ss.rdbuf()->in_avail() != 0) return;
+    //     if (!isStrNum(node1Text)) return;
+    //     AppMenu::loadCode(PSEUDO_DIJKSTRA);
+    //     AppMenu::valueBox.clear();
 
-        int node1Label = std::stoi(node1Text);
-        dijkstra(node1Label);
-    }
-    if (AppMenu::undoButton.isPressed()) {
-        prevStep();
-    }
+    //     int node1Label = std::stoi(node1Text);
+    //     dijkstra(node1Label);
+    // }
+    // if (AppMenu::undoButton.isPressed()) {
+    //     prevStep();
+    // }
 
-    else if (AppMenu::redoButton.isPressed()) {
-        nextStep();
-    }
+    // else if (AppMenu::redoButton.isPressed()) {
+    //     nextStep();
+    // }
 }
 
 int getParent(int label, std::unordered_map<int, int> &parList) {

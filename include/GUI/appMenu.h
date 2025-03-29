@@ -16,24 +16,13 @@ extern Vector2 buttonDimension;
 extern ColorSet const *buttonPalette;
 extern Vector2 panelPosition;
 
+extern Button backButton;
 extern int horizontalCellCount;
 extern int verticalCellCount;
 
 extern Vector2 buttonDistance;
 // Buttons
-extern std::vector<std::vector<Button>> buttonPanel;
-extern Button backButton;
-extern Button undoButton;
-extern Button redoButton;
-extern Button backwardButton;
-extern Button forwardButton;
-extern Button togglePauseButton;
 // Forms
-extern Form locationBox;
-extern Form valueBox;
-
-extern TextBox locationText;
-extern TextBox valueText;
 // For rendering objects
 extern std::vector<GUIObject *> renderList;
 extern std::vector<TextBox> codeList;

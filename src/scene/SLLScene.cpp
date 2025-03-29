@@ -205,60 +205,61 @@ void SLLScene::clearScene() {
 }
 
 void SLLScene::recordInput() {
-    auto location = AppMenu::locationBox.getValue();
-    auto value = AppMenu::valueBox.getValue();
-    auto& buttonPanel = AppMenu::buttonPanel;
-    if (buttonPanel[0][0].isPressed()) {
-        // * Add at end
-        if (value.first) {
-            SLLScene::addEnd(std::to_string(value.second));
-            AppMenu::loadCode(SLLScene::PSEUDO_INSERT);
-            AppMenu::valueBox.clear();
-        }
-    }
-    if (buttonPanel[1][0].isPressed()) {
-        // * Remove at end
-        SLLScene::removeEnd();
-        AppMenu::loadCode(SLLScene::PSEUDO_DELETE);
-    }
-    if (buttonPanel[0][1].isPressed()) {
-        if (value.first && location.first) {
-            SLLScene::addAt(std::to_string(value.second), location.second);
-            AppMenu::loadCode(SLLScene::PSEUDO_INSERT);
-            AppMenu::locationBox.clear();
-            AppMenu::valueBox.clear();
-        }
-    }
-    if (buttonPanel[1][1].isPressed()) {
-        if (location.first) {
-            SLLScene::removeAt(location.second);
-            AppMenu::loadCode(SLLScene::PSEUDO_DELETE);
-            AppMenu::locationBox.clear();
-        }
-    }
-    if (buttonPanel[2][1].isPressed()) {
-        if (value.first) {
-            SLLScene::find(std::to_string(value.second));
-            AppMenu::loadCode(SLLScene::PSEUDO_SEARCH);
-            AppMenu::valueBox.clear();
-        }
-    }
-    if (AppMenu::undoButton.isPressed()) {
-        prevStep();
-        // Loop::isRunning = false;
-    }
-    if (AppMenu::redoButton.isPressed()) {
-        nextStep();
-        // Loop::isRunning = true;
-    }
-    if (AppMenu::backwardButton.isPressed()) {
-        backward();
-        // Loop::isRunning = false;
-    }
-    if (AppMenu::forwardButton.isPressed()) {
-        forward();
-        // Loop::isRunning = true;
-    }
+    // ! THIS NEED REVAMP
+    // auto location = AppMenu::locationBox.getValue();
+    // auto value = AppMenu::valueBox.getValue();
+    // auto& buttonPanel = AppMenu::buttonPanel;
+    // if (buttonPanel[0][0].isPressed()) {
+    //     // * Add at end
+    //     if (value.first) {
+    //         SLLScene::addEnd(std::to_string(value.second));
+    //         AppMenu::loadCode(SLLScene::PSEUDO_INSERT);
+    //         AppMenu::valueBox.clear();
+    //     }
+    // }
+    // if (buttonPanel[1][0].isPressed()) {
+    //     // * Remove at end
+    //     SLLScene::removeEnd();
+    //     AppMenu::loadCode(SLLScene::PSEUDO_DELETE);
+    // }
+    // if (buttonPanel[0][1].isPressed()) {
+    //     if (value.first && location.first) {
+    //         SLLScene::addAt(std::to_string(value.second), location.second);
+    //         AppMenu::loadCode(SLLScene::PSEUDO_INSERT);
+    //         AppMenu::locationBox.clear();
+    //         AppMenu::valueBox.clear();
+    //     }
+    // }
+    // if (buttonPanel[1][1].isPressed()) {
+    //     if (location.first) {
+    //         SLLScene::removeAt(location.second);
+    //         AppMenu::loadCode(SLLScene::PSEUDO_DELETE);
+    //         AppMenu::locationBox.clear();
+    //     }
+    // }
+    // if (buttonPanel[2][1].isPressed()) {
+    //     if (value.first) {
+    //         SLLScene::find(std::to_string(value.second));
+    //         AppMenu::loadCode(SLLScene::PSEUDO_SEARCH);
+    //         AppMenu::valueBox.clear();
+    //     }
+    // }
+    // if (AppMenu::undoButton.isPressed()) {
+    //     prevStep();
+    //     // Loop::isRunning = false;
+    // }
+    // if (AppMenu::redoButton.isPressed()) {
+    //     nextStep();
+    //     // Loop::isRunning = true;
+    // }
+    // if (AppMenu::backwardButton.isPressed()) {
+    //     backward();
+    //     // Loop::isRunning = false;
+    // }
+    // if (AppMenu::forwardButton.isPressed()) {
+    //     forward();
+    //     // Loop::isRunning = true;
+    // }
 }
 
 void SLLScene::nextStep() {
