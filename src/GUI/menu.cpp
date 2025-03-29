@@ -112,7 +112,7 @@ namespace MenuTable
                                 requestImport = false;
                                 requestClear = false;
                             }
-                        } else assert(Type::None != obj.second);
+                        } //else assert(Type::None != obj.second);
                     }
                 }
             }
@@ -191,7 +191,7 @@ namespace MenuTable
                         requestNum = "";
                         insertBox = InsertBox((Vector2){optionPosition.x + showMenu.getDimension().x + object->getDimension().x, object->getPosition().y}
                         , optionDimension, 20, AppMenu::buttonPalette, 1, MaxSizeText);
-                    } else assert(Type::None != type);
+                    } //else assert(Type::None != type);
                 }
             }
         }

@@ -98,7 +98,8 @@ int main() {
     MenuTable::pack(object, MenuTable::NumInsert);
     object = new Button(MenuTable::optionPosition, MenuTable::optionDimension, "Text Insert", 20, AppMenu::buttonPalette);
     MenuTable::pack(object, MenuTable::TextInsert);
-
+    object = new Button(MenuTable::optionPosition, MenuTable::optionDimension, "MST", 20, AppMenu::buttonPalette);
+    MenuTable::pack(object, MenuTable::None);
     // GraphScene::addStep();
     // for (int i = 0; i <= 10; i++)
     // for (int j = 0; j <= 20; j++)
