@@ -112,20 +112,19 @@ int main() {
     GraphScene::addEdge(7, 6, rand());
     GraphScene::addEdge(7, 2, rand());
 
-    MenuPane pane({100, 100}, &GBLight::BACKGROUND1, &BUTTON_SET_1, &BUTTON_SET_1);
-    pane.newLine(0, 2, "Testing", {"TEST1", "TEST2"});
-    pane.newLine(1, 2, "Testing", {"TEST1", "TEST2"});
-    pane.newLine(2, 2, "Testing", {"TEST1", "TEST2"});
+    // MenuPane pane({100, 100}, &GBLight::BACKGROUND1, &BUTTON_SET_1, &BUTTON_SET_1);
+    // pane.newLine(0, 2, "Testing", {"TEST1", "TEST2"});
+    // pane.newLine(1, 2, "Testing", {"TEST1", "TEST2"});
+    // pane.newLine(2, 2, "Testing", {"TEST1", "TEST2"});
     // Main application loop
     while (!WindowShouldClose()) {
         // Update goes here
-        // Loop::registerInput();
-        // Loop::update();
+        Loop::registerInput();
+        Loop::update();
         // Render goes here
         BeginDrawing();
         ClearBackground(backgroundColor);
-        pane.render();
-        // Loop::render();
+        Loop::render();
         EndDrawing();
     }
 

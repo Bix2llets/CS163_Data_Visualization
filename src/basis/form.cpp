@@ -25,8 +25,8 @@ void Form::render() {
     Rectangle drawInfo = {position.x - BORDER_OFFSET, position.y - BORDER_OFFSET, width + 2 * BORDER_OFFSET, height + 2 * BORDER_OFFSET};
     DrawRectangle(drawInfo.x, drawInfo.y, drawInfo.width, drawInfo.height, groundColor);
     DrawRectangleLinesEx(drawInfo, 2 * BORDER_OFFSET, borderColor);
-    DrawUtility::drawText(textRender, textPosition, DrawUtility::inter20,
-                          textColor, DrawUtility::NORMAL_SIZE,
+    DrawUtility::drawText(textRender, textPosition, DrawUtility::inter16,
+                          textColor, 16,
                           DrawUtility::SPACING,
                           VerticalAlignment::CENTERED,
                           HorizontalAlignment::LEFT);
@@ -55,7 +55,7 @@ void Form::recordKeyboard() {
 
     if (chr == '\0') return;
     std::string newText = text + chr;
-    Vector2 newDimension = MeasureTextEx(DrawUtility::inter20, newText.c_str(), DrawUtility::NORMAL_SIZE, DrawUtility::SPACING); 
+    Vector2 newDimension = MeasureTextEx(DrawUtility::inter16, newText.c_str(), 16, DrawUtility::SPACING); 
 
     if (newDimension.x > width - LEFT_MARGIN - RIGHT_MARGIN) return;
     

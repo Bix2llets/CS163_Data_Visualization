@@ -14,6 +14,15 @@ std::deque<SLLScene::SLLStorage> SLLScene::steps;
 std::deque<SLLScene::SLLStorage> SLLScene::past;
 std::deque<SLLScene::SLLStorage> SLLScene::future;
 
+const Vector2 SLLScene::STARTING_PANE_POSITION = {100, 100};
+MenuPane SLLScene::addPane(STARTING_PANE_POSITION, &GBLight::BACKGROUND1,
+                           &BUTTON_SET_1, &BUTTON_SET_1);
+MenuPane SLLScene::deletePane(STARTING_PANE_POSITION, &GBLight::BACKGROUND1,
+                              &BUTTON_SET_1, &BUTTON_SET_1);
+MenuPane SLLScene::algoPane(STARTING_PANE_POSITION, &GBLight::BACKGROUND1,
+                            &BUTTON_SET_1, &BUTTON_SET_1);
+MenuPane SLLScene::miscPane(STARTING_PANE_POSITION, &GBLight::BACKGROUND1,
+                            &BUTTON_SET_1, &BUTTON_SET_1);
 const std::vector<std::string> SLLScene::PSEUDO_INSERT = {
     "Traverse the linked list", "Create new node", "Update the linked list"};
 const std::vector<std::string> SLLScene::PSEUDO_DELETE = {
@@ -22,7 +31,19 @@ const std::vector<std::string> SLLScene::PSEUDO_SEARCH = {
     "Traverse the linked list",
     "Return result",
 };
-void SLLScene::init() { steps.push_front({sll, -1}); }
+void SLLScene::init() {
+    steps.push_front({sll, -1});
+    addPane.disable();
+    algoPane.disable();
+    miscPane.disable();
+    deletePane.disable();
+    addPane.newLine(0, 2, "Add", {"Value", "Location"});
+    deletePane.newLine(0, 2, "Remove", {"Value", "Location"});
+    algoPane.newLine(0, 1, "Search", {"Value"});
+    miscPane.newLine(0, 0, "Save", {});
+    miscPane.newLine(1, 0, "Load", {});
+
+}
 void SLLScene::setSpecs(float _stepDelay) { stepDelay = _stepDelay; }
 void SLLScene::addEnd(std::string data) {
     int place = 0;
@@ -140,10 +161,10 @@ void SLLScene::addStep(int highlightIndex,
 
 void SLLScene::render() {
     sll.render();
-    AddMenu::render();
-    DeleteMenu::render();
-    AlgorithmMenu::render();
-    MiscMenu::render();
+    addPane.render();
+    deletePane.render();
+    algoPane.render();
+    miscPane.render();
 }
 
 void SLLScene::find(std::string val) {
@@ -307,207 +328,5 @@ void SLLScene::forward() {
             if (&temp != &steps.front() && steps.front().highlightIndex == -1)
                 break;
         }
-    }
-}
-
-namespace SLLScene {
-
-const Vector2 BUTTON_DIMENSION = {160, 20};
-const Vector2 BUTTON_DISTANCE = {30, 30};
-const Vector2 FORM_DIMENSION = {160, 25};
-const Vector2 STARTING_POSITION = {120, 500};
-const Color *MENU_BACKGROUND = &GBLight::BACKGROUND1;
-}  // namespace SLLScene
-namespace SLLScene::AddMenu {
-Button addEndButton(STARTING_POSITION, BUTTON_DIMENSION, "Add at End", 12,
-                    &BUTTON_SET_1, &DrawUtility::inter12);
-
-Button addAtButton({STARTING_POSITION.x + BUTTON_DIMENSION.x +
-                        BUTTON_DISTANCE.x,
-                    STARTING_POSITION.y},
-                   BUTTON_DIMENSION, "Add at Location", 12, &BUTTON_SET_1,
-                   &DrawUtility::inter12);
-
-Form locationForm({STARTING_POSITION.x,
-                   STARTING_POSITION.y + BUTTON_DIMENSION.y + BUTTON_DISTANCE.y,
-                   FORM_DIMENSION.x, FORM_DIMENSION.y},
-                  &BUTTON_SET_1);
-Form valueForm({STARTING_POSITION.x + BUTTON_DIMENSION.x + BUTTON_DISTANCE.x,
-                STARTING_POSITION.y + BUTTON_DIMENSION.y + BUTTON_DISTANCE.y,
-                FORM_DIMENSION.x, FORM_DIMENSION.y},
-               &BUTTON_SET_1);
-
-bool enabled = false;
-void render() {
-    setToggle(enabled);
-    if (!enabled) return;
-    
-    DrawRectangle(STARTING_POSITION.x - 10, STARTING_POSITION.y - 10,
-                  BUTTON_DIMENSION.x * 2 + 20 + BUTTON_DISTANCE.x,
-                  FORM_DIMENSION.y * 2 + 20 + BUTTON_DISTANCE.y,
-                  *MENU_BACKGROUND);
-
-    addEndButton.render();
-    addAtButton.render();
-    locationForm.render();
-    valueForm.render();
-    // * Render necessary text
-
-    Vector2 textLocationPos = locationForm.getPosition();
-    textLocationPos.x += FORM_DIMENSION.x / 2;
-    textLocationPos.y -= 10;
-
-    Vector2 textValuePos = valueForm.getPosition();
-    textValuePos.x += FORM_DIMENSION.x / 2;
-    textValuePos.y -= 10;
-
-    DrawUtility::drawText("Location", textLocationPos, DrawUtility::inter16,
-                          BUTTON_SET_1.textNormal, 16, DrawUtility::SPACING,
-                          VerticalAlignment::CENTERED,
-                          HorizontalAlignment::CENTERED);
-    DrawUtility::drawText("Value", textValuePos, DrawUtility::inter16,
-                          BUTTON_SET_1.textNormal, 16, DrawUtility::SPACING,
-                          VerticalAlignment::CENTERED,
-                          HorizontalAlignment::CENTERED);
-}
-
-void toggle() { setToggle(!enabled); }
-
-void setToggle(bool state) {
-    enabled = state;
-    addEndButton.set(state);
-    addAtButton.set(state);
-    locationForm.set(state);
-    valueForm.set(state);
-}
-}  // namespace SLLScene::AddMenu
-namespace SLLScene::DeleteMenu {
-Button deleteEndButton(STARTING_POSITION, BUTTON_DIMENSION, "Delete at End", 12,
-                       &BUTTON_SET_1, &DrawUtility::inter12);
-
-Button deleteAtButton({STARTING_POSITION.x + BUTTON_DIMENSION.x +
-                           BUTTON_DISTANCE.x,
-                       STARTING_POSITION.y},
-                      BUTTON_DIMENSION, "Delete at Location", 12, &BUTTON_SET_1,
-                      &DrawUtility::inter12);
-
-Form locationForm({STARTING_POSITION.x,
-                   STARTING_POSITION.y + BUTTON_DIMENSION.y + BUTTON_DISTANCE.y,
-                   FORM_DIMENSION.x, FORM_DIMENSION.y},
-                  &BUTTON_SET_1);
-Form valueForm({STARTING_POSITION.x + BUTTON_DIMENSION.x + BUTTON_DISTANCE.x,
-                STARTING_POSITION.y + BUTTON_DIMENSION.y + BUTTON_DISTANCE.y,
-                FORM_DIMENSION.x, FORM_DIMENSION.y},
-               &BUTTON_SET_1);
-
-bool enabled = false;
-void render() {
-    setToggle(enabled);
-    if (!enabled) return;
-    DrawRectangle(STARTING_POSITION.x - 10, STARTING_POSITION.y - 10,
-                  BUTTON_DIMENSION.x * 2 + 20 + BUTTON_DISTANCE.x,
-                  FORM_DIMENSION.y * 2 + 20 + BUTTON_DISTANCE.y,
-                  *MENU_BACKGROUND);
-
-    deleteEndButton.render();
-    deleteAtButton.render();
-    locationForm.render();
-    valueForm.render();
-    // * Render necessary text
-
-    Vector2 textLocationPos = locationForm.getPosition();
-    textLocationPos.x += FORM_DIMENSION.x / 2;
-    textLocationPos.y -= 10;
-
-    Vector2 textValuePos = valueForm.getPosition();
-    textValuePos.x += FORM_DIMENSION.x / 2;
-    textValuePos.y -= 10;
-
-    DrawUtility::drawText("Location", textLocationPos, DrawUtility::inter16,
-                          BUTTON_SET_1.textNormal, 16, DrawUtility::SPACING,
-                          VerticalAlignment::CENTERED,
-                          HorizontalAlignment::CENTERED);
-    DrawUtility::drawText("Value", textValuePos, DrawUtility::inter16,
-                          BUTTON_SET_1.textNormal, 16, DrawUtility::SPACING,
-                          VerticalAlignment::CENTERED,
-                          HorizontalAlignment::CENTERED);
-}
-
-void toggle() { setToggle(!enabled); }
-
-void setToggle(bool state) {
-    enabled = state;
-    valueForm.set(state);
-    locationForm.set(state);
-    deleteAtButton.set(state);
-    deleteEndButton.set(state);
-}
-}  // namespace SLLScene::DeleteMenu
-
-namespace SLLScene::AlgorithmMenu {
-
-Button searchButton{STARTING_POSITION, BUTTON_DIMENSION,     "Search", 16,
-                    &BUTTON_SET_1,     &DrawUtility::inter16};
-
-Form valueForm{{STARTING_POSITION.x,
-                STARTING_POSITION.y + BUTTON_DIMENSION.y + BUTTON_DISTANCE.y,
-                FORM_DIMENSION.x, FORM_DIMENSION.y},
-               &BUTTON_SET_1};
-
-bool enabled = false;
-void recordInput() { valueForm.update(); }
-void render() {
-    setToggle(enabled);
-    if (!enabled) return;
-    DrawRectangle(
-        STARTING_POSITION.x - 10, STARTING_POSITION.y - 10,
-        20 + BUTTON_DIMENSION.x,
-        20 + BUTTON_DIMENSION.y + BUTTON_DISTANCE.y + FORM_DIMENSION.y,
-        *MENU_BACKGROUND);
-    searchButton.render();
-    valueForm.render();
-    Vector2 textPosition = valueForm.getPosition();
-    textPosition.x += FORM_DIMENSION.x / 2;
-    textPosition.y -= 10;
-    DrawUtility::drawText("Value", textPosition, DrawUtility::inter16,
-                          COLOR_SET_1.textNormal, 16, DrawUtility::SPACING,
-                          VerticalAlignment::CENTERED,
-                          HorizontalAlignment::CENTERED);
-}
-
-void toggle() { setToggle(!enabled); }
-
-void setToggle(bool state) {
-    enabled = state;
-    searchButton.set(state);
-    valueForm.set(state);
-}  // namespace SLLScene::AlgorithmMenu
-}
-
-namespace SLLScene::MiscMenu {
-    Button randomButton = {STARTING_POSITION, BUTTON_DIMENSION, "Random", 16, &BUTTON_SET_1, &DrawUtility::inter16};
-
-    Button saveButton = {{STARTING_POSITION.x, STARTING_POSITION.y + BUTTON_DIMENSION.y + BUTTON_DISTANCE.y}, BUTTON_DIMENSION, "Save", 16, &BUTTON_SET_1, &DrawUtility::inter16};
-    
-    Button loadButton = {{STARTING_POSITION.x, STARTING_POSITION.y + 2 * (BUTTON_DISTANCE.y + BUTTON_DIMENSION.y)}, BUTTON_DIMENSION, "Load", 16, &BUTTON_SET_1, &DrawUtility::inter16};
-
-    bool enabled = false;
-
-    void render() {
-        if (!enabled) return;
-        DrawRectangle(STARTING_POSITION.x - 10, STARTING_POSITION.y - 10, BUTTON_DIMENSION.x + 20, BUTTON_DIMENSION.y * 3 + BUTTON_DISTANCE.y * 2 + 20, *MENU_BACKGROUND);
-
-        randomButton.render();
-        saveButton.render();
-        loadButton.render();
-    }
-
-    void toggle() {setToggle(!enabled);};
-
-    void setToggle(bool state) {
-        enabled = state;
-        randomButton.set(state);
-        saveButton.set(state);
-        loadButton.set(state);
     }
 }

@@ -3,6 +3,7 @@
 #include "appMenu.h"
 #include "mainLoop.h"
 #include "utility.h"
+#include "menuPane.h"
 #include <deque>
 #include <vector>
 #include <string> 
@@ -13,58 +14,16 @@ namespace SLLScene {
         std::vector<std::string> const *highlightRef = nullptr;
     };
     
-    extern const Vector2 FORM_DIMENSION;
-    extern const Vector2 BUTTON_DIMENSION;
-    extern const Vector2 BUTTON_DISTANCE;
-    extern const Vector2 STARTING_POSITION;
-
-    extern const Color *MENU_BACKGROUND;
-    namespace AddMenu{
-
-        extern Button addEndButton;
-        extern Button addAtButton;
-        extern Form locationForm;
-        extern Form valueForm;
-        extern bool enabled;
-        void render();
-        void setToggle(bool state);
-        void toggle();
-    }
-    namespace DeleteMenu{
-
-        extern Button deleteEndButton;
-        extern Button deleteAtButton;
-        extern Form locationForm;
-        extern Form valueForm;
-        extern bool enabled;
-        void render();
-        void setToggle(bool state);
-        void toggle();
-    }
-
-    namespace AlgorithmMenu{
-        extern Button searchButton;
-        extern Form valueForm;
-        extern bool enabled;
-        void render();
-        void setToggle(bool state);
-        void toggle();
-    }
-
-    namespace MiscMenu{
-        extern Button randomButton;
-        extern Button saveButton;
-        extern Button loadButton;
-        extern bool enabled;
-        void render();
-        void setToggle(bool state);
-        void toggle();
-    }
+    
     extern float stepDelay;
     extern float timeLeft;
     extern SLL sll;
     extern int highlightedRow;
-
+    extern const Vector2 STARTING_PANE_POSITION;
+    extern MenuPane addPane;
+    extern MenuPane deletePane;
+    extern MenuPane algoPane;
+    extern MenuPane miscPane;
     extern const Rectangle CANVAS;
     extern float animationRate;
     extern std::deque<SLLStorage> steps;

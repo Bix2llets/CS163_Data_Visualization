@@ -3,7 +3,7 @@
 const Vector2 MenuPane::BUTTON_DIMENSION = {100, 20};
 const Vector2 MenuPane::ELEMENT_DISTANCE = {30, 30};
 const Vector2 MenuPane::FORM_DIMENSION = {100, 20};
-const Vector2 MenuPane::EDGE_OFFSET = {15, 25};
+const Vector2 MenuPane::EDGE_OFFSET = {5, 25};
 
 void MenuPane::set(bool newState) {
     enabled = newState;
@@ -39,7 +39,7 @@ void MenuPane::render() {
 
     // DrawRectangleV(STARTING_POSITION, backgroundDimension, *background);
 
-    DrawRectangleRounded({STARTING_POSITION.x, STARTING_POSITION.y, backgroundDimension.x, backgroundDimension.y}, 0.1f, 10, *background);
+    DrawRectangleRounded({STARTING_POSITION.x, STARTING_POSITION.y, backgroundDimension.x, backgroundDimension.y}, 0.3f, 10, *background);
     // * Rendering buttons
 
     for (Button &button : btnList) button.render();
