@@ -42,7 +42,7 @@ namespace mLib
     }
     extern Font mFont;
     extern int row;
-    extern Texture2D diceTexture[6], dice;
+    extern Texture2D diceTexture[6], dice, pause, play, prev, next, forward, backward, expand, collapse;
     inline void Init() {
         mFont = LoadFontEx("assets/Inter-Black.ttf", 30, nullptr, 0);
         row = -1;
@@ -53,6 +53,14 @@ namespace mLib
         diceTexture[4] = LoadTexture("assets/dice/5_dots.png");
         diceTexture[5] = LoadTexture("assets/dice/6_dots.png");
         dice = LoadTexture("assets/dice/dice.png");
+        pause = LoadTexture("assets/animationButtom/pause.png");
+        play = LoadTexture("assets/animationButtom/play.png");
+        prev = LoadTexture("assets/animationButtom/prev.png");
+        next = LoadTexture("assets/animationButtom/next.png");
+        forward = LoadTexture("assets/animationButtom/forward.png");
+        backward = LoadTexture("assets/animationButtom/backward.png");
+        expand = LoadTexture("assets/animationButtom/expand.png");
+        collapse = LoadTexture("assets/animationButtom/collapse.png");
     }
     extern const std::vector<std::string> TrieInsert;
     extern const std::vector<std::string> TrieSearch;

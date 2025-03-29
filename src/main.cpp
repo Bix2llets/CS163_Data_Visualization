@@ -103,6 +103,15 @@ int main() {
     GraphScene::addEdge(7, 6, rand());
     GraphScene::addEdge(7, 2, rand());
 
+    Button *object = new Button(MenuTable::optionPosition, MenuTable::optionDimension, "Create", 20, AppMenu::buttonPalette);
+    MenuTable::pack(object, MenuTable::CREATE);
+    object = new Button(MenuTable::optionPosition, MenuTable::optionDimension, "Edge Insert", 20, AppMenu::buttonPalette);
+    MenuTable::pack(object, MenuTable::EdgeInsert);
+    object = new Button(MenuTable::optionPosition, MenuTable::optionDimension, "Num Insert", 20, AppMenu::buttonPalette);
+    MenuTable::pack(object, MenuTable::NumInsert);
+    object = new Button(MenuTable::optionPosition, MenuTable::optionDimension, "Text Insert", 20, AppMenu::buttonPalette);
+    MenuTable::pack(object, MenuTable::TextInsert);
+
     // GraphScene::addStep();
     // for (int i = 0; i <= 10; i++)
     // for (int j = 0; j <= 20; j++)
