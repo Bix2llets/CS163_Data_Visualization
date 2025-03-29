@@ -112,13 +112,13 @@ int main() {
     //     GraphScene::addEdgeAdd(0, i, i);
     while (!WindowShouldClose()) {
         // Update goes here
-        // Loop::registerInput();
-        // Loop::update();
+        Loop::registerInput();
+        Loop::update();
         // Render goes here
         BeginDrawing();
         ClearBackground(backgroundColor);
-        pane.render();
-        // Loop::render();
+        // pane.render();
+        Loop::render();
         EndDrawing();
     }
 
