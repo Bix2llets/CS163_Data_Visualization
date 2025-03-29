@@ -3,6 +3,7 @@
 #include "button.h"
 #include "form.h"
 #include "toggleable.h"
+#include "assert.h"
 class MenuPane : public Toggleable {
     std::vector<Button> btnList;
     std::vector<std::vector<Form>> formList;
@@ -16,8 +17,8 @@ class MenuPane : public Toggleable {
     Color const* background;
     ColorSet const* buttonPalette;
     ColorSet const* formPalette;
-
-   public:
+    
+    public:
     MenuPane(Vector2 STARTING_POSITION, Color const* background,
              ColorSet const* buttonPalette, ColorSet const* formPalette)
         : STARTING_POSITION{STARTING_POSITION},
@@ -35,5 +36,7 @@ class MenuPane : public Toggleable {
     Form& getForm(int row, int col);
     Button& getButton(int row);
 
+    void newLine(int row, int numberOfForms, const std::string &buttonLabel, const std::vector<std::string> &titleList);
     void render();
+
 };

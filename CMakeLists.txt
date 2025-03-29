@@ -34,6 +34,7 @@ add_executable(
     
     src/GUI/welcomeMenu.cpp
     src/GUI/appMenu.cpp
+    src/GUI/menuPane.cpp
     
     src/mLib/Utility.cpp 
     src/mLib/tinyfiledialogs.cpp
