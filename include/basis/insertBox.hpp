@@ -37,6 +37,14 @@ class InsertBox {
             return form.getText();
         };
         std::string handleInput();
+
+        void setPosition(Vector2 position) {
+            this->position = position;
+            textBox.setPosition({position.x, position.y});
+            form.setPosition({position.x + dimension.x / 2, position.y});
+            RanButton.setPosition({position.x + dimension.x / 2 + dimension.y, position.y});
+            submitButton.setPosition({position.x + dimension.x / 2 + dimension.y * 2, position.y});
+        };
 };
 
 #endif // INSERTBOX_HPP

@@ -55,7 +55,7 @@ class Button : public GUIObject, public Toggleable {
 
     bool isPressed() const;
     bool isHovered() const;    
-    void changeOpen() { open = !open; }
+    void changeOpen() { open = 1 - open; }
    bool isOpen() const { return open; }
    void setPosition(Vector2 position) { this->position = position; }
    void setDimension(Vector2 dimension) { this->dimension = dimension; }

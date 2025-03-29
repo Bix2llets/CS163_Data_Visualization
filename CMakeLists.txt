@@ -31,6 +31,7 @@ add_executable(
     src/basis/diceButton.cpp
     src/basis/insertBox.cpp
     src/basis/edgeInsertBox.cpp
+    src/basis/textureButton.cpp
 
     src/animation/animation.cpp
     # src/animation/arrow.cpp
@@ -39,6 +40,7 @@ add_executable(
     src/GUI/welcomeMenu.cpp
     src/GUI/appMenu.cpp
     src/GUI/menuPane.cpp
+    src/GUI/menu.cpp
     
     src/mLib/Utility.cpp 
     src/mLib/tinyfiledialogs.cpp
