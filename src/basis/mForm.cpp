@@ -3,7 +3,7 @@
 #include <iostream>
 
 void mForm::recordKeyboard() {
-    std::cout << "Recording keyboard" << ' '<< mode << '\n';
+    std::cout << "Recording keyboard" << ' ' << mode << '\n';
     if (!isFocusedOn) return;
     if (IsKeyPressed(KEY_BACKSPACE)) {
         text = text.substr(0, text.length() - 1);
@@ -29,11 +29,14 @@ void mForm::recordKeyboard() {
     std::string newText = text + chr;
     if (newText.size() > maxSize) return;
     if ('0' <= chr && chr <= '9' && mode == 1) return;
-    if ((('a' <= chr && chr <= 'z') || ('A' <= chr && chr <= 'Z')) && mode == 0) return;
+    if ((('a' <= chr && chr <= 'z') || ('A' <= chr && chr <= 'Z')) && mode == 0)
+        return;
     if (mode == 1) chr = toupper(chr);
-    Vector2 newDimension = MeasureTextEx(DrawUtility::inter20, newText.c_str(), DrawUtility::NORMAL_SIZE, DrawUtility::SPACING); 
+    Vector2 newDimension =
+        MeasureTextEx(DrawUtility::inter20, newText.c_str(),
+                      DrawUtility::NORMAL_SIZE, DrawUtility::SPACING);
 
     if (newDimension.x > width - LEFT_MARGIN - RIGHT_MARGIN) return;
-    
+
     text = text + chr;
 }

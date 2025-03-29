@@ -107,6 +107,27 @@ void Constructor(Vector2 _optionPosition = {10, 600},
     showMenuFlag = false, requestClear = false, requestImport = false,
     requestRandom = false, inAnimationProcess = false, isPlaying = true;
     GUIObjects = {};
+    GuiSetStyle(SLIDER, BORDER_COLOR_NORMAL,
+                ColorToInt(AppMenu::buttonPalette->borderNormal));
+    GuiSetStyle(SLIDER, BORDER_COLOR_FOCUSED,
+                ColorToInt(AppMenu::buttonPalette->borderNormal));
+    GuiSetStyle(SLIDER, BORDER_COLOR_PRESSED,
+                ColorToInt(AppMenu::buttonPalette->borderNormal));
+    GuiSetStyle(SLIDER, BORDER_WIDTH, 2);
+    GuiSetStyle(SLIDER, BASE_COLOR_NORMAL,
+                ColorToInt(AppMenu::buttonPalette->backgroundNormal));
+    GuiSetStyle(SLIDER, BASE_COLOR_FOCUSED,
+                ColorToInt(AppMenu::buttonPalette->backgroundHighlight));
+    GuiSetStyle(SLIDER, BASE_COLOR_PRESSED,
+                ColorToInt(AppMenu::buttonPalette->backgroundHighlight));
+    GuiSetStyle(SLIDER, TEXT_COLOR_NORMAL,
+                ColorToInt(AppMenu::buttonPalette->textNormal));
+    GuiSetStyle(SLIDER, TEXT_COLOR_FOCUSED,
+                ColorToInt(AppMenu::buttonPalette->textHighlight));
+    GuiSetStyle(SLIDER, TEXT_COLOR_PRESSED,
+                ColorToInt(AppMenu::buttonPalette->textHighlight));
+    GuiSetStyle(DEFAULT, TEXT_SIZE, DrawUtility::NORMAL_SIZE);
+    GuiSetFont(DrawUtility::inter20);
 }
 
 void init() {
@@ -183,27 +204,6 @@ void render() {
     prevButton.render();
     nextButton.render();
     ///* Slider bar **/
-    GuiSetStyle(SLIDER, BORDER_COLOR_NORMAL,
-                ColorToInt(AppMenu::buttonPalette->borderNormal));
-    GuiSetStyle(SLIDER, BORDER_COLOR_FOCUSED,
-                ColorToInt(AppMenu::buttonPalette->borderNormal));
-    GuiSetStyle(SLIDER, BORDER_COLOR_PRESSED,
-                ColorToInt(AppMenu::buttonPalette->borderNormal));
-    GuiSetStyle(SLIDER, BORDER_WIDTH, 2);
-    GuiSetStyle(SLIDER, BASE_COLOR_NORMAL,
-                ColorToInt(AppMenu::buttonPalette->backgroundNormal));
-    GuiSetStyle(SLIDER, BASE_COLOR_FOCUSED,
-                ColorToInt(AppMenu::buttonPalette->backgroundHighlight));
-    GuiSetStyle(SLIDER, BASE_COLOR_PRESSED,
-                ColorToInt(AppMenu::buttonPalette->backgroundHighlight));
-    GuiSetStyle(SLIDER, TEXT_COLOR_NORMAL,
-                ColorToInt(AppMenu::buttonPalette->textNormal));
-    GuiSetStyle(SLIDER, TEXT_COLOR_FOCUSED,
-                ColorToInt(AppMenu::buttonPalette->textHighlight));
-    GuiSetStyle(SLIDER, TEXT_COLOR_PRESSED,
-                ColorToInt(AppMenu::buttonPalette->textHighlight));
-    GuiSetStyle(DEFAULT, TEXT_SIZE, DrawUtility::NORMAL_SIZE);
-    GuiSetFont(DrawUtility::inter20);
     ///
 
     GuiSliderBar(

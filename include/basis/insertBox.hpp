@@ -1,50 +1,65 @@
 #ifndef INSERTBOX_HPP
 #define INSERTBOX_HPP
 #include "diceButton.hpp"
-#include "textbox.h"
 #include "mForm.h"
+#include "textbox.h"
 
 class InsertBox {
-    private:
-        TextBox textBox;
-        mForm form;
-        DiceButton RanButton;
-        Button submitButton;
-        bool mode; // 0 for num, 1 for text
-        int maxSize;
-        Vector2 position, dimension;
-    public:
-        InsertBox (Vector2 position, Vector2 dimension, int fontSize = 20, ColorSet const* palette = &BUTTON_SET_1, bool mode = 0, int maxSize = 100)
-            : textBox{{position.x, position.y, dimension.x / 2, dimension.y}, palette, &DrawUtility::inter20, mode == 0 ? "Num: " : "Text: "},
-              form{{position.x + dimension.x / 2, position.y, dimension.x, dimension.y}, palette, mode, maxSize},
-              RanButton{(Vector2){position.x + dimension.x / 2 + dimension.x, position.y}, (Vector2){dimension.y, dimension.y}, palette}, 
-              submitButton{(Vector2){position.x + dimension.x / 2 + dimension.x + dimension.y, position.y}, (Vector2){dimension.y, dimension.y}, "Enter", fontSize, palette}, 
-              mode(mode), 
-              maxSize(maxSize), 
-                position(position),
-                dimension(dimension) {
-              };
-        std::string render() {
-            std::string inform = handleInput();
-            form.render();
-            textBox.render();
-            RanButton.render();
-            submitButton.render();
-            std::cout << "request inform" << inform << std::endl;
-            return inform;
-        };
-        std::string getText() {
-            return form.getText();
-        };
-        std::string handleInput();
+   private:
+    TextBox textBox;
+    mForm form;
+    DiceButton RanButton;
+    Button submitButton;
+    bool mode;  // 0 for num, 1 for text
+    int maxSize;
+    Vector2 position, dimension;
 
-        void setPosition(Vector2 position) {
-            this->position = position;
-            textBox.setPosition({position.x, position.y});
-            form.setPosition({position.x + dimension.x / 2, position.y});
-            RanButton.setPosition({position.x + dimension.x / 2 + dimension.y, position.y});
-            submitButton.setPosition({position.x + dimension.x / 2 + dimension.y * 2, position.y});
-        };
+   public:
+    InsertBox(Vector2 position, Vector2 dimension, int fontSize = 20,
+              ColorSet const* palette = &BUTTON_SET_1, bool mode = 0,
+              int maxSize = 100)
+        : textBox{{position.x, position.y, dimension.x / 2, dimension.y},
+                  palette,
+                  &DrawUtility::inter20,
+                  mode == 0 ? "Num: " : "Text: "},
+          form{{position.x + dimension.x / 2, position.y, dimension.x,
+                dimension.y},
+               palette,
+               mode,
+               maxSize},
+          RanButton{
+              (Vector2){position.x + dimension.x / 2 + dimension.x, position.y},
+              (Vector2){dimension.y, dimension.y}, palette},
+          submitButton{(Vector2){position.x + dimension.x / 2 + dimension.x +
+                                     dimension.y,
+                                 position.y},
+                       (Vector2){dimension.y, dimension.y}, "Enter", fontSize,
+                       palette},
+          mode(mode),
+          maxSize(maxSize),
+          position(position),
+          dimension(dimension) {};
+    std::string render() {
+        std::string inform = handleInput();
+        form.render();
+        textBox.render();
+        RanButton.render();
+        submitButton.render();
+        std::cout << "request inform" << inform << std::endl;
+        return inform;
+    };
+    std::string getText() { return form.getText(); };
+    std::string handleInput();
+
+    void setPosition(Vector2 position) {
+        this->position = position;
+        textBox.setPosition({position.x, position.y});
+        form.setPosition({position.x + dimension.x / 2, position.y});
+        RanButton.setPosition(
+            {position.x + dimension.x / 2 + dimension.y, position.y});
+        submitButton.setPosition(
+            {position.x + dimension.x / 2 + dimension.y * 2, position.y});
+    };
 };
 
-#endif // INSERTBOX_HPP
+#endif  // INSERTBOX_HPP
