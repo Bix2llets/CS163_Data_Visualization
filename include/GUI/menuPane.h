@@ -5,15 +5,20 @@
 #include "form.h"
 #include "toggleable.h"
 #include "assert.h"
+#include "diceButton.hpp"
 class MenuPane : public Toggleable {
     std::vector<Button> btnList;
     std::vector<std::vector<Form>> formList;
     std::vector<std::vector<std::string>> formTitleList;
-
+    std::vector<bool> haveRandom;
+    std::vector<DiceButton> diceButton;
+    
     static const Vector2 FORM_DIMENSION;
     static const Vector2 BUTTON_DIMENSION;
     static const Vector2 ELEMENT_DISTANCE;
     static const Vector2 EDGE_OFFSET;
+    static const Vector2 RANDOM_DIMENSION;
+    
     const Vector2 STARTING_POSITION;
     Color const* background;
     ColorSet const* buttonPalette;
@@ -37,7 +42,7 @@ class MenuPane : public Toggleable {
     Form& getForm(int row, int col);
     Button& getButton(int row);
 
-    void newLine(int row, int numberOfForms, const std::string &buttonLabel, const std::vector<std::string> &titleList);
+    void newLine(int row, int numberOfForms, const std::string &buttonLabel, const std::vector<std::string> &titleList, bool haveRandom = false);
     void render();
 
 };

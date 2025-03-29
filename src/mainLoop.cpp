@@ -142,7 +142,7 @@ void render() {
         AppMenu::render();
         if (renderFunc) renderFunc();
     }
-    edgeBox.render();
+    // edgeBox.render();
 }
 
 }  // namespace Loop

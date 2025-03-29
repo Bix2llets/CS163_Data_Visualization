@@ -22,12 +22,14 @@ void Form::render() {
         groundColor = PALETTE->backgroundNormal;
         borderColor = PALETTE->borderNormal;
     }
-    Rectangle drawInfo = {position.x - BORDER_OFFSET, position.y - BORDER_OFFSET, width + 2 * BORDER_OFFSET, height + 2 * BORDER_OFFSET};
-    DrawRectangle(drawInfo.x, drawInfo.y, drawInfo.width, drawInfo.height, groundColor);
+    Rectangle drawInfo = {position.x - BORDER_OFFSET,
+                          position.y - BORDER_OFFSET, width + 2 * BORDER_OFFSET,
+                          height + 2 * BORDER_OFFSET};
+    DrawRectangle(drawInfo.x, drawInfo.y, drawInfo.width, drawInfo.height,
+                  groundColor);
     DrawRectangleLinesEx(drawInfo, 2 * BORDER_OFFSET, borderColor);
     DrawUtility::drawText(textRender, textPosition, DrawUtility::inter16,
-                          textColor, 16,
-                          DrawUtility::SPACING,
+                          textColor, 16, DrawUtility::SPACING,
                           VerticalAlignment::CENTERED,
                           HorizontalAlignment::LEFT);
 }
@@ -55,19 +57,23 @@ void Form::recordKeyboard() {
 
     if (chr == '\0') return;
     std::string newText = text + chr;
-    Vector2 newDimension = MeasureTextEx(DrawUtility::inter16, newText.c_str(), 16, DrawUtility::SPACING); 
+    Vector2 newDimension = MeasureTextEx(DrawUtility::inter16, newText.c_str(),
+                                         16, DrawUtility::SPACING);
 
     if (newDimension.x > width - LEFT_MARGIN - RIGHT_MARGIN) return;
-    
+
     text = text + chr;
     // std::cerr << chr << " " << text << "\n";
 }
 void Form::recordFocus() {
-    if (!enabled) {isFocusedOn = false; return;}
+    if (!enabled) {
+        isFocusedOn = false;
+        return;
+    }
     if (!IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) return;
     Vector2 mousePosition = GetMousePosition();
-    if (CheckCollisionPointRec(mousePosition,
-                               {position.x + 1, position.y + 1, width - 1, height - 1}))
+    if (CheckCollisionPointRec(mousePosition, {position.x + 1, position.y + 1,
+                                               width - 1, height - 1}))
         isFocusedOn = true;
     else
         isFocusedOn = false;
@@ -84,13 +90,12 @@ void Form::update() {
 std::pair<bool, int> Form::getValue() {
     if (text.size() > 8) return {0, 0};
     if (text.size() == 0) return {0, 0};
-    for (char chr: text) if (chr < '0' || '9' < chr) return {0, 0};
+    for (char chr : text)
+        if (chr < '0' || '9' < chr) return {0, 0};
     return {1, std::stoi(text)};
 }
 
-void Form::clear() {
-    text = "";
-}
+void Form::clear() { text = ""; }
 
 void Form::disable() {
     deFocus();
@@ -98,7 +103,10 @@ void Form::disable() {
 }
 
 void Form::set(bool newState) {
-    if (newState == false) 
+    if (newState == false)
         disable();
-    else enable();
+    else
+        enable();
 }
+
+void Form::setText(std::string newText) { text = newText; }

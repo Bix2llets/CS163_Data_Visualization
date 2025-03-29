@@ -2,8 +2,9 @@
 
 const Vector2 MenuPane::BUTTON_DIMENSION = {100, 20};
 const Vector2 MenuPane::ELEMENT_DISTANCE = {30, 30};
-const Vector2 MenuPane::FORM_DIMENSION = {100, 20};
-const Vector2 MenuPane::EDGE_OFFSET = {5, 25};
+const Vector2 MenuPane::FORM_DIMENSION = {75, 20};
+const Vector2 MenuPane::EDGE_OFFSET = {8, 25};
+const Vector2 MenuPane::RANDOM_DIMENSION = {30, 30};
 
 void MenuPane::set(bool newState) {
     enabled = newState;
@@ -30,12 +31,14 @@ void MenuPane::render() {
                           std::max(BUTTON_DIMENSION.y, FORM_DIMENSION.y)) -
         ELEMENT_DISTANCE.y;
 
-    int maxForm = 0;
-    for (auto &formRow : formList)
-        maxForm = std::max(maxForm, int(formRow.size()));
+    float totalBehind = 0;
+
+    for (int i = 0; i < formList.size(); i++) {
+        totalBehind = std::max(totalBehind, haveRandom[i] * (RANDOM_DIMENSION.x + ELEMENT_DISTANCE.x) + formList[i].size() * (FORM_DIMENSION.x + ELEMENT_DISTANCE.x));
+    }
 
     backgroundDimension.x += BUTTON_DIMENSION.x;
-    backgroundDimension.x += (FORM_DIMENSION.x + ELEMENT_DISTANCE.x) * maxForm;
+    backgroundDimension.x += totalBehind;
 
     // DrawRectangleV(STARTING_POSITION, backgroundDimension, *background);
 
@@ -57,15 +60,21 @@ void MenuPane::render() {
 
             DrawUtility::drawText(str, drawingCoordinate, DrawUtility::inter16, formPalette->textNormal, 16, DrawUtility::SPACING, VerticalAlignment::CENTERED, HorizontalAlignment::CENTERED);
         }
+
+    for (int row = 0; row < diceButton.size(); row++) {
+        if (haveRandom[row]) diceButton[row].render();
+    }
 }
 
 void MenuPane::newLine(int row, int numberOfForms,
                        const std::string &buttonLabel,
-                       const std::vector<std::string> &titleList) {
+                       const std::vector<std::string> &titleList, bool isRandom) {
     if (row + 1 > btnList.size()) {
         btnList.resize(row + 1);
         formList.resize(row + 1);
         formTitleList.resize(row + 1);
+        haveRandom.resize(row + 1);
+        diceButton.resize(row + 1);
     }
 
     formList[row].clear();
@@ -90,6 +99,20 @@ void MenuPane::newLine(int row, int numberOfForms,
             formTitleList[row].push_back(titleList[i]);
         else
             formTitleList[row].push_back("");
+    }
+
+    if (isRandom) {
+        haveRandom[row] = true;
+        Vector2 dicePosition = Vector2Add(STARTING_POSITION, EDGE_OFFSET);
+        float offset = (RANDOM_DIMENSION.y - BUTTON_DIMENSION.y) / 2; 
+        dicePosition.x -= offset;
+        dicePosition.y -= offset;
+        dicePosition.y += row * (std::max(BUTTON_DIMENSION.y, FORM_DIMENSION.y) + ELEMENT_DISTANCE.y);
+        dicePosition.x += BUTTON_DIMENSION.x + ELEMENT_DISTANCE.x + formList[row].size() * (ELEMENT_DISTANCE.x + FORM_DIMENSION.x);
+        diceButton[row] = DiceButton(dicePosition, {RANDOM_DIMENSION.x, RANDOM_DIMENSION.y}, &BUTTON_SET_1);
+    }
+    else {
+        haveRandom[row] = false;
     }
 }
 

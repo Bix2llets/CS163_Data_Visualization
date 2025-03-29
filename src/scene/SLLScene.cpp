@@ -33,12 +33,12 @@ const std::vector<std::string> SLLScene::PSEUDO_SEARCH = {
 };
 void SLLScene::init() {
     steps.push_front({sll, -1});
-    addPane.disable();
+    addPane.enable();
     algoPane.disable();
     miscPane.disable();
     deletePane.disable();
-    addPane.newLine(0, 2, "Add", {"Value", "Location"});
-    deletePane.newLine(0, 2, "Remove", {"Value", "Location"});
+    addPane.newLine(0, 2, "Add", {"Value", "Location"}, true);
+    deletePane.newLine(0, 2, "Remove", {"Value", "Location"}, true);
     algoPane.newLine(0, 1, "Search", {"Value"});
     miscPane.newLine(0, 0, "Save", {});
     miscPane.newLine(1, 0, "Load", {});

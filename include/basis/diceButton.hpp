@@ -5,23 +5,16 @@
 #include <mLib/Utility.hpp>
 #include <cassert>
 
-class DiceButton{
+class DiceButton : public Button{
     private:
-        Button button;
         float Timer;
         int loop;
-        Vector2 position;
-        Vector2 dimension;
     public:
-    DiceButton(Vector2 position, Vector2 dimension, std::string text = "",
-        int fontSize = 20, ColorSet const *palette = &BUTTON_SET_1)
-     : button{position, dimension, text, fontSize,
-              palette}, Timer{0}, loop{0}, position{position}, dimension{dimension} {
+    DiceButton(Vector2 position = {0, 0}, Vector2 dimension = {0, 0}, ColorSet const *palette = &BUTTON_SET_1)
+     : Button{position, dimension, "", 0,
+              palette}, Timer{0}, loop{0} {
               };
-    void setDimension(Vector2 dimension);
-    void setPosition(Vector2 position);
     void render();
-    bool isPressed() const;
 };
 
 #endif // DICEBUTTON_HPP

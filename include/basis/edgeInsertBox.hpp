@@ -16,8 +16,8 @@ class edgeInsertBox {
 
    public:
     edgeInsertBox(Vector2 position, Vector2 dimension, int fontSize = 20,
-                  ColorSet const *palette = &BUTTON_SET_1, bool mode = 0, int maxSize = 100,
-                  int maxSizeW = 100)
+                  ColorSet const *palette = &BUTTON_SET_1, bool mode = 0,
+                  int maxSize = 100, int maxSizeW = 100)
         : textBoxU{{position.x, position.y, dimension.x / 2, dimension.y},
                    palette,
                    &DrawUtility::inter20,
@@ -49,7 +49,7 @@ class edgeInsertBox {
                 maxSizeW},
           RanButton{
               (Vector2){position.x + dimension.x / 2 + dimension.x, position.y},
-              (Vector2){dimension.y, dimension.y}, "", fontSize, palette},
+              (Vector2){dimension.y, dimension.y}, palette},
           submitButton{(Vector2){position.x + dimension.x / 2 + dimension.x +
                                      dimension.y,
                                  position.y},
