@@ -1,26 +1,27 @@
 // Include necessary libraries and headers
 #define RAYGUI_IMPLEMENTATION
-#include "colorPalette.h"
-#include "GraphScene.h"
-#include "TrieState.hpp"
+#include <cmath>
+#include <cstdlib>
+#include <iostream>
+#include <mLib/Utility.hpp>
+#include <queue>
+#include <string>
+#include <unordered_map>
+#include <vector>
+
 #include "AVLState.hpp"
+#include "GraphScene.h"
+#include "MenuPane.h"
+#include "TrieState.hpp"
 #include "appMenu.h"
-#include "hashState.hpp"
+#include "colorPalette.h"
 #include "form.h"
+#include "hashState.hpp"
 #include "mainLoop.h"
 #include "raygui.h"
 #include "singlyLInkedList.h"
 #include "utility.h"
 #include "welcomeMenu.h"
-#include <mLib/Utility.hpp>
-#include "MenuPane.h"
-#include <cmath>
-#include <cstdlib>
-#include <iostream>
-#include <queue>
-#include <string>
-#include <unordered_map>
-#include <vector>
 
 // Constants
 const int SCREEN_WIDTH = 1366;
@@ -44,35 +45,59 @@ hashState _hashState;
 using namespace ColorPalette::FlatUI;
 using namespace ColorPalette;
 
-ColorSet elementTheme = {
-    WET_ASPHALT, MIDNIGHT_BLUE, CLOUDS, ASBESTOS,
-    DrawUtility::EDGE_NORMAL, DrawUtility::EDGE_HIGHLIGHTED
-};
+ColorSet elementTheme = {WET_ASPHALT,
+                         MIDNIGHT_BLUE,
+                         CLOUDS,
+                         ASBESTOS,
+                         DrawUtility::EDGE_NORMAL,
+                         DrawUtility::EDGE_HIGHLIGHTED};
 
 Color backgroundColor = GBLight::BACKGROUND4;
 
 void raylibInit() {
     InitWindow(1600, 900, "CS163 Data visualizer");
     SetTargetFPS(60);
-    
+    DrawUtility::init();
+    GuiSetStyle(SLIDER, BORDER_COLOR_NORMAL,
+                ColorToInt(AppMenu::buttonPalette->borderNormal));
+    GuiSetStyle(SLIDER, BORDER_COLOR_FOCUSED,
+                ColorToInt(AppMenu::buttonPalette->borderNormal));
+    GuiSetStyle(SLIDER, BORDER_COLOR_PRESSED,
+                ColorToInt(AppMenu::buttonPalette->borderNormal));
+    GuiSetStyle(SLIDER, BORDER_WIDTH, 2);
+    GuiSetStyle(SLIDER, BASE_COLOR_NORMAL,
+                ColorToInt(AppMenu::buttonPalette->backgroundNormal));
+    GuiSetStyle(SLIDER, BASE_COLOR_FOCUSED,
+                ColorToInt(AppMenu::buttonPalette->backgroundHighlight));
+    GuiSetStyle(SLIDER, BASE_COLOR_PRESSED,
+                ColorToInt(AppMenu::buttonPalette->backgroundHighlight));
+    GuiSetStyle(SLIDER, TEXT_COLOR_NORMAL,
+                ColorToInt(AppMenu::buttonPalette->textNormal));
+    GuiSetStyle(SLIDER, TEXT_COLOR_FOCUSED,
+                ColorToInt(AppMenu::buttonPalette->textHighlight));
+    GuiSetStyle(SLIDER, TEXT_COLOR_PRESSED,
+                ColorToInt(AppMenu::buttonPalette->textHighlight));
+    GuiSetStyle(DEFAULT, TEXT_SIZE, DrawUtility::NORMAL_SIZE);
+    GuiSetFont(DrawUtility::inter20);
 }
 
 void loadSpecs() {
-    MenuTable::Constructor((Vector2){10, 650}, (Vector2){200, 50}, (Vector2){700, 750}, (Vector2){50, 50});
-    SLLScene::setPanePosition({MenuTable::showMenu.getPosition().x + MenuTable::showMenu.getDimension().x + 20 + MenuTable::basePane.getDimension().x, MenuTable::showMenu.getPosition().y});
+    MenuTable::Constructor((Vector2){10, 650}, (Vector2){200, 50},
+                           (Vector2){700, 750}, (Vector2){50, 50});
+    SLLScene::setPanePosition({MenuTable::showMenu.getPosition().x +
+                                   MenuTable::showMenu.getDimension().x + 20 +
+                                   MenuTable::basePane.getDimension().x,
+                               MenuTable::showMenu.getPosition().y});
     SLLScene::setDelay(0.05f);
     Animation::setUpdateRate(10.f);
     AnimationColor::setUpdateRate(1.f);
-    
 }
 
 void otherInit() {
-    mLib::Init();
     srand(time(NULL));
-    DrawUtility::init();
     AppMenu::init();
     SLLScene::init();
-
+    mLib::Init();
 }
 // Main function
 int main() {
@@ -80,18 +105,10 @@ int main() {
     raylibInit();
     loadSpecs();
     otherInit();
-    
 
     std::vector<std::string> exampleCode = {
-        "#include <iostream>",
-        "",
-        "using namespace std;",
-        "",
-        "int main()",
-        "{",
-        "    return 0;",
-        "}"
-    };
+        "#include <iostream>", "",  "using namespace std;", "",
+        "int main()",          "{", "    return 0;",        "}"};
     AppMenu::loadCode(exampleCode);
 
     GraphScene::addEdge(1, 2, rand());
@@ -108,15 +125,20 @@ int main() {
     GraphScene::addEdge(7, 6, rand());
     GraphScene::addEdge(7, 2, rand());
 
-    // Button *object = new Button(MenuTable::optionPosition, MenuTable::optionDimension, "Create", 20, AppMenu::buttonPalette);
+    // Button *object = new Button(MenuTable::optionPosition,
+    // MenuTable::optionDimension, "Create", 20, AppMenu::buttonPalette);
     // MenuTable::pack(object, MenuTable::CREATE);
-    // object = new Button(MenuTable::optionPosition, MenuTable::optionDimension, "Edge Insert", 20, AppMenu::buttonPalette);
+    // object = new Button(MenuTable::optionPosition,
+    // MenuTable::optionDimension, "Edge Insert", 20, AppMenu::buttonPalette);
     // MenuTable::pack(object, MenuTable::EdgeInsert);
-    // object = new Button(MenuTable::optionPosition, MenuTable::optionDimension, "Num Insert", 20, AppMenu::buttonPalette);
+    // object = new Button(MenuTable::optionPosition,
+    // MenuTable::optionDimension, "Num Insert", 20, AppMenu::buttonPalette);
     // MenuTable::pack(object, MenuTable::NumInsert);
-    // object = new Button(MenuTable::optionPosition, MenuTable::optionDimension, "Text Insert", 20, AppMenu::buttonPalette);
+    // object = new Button(MenuTable::optionPosition,
+    // MenuTable::optionDimension, "Text Insert", 20, AppMenu::buttonPalette);
     // MenuTable::pack(object, MenuTable::TextInsert);
-    // object = new Button(MenuTable::optionPosition, MenuTable::optionDimension, "MST", 20, AppMenu::buttonPalette);
+    // object = new Button(MenuTable::optionPosition,
+    // MenuTable::optionDimension, "MST", 20, AppMenu::buttonPalette);
     // MenuTable::pack(object, MenuTable::None);
     // GraphScene::addStep();
     // for (int i = 0; i <= 10; i++)

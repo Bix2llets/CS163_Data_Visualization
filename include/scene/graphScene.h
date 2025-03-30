@@ -3,7 +3,7 @@
 #include <queue>
 #include <set>
 #include <unordered_map>
-
+#include "menuPane.h"
 #include "graph/graph.h"
 
 namespace GraphScene {
@@ -60,6 +60,13 @@ const extern std::vector<std::string> PSEUDO_DIJKSTRA;
 
 extern std::set<int> nodeList;
 extern std::set<std::pair<std::pair<int, int>, int>> edgeList;
+
+extern MenuPane addPane;
+extern MenuPane deletePane;
+extern MenuPane algoPane;
+extern MenuPane storagePane;
+
+void setPanePosition(Vector2 position);
 
 void update();
 void render();
