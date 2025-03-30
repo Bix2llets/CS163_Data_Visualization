@@ -19,6 +19,10 @@ void checkForReturn() {
         currentScene = MAIN_MENU;
         updateFunc = nullptr;
         recordFunc = nullptr;
+        MenuTable::addPane = nullptr;
+        MenuTable::deletePane = nullptr;
+        MenuTable::algoPane = nullptr;
+        MenuTable::storagePane = nullptr;
     }
     
 }
@@ -58,6 +62,11 @@ void registerInput() {
             renderFunc = &SLLScene::render;
             updateFunc = &SLLScene::update;
             recordFunc = &SLLScene::recordInput;
+
+            MenuTable::addPane = &SLLScene::addPane;
+            MenuTable::deletePane = &SLLScene::deletePane;
+            MenuTable::algoPane = &SLLScene::algoPane;
+            MenuTable::storagePane = &SLLScene::miscPane;
             AppMenu::highlightValue = &SLLScene::highlightedRow;
         }
         if (WelcomeMenu::isTriePressed()) {

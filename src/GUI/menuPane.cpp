@@ -25,24 +25,10 @@ void MenuPane::render() {
     if (btnList.size() == 0) return;
 
     // * Drawing background
-    Vector2 backgroundDimension = Vector2Scale(EDGE_OFFSET, 2);
-    backgroundDimension.y +=
-        btnList.size() * (ELEMENT_DISTANCE.y +
-                          std::max(BUTTON_DIMENSION.y, FORM_DIMENSION.y)) -
-        ELEMENT_DISTANCE.y;
 
-    float totalBehind = 0;
+    // DrawRectangleV(position, backgroundDimension, *background);
 
-    for (int i = 0; i < formList.size(); i++) {
-        totalBehind = std::max(totalBehind, haveRandom[i] * (RANDOM_DIMENSION.x + ELEMENT_DISTANCE.x) + formList[i].size() * (FORM_DIMENSION.x + ELEMENT_DISTANCE.x));
-    }
-
-    backgroundDimension.x += BUTTON_DIMENSION.x;
-    backgroundDimension.x += totalBehind;
-
-    // DrawRectangleV(STARTING_POSITION, backgroundDimension, *background);
-
-    DrawRectangleRounded({STARTING_POSITION.x, STARTING_POSITION.y, backgroundDimension.x, backgroundDimension.y}, 0.3f, 10, *background);
+    DrawRectangleRounded({position.x, position.y, dimension.x, dimension.y}, 0.3f, 10, *background);
     // * Rendering buttons
 
     for (Button &button : btnList) button.render();
@@ -80,7 +66,7 @@ void MenuPane::newLine(int row, int numberOfForms,
     formList[row].clear();
     formTitleList[row].clear();
 
-    Vector2 startingPoint = Vector2Add(STARTING_POSITION, EDGE_OFFSET);
+    Vector2 startingPoint = Vector2Add(position, EDGE_OFFSET);
     startingPoint.y += row * (std::max(BUTTON_DIMENSION.y, FORM_DIMENSION.y) +
                               ELEMENT_DISTANCE.y);
     btnList[row] = Button(startingPoint, BUTTON_DIMENSION, buttonLabel, 16,
@@ -103,7 +89,7 @@ void MenuPane::newLine(int row, int numberOfForms,
 
     if (isRandom) {
         haveRandom[row] = true;
-        Vector2 dicePosition = Vector2Add(STARTING_POSITION, EDGE_OFFSET);
+        Vector2 dicePosition = Vector2Add(position, EDGE_OFFSET);
         float offset = (RANDOM_DIMENSION.y - BUTTON_DIMENSION.y) / 2; 
         dicePosition.x -= offset;
         dicePosition.y -= offset;
@@ -114,6 +100,22 @@ void MenuPane::newLine(int row, int numberOfForms,
     else {
         haveRandom[row] = false;
     }
+
+    dimension = Vector2Scale(EDGE_OFFSET, 2);
+    dimension.y +=
+        btnList.size() * (ELEMENT_DISTANCE.y +
+                          std::max(BUTTON_DIMENSION.y, FORM_DIMENSION.y)) -
+        ELEMENT_DISTANCE.y;
+
+    float totalBehind = 0;
+
+    for (int i = 0; i < formList.size(); i++) {
+        totalBehind = std::max(totalBehind, haveRandom[i] * (RANDOM_DIMENSION.x + ELEMENT_DISTANCE.x) + formList[i].size() * (FORM_DIMENSION.x + ELEMENT_DISTANCE.x));
+    }
+
+    dimension.x += BUTTON_DIMENSION.x;
+    dimension.x += totalBehind;
+
 }
 
 std::string MenuPane::getText(int row, int col) {
@@ -136,4 +138,8 @@ Form& MenuPane::getForm(int row, int col) {
 Button& MenuPane::getButton(int row) {
     assert(row < btnList.size());
     return btnList[row];
+}
+
+Vector2 MenuPane::getDimension() {
+    return dimension;
 }

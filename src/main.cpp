@@ -51,21 +51,36 @@ ColorSet elementTheme = {
 
 Color backgroundColor = GBLight::BACKGROUND4;
 
-// Main function
-int main() {
-    // Initialize Raylib and Raygui
+void raylibInit() {
     InitWindow(1600, 900, "CS163 Data visualizer");
     SetTargetFPS(60);
+    
+}
+
+void loadSpecs() {
+    MenuTable::Constructor((Vector2){10, 650}, (Vector2){200, 50}, (Vector2){700, 750}, (Vector2){50, 50});
+    SLLScene::setPanePosition({MenuTable::showMenu.getPosition().x + MenuTable::showMenu.getDimension().x + 20 + MenuTable::basePane.getDimension().x, MenuTable::showMenu.getPosition().y});
+    SLLScene::setDelay(0.05f);
+    Animation::setUpdateRate(10.f);
+    AnimationColor::setUpdateRate(1.f);
+    
+}
+
+void otherInit() {
     mLib::Init();
     srand(time(NULL));
     DrawUtility::init();
     AppMenu::init();
-    SLLScene::setSpecs(0.05f);
     SLLScene::init();
-    MenuTable::Constructor((Vector2){10, 650}, (Vector2){200, 50}, (Vector2){700, 750}, (Vector2){50, 50});
 
-    Animation::setUpdateRate(10.f);
-    AnimationColor::setUpdateRate(1.f);
+}
+// Main function
+int main() {
+    // Initialize Raylib and Raygui
+    raylibInit();
+    loadSpecs();
+    otherInit();
+    
 
     std::vector<std::string> exampleCode = {
         "#include <iostream>",
@@ -93,16 +108,16 @@ int main() {
     GraphScene::addEdge(7, 6, rand());
     GraphScene::addEdge(7, 2, rand());
 
-    Button *object = new Button(MenuTable::optionPosition, MenuTable::optionDimension, "Create", 20, AppMenu::buttonPalette);
-    MenuTable::pack(object, MenuTable::CREATE);
-    object = new Button(MenuTable::optionPosition, MenuTable::optionDimension, "Edge Insert", 20, AppMenu::buttonPalette);
-    MenuTable::pack(object, MenuTable::EdgeInsert);
-    object = new Button(MenuTable::optionPosition, MenuTable::optionDimension, "Num Insert", 20, AppMenu::buttonPalette);
-    MenuTable::pack(object, MenuTable::NumInsert);
-    object = new Button(MenuTable::optionPosition, MenuTable::optionDimension, "Text Insert", 20, AppMenu::buttonPalette);
-    MenuTable::pack(object, MenuTable::TextInsert);
-    object = new Button(MenuTable::optionPosition, MenuTable::optionDimension, "MST", 20, AppMenu::buttonPalette);
-    MenuTable::pack(object, MenuTable::None);
+    // Button *object = new Button(MenuTable::optionPosition, MenuTable::optionDimension, "Create", 20, AppMenu::buttonPalette);
+    // MenuTable::pack(object, MenuTable::CREATE);
+    // object = new Button(MenuTable::optionPosition, MenuTable::optionDimension, "Edge Insert", 20, AppMenu::buttonPalette);
+    // MenuTable::pack(object, MenuTable::EdgeInsert);
+    // object = new Button(MenuTable::optionPosition, MenuTable::optionDimension, "Num Insert", 20, AppMenu::buttonPalette);
+    // MenuTable::pack(object, MenuTable::NumInsert);
+    // object = new Button(MenuTable::optionPosition, MenuTable::optionDimension, "Text Insert", 20, AppMenu::buttonPalette);
+    // MenuTable::pack(object, MenuTable::TextInsert);
+    // object = new Button(MenuTable::optionPosition, MenuTable::optionDimension, "MST", 20, AppMenu::buttonPalette);
+    // MenuTable::pack(object, MenuTable::None);
     // GraphScene::addStep();
     // for (int i = 0; i <= 10; i++)
     // for (int j = 0; j <= 20; j++)

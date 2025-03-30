@@ -7,6 +7,7 @@
 #include "insertBox.hpp"
 #include "edgeInsertBox.hpp"
 #include "textureButton.hpp"
+#include "menuPane.h"
 #include <mLib/Utility.hpp>
 
 namespace MenuTable {
@@ -33,6 +34,11 @@ namespace MenuTable {
     extern bool showMenuFlag, requestClear, requestImport, requestRandom, inAnimationProcess, isPlaying;
     extern std::vector<std::pair<Button *, Type>> GUIObjects;
     extern int MaxSizeNum, MaxSizeText, MaxSizeWeight;
+    extern MenuPane basePane;
+    extern MenuPane* addPane;
+    extern MenuPane* deletePane;
+    extern MenuPane* algoPane;
+    extern MenuPane* storagePane;
     void Constructor(Vector2 _optionPosition, Vector2 _optionDimension, Vector2 _sliderBarPos, Vector2 _sliderBarDimension);
     void init();
     void render();

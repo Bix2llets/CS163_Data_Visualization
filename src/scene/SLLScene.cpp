@@ -44,7 +44,13 @@ void SLLScene::init() {
     miscPane.newLine(1, 0, "Load", {});
 
 }
-void SLLScene::setSpecs(float _stepDelay) { stepDelay = _stepDelay; }
+void SLLScene::setDelay(float _stepDelay) { stepDelay = _stepDelay; }
+void SLLScene::setPanePosition(Vector2 newPostion) {
+    deletePane.setPosition(newPostion);
+    addPane.setPosition(newPostion);
+    algoPane.setPosition(newPostion);
+    miscPane.setPosition(newPostion);
+}
 void SLLScene::addEnd(std::string data) {
     int place = 0;
     if (steps.size())

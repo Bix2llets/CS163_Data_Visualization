@@ -6,7 +6,7 @@
 #include "toggleable.h"
 #include "assert.h"
 #include "diceButton.hpp"
-class MenuPane : public Toggleable {
+class MenuPane : public Toggleable, public GUIObject {
     std::vector<Button> btnList;
     std::vector<std::vector<Form>> formList;
     std::vector<std::vector<std::string>> formTitleList;
@@ -19,15 +19,15 @@ class MenuPane : public Toggleable {
     static const Vector2 EDGE_OFFSET;
     static const Vector2 RANDOM_DIMENSION;
     
-    const Vector2 STARTING_POSITION;
     Color const* background;
     ColorSet const* buttonPalette;
     ColorSet const* formPalette;
+    Vector2 dimension;
     
     public:
     MenuPane(Vector2 STARTING_POSITION, Color const* background,
              ColorSet const* buttonPalette, ColorSet const* formPalette)
-        : STARTING_POSITION{STARTING_POSITION},
+        : GUIObject(STARTING_POSITION),
           background{background},
           buttonPalette{buttonPalette},
           formPalette{formPalette} {}
@@ -44,5 +44,6 @@ class MenuPane : public Toggleable {
 
     void newLine(int row, int numberOfForms, const std::string &buttonLabel, const std::vector<std::string> &titleList, bool haveRandom = false);
     void render();
+    Vector2 getDimension();
 
 };

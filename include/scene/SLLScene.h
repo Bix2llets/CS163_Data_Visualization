@@ -36,7 +36,7 @@ namespace SLLScene {
     // --------------------------
 
     extern ColorSet const *NODE_PALETTE;
-    void setSpecs(float _stepDelay = 0.5f);
+    void setDelay(float _stepDelay = 0.5f);
 
     void addEnd(std::string data);
 
@@ -67,6 +67,8 @@ namespace SLLScene {
     void init();
 
     void correctAnimation();
+
+    void setPanePosition(Vector2 newPosition);
 
 
 }
