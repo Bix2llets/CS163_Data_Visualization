@@ -215,20 +215,33 @@ void handleInput() {
         if (storagePane) storagePane->disable();
     }
     if (showMenuFlag) {
-        for (int i = 0; i < 4; i++)
-            if (basePane.getPressed(i)) {
-                if (addPane) addPane->disable();
-                if (deletePane) deletePane->disable();
-                if (algoPane) algoPane->disable();
-                if (storagePane) storagePane->disable();
-                if (basePane.getPressed(0) && addPane) addPane->enable();
-                if (basePane.getPressed(1) && deletePane) deletePane->enable();
-                if (basePane.getPressed(2) && algoPane) algoPane->enable();
-                if (basePane.getPressed(3) && storagePane)
-                    storagePane->enable();
+        if (basePane.getPressed(0) == true){
+            if (addPane) addPane->toggle();
+            if (deletePane) deletePane->disable();
+            if (algoPane) algoPane->disable();
+            if (storagePane) storagePane->disable();
+        }
+        if (basePane.getPressed(1) == true){
+            if (addPane) addPane->disable();
+            if (deletePane) deletePane->toggle();
+            if (algoPane) algoPane->disable();
+            if (storagePane) storagePane->disable();
+        }
+        if (basePane.getPressed(2) == true){
+            if (addPane) addPane->disable();
+            if (deletePane) deletePane->disable();
+            if (algoPane) algoPane->toggle();
+            if (storagePane) storagePane->disable();
+        }
+        if (basePane.getPressed(3) == true){
+            if (addPane) addPane->disable();
+            if (deletePane) deletePane->disable();
+            if (algoPane) algoPane->disable();
+            if (storagePane) storagePane->toggle();
+        }
 
-                break;
-            }
+
+
         // Button *object = nullptr;
         // Type type = None;
         // for (auto &obj : GUIObjects)
