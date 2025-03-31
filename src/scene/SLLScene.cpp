@@ -247,6 +247,10 @@ void SLLScene::recordInput() {
             AppMenu::loadCode(SLLScene::PSEUDO_DELETE);
         }
     }
+    if (deletePane.isRandomPressed(0)) {
+        std::string location = std::to_string(rand() % (sll.nodeCount + 1));
+        deletePane.getForm(0, 0).setText(location);
+    }
     if (algoPane.isButtonPressed(0)) {
         auto value = algoPane.getText(2, 0);
 
@@ -255,6 +259,10 @@ void SLLScene::recordInput() {
             AppMenu::loadCode(SLLScene::PSEUDO_SEARCH);
         }
     }
+    // if (algoPane.isRandomPressed(0)) {
+    //     auto value = rand() % 10000;
+    //     algoPane.getForm(0, 0).setText(std::to_string(value));
+    // }
 
     if (miscPane.isButtonPressed(0)) {
         // * Save
