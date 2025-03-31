@@ -95,7 +95,7 @@ void Graph::applyCentricForce() {
 
 void Graph::handleMouseEvents() {
     Vector2 mousePosition = GetMousePosition();
-    bool isMouseDown = IsMouseButtonDown(MOUSE_LEFT_BUTTON);
+    bool isMouseDown = IsMouseButtonPressed(MOUSE_LEFT_BUTTON);
     bool isMouseReleased = IsMouseButtonReleased(MOUSE_LEFT_BUTTON);
 
     for (auto &node : nodeList) {

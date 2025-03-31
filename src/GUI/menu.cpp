@@ -27,11 +27,11 @@ TextureBox forwardButton = TextureBox(
 TextureBox playButton = TextureBox(
     (Vector2){buttonPos.x + (buttonDimension.x + buttonDistance.x) * 2,
               buttonPos.y},
-    buttonDimension, (Rectangle){0, 0, 100, 100}, &mLib::play, &BUTTON_SET_1);
+    buttonDimension, (Rectangle){0, 0, 100, 100}, &mLib::pause, &BUTTON_SET_1);
 TextureBox pauseButton = TextureBox(
     (Vector2){buttonPos.x + (buttonDimension.x + buttonDistance.x) * 2,
               buttonPos.y},
-    buttonDimension, (Rectangle){0, 0, 100, 100}, &mLib::pause, &BUTTON_SET_1);
+    buttonDimension, (Rectangle){0, 0, 100, 100}, &mLib::expand, &BUTTON_SET_1);
 TextureBox prevButton = TextureBox(
     (Vector2){buttonPos.x + (buttonDimension.x + buttonDistance.x),
               buttonPos.y},
@@ -115,6 +115,8 @@ void init() {
     clearButton.disable();
     importButton.disable();
     randomButton.disable();
+    pauseButton.disable();
+    playButton.enable();
 }
 
 void CLEAR() {
@@ -321,13 +323,12 @@ void handleInput() {
     }
 
     if (playButton.isPressed()) {
-        Loop::isRunning = true;
+        Loop::isRunning = false;
         playButton.disable();
         pauseButton.enable();
     } else
-
         if (pauseButton.isPressed()) {
-        Loop::isRunning = false;
+        Loop::isRunning = true;
         pauseButton.disable();
         playButton.enable();
     }
