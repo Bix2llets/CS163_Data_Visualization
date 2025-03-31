@@ -150,6 +150,7 @@ void SLL::removeEnd() {
     if (root->nextNode == nullptr) {
         delete root;
         root = nullptr;
+        nodeCount--;
         return;
     };
     Node* curr = root;

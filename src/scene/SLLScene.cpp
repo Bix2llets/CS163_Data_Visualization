@@ -38,6 +38,7 @@ void SLLScene::init() {
     miscPane.disable();
     deletePane.disable();
     addPane.newLine(0, 2, "Add", {"Value", "Location"}, {0, 0}, true);
+    addPane.newLine(1, 0, "Random", {}, {}, false);
     deletePane.newLine(0, 1, "Remove", {"Location"}, {0, 0}, true);
     algoPane.newLine(0, 1, "Search", {"Value"}, {0});
     miscPane.newLine(0, 0, "Save", {}, {});
@@ -208,6 +209,21 @@ void SLLScene::recordInput() {
     // auto location = AppMenu::locationBox.getValue();
     // auto value = AppMenu::valueBox.getValue();
     // auto& buttonPanel = AppMenu::buttonPanel;
+    if (addPane.isButtonPressed(1)) {
+        addStep(-1, nullptr);
+        int length = rand() % 20 + 10;
+        SLL &newSll = steps.back().sll;
+        while(newSll.nodeCount) 
+            newSll.removeEnd();
+        for (int i = 0; i < length; i++)
+        {
+
+            newSll.addEnd(std::to_string(rand() % 10000));
+            newSll.moveAt(newSll.nodeCount - 1);
+        }
+        newSll.finishAnimation();
+        
+    }
     if (addPane.isButtonPressed(0)) {
         // * Add at end
         auto value = addPane.getText(0, 0);
