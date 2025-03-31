@@ -59,9 +59,11 @@ std::string requestNum = "";
 std::vector<std::string> requestEdge = {"", "", ""};
 bool showMenuFlag = false, requestClear = false, requestImport = false,
      requestRandom = false, inAnimationProcess = false, isPlaying = true;
-std::vector<std::pair<Button *, Type>> GUIObjects = {};
+std::vector<std::pair<Button*, Type>> GUIObjects = {};
 // * For menu panes
-MenuPane basePane({optionPosition.x + 10 + showMenu.getDimension().x, optionPosition.y}, &GBLight::BACKGROUND1, &BUTTON_SET_1, &BUTTON_SET_1);
+MenuPane basePane({optionPosition.x + 10 + showMenu.getDimension().x,
+                   optionPosition.y},
+                  &GBLight::BACKGROUND1, &BUTTON_SET_1, &BUTTON_SET_1);
 MenuPane* addPane;
 MenuPane* deletePane;
 MenuPane* algoPane;
@@ -94,19 +96,19 @@ void Constructor(Vector2 _optionPosition = {10, 600},
     basePane.newLine(1, 0, "Remove", {}, false);
     basePane.newLine(2, 0, "Algorithm", {}, false);
     basePane.newLine(3, 0, "Storage", {}, false);
-    
+
     addPane = nullptr;
     deletePane = nullptr;
     algoPane = nullptr;
     storagePane = nullptr;
-    showMenu.setDimension({showMenu.getDimension().x, basePane.getDimension().y});
+    showMenu.setDimension(
+        {showMenu.getDimension().x, basePane.getDimension().y});
     requestText = "";
     requestNum = "";
     requestEdge = {"", "", ""};
     showMenuFlag = false, requestClear = false, requestImport = false,
     requestRandom = false, inAnimationProcess = false, isPlaying = true;
     GUIObjects = {};
-
 }
 
 void init() {
@@ -124,7 +126,7 @@ void CLEAR() {
     GUIObjects.clear();
 }
 
-void pack(Button *obj, Type type) {
+void pack(Button* obj, Type type) {
     std::cout << "pack" << std::endl;
     if (obj == nullptr) return;
     std::cout << "pack 1" << std::endl;
@@ -205,13 +207,28 @@ void handleInput() {
     }
     if (showMenuFlag)
         showMenu.setText("<");
-    else
+    else {
         showMenu.setText(">");
+        if (addPane) addPane->disable();
+        if (deletePane) deletePane->disable();
+        if (algoPane) algoPane->disable();
+        if (storagePane) storagePane->disable();
+    }
     if (showMenuFlag) {
-        if (basePane.getPressed(0) && addPane) addPane->toggle();
-        if (basePane.getPressed(1) && deletePane) deletePane->toggle();
-        if (basePane.getPressed(2) && algoPane) algoPane->toggle();
-        if (basePane.getPressed(3) && storagePane) storagePane->toggle();
+        for (int i = 0; i < 4; i++)
+            if (basePane.getPressed(i)) {
+                if (addPane) addPane->disable();
+                if (deletePane) deletePane->disable();
+                if (algoPane) algoPane->disable();
+                if (storagePane) storagePane->disable();
+                if (basePane.getPressed(0) && addPane) addPane->enable();
+                if (basePane.getPressed(1) && deletePane) deletePane->enable();
+                if (basePane.getPressed(2) && algoPane) algoPane->enable();
+                if (basePane.getPressed(3) && storagePane)
+                    storagePane->enable();
+
+                break;
+            }
         // Button *object = nullptr;
         // Type type = None;
         // for (auto &obj : GUIObjects)
@@ -238,25 +255,32 @@ void handleInput() {
         //             importButton.enable();
         //             randomButton.enable();
         //             clearButton = Button(
-        //                 (Vector2){optionPosition.x + showMenu.getDimension().x +
+        //                 (Vector2){optionPosition.x +
+        //                 showMenu.getDimension().x +
         //                               object->getDimension().x,
         //                           object->getPosition().y},
-        //                 optionDimension, "Clear", 20, AppMenu::buttonPalette);
+        //                 optionDimension, "Clear", 20,
+        //                 AppMenu::buttonPalette);
         //             importButton = Button(
-        //                 (Vector2){optionPosition.x + showMenu.getDimension().x +
+        //                 (Vector2){optionPosition.x +
+        //                 showMenu.getDimension().x +
         //                               object->getDimension().x,
-        //                           object->getPosition().y + optionDimension.y},
-        //                 optionDimension, "Import", 20, AppMenu::buttonPalette);
+        //                           object->getPosition().y +
+        //                           optionDimension.y},
+        //                 optionDimension, "Import", 20,
+        //                 AppMenu::buttonPalette);
         //             randomButton = Button(
         //                 (Vector2){
         //                     optionPosition.x + showMenu.getDimension().x +
         //                         object->getDimension().x,
         //                     object->getPosition().y + optionDimension.y * 2},
-        //                 optionDimension, "Random", 20, AppMenu::buttonPalette);
+        //                 optionDimension, "Random", 20,
+        //                 AppMenu::buttonPalette);
         //         } else if (type == EdgeInsert) {
         //             requestEdge = {"", "", ""};
         //             edgeBox = edgeInsertBox(
-        //                 (Vector2){optionPosition.x + showMenu.getDimension().x +
+        //                 (Vector2){optionPosition.x +
+        //                 showMenu.getDimension().x +
         //                               object->getDimension().x,
         //                           object->getPosition().y},
         //                 optionDimension, 20, AppMenu::buttonPalette, 0,
@@ -265,7 +289,8 @@ void handleInput() {
         //             requestText = "";
         //             requestNum = "";
         //             insertBox = InsertBox(
-        //                 (Vector2){optionPosition.x + showMenu.getDimension().x +
+        //                 (Vector2){optionPosition.x +
+        //                 showMenu.getDimension().x +
         //                               object->getDimension().x,
         //                           object->getPosition().y},
         //                 optionDimension, 20, AppMenu::buttonPalette, 0,
@@ -274,7 +299,8 @@ void handleInput() {
         //             requestText = "";
         //             requestNum = "";
         //             insertBox = InsertBox(
-        //                 (Vector2){optionPosition.x + showMenu.getDimension().x +
+        //                 (Vector2){optionPosition.x +
+        //                 showMenu.getDimension().x +
         //                               object->getDimension().x,
         //                           object->getPosition().y},
         //                 optionDimension, 20, AppMenu::buttonPalette, 1,
