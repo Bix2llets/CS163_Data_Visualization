@@ -368,3 +368,14 @@ void SLL::freeMemory() {
         delete curr;
     }
 }
+
+std::string SLL::getSaveData() {
+    Node* curr = root;
+    std::string res;
+    while(curr) {
+        res = res + curr->data;
+        if (curr->nextNode) res = res + " ";
+        curr = curr->nextNode;
+    }
+    return res;
+}

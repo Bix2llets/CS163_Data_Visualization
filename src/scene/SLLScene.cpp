@@ -249,6 +249,39 @@ void SLLScene::recordInput() {
         }
     }
 
+    if (miscPane.getPressed(0)) {
+        // * Save
+        const char *filter[2] = {"*.txt", "*.inp"};
+        auto path = tinyfd_saveFileDialog("Save As: ", "output.txt", 2, filter, "txt or inp file");
+
+        std::cerr << "The path is: " << path << "\n";
+        if (path != NULL) {
+            SLL &curr = steps.front().sll;
+            std::ofstream outputFile(path);
+            outputFile << curr.getSaveData();
+        }
+    }
+
+    if (miscPane.getPressed(1)) {
+        const char *filter[2] = {"*.txt", "*.inp"};
+        auto path = tinyfd_openFileDialog("Open: ", "", 2, filter, "txt or inp file", 0);
+
+        if (path != NULL) {
+            addStep(-1, nullptr);
+            
+            SLL &newSll = steps.back().sll;
+            while(newSll.nodeCount) newSll.removeEnd();
+            std::ifstream inputFile(path);
+            int nodeData;
+            while(inputFile >> nodeData) {
+                newSll.addEnd(std::to_string(nodeData));
+                newSll.moveAt(newSll.nodeCount - 1);
+            }
+            newSll.finishAnimation();
+        }
+
+    }
+
 
 }
 

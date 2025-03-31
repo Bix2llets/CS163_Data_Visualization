@@ -4,9 +4,11 @@
 #include "mainLoop.h"
 #include "utility.h"
 #include "menuPane.h"
+#include "mLib/tinyfiledialogs.h"
 #include <deque>
 #include <vector>
-#include <string> 
+#include <string>
+#include <fstream> 
 namespace SLLScene {
     struct SLLStorage {
         SLL sll;
