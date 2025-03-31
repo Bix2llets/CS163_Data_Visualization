@@ -251,38 +251,41 @@ void SLLScene::recordInput() {
 
     if (miscPane.getPressed(0)) {
         // * Save
-        const char *filter[2] = {"*.txt", "*.inp"};
-        auto path = tinyfd_saveFileDialog("Save As: ", "output.txt", 2, filter, "txt or inp file");
+        const char* filter[2] = {"*.txt", "*.inp"};
+        auto path = tinyfd_saveFileDialog("Save As: ", "output.txt", 2, filter,
+                                          "txt or inp file");
 
         std::cerr << "The path is: " << path << "\n";
         if (path != NULL) {
-            SLL &curr = steps.front().sll;
+            SLL& curr = steps.front().sll;
             std::ofstream outputFile(path);
             outputFile << curr.getSaveData();
         }
     }
 
     if (miscPane.getPressed(1)) {
-        const char *filter[2] = {"*.txt", "*.inp"};
-        auto path = tinyfd_openFileDialog("Open: ", "", 2, filter, "txt or inp file", 0);
+        const char* filter[2] = {"*.txt", "*.inp"};
+        auto path = tinyfd_openFileDialog("Open: ", "", 2, filter,
+                                          "txt or inp file", 0);
 
         if (path != NULL) {
             addStep(-1, nullptr);
-            
-            SLL &newSll = steps.back().sll;
-            while(newSll.nodeCount) newSll.removeEnd();
+
+            SLL& newSll = steps.back().sll;
+            while (newSll.nodeCount) newSll.removeEnd();
             std::ifstream inputFile(path);
             int nodeData;
-            while(inputFile >> nodeData) {
+            while (inputFile >> nodeData) {
                 newSll.addEnd(std::to_string(nodeData));
                 newSll.moveAt(newSll.nodeCount - 1);
             }
             newSll.finishAnimation();
         }
-
     }
-
-
+    if (MenuTable::backwardButton.isPressed()) backward();
+    if (MenuTable::forwardButton.isPressed()) forward();
+    if (MenuTable::prevButton.isPressed()) prevStep();
+    if (MenuTable::nextButton.isPressed()) nextStep();
 }
 
 // if (buttonPanel[1][0].isPressed()) {
@@ -330,16 +333,7 @@ void SLLScene::recordInput() {
 // }
 
 void SLLScene::nextStep() {
-    if (future.size()) {
-        // * Result from previous undo
-        steps.push_back(future.front());
-        future.pop_front();
-        // sll = steps.front().sll.clone();
-        // highlightedRow = steps.front().highlightIndex;
-        return;
-    } else {
-        if (steps.size() == 1) return;
-        // * There are more in steps
+    if (steps.size() > 1) {
         past.push_back(steps.front());
         steps.pop_front();
 
@@ -347,6 +341,10 @@ void SLLScene::nextStep() {
         highlightedRow = steps.front().highlightIndex;
         if (steps.front().highlightRef)
             AppMenu::loadCode(*steps.front().highlightRef);
+    } else {
+        if (future.size() == 0) return;
+        steps.push_back(future.front());
+        future.pop_front();
     }
 }
 
@@ -397,4 +395,5 @@ void SLLScene::forward() {
                 break;
         }
     }
+    sll.finishAnimation();
 }

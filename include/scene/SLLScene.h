@@ -5,6 +5,7 @@
 #include "utility.h"
 #include "menuPane.h"
 #include "mLib/tinyfiledialogs.h"
+#include "menu.hpp"
 #include <deque>
 #include <vector>
 #include <string>
