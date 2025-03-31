@@ -21,9 +21,11 @@ const std::vector<std::string> PSEUDO_DIJKSTRA = {
     "Choose vertex with minimum distance", "Examine the adjacent vextices"};
 
 MenuPane addPane({0, 0}, &GBLight::BACKGROUND1, &BUTTON_SET_1, &BUTTON_SET_1);
-MenuPane deletePane({0, 0}, &GBLight::BACKGROUND1, &BUTTON_SET_1, &BUTTON_SET_1);
+MenuPane deletePane({0, 0}, &GBLight::BACKGROUND1, &BUTTON_SET_1,
+                    &BUTTON_SET_1);
 MenuPane algoPane({0, 0}, &GBLight::BACKGROUND1, &BUTTON_SET_1, &BUTTON_SET_1);
-MenuPane storagePane({0, 0}, &GBLight::BACKGROUND1, &BUTTON_SET_1, &BUTTON_SET_1);
+MenuPane storagePane({0, 0}, &GBLight::BACKGROUND1, &BUTTON_SET_1,
+                     &BUTTON_SET_1);
 void setPanePosition(Vector2 position) {
     addPane.setPosition(position);
     deletePane.setPosition(position);
@@ -55,7 +57,6 @@ void init() {
     deletePane.disable();
     algoPane.disable();
     storagePane.disable();
-
 }
 void update() {
     graph.update();
@@ -243,86 +244,121 @@ void nextStep() {
 }
 
 void registerInput() {
-    // ! THIS NEED REVAMP TO ADAPT TO NEW BUTTON SYSTEM
-    // if (AppMenu::buttonPanel[0][0].isPressed()) {
-    //     auto result = AppMenu::valueBox.getValue();
-    //     if (result.first == false) return;
-    //     AppMenu::valueBox.clear();
+    using namespace AppMenu;
 
-    //     AppMenu::loadCode(PSEUDO_BLANK);
-    //     addNode(result.second);
-    // }
-    
-    // if (AppMenu::buttonPanel[1][0].isPressed()) {
-    //     auto result = AppMenu::valueBox.getValue();
-    //     if (result.first == false) return;
-    //     AppMenu::valueBox.clear();
+    if (addPane.isButtonPressed(0)) {
+        std::string data = addPane.getForm(0, 0).getText();
+        addPane.getForm(0, 0).clear();
+        if (!isStrNum(data)) return;
+        addNode(std::stoi(data));
+    }
+    if (addPane.isButtonPressed(1)) {
+        std::string data = addPane.getForm(1, 0).getText();
+        addPane.getForm(1, 0).clear();
+        std::stringstream ss;
+        ss << data;
+        std::string u, v, weight;
+        ss >> u >> v >> weight;
+        if (!isStrNum(u)) return;
+        if (!isStrNum(v)) return;
+        if (!isStrNum(weight)) return;
+        addEdge(std::stoi(u), std::stoi(v), std::stoi(weight));
 
-    //     AppMenu::loadCode(PSEUDO_BLANK);
-    //     removeNode(result.second);
-    // }
+        return;
+    }
 
-    // if (AppMenu::buttonPanel[0][1].isPressed()) {
-    //     auto result = AppMenu::valueBox.getText();
-    //     std::string node1Str, node2Str, weightStr;
-    //     std::stringstream ss;
-    //     ss << result;
-    //     ss >> node1Str >> node2Str >> weightStr;
-    //     if (ss.rdbuf()->in_avail() != 0) return;
-    //     if (!isStrNum(node1Str)) return;
-    //     if (!isStrNum(node2Str)) return;
-    //     if (!isStrNum(weightStr)) return;
-    //     AppMenu::valueBox.clear();
-        
-    //     AppMenu::loadCode(PSEUDO_BLANK);
-    //     int node1lLabel = std::stoi(node1Str);
-    //     int node2lLabel = std::stoi(node2Str);
-    //     int weightLabel = std::stoi(weightStr);
-    //     addEdge(node1lLabel, node2lLabel, weightLabel);
-    // }
+    if (addPane.isButtonPressed(2)) {
+        // ! For random graph generation
+        addStep(-1, nullptr);
+        std::cerr << "Before removal: \n";
+        for (auto x : nodeList) std::cerr << x << " ";
+        std::cerr << "\n";
+        for (auto x : edgeList)
+            std::cerr << x.first.first << " " << x.first.second << " "
+                      << x.second << "\n";
+        std::cerr << "\n";
+        std::vector<std::shared_ptr<GraphNode>> graphNodeList =
+            graph.getNodeList();
+        std::vector<std::shared_ptr<GraphEdge>> graphEdgeList =
+            graph.getEdgeList();
+        for (std::shared_ptr<GraphNode> node : graphNodeList)
+            addNodeDelete(node->getLabel());
 
-    // if (AppMenu::buttonPanel[1][1].isPressed()) {
-    //     auto result = AppMenu::valueBox.getText();
-    //     std::string node1Str, node2Str;
-    //     std::stringstream ss;
-    //     ss << result;
-    //     ss >> node1Str >> node2Str;
-    //     if (ss.rdbuf()->in_avail() != 0) return;
-    //     if (!isStrNum(node1Str)) return;
-    //     if (!isStrNum(node2Str)) return;
-    //     AppMenu::loadCode(PSEUDO_BLANK);
-    //     AppMenu::valueBox.clear();
+        for (std::shared_ptr<GraphEdge> edge : graphEdgeList)
+            addEdgeDelete(edge->node1->getLabel(), edge->node2->getLabel(),
+                          edge->getWeight());
+        std::cerr << "After removal: \n";
+        for (auto x : nodeList) std::cerr << x << " ";
+        std::cerr << "\n";
+        for (auto x : edgeList)
+            std::cerr << x.first.first << " " << x.first.second << " "
+                      << x.second << "\n";
+        std::cerr << "\n";
+        std::cerr << "----------------------------\n";
+        addStep(-1, nullptr);
+        int maxNode = rand() % 20 + 5;
+        for (int i = 1; i <= maxNode; i++) addNodeAdd(i);
+        int maxEdge = rand() % std::min((maxNode * (maxNode - 1) / 2), 20);
+        std::unordered_map<int, std::unordered_map<int, bool>> edgeCheck;
+        while (maxEdge) {
+            int u = rand() % maxNode + 1;
+            int v = rand() % maxNode + 1;
+            if (u == v) continue;
+            if (edgeCheck[u][v] == 1) continue;
+            edgeCheck[u][v] = 1;
+            int weight = rand() % 10000;
+            addEdgeAdd(u, v, weight);
+            maxEdge--;
+        }
+        return;
+    }
 
-    //     int node1Label = std::stoi(node1Str);
-    //     int node2Label = std::stoi(node2Str);
-    //     removeEdge(node1Label, node2Label);
-    // }
+    if (deletePane.isButtonPressed(0)) {
+        std::string data = deletePane.getForm(0, 0).getText();
+        deletePane.getForm(0, 0).clear();
+        if (!isStrNum(data)) return;
+        removeNode(std::stoi(data));
+        return;
+    }
 
-    // if (AppMenu::buttonPanel[2][0].isPressed()) {
-    //     AppMenu::loadCode(PSEUDO_MST);
-    //     MST();
-    // }
-    // if (AppMenu::buttonPanel[2][1].isPressed()) {
-    //     auto result = AppMenu::valueBox.getText();
-    //     std::stringstream ss;
-    //     std::string node1Text;
-    //     ss << result;
-    //     ss >> node1Text;
-    //     if (ss.rdbuf()->in_avail() != 0) return;
-    //     if (!isStrNum(node1Text)) return;
-    //     AppMenu::loadCode(PSEUDO_DIJKSTRA);
-    //     AppMenu::valueBox.clear();
+    if (deletePane.isButtonPressed(1)) {
+        std::string u = deletePane.getForm(1, 0).getText();
+        std::string v = deletePane.getForm(1, 1).getText();
+        deletePane.getForm(1, 0).clear();
+        deletePane.getForm(1, 1).clear();
+        if (!isStrNum(u)) return;
+        if (!isStrNum(v)) return;
+        removeEdge(std::stoi(u), std::stoi(v));
+        return;
+    }
 
-    //     int node1Label = std::stoi(node1Text);
-    //     dijkstra(node1Label);
-    // }
-    // if (AppMenu::undoButton.isPressed()) {
-    //     prevStep();
-    // }
+    if (deletePane.isButtonPressed(2)) {
+        // * For clearing graph
+        return;
+    }
 
-    // else if (AppMenu::redoButton.isPressed()) {
-    //     nextStep();
-    // }
+    if (algoPane.isButtonPressed(0)) {
+        MST();
+        return;
+    }
+
+    if (algoPane.isButtonPressed(1)) {
+        std::string data = algoPane.getForm(1, 0).getText();
+        algoPane.getForm(1, 0).clear();
+        if (!isStrNum(data)) return;
+        if (data.find(' ') != std::string::npos) return;
+        dijkstra(std::stoi(data));
+    }
+
+    if (storagePane.isButtonPressed(0)) {
+        // * Save function
+        return;
+    }
+
+    if (storagePane.isButtonPressed(1)) {
+        // * Load function
+        return;
+    }
 }
 
 int getParent(int label, std::unordered_map<int, int> &parList) {
@@ -468,7 +504,7 @@ void addEdgeChange(int label1, int label2, ChangeInfo info) {
 
 void addNodeAdd(int label) {
     if (nodeList.find(label) != nodeList.end()) return;
-    nodeList.erase(label);
+    nodeList.insert(label);
     steps.back().nodeAdded.push_back(label);
 }
 
@@ -489,19 +525,21 @@ void addEdgeAdd(int label1, int label2, int weight) {
         nodeList.insert(label2);
         steps.back().nodeAdded.push_back(label2);
     }
-    if (edgeList.find({{label1, label2}, weight}) == edgeList.end()) {
-        edgeList.insert({{label1, label2}, weight});
-        steps.back().edgeAdded.push_back({label1, label2, weight});
-    }
+    for (auto x : edgeList)
+        if (x.first.first == label1 && x.first.second == label2) return;
+    edgeList.insert({{label1, label2}, weight});
+    steps.back().edgeAdded.push_back({label1, label2, weight});
 }
 
 void addEdgeDelete(int label1, int label2, int weight) {
     if (label2 < label1) std::swap(label2, label1);
-    if (edgeList.find({{label1, label2}, weight}) != edgeList.end()) {
-        steps.back().edgeDeleted.push_back({label1, label2, weight});
-        edgeList.erase({{label1, label2}, weight});
+    for (auto x : edgeList) 
+        if (x.first.first == label1 && x.first.second == label2) {
+            steps.back().edgeDeleted.push_back({label1, label2, weight});
+            edgeList.erase({{label1, label2}, weight});
+            return;
+        }
     }
-}
 
 ChangeInfo getInfo(std::shared_ptr<GraphEdge> edge, bool isResultHighlight,
                    bool isResultOpaque, bool isImmediate) {
@@ -534,14 +572,14 @@ void resetGraphColor() {
 }
 
 void backward() {
-    while(past.size()) {
+    while (past.size()) {
         prevStep();
         if (future.front().highlightedLine == -1) return;
     }
 }
 
 void forward() {
-    while(future.size()) {
+    while (future.size()) {
         nextStep();
         if (steps.back().highlightedLine == -1) return;
     }

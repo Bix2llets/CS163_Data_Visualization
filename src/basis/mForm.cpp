@@ -3,7 +3,6 @@
 #include <iostream>
 
 void mForm::recordKeyboard() {
-    std::cout << "Recording keyboard" << ' ' << mode << '\n';
     if (!isFocusedOn) return;
     if (IsKeyPressed(KEY_BACKSPACE)) {
         text = text.substr(0, text.length() - 1);

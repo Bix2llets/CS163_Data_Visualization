@@ -145,7 +145,7 @@ void render() {
     handleInput();
     showMenu.render();
     if (showMenuFlag) {
-        std::cout << GUIObjects.size() << std::endl;
+        // std::cout << GUIObjects.size() << std::endl;
         basePane.render();
         if (addPane) addPane->render();
         if (deletePane) deletePane->render();

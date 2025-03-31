@@ -117,43 +117,6 @@ int main() {
         "#include <iostream>", "",  "using namespace std;", "",
         "int main()",          "{", "    return 0;",        "}"};
     AppMenu::loadCode(exampleCode);
-
-    GraphScene::addEdge(1, 2, rand());
-    GraphScene::addEdge(2, 3, rand());
-    GraphScene::addEdge(3, 4, rand());
-    GraphScene::addEdge(5, 4, rand());
-    GraphScene::addEdge(5, 6, rand());
-    GraphScene::addEdge(1, 6, rand());
-    GraphScene::addEdge(1, 4, rand());
-    GraphScene::addEdge(3, 7, rand());
-    GraphScene::addEdge(4, 8, rand());
-    GraphScene::addEdge(7, 8, rand());
-    GraphScene::addEdge(2, 8, rand());
-    GraphScene::addEdge(7, 6, rand());
-    GraphScene::addEdge(7, 2, rand());
-
-    // Button *object = new Button(MenuTable::optionPosition,
-    // MenuTable::optionDimension, "Create", 20, AppMenu::buttonPalette);
-    // MenuTable::pack(object, MenuTable::CREATE);
-    // object = new Button(MenuTable::optionPosition,
-    // MenuTable::optionDimension, "Edge Insert", 20, AppMenu::buttonPalette);
-    // MenuTable::pack(object, MenuTable::EdgeInsert);
-    // object = new Button(MenuTable::optionPosition,
-    // MenuTable::optionDimension, "Num Insert", 20, AppMenu::buttonPalette);
-    // MenuTable::pack(object, MenuTable::NumInsert);
-    // object = new Button(MenuTable::optionPosition,
-    // MenuTable::optionDimension, "Text Insert", 20, AppMenu::buttonPalette);
-    // MenuTable::pack(object, MenuTable::TextInsert);
-    // object = new Button(MenuTable::optionPosition,
-    // MenuTable::optionDimension, "MST", 20, AppMenu::buttonPalette);
-    // MenuTable::pack(object, MenuTable::None);
-    // GraphScene::addStep();
-    // for (int i = 0; i <= 10; i++)
-    // for (int j = 0; j <= 20; j++)
-    // GraphScene::addEdgeAdd(i, j, rand());
-
-    // for (int i = 1; i <= 20; i++)
-    //     GraphScene::addEdgeAdd(0, i, i);
     while (!WindowShouldClose()) {
         // Update goes here
         Loop::registerInput();
