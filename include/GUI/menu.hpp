@@ -2,7 +2,7 @@
 #define MENU_HPP
 
 #include "button.h"
-
+#include "mainLoop.h"
 #include "appMenu.h"
 #include "insertBox.hpp"
 #include "edgeInsertBox.hpp"

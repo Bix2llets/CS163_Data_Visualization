@@ -39,6 +39,8 @@ void update() {
 }
 
 void registerInput() {
+
+    
     if (currentScene == SceneList::MAIN_MENU) {
         if (WelcomeMenu::isAVLTreePressed()) {
             currentScene = SceneList::AVL;

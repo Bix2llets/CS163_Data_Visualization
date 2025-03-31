@@ -183,10 +183,9 @@ void render() {
     }
     backwardButton.render();
     forwardButton.render();
-    if (isPlaying)
-        pauseButton.render();
-    else
-        playButton.render();
+
+    pauseButton.render();
+    playButton.render();
     prevButton.render();
     nextButton.render();
     ///* Slider bar **/
@@ -215,32 +214,30 @@ void handleInput() {
         if (storagePane) storagePane->disable();
     }
     if (showMenuFlag) {
-        if (basePane.getPressed(0) == true){
+        if (basePane.getPressed(0) == true) {
             if (addPane) addPane->toggle();
             if (deletePane) deletePane->disable();
             if (algoPane) algoPane->disable();
             if (storagePane) storagePane->disable();
         }
-        if (basePane.getPressed(1) == true){
+        if (basePane.getPressed(1) == true) {
             if (addPane) addPane->disable();
             if (deletePane) deletePane->toggle();
             if (algoPane) algoPane->disable();
             if (storagePane) storagePane->disable();
         }
-        if (basePane.getPressed(2) == true){
+        if (basePane.getPressed(2) == true) {
             if (addPane) addPane->disable();
             if (deletePane) deletePane->disable();
             if (algoPane) algoPane->toggle();
             if (storagePane) storagePane->disable();
         }
-        if (basePane.getPressed(3) == true){
+        if (basePane.getPressed(3) == true) {
             if (addPane) addPane->disable();
             if (deletePane) deletePane->disable();
             if (algoPane) algoPane->disable();
             if (storagePane) storagePane->toggle();
         }
-
-
 
         // Button *object = nullptr;
         // Type type = None;
@@ -321,6 +318,18 @@ void handleInput() {
         //         }  // else assert(Type::None != type);
         //     }
         // }
+    }
+
+    if (playButton.isPressed()) {
+        Loop::isRunning = true;
+        playButton.disable();
+        pauseButton.enable();
+    } else
+
+        if (pauseButton.isPressed()) {
+        Loop::isRunning = false;
+        pauseButton.disable();
+        playButton.enable();
     }
 };
 
