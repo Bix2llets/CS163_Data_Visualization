@@ -58,8 +58,7 @@ void init() {
     algoPane.disable();
     storagePane.disable();
 }
-void update() {
-    graph.update();
+void updateAnimation() {
     if (!graph.isAnimationDone()) return;
     if (steps.size() == 0) timeLeft = 0;
     timeLeft -= GetFrameTime();
@@ -114,6 +113,10 @@ void update() {
         for (auto [label1, label2, weight] : nextAction.edgeDeleted)
             graph.removeEdge(label1, label2);
     }
+}
+void update() {
+    graph.update();
+    updateAnimation();
 }
 
 void render() { graph.render(); }
@@ -233,6 +236,7 @@ void nextStep() {
     if (steps.size()) {
         graph.finishAnimation();
         timeLeft = 0;
+        updateAnimation();
         return;
     }
     if (future.empty()) return;
@@ -359,6 +363,23 @@ void registerInput() {
         // * Load function
         return;
     }
+
+    if (MenuTable::prevButton.isPressed()) {
+        prevStep();
+        return;
+    }
+    if (MenuTable::nextButton.isPressed()) {
+        nextStep();
+        return;
+    }
+    if (MenuTable::backwardButton.isPressed()) {
+        backward();
+        return;
+    }
+    if (MenuTable::forwardButton.isPressed()) {
+        forward();
+        return;
+    }
 }
 
 int getParent(int label, std::unordered_map<int, int> &parList) {
@@ -420,11 +441,12 @@ void MST() {
             restoreList.push_back(edge);
         }
     }
-    addStep(-1, &PSEUDO_MST);
+    addStep(2, &PSEUDO_MST);
     for (auto edge : restoreList) {
         addEdgeChange(edge->node1->getLabel(), edge->node2->getLabel(),
                       {0, 0, 0, 1, 0});
     }
+    addStep(-1, nullptr);
 }
 
 void dijkstra(int source) {
@@ -487,6 +509,7 @@ void dijkstra(int source) {
             }
         }
     }
+    addStep(-1, nullptr);
 }
 void addStep(int highlightedLine, std::vector<std::string> const *ref) {
     steps.push_back(Action());
@@ -533,13 +556,13 @@ void addEdgeAdd(int label1, int label2, int weight) {
 
 void addEdgeDelete(int label1, int label2, int weight) {
     if (label2 < label1) std::swap(label2, label1);
-    for (auto x : edgeList) 
+    for (auto x : edgeList)
         if (x.first.first == label1 && x.first.second == label2) {
             steps.back().edgeDeleted.push_back({label1, label2, weight});
             edgeList.erase({{label1, label2}, weight});
             return;
         }
-    }
+}
 
 ChangeInfo getInfo(std::shared_ptr<GraphEdge> edge, bool isResultHighlight,
                    bool isResultOpaque, bool isImmediate) {
@@ -579,6 +602,7 @@ void backward() {
 }
 
 void forward() {
+    // ! Tommorrow I will fix this.
     while (future.size()) {
         nextStep();
         if (steps.back().highlightedLine == -1) return;
