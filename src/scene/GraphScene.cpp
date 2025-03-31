@@ -30,6 +30,33 @@ void setPanePosition(Vector2 position) {
     algoPane.setPosition(position);
     storagePane.setPosition(position);
 }
+
+void init() {
+    addPane.newLine(0, 1, "Node", {"Node label"}, {0}, true);
+    addPane.newLine(1, 1, "Edge", {"Data"}, {0}, true);
+    addPane.newLine(2, 0, "Random", {}, {}, false);
+
+    deletePane.newLine(0, 1, "Node", {"Node label"}, {0}, true);
+    deletePane.newLine(1, 2, "Edge", {"U", "V"}, {0, 0}, true);
+    deletePane.newLine(2, 0, "Clear", {}, {}, false);
+
+    algoPane.newLine(0, 0, "MST", {}, {}, false);
+    algoPane.newLine(1, 1, "Dijkstra", {"Source"}, {0}, false);
+
+    storagePane.newLine(0, 0, "Save", {}, {}, false);
+    storagePane.newLine(1, 0, "Load", {}, {}, false);
+
+    Form &dataForm = addPane.getForm(1, 0);
+    Vector2 dim = dataForm.getDimension();
+    dim.x = dim.x * 2 + MenuPane::ELEMENT_DISTANCE.x;
+    dataForm.setDimension(dim);
+    addPane.calibrate();
+    addPane.disable();
+    deletePane.disable();
+    algoPane.disable();
+    storagePane.disable();
+
+}
 void update() {
     graph.update();
     if (!graph.isAnimationDone()) return;
@@ -504,5 +531,19 @@ void resetGraphColor() {
                       getInfo(edge, 0, 1, 1));
     for (auto node : graph.getNodeList())
         addNodeChange(node->getLabel(), getInfo(node, 0, 1, 1));
+}
+
+void backward() {
+    while(past.size()) {
+        prevStep();
+        if (future.front().highlightedLine == -1) return;
+    }
+}
+
+void forward() {
+    while(future.size()) {
+        nextStep();
+        if (steps.back().highlightedLine == -1) return;
+    }
 }
 }  // namespace GraphScene

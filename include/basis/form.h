@@ -1,15 +1,16 @@
 #pragma once
 #include <string>
-#include <vector>
 #include <utility>
+#include <vector>
+
 #include "GUIObject.h"
 #include "colorPalette.h"
 #include "raylib.h"
-#include "utility.h"
 #include "toggleable.h"
+#include "utility.h"
 
 class Form : public GUIObject, public Toggleable {
-    protected:
+   protected:
     std::string text;
     bool isFocusedOn;
     float width;
@@ -24,16 +25,15 @@ class Form : public GUIObject, public Toggleable {
     void recordFocus();
 
    public:
-    Form(Rectangle drawInfo,
-            ColorSet const *palette = &BUTTON_SET_1)
+    Form(Rectangle drawInfo, ColorSet const *palette = &BUTTON_SET_1)
         : GUIObject{drawInfo.x, drawInfo.y},
           width{drawInfo.width},
           height{drawInfo.height},
           PALETTE{palette},
           LEFT_MARGIN{10},
           RIGHT_MARGIN{10},
-          ABOVE_MARGIN{10},
-          BOTTOM_MARGIN{10},
+          ABOVE_MARGIN{0},
+          BOTTOM_MARGIN{0},
           isFocusedOn{false},
           text{""},
           Toggleable() {};
@@ -47,4 +47,10 @@ class Form : public GUIObject, public Toggleable {
     void set(bool newState);
     std::string getText();
     std::pair<bool, int> getValue();
+
+    inline Vector2 getDimension() { return Vector2{width, height}; };
+    inline void setDimension(Vector2 newDim) {
+        width = newDim.x;
+        height = newDim.y;
+    }
 };

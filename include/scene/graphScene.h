@@ -66,6 +66,7 @@ extern MenuPane deletePane;
 extern MenuPane algoPane;
 extern MenuPane storagePane;
 
+void init();
 void setPanePosition(Vector2 position);
 
 void update();
@@ -114,4 +115,6 @@ ChangeInfo getInfo(std::shared_ptr<GraphEdge> edge, bool isResultHighlight,
 
 void resetGraphColor();
 
+void backward();
+void forward();
 }  // namespace GraphScene

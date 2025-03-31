@@ -14,18 +14,18 @@ class MenuPane : public Toggleable, public GUIObject {
     std::vector<bool> haveRandom;
     std::vector<DiceButton> diceButton;
     
-    static const Vector2 FORM_DIMENSION;
-    static const Vector2 BUTTON_DIMENSION;
-    static const Vector2 ELEMENT_DISTANCE;
-    static const Vector2 EDGE_OFFSET;
-    static const Vector2 RANDOM_DIMENSION;
-    
     Color const* background;
     ColorSet const* buttonPalette;
     ColorSet const* formPalette;
     Vector2 dimension;
     
     public:
+    static const Vector2 FORM_DIMENSION;
+    static const Vector2 BUTTON_DIMENSION;
+    static const Vector2 ELEMENT_DISTANCE;
+    static const Vector2 EDGE_OFFSET;
+    static const Vector2 RANDOM_DIMENSION;
+    
     MenuPane(Vector2 STARTING_POSITION, Color const* background,
              ColorSet const* buttonPalette, ColorSet const* formPalette)
         : GUIObject(STARTING_POSITION),
@@ -46,5 +46,7 @@ class MenuPane : public Toggleable, public GUIObject {
     void newLine(int row, int numberOfForms, const std::string &buttonLabel, const std::vector<std::string> &titleList, const std::vector<bool> &formMode, bool haveRandom = false);
     void render();
     Vector2 getDimension();
+
+    void calibrate();
 
 };

@@ -84,11 +84,17 @@ void raylibInit() {
 void loadSpecs() {
     MenuTable::Constructor((Vector2){10, 650}, (Vector2){200, 50},
                            (Vector2){700, 750}, (Vector2){50, 50});
-    SLLScene::setPanePosition({MenuTable::showMenu.getPosition().x +
-                                   MenuTable::showMenu.getDimension().x + 20 +
-                                   MenuTable::basePane.getDimension().x,
-                               MenuTable::showMenu.getPosition().y});
+    
+    Vector2 menuPanePosition = {MenuTable::showMenu.getPosition().x +
+        MenuTable::showMenu.getDimension().x + 20 +
+        MenuTable::basePane.getDimension().x,
+    MenuTable::showMenu.getPosition().y};
+
+    
+    SLLScene::setPanePosition(menuPanePosition);
     SLLScene::setDelay(0.05f);
+
+    GraphScene::setPanePosition(menuPanePosition);
     Animation::setUpdateRate(10.f);
     AnimationColor::setUpdateRate(1.f);
 }
@@ -97,6 +103,7 @@ void otherInit() {
     srand(time(NULL));
     AppMenu::init();
     SLLScene::init();
+    GraphScene::init();
     mLib::Init();
 }
 // Main function

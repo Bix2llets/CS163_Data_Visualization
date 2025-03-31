@@ -40,7 +40,7 @@ void update() {
 
 void registerInput() {
 
-    
+
     if (currentScene == SceneList::MAIN_MENU) {
         if (WelcomeMenu::isAVLTreePressed()) {
             currentScene = SceneList::AVL;
@@ -53,6 +53,12 @@ void registerInput() {
 
             recordFunc = &GraphScene::registerInput;
             AppMenu::highlightValue = &GraphScene::currentHighlighting;
+
+            MenuTable::addPane = &GraphScene::addPane;
+            MenuTable::deletePane = &GraphScene::deletePane;
+            MenuTable::algoPane = &GraphScene::algoPane;
+            MenuTable::storagePane = &GraphScene::storagePane;
+
         }
         if (WelcomeMenu::isHashTablePressed()) {
             currentScene = SceneList::HASH;
