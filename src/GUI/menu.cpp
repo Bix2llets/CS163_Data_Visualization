@@ -214,25 +214,25 @@ void handleInput() {
         if (storagePane) storagePane->disable();
     }
     if (showMenuFlag) {
-        if (basePane.getPressed(0) == true) {
+        if (basePane.isButtonPressed(0) == true) {
             if (addPane) addPane->toggle();
             if (deletePane) deletePane->disable();
             if (algoPane) algoPane->disable();
             if (storagePane) storagePane->disable();
         }
-        if (basePane.getPressed(1) == true) {
+        if (basePane.isButtonPressed(1) == true) {
             if (addPane) addPane->disable();
             if (deletePane) deletePane->toggle();
             if (algoPane) algoPane->disable();
             if (storagePane) storagePane->disable();
         }
-        if (basePane.getPressed(2) == true) {
+        if (basePane.isButtonPressed(2) == true) {
             if (addPane) addPane->disable();
             if (deletePane) deletePane->disable();
             if (algoPane) algoPane->toggle();
             if (storagePane) storagePane->disable();
         }
-        if (basePane.getPressed(3) == true) {
+        if (basePane.isButtonPressed(3) == true) {
             if (addPane) addPane->disable();
             if (deletePane) deletePane->disable();
             if (algoPane) algoPane->disable();

@@ -124,9 +124,15 @@ std::string MenuPane::getText(int row, int col) {
     return formList[row][col].getText();
 }
 
-bool MenuPane::getPressed(int row) {
+bool MenuPane::isButtonPressed(int row) {
     if (row > btnList.size()) return false;
     return btnList[row].isPressed();
+}
+
+bool MenuPane::isRandomPressed(int row) {
+    if (row > btnList.size()) return false;
+    if (haveRandom[row] == false) return false;
+    return diceButton[row].isPressed();
 }
 
 Form& MenuPane::getForm(int row, int col) {

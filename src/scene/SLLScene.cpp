@@ -1,5 +1,5 @@
 #include "SLLScene.h"
-
+#include <cstdlib>
 float SLLScene::stepDelay = 1.f;
 float SLLScene::timeLeft = 0.f;
 
@@ -208,7 +208,7 @@ void SLLScene::recordInput() {
     // auto location = AppMenu::locationBox.getValue();
     // auto value = AppMenu::valueBox.getValue();
     // auto& buttonPanel = AppMenu::buttonPanel;
-    if (addPane.getPressed(0)) {
+    if (addPane.isButtonPressed(0)) {
         // * Add at end
         auto value = addPane.getText(0, 0);
         auto location = addPane.getText(0, 1);
@@ -228,7 +228,14 @@ void SLLScene::recordInput() {
         }
     }
 
-    if (deletePane.getPressed(0)) {
+    if (addPane.isRandomPressed(0)) {
+        std::string value = std::to_string(rand() % 10000);
+        std::string location = std::to_string(rand() % (sll.nodeCount + 1));
+
+        addPane.getForm(0, 0).setText(value);
+        addPane.getForm(0, 1).setText(location);
+    }
+    if (deletePane.isButtonPressed(0)) {
         // * Delete at end and delete at somewhere else
         auto location = deletePane.getText(1, 0);
 
@@ -240,7 +247,7 @@ void SLLScene::recordInput() {
             AppMenu::loadCode(SLLScene::PSEUDO_DELETE);
         }
     }
-    if (algoPane.getPressed(0)) {
+    if (algoPane.isButtonPressed(0)) {
         auto value = algoPane.getText(2, 0);
 
         if (isStrNum(value)) {
@@ -249,7 +256,7 @@ void SLLScene::recordInput() {
         }
     }
 
-    if (miscPane.getPressed(0)) {
+    if (miscPane.isButtonPressed(0)) {
         // * Save
         const char* filter[2] = {"*.txt", "*.inp"};
         auto path = tinyfd_saveFileDialog("Save As: ", "output.txt", 2, filter,
@@ -263,7 +270,7 @@ void SLLScene::recordInput() {
         }
     }
 
-    if (miscPane.getPressed(1)) {
+    if (miscPane.isButtonPressed(1)) {
         const char* filter[2] = {"*.txt", "*.inp"};
         auto path = tinyfd_openFileDialog("Open: ", "", 2, filter,
                                           "txt or inp file", 0);

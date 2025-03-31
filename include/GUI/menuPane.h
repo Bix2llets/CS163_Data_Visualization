@@ -38,8 +38,8 @@ class MenuPane : public Toggleable, public GUIObject {
     void toggle();
     // 0 - based numbering
     std::string getText(int row, int col);
-    bool getPressed(int row);
-
+    bool isButtonPressed(int row);
+    bool isRandomPressed(int row);
     Form& getForm(int row, int col);
     Button& getButton(int row);
 
