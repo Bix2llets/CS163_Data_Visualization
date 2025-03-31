@@ -16,7 +16,6 @@ class Form : public GUIObject, public Toggleable {
     float height;
     int LEFT_MARGIN;
     int RIGHT_MARGIN;
-    private:
     int ABOVE_MARGIN;
     int BOTTOM_MARGIN;
     ColorSet const *PALETTE;
@@ -39,8 +38,8 @@ class Form : public GUIObject, public Toggleable {
           text{""},
           Toggleable() {};
 
-    void render();
-    void update();
+    virtual void render();
+    virtual void update();
     void deFocus();
     void clear();
     void setText(std::string newText);

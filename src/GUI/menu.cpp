@@ -92,10 +92,10 @@ void Constructor(Vector2 _optionPosition = {10, 600},
     // edgeBox =
     //     edgeInsertBox(optionPosition, optionDimension, 20,
     //                   AppMenu::buttonPalette, 0, MaxSizeNum, MaxSizeWeight);
-    basePane.newLine(0, 0, "Add", {}, false);
-    basePane.newLine(1, 0, "Remove", {}, false);
-    basePane.newLine(2, 0, "Algorithm", {}, false);
-    basePane.newLine(3, 0, "Storage", {}, false);
+    basePane.newLine(0, 0, "Add", {}, {}, false);
+    basePane.newLine(1, 0, "Remove", {}, {}, false);
+    basePane.newLine(2, 0, "Algorithm", {}, {}, false);
+    basePane.newLine(3, 0, "Storage", {}, {}, false);
 
     addPane = nullptr;
     deletePane = nullptr;

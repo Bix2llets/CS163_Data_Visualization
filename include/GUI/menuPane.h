@@ -6,9 +6,10 @@
 #include "toggleable.h"
 #include "assert.h"
 #include "diceButton.hpp"
+#include "mForm.h"
 class MenuPane : public Toggleable, public GUIObject {
     std::vector<Button> btnList;
-    std::vector<std::vector<Form>> formList;
+    std::vector<std::vector<mForm>> formList;
     std::vector<std::vector<std::string>> formTitleList;
     std::vector<bool> haveRandom;
     std::vector<DiceButton> diceButton;
@@ -42,7 +43,7 @@ class MenuPane : public Toggleable, public GUIObject {
     Form& getForm(int row, int col);
     Button& getButton(int row);
 
-    void newLine(int row, int numberOfForms, const std::string &buttonLabel, const std::vector<std::string> &titleList, bool haveRandom = false);
+    void newLine(int row, int numberOfForms, const std::string &buttonLabel, const std::vector<std::string> &titleList, const std::vector<bool> &formMode, bool haveRandom = false);
     void render();
     Vector2 getDimension();
 

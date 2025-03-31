@@ -37,11 +37,11 @@ void SLLScene::init() {
     algoPane.disable();
     miscPane.disable();
     deletePane.disable();
-    addPane.newLine(0, 2, "Add", {"Value", "Location"}, true);
-    deletePane.newLine(0, 2, "Remove", {"Value", "Location"}, true);
-    algoPane.newLine(0, 1, "Search", {"Value"});
-    miscPane.newLine(0, 0, "Save", {});
-    miscPane.newLine(1, 0, "Load", {});
+    addPane.newLine(0, 2, "Add", {"Value", "Location"}, {0, 0}, true);
+    deletePane.newLine(0, 2, "Remove", {"Value", "Location"}, {0, 0}, true);
+    algoPane.newLine(0, 1, "Search", {"Value"}, {0});
+    miscPane.newLine(0, 0, "Save", {}, {});
+    miscPane.newLine(1, 0, "Load", {}, {});
 
 }
 void SLLScene::setDelay(float _stepDelay) { stepDelay = _stepDelay; }
@@ -167,10 +167,6 @@ void SLLScene::addStep(int highlightIndex,
 
 void SLLScene::render() {
     sll.render();
-    addPane.render();
-    deletePane.render();
-    algoPane.render();
-    miscPane.render();
 }
 
 void SLLScene::find(std::string val) {

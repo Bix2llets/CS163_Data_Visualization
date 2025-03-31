@@ -10,7 +10,7 @@ void MenuPane::set(bool newState) {
     enabled = newState;
 
     for (Button &button : btnList) button.set(newState);
-    for (std::vector<Form> &formList : formList)
+    for (std::vector<mForm> &formList : formList)
         for (Form &form : formList) form.set(newState);
 }
 
@@ -54,7 +54,7 @@ void MenuPane::render() {
 
 void MenuPane::newLine(int row, int numberOfForms,
                        const std::string &buttonLabel,
-                       const std::vector<std::string> &titleList, bool isRandom) {
+                       const std::vector<std::string> &titleList, const std::vector<bool> &formMode, bool isRandom) {
     if (row + 1 > btnList.size()) {
         btnList.resize(row + 1);
         formList.resize(row + 1);
@@ -74,10 +74,10 @@ void MenuPane::newLine(int row, int numberOfForms,
 
     for (int i = 0; i < numberOfForms; i++) {
         formList[row].push_back(
-            Form({startingPoint.x + BUTTON_DIMENSION.x + ELEMENT_DISTANCE.x +
+            mForm({startingPoint.x + BUTTON_DIMENSION.x + ELEMENT_DISTANCE.x +
                       i * (FORM_DIMENSION.x + ELEMENT_DISTANCE.x),
                   startingPoint.y, FORM_DIMENSION.x, FORM_DIMENSION.y},
-                 formPalette));
+                 formPalette, formMode[i]));
     }
 
     for (int i = 0; i < numberOfForms; i++) {
