@@ -70,6 +70,7 @@ void AVLState::initPanes(Vector2 position) {
     addPane.newLine(1, 0, "Random", {}, {}, false);
 
     removePane.newLine(0, 1, "Remove", {"Value"}, {0}, true);
+    removePane.newLine(0, 0, "Clear", {}, {}, false);
 
     algoPane.newLine(0, 1, "Search", {"Value"}, {0}, true);
 
@@ -232,12 +233,11 @@ void AVLState::handleInput() {
         addPane.getForm(0, 0).setText(std::to_string(randomValue));
     }
 
-    if (addPane.isButtonPressed(1)) {    // Button in the second row
-        mAVL = AVL();                    // Clear the current AVL tree
-        int numNodes = rand() % 10 + 5;  // Random number of nodes (5 to 15)
-        for (int i = 0; i < numNodes; i++) {
-            int value = rand() % 1000;  // Random value for each node
-            mAVL.insert(value);
+    if (addPane.isButtonPressed(1)) {  
+        mAVL = AVL();
+        for (int i = 0; i < GetRandomValue(5, 10); i++) {
+            int x = GetRandomValue(0, 1000000000) % 1000;
+            mAVL.insert(x);
             while (mAVL.completedAllActions() == 0) {
                 mAVL.update(1e-15, 1e-15);
                 mAVL.Action(0);
@@ -270,21 +270,26 @@ void AVLState::handleInput() {
         int place = rand() % values.size();
         removePane.getForm(0, 0).setText(std::to_string(values[place]));
     }
-    if (algoPane.isButtonPressed(0)) { // Search functionality
+    if (removePane.isButtonPressed(1)) {
+        mAVL = AVL();
+        return;
+    }
+    if (algoPane.isButtonPressed(0)) {  // Search functionality
         std::string data = algoPane.getForm(0, 0).getText();
         algoPane.getForm(0, 0).clear();
         if (!isStrNum(data)) return;
         int value = std::stoi(data);
-        mAVL.search(value); // Perform the search operation
+        mAVL.search(value);  // Perform the search operation
         // while (mAVL.completedAllActions() == 0) {
         //     mAVL.update(1e-15, 1e-15);
         //     mAVL.Action(0);
         // }
     }
 
-    if (algoPane.isRandomPressed(0)) { // Random value assignment for algoPane
-        int randomValue = rand() % 1000; // Generate a random value
-        algoPane.getForm(0, 0).setText(std::to_string(randomValue)); // Set the random value in the form
+    if (algoPane.isRandomPressed(0)) {  // Random value assignment for algoPane
+        int randomValue = rand() % 1000;  // Generate a random value
+        algoPane.getForm(0, 0).setText(
+            std::to_string(randomValue));  // Set the random value in the form
     }
 
     if (storagePane.isButtonPressed(0)) {  // Save functionality

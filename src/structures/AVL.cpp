@@ -433,6 +433,7 @@ bool AVL::doAction(action Action) {
             if (rotateList.size() == 0 || rotateList.back() != loop) {
                 rotateList.push_back(loop);
                 AVLNode *leftChild = Action.node->left;
+                if (leftChild == nullptr) return false;
                 AVLNode *righ_LeftChild = leftChild->right;
                 AVLNode *left_Right_LeftChild = righ_LeftChild->left;
                 // left rotation on leftChild
@@ -452,6 +453,7 @@ bool AVL::doAction(action Action) {
             if (rotateList.size() == 0 || rotateList.back() != loop) {
                 rotateList.push_back(loop);
                 AVLNode *rightChild = Action.node->right;
+                if (rightChild == nullptr) return false;
                 AVLNode *left_RightChild = rightChild->left;
                 AVLNode *right_Left_RightChild = left_RightChild->right;
                 // right rotation on rightChild
@@ -471,6 +473,7 @@ bool AVL::doAction(action Action) {
             if (rotateList.size() == 0 || rotateList.back() != loop) {
                 rotateList.push_back(loop);
                 AVLNode *rightChild = Action.node->right;
+                if (rightChild == nullptr) return false;
                 AVLNode *Left_RightChild = rightChild->left;
 
                 Action.node->right = Left_RightChild;
@@ -497,6 +500,7 @@ bool AVL::doAction(action Action) {
             if (rotateList.size() == 0 || rotateList.back() != loop) {
                 rotateList.push_back(loop);
                 AVLNode *leftChild = Action.node->left;
+                if (leftChild == nullptr) return false;
                 AVLNode *Right_LeftChild = leftChild->right;
 
                 Action.node->left = Right_LeftChild;
