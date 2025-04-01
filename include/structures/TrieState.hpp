@@ -5,7 +5,7 @@
 #include <cstring>
 #include "Trie.hpp"
 #include "button.h"
-
+#include "menuPane.h"
 class TrieState
 {
     ColorSet const *buttonPalette = &BUTTON_SET_1;
@@ -17,6 +17,9 @@ class TrieState
         void render();
         void run();
         ~TrieState();
+        
+        static void initPanes(Vector2 position);
+        static MenuPane addPane, removePane, algoPane, storagePane;
     private:
         Trie mTrie;
         bool showCreateOptions;
@@ -32,6 +35,7 @@ class TrieState
         Button *mCreateButton, *mSearchButton, *mInsertButton, *mDeleteButton;
         Button *mClearButton, *mRandomButton, *mCustomButton;
         Button *mRandomValueButton, *mEnterButton;
+
 };
 
 #endif // TrieSTATE_HPP

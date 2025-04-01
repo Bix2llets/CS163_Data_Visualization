@@ -8,7 +8,7 @@
 #include <cmath>
 #include "raylib.h"
 #include "TrieNode.hpp"
-
+#include "colorPalette.h"
 class Trie {
     private:
         enum TrieAction {
@@ -45,10 +45,12 @@ class Trie {
         
         typedef std::vector<action> ActionList;
     private:
-        float xOFFSET = 100, yOFFSET = 130, NODE_RADIUS = 30;
+        float xOFFSET = 70, yOFFSET = 70, NODE_RADIUS = 25;
         TrieNode* root;
         int flag, flagUndo;
     public: 
+        static ColorSet const *PALETTE;
+        static Color const *finalNodeColor;
         Trie() ;
         bool Action(bool isReversed);
         bool doAction(action Action);

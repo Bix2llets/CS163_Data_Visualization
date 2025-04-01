@@ -96,6 +96,7 @@ void loadSpecs() {
 
     GraphScene::setPanePosition(menuPanePosition);
     AVLState::initPanes(menuPanePosition);
+    TrieState::initPanes(menuPanePosition);
     Animation::setUpdateRate(10.f);
     AnimationColor::setUpdateRate(1.f);
 }

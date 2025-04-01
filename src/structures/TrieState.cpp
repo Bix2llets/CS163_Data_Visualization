@@ -6,6 +6,7 @@
 #include <mLib/tinyfiledialogs.h>
 #include <cstdlib>
 #include <colorPalette.h>
+#include "menuPane.h"
 
 const int MAX_TEXT_LENGTH = 5;
 
@@ -51,8 +52,42 @@ TrieState::~TrieState() {
 
 #include <cassert>
 
+MenuPane TrieState::addPane({0, 0}, &GBLight::BACKGROUND1, &BUTTON_SET_1, &BUTTON_SET_1);
+MenuPane TrieState::removePane({0, 0}, &GBLight::BACKGROUND1, &BUTTON_SET_1, &BUTTON_SET_1);
+MenuPane TrieState::algoPane({0, 0}, &GBLight::BACKGROUND1, &BUTTON_SET_1, &BUTTON_SET_1);
+MenuPane TrieState::storagePane({0, 0}, &GBLight::BACKGROUND1, &BUTTON_SET_1, &BUTTON_SET_1);
+
+void TrieState::initPanes(Vector2 position) {
+    addPane.setPosition(position);
+    removePane.setPosition(position);
+    algoPane.setPosition(position);
+    storagePane.setPosition(position);
+
+    addPane.newLine(0, 1, "Add", {"Word"}, {1}, true);
+    addPane.newLine(1, 0, "Random", {}, {}, false);
+
+    removePane.newLine(0, 1, "Remove", {"Word"}, {1}, false);
+    removePane.newLine(1, 0, "Clear", {}, {}, false);
+
+    algoPane.newLine(0, 1, "Search", {"Word"}, {1}, true);
+
+    storagePane.newLine(0, 0, "Save", {}, {}, false);
+    storagePane.newLine(1, 0, "Load", {}, {}, false);
+
+    addPane.calibrate();
+    removePane.calibrate();
+    algoPane.calibrate();
+    storagePane.calibrate();
+
+    addPane.disable();
+    removePane.disable();
+    algoPane.disable();
+    storagePane.disable();
+}
+
 void TrieState::handleInput() {
     assert(mLib::mFont.texture.id != 0);
+
     // if (mCreateButton->isPressed()) {
     //     showCreateOptions = !showCreateOptions;
     //     showTextBox = 0;
@@ -171,6 +206,85 @@ void TrieState::handleInput() {
     //     mTimeStepSlider = newMin + (newMax - newMin) * (sliderValue - minValue) / (maxValue - minValue);
     //     mTimeStep = 2.0f - mTimeStepSlider + 0.1f;
     // }
+
+    if (addPane.isButtonPressed(0)) {
+        std::string word = addPane.getForm(0, 0).getText();
+        addPane.getForm(0, 0).clear();
+        if (word.empty()) return;
+        mTrie.insert(word);
+    }
+
+    if (addPane.isRandomPressed(0)) {
+        char randomWord[MAX_TEXT_LENGTH + 1];
+        mLib::GenerateRandomText(randomWord);
+        addPane.getForm(0, 0).setText(randomWord);
+    }
+
+    if (addPane.isButtonPressed(1)) {
+        mTrie = Trie();
+        for (int i = 0; i < GetRandomValue(5, 10); i++) {
+            char randomWord[MAX_TEXT_LENGTH + 1];
+            mLib::GenerateRandomText(randomWord);
+            mTrie.insert(randomWord);
+            while (!mTrie.completedAllActions()) {
+                mTrie.update(1e-15, 1e-15);
+                mTrie.Action(0);
+            }
+        }
+    }
+
+    if (removePane.isButtonPressed(0)) {  // Remove operation
+        std::string word = removePane.getForm(0, 0).getText();
+        removePane.getForm(0, 0).clear();
+        if (word.empty()) return;
+        mTrie.remove(word);  // Perform the remove operation
+    }
+
+    if (removePane.isButtonPressed(1)) {  // Clear operation
+        mTrie = Trie();  // Reset the Trie
+    }
+
+    if (algoPane.isButtonPressed(0)) {
+        std::string word = algoPane.getForm(0, 0).getText();
+        algoPane.getForm(0, 0).clear();
+        if (word.empty()) return;
+        mTrie.search(word);
+    }
+
+    if (algoPane.isRandomPressed(0)) {
+        char randomWord[MAX_TEXT_LENGTH + 1];
+        mLib::GenerateRandomText(randomWord);
+        algoPane.getForm(0, 0).setText(randomWord);
+    }
+
+    if (storagePane.isButtonPressed(0)) {
+        const char *filePath = tinyfd_saveFileDialog(
+            "Save Trie", "trie.txt", 1, (const char *[]){"*.txt"}, "Text files (*.txt)");
+        if (filePath) {
+            std::ofstream outFile(filePath);
+            if (!outFile) {
+                tinyfd_messageBox("Error", "Failed to open file for saving.", "ok", "error", 1);
+                return;
+            }
+            // mTrie.saveToFile(outFile);
+            outFile.close();
+        }
+    }
+
+    if (storagePane.isButtonPressed(1)) {
+        const char *filePath = tinyfd_openFileDialog(
+            "Load Trie", "trie.txt", 1, (const char *[]){"*.txt"}, "Text files (*.txt)", 0);
+        if (filePath) {
+            std::ifstream inFile(filePath);
+            if (!inFile) {
+                tinyfd_messageBox("Error", "Failed to open file for loading.", "ok", "error", 1);
+                return;
+            }
+            mTrie = Trie();
+            // mTrie.loadFromFile(inFile);
+            inFile.close();
+        }
+    }
 }
 
 void TrieState::update() {

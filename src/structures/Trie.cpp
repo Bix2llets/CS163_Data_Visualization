@@ -1,6 +1,8 @@
 #include "Trie.hpp"
 #include <mLib/Utility.hpp>
 
+ColorSet const *Trie::PALETTE = &COLOR_SET_1;
+Color const *Trie::finalNodeColor = &GBLight::BACKGROUND0H;
 Trie::Trie() : Itr() {
     loop = 0;
     core = ActionList();
@@ -244,11 +246,14 @@ void Trie::update(double currTime, double rate) {
 void Trie::draw(TrieNode *root) {
     if (root == NULL) return;
     for (auto &child : root->children) draw(child.second);
-    DrawCircleV(root->getPosition(), NODE_RADIUS - 5, root->isEndOfWord ? (Color) {255, 121, 0, 255} : (Color) {0, 160, 216, 241});
-    DrawCircleV(root->getPosition(), NODE_RADIUS - 5, (Color) {128, 239, 128, 255.f - root->getAlpha()});
-    DrawRing(root->getPosition(), NODE_RADIUS - 5, NODE_RADIUS, 0, 360, 20, (Color) {197, 207, 94, 255});
+    DrawCircleV(root->getPosition(), NODE_RADIUS - 3, root->isEndOfWord ? *finalNodeColor : PALETTE->backgroundNormal);
+    Color color = PALETTE->backgroundNormal;
+    color.a = 255.f - root->getAlpha();
+    DrawCircleV(root->getPosition(), NODE_RADIUS - 3, color);
+    DrawRing(root->getPosition(), NODE_RADIUS - 3, NODE_RADIUS, 0, 360, 20, PALETTE->borderNormal);
     char str[2] = {root->character, '\0'};
-    DrawTextEx(mLib::mFont, str, (Vector2){root->getPosition().x - 12, root->getPosition().y - 12}, 20, 2, WHITE);
+    DrawUtility::drawText(str, root->getPosition(), DrawUtility::inter20, PALETTE->textNormal, 20, 1, VerticalAlignment::CENTERED, HorizontalAlignment::CENTERED);
+    // DrawTextEx(mLib::mFont, str, (Vector2){root->getPosition().x - 12, root->getPosition().y - 12}, 20, 2, WHITE);
 }
 
 void Trie::draw() {
@@ -263,7 +268,7 @@ void Trie::drawArrow(TrieNode* root) {
     if (root == NULL) return;
     for (auto &child : root->children) 
         if (child.second->valid) {
-            DrawArrowWithCircles(root->getPosition(), child.second->getPosition(), NODE_RADIUS, (Color) {0, 160, 216, 241}, 2.5);
+            DrawArrowWithCircles(root->getPosition(), child.second->getPosition(), NODE_RADIUS, PALETTE->borderNormal, 2.5);
             drawArrow(child.second);
         }
 }

@@ -85,6 +85,12 @@ void registerInput() {
         if (WelcomeMenu::isTriePressed()) {
             currentScene = TRIE;
             renderFunc = &mScene::runTrie;
+
+            MenuTable::addPane = &TrieState::addPane;
+            MenuTable::deletePane = &TrieState::removePane;
+            MenuTable::algoPane = &TrieState::algoPane;
+            MenuTable::storagePane = &TrieState::storagePane;
+
         }
         return;
     }
