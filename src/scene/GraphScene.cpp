@@ -123,7 +123,7 @@ void render() { graph.render(); }
 
 void addNode(int nodeLabel) {
     if (nodeList.find(nodeLabel) != nodeList.end()) return;
-    addStep(-1, &PSEUDO_BLANK);
+    addStep(-1, nullptr);
     resetGraphColor();
     addNodeAdd(nodeLabel);
 }
@@ -133,7 +133,7 @@ void addNode(std::shared_ptr<GraphNode> node) { addNode(node->getLabel()); }
 void addEdge(int node1Label, int node2Label, int weight) {
     if (edgeList.find({{node1Label, node1Label}, weight}) != edgeList.end())
         return;
-    addStep(-1, &PSEUDO_BLANK);
+    addStep(-1, nullptr);
     resetGraphColor();
     addEdgeAdd(node1Label, node2Label, weight);
 }
@@ -145,7 +145,7 @@ void addEdge(std::shared_ptr<GraphNode> node1, std::shared_ptr<GraphNode> node2,
 
 void removeNode(int nodeLabel) {
     if (nodeList.find(nodeLabel) == nodeList.end()) return;
-    addStep(-1, &PSEUDO_BLANK);
+    addStep(-1, nullptr);
     resetGraphColor();
     addNodeDelete(nodeLabel);
     std::vector<std::pair<std::pair<int, int>, int>> deleteList;
@@ -171,7 +171,7 @@ void removeEdge(int node1Label, int node2Label) {
     }
     if (edgeList.find({{node1Label, node2Label}, weight}) == edgeList.end())
         return;
-    addStep(-1, &PSEUDO_BLANK);
+    addStep(-1, nullptr);
     resetGraphColor();
     addEdgeDelete(node1Label, node2Label, weight);
 }
@@ -291,6 +291,10 @@ void registerInput() {
         for (std::shared_ptr<GraphEdge> edge : graphEdgeList)
             addEdgeDelete(edge->node1->getLabel(), edge->node2->getLabel(),
                           edge->getWeight());
+        
+                          future.clear();
+                          edgeList.clear();
+                          nodeList.clear();
         std::cerr << "After removal: \n";
         for (auto x : nodeList) std::cerr << x << " ";
         std::cerr << "\n";
@@ -397,7 +401,7 @@ bool join(int label1, int label2, std::unordered_map<int, int> &parList) {
     return true;
 }
 void MST() {
-    addStep(-1, &PSEUDO_BLANK);
+    addStep(0, &PSEUDO_BLANK);
     resetGraphColor();
     std::vector<std::shared_ptr<GraphEdge>> edgeList = graph.getEdgeList();
     std::vector<std::shared_ptr<GraphNode>> nodeList = graph.getNodeList();
@@ -446,14 +450,14 @@ void MST() {
         addEdgeChange(edge->node1->getLabel(), edge->node2->getLabel(),
                       {0, 0, 0, 1, 0});
     }
-    addStep(-1, nullptr);
+    // addStep(-1, nullptr);
 }
 
 void dijkstra(int source) {
     // * Build the adjacency list (undirected) and init the minimumDistance to
     // nodes
     if (nodeList.find(source) == nodeList.end()) return;
-    addStep(-1, &PSEUDO_BLANK);
+    addStep(1, &PSEUDO_BLANK);
     resetGraphColor();
     std::unordered_map<int, std::vector<std::pair<int, int>>> adjList;
     std::unordered_map<int, int> minimumDistance;
@@ -471,7 +475,7 @@ void dijkstra(int source) {
     minimumDistance[source] = 0;
     addNodeChange(source, {0, 1, 1, 1, 0});
 
-    addStep(-1, &PSEUDO_DIJKSTRA);
+    addStep(0, &PSEUDO_DIJKSTRA);
     for (auto node : graph.getNodeList())
         addNodeChange(node->getLabel(), {1, 0, 1, 1, 0});
     for (auto edge : graph.getEdgeList()) {
@@ -509,7 +513,7 @@ void dijkstra(int source) {
             }
         }
     }
-    addStep(-1, nullptr);
+    // addStep(-1, nullptr);
 }
 void addStep(int highlightedLine, std::vector<std::string> const *ref) {
     steps.push_back(Action());
@@ -597,7 +601,7 @@ void resetGraphColor() {
 void backward() {
     while (past.size()) {
         prevStep();
-        if (future.front().highlightedLine == -1) return;
+        if (past.back().highlightRef == nullptr) return;
     }
 }
 
@@ -605,7 +609,7 @@ void forward() {
     // ! Tommorrow I will fix this.
     while (future.size()) {
         nextStep();
-        if (steps.back().highlightedLine == -1) return;
+        if (future.front().highlightRef == nullptr) return;
     }
 }
 }  // namespace GraphScene
