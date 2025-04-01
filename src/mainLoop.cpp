@@ -45,6 +45,11 @@ void registerInput() {
         if (WelcomeMenu::isAVLTreePressed()) {
             currentScene = SceneList::AVL;
             renderFunc = &mScene::runAVL;
+
+            MenuTable::addPane = &AVLState::addPane;
+            MenuTable::deletePane = &AVLState::removePane;
+            MenuTable::algoPane = &AVLState::algoPane;
+            MenuTable::storagePane = &AVLState::storagePane;
         }
         if (WelcomeMenu::isGraphPressed()) {
             currentScene = SceneList::GRAPH;

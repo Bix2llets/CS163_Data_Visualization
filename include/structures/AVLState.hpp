@@ -5,6 +5,7 @@
 #include <cstring>
 #include "AVL.hpp"
 #include "button.h"
+#include "menuPane.h"
 
 class AVLState
 {
@@ -16,7 +17,9 @@ class AVLState
         void update();
         void render();
         void run();
+        static void initPanes(Vector2 position); // Initialize panes
         ~AVLState();
+        static MenuPane addPane, removePane, algoPane, storagePane; // New panes
     private:
         AVL mAVL;
         bool showCreateOptions;
@@ -32,6 +35,7 @@ class AVLState
         Button *mCreateButton, *mSearchButton, *mInsertButton, *mDeleteButton;
         Button *mClearButton, *mRandomButton, *mCustomButton;
         Button *mRandomValueButton, *mEnterButton;
+
 };
 
 #endif // AVLSTATE_HPP

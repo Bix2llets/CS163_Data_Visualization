@@ -95,6 +95,7 @@ void loadSpecs() {
     SLLScene::setDelay(0.05f);
 
     GraphScene::setPanePosition(menuPanePosition);
+    AVLState::initPanes(menuPanePosition);
     Animation::setUpdateRate(10.f);
     AnimationColor::setUpdateRate(1.f);
 }
