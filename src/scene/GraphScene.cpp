@@ -398,11 +398,75 @@ void registerInput() {
 
     if (storagePane.isButtonPressed(0)) {
         // * Save function
+        const char *filePath = tinyfd_saveFileDialog(
+            "Save Graph", "graph.txt", 1, (const char *[]){"*.txt"}, "Text files (*.txt)");
+        if (filePath) {
+            std::ofstream outFile(filePath);
+            if (!outFile) {
+            tinyfd_messageBox("Error", "Failed to open file for saving.", "ok", "error", 1);
+            return;
+            }
+
+            // Save nodes
+            outFile << "Nodes:\n";
+            for (int node : nodeList) {
+            outFile << node << "\n";
+            }
+
+            // Save edges
+            outFile << "Edges:\n";
+            for (const auto &edge : edgeList) {
+            outFile << edge.first.first << " " << edge.first.second << " " << edge.second << "\n";
+            }
+
+            outFile.close();
+            // tinyfd_messageBox("Success", "Graph saved successfully.", "ok", "info", 1);
+        }
         return;
     }
 
     if (storagePane.isButtonPressed(1)) {
         // * Load function
+        const char *filePath = tinyfd_openFileDialog(
+            "Load Graph", "graph.txt", 1, (const char *[]){"*.txt"}, "Text files (*.txt)", 0);
+        if (filePath) {
+            std::ifstream inFile(filePath);
+            if (!inFile) {
+                tinyfd_messageBox("Error", "Failed to open file for loading.", "ok", "error", 1);
+                return;
+            }
+
+            clearGraph();
+
+            std::string line;
+            bool readingNodes = false, readingEdges = false;
+
+            while (std::getline(inFile, line)) {
+                if (line == "Nodes:") {
+                    readingNodes = true;
+                    readingEdges = false;
+                    continue;
+                } else if (line == "Edges:") {
+                    readingNodes = false;
+                    readingEdges = true;
+                    continue;
+                }
+
+                if (readingNodes) {
+                    if (!isStrNum(line)) continue;
+                    addNode(std::stoi(line));
+                } else if (readingEdges) {
+                    std::stringstream ss(line);
+                    int u, v, weight;
+                    ss >> u >> v >> weight;
+                    if (ss.fail()) continue;
+                    addEdge(u, v, weight);
+                }
+            }
+
+            inFile.close();
+            // tinyfd_messageBox("Success", "Graph loaded successfully.", "ok", "info", 1);
+        }
         return;
     }
 
