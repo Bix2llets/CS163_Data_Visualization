@@ -33,6 +33,38 @@ void setPanePosition(Vector2 position) {
     storagePane.setPosition(position);
 }
 
+void clearGraph() {
+            addStep(-1, nullptr);
+            std::cerr << "Before removal: \n";
+            for (auto x : nodeList) std::cerr << x << " ";
+            std::cerr << "\n";
+            for (auto x : edgeList)
+                std::cerr << x.first.first << " " << x.first.second << " "
+                          << x.second << "\n";
+            std::cerr << "\n";
+            std::vector<std::shared_ptr<GraphNode>> graphNodeList =
+                graph.getNodeList();
+            std::vector<std::shared_ptr<GraphEdge>> graphEdgeList =
+                graph.getEdgeList();
+            for (std::shared_ptr<GraphNode> node : graphNodeList)
+                addNodeDelete(node->getLabel());
+    
+            for (std::shared_ptr<GraphEdge> edge : graphEdgeList)
+                addEdgeDelete(edge->node1->getLabel(), edge->node2->getLabel(),
+                              edge->getWeight());
+            
+                              future.clear();
+                              edgeList.clear();
+                              nodeList.clear();
+            std::cerr << "After removal: \n";
+            for (auto x : nodeList) std::cerr << x << " ";
+            std::cerr << "\n";
+            for (auto x : edgeList)
+                std::cerr << x.first.first << " " << x.first.second << " "
+                          << x.second << "\n";
+            std::cerr << "\n";
+            std::cerr << "----------------------------\n";
+}
 void init() {
     addPane.newLine(0, 1, "Node", {"Node label"}, {0}, true);
     addPane.newLine(1, 1, "Edge", {"Data"}, {0}, true);
@@ -277,37 +309,7 @@ void registerInput() {
         addPane.getForm(0, 0).setText(std::to_string(newNodeLabel));
     }
     if (addPane.isButtonPressed(2)) {
-        // ! For random graph generation
-        addStep(-1, nullptr);
-        std::cerr << "Before removal: \n";
-        for (auto x : nodeList) std::cerr << x << " ";
-        std::cerr << "\n";
-        for (auto x : edgeList)
-            std::cerr << x.first.first << " " << x.first.second << " "
-                      << x.second << "\n";
-        std::cerr << "\n";
-        std::vector<std::shared_ptr<GraphNode>> graphNodeList =
-            graph.getNodeList();
-        std::vector<std::shared_ptr<GraphEdge>> graphEdgeList =
-            graph.getEdgeList();
-        for (std::shared_ptr<GraphNode> node : graphNodeList)
-            addNodeDelete(node->getLabel());
-
-        for (std::shared_ptr<GraphEdge> edge : graphEdgeList)
-            addEdgeDelete(edge->node1->getLabel(), edge->node2->getLabel(),
-                          edge->getWeight());
-        
-                          future.clear();
-                          edgeList.clear();
-                          nodeList.clear();
-        std::cerr << "After removal: \n";
-        for (auto x : nodeList) std::cerr << x << " ";
-        std::cerr << "\n";
-        for (auto x : edgeList)
-            std::cerr << x.first.first << " " << x.first.second << " "
-                      << x.second << "\n";
-        std::cerr << "\n";
-        std::cerr << "----------------------------\n";
+        clearGraph();
         addStep(-1, nullptr);
         int maxNode = rand() % 20 + 5;
         for (int i = 1; i <= maxNode; i++) addNodeAdd(i);
@@ -362,9 +364,25 @@ void registerInput() {
 
     if (deletePane.isButtonPressed(2)) {
         // * For clearing graph
+        clearGraph();
         return;
     }
 
+    if (deletePane.isRandomPressed(0)) {
+        auto nodeList = graph.getNodeList();
+        if (nodeList.size() == 0) return;
+        int place = rand() % nodeList.size();
+        Form &form = deletePane.getForm(0, 0);
+        form.setText(std::to_string(nodeList[place]->getLabel()));
+    }
+
+    if (deletePane.isRandomPressed(1)) {
+        auto edgeList = graph.getEdgeList();
+        if (edgeList.size() == 0) return;
+        int place = rand() % edgeList.size();
+        deletePane.getForm(1, 0).setText(std::to_string(edgeList[place]->node1->getLabel()));
+        deletePane.getForm(1, 1).setText(std::to_string(edgeList[place]->node2->getLabel()));
+    }
     if (algoPane.isButtonPressed(0)) {
         MST();
         return;

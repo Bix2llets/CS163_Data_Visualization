@@ -118,4 +118,6 @@ void resetGraphColor();
 
 void backward();
 void forward();
+
+void clearGraph();
 }  // namespace GraphScene

@@ -113,17 +113,20 @@ void MenuPane::newLine(int row, int numberOfForms,
 }
 
 std::string MenuPane::getText(int row, int col) {
+    if (!enabled) return "";
     if (row >= formList.size()) return "";
     if (col >= formList[row].size()) return "";
     return formList[row][col].getText();
 }
 
 bool MenuPane::isButtonPressed(int row) {
+    if (!enabled) return false;
     if (row > btnList.size()) return false;
     return btnList[row].isPressed();
 }
 
 bool MenuPane::isRandomPressed(int row) {
+    if (!enabled) return false;
     if (row > btnList.size()) return false;
     if (haveRandom[row] == false) return false;
     return diceButton[row].isPressed();
