@@ -245,6 +245,7 @@ void nextStep() {
     Action nextAction = future.front();
     future.pop_front();
     steps.push_back(nextAction);
+    updateAnimation();
 }
 
 void registerInput() {
@@ -401,7 +402,7 @@ bool join(int label1, int label2, std::unordered_map<int, int> &parList) {
     return true;
 }
 void MST() {
-    addStep(0, &PSEUDO_BLANK);
+    addStep(-1, &PSEUDO_BLANK);
     resetGraphColor();
     std::vector<std::shared_ptr<GraphEdge>> edgeList = graph.getEdgeList();
     std::vector<std::shared_ptr<GraphNode>> nodeList = graph.getNodeList();
@@ -416,7 +417,7 @@ void MST() {
         parList[node->getLabel()] = -1;
 
     std::vector<std::shared_ptr<GraphEdge>> restoreList;
-    addStep(0, &PSEUDO_MST);
+    addStep(-1, &PSEUDO_MST);
     for (auto edge : graph.getEdgeList()) {
         ChangeInfo info = getInfo(edge, 0, 0, 0);
 
@@ -432,11 +433,11 @@ void MST() {
             {
                 addStep(1, &PSEUDO_MST);
                 addEdgeChange(label1, label2, ChangeInfo{0, 1, 0, 1, 0});
-                if (1 || prevState1 == -1) {
+                if (prevState1 == -1) {
                     addStep(2, &PSEUDO_MST);
                     addNodeChange(label1, getInfo(edge->node1, 1, 1, 0));
                 }
-                if (1 || prevState2 == -1) {
+                if (prevState2 == -1) {
                     addStep(2, &PSEUDO_MST);
                     addNodeChange(label2, getInfo(edge->node2, 1, 1, 0));
                 }
@@ -445,7 +446,7 @@ void MST() {
             restoreList.push_back(edge);
         }
     }
-    addStep(2, &PSEUDO_MST);
+    addStep(-1, &PSEUDO_MST);
     for (auto edge : restoreList) {
         addEdgeChange(edge->node1->getLabel(), edge->node2->getLabel(),
                       {0, 0, 0, 1, 0});
@@ -607,9 +608,9 @@ void backward() {
 
 void forward() {
     // ! Tommorrow I will fix this.
-    while (future.size()) {
+    while (future.size() || steps.size()) {
         nextStep();
-        if (future.front().highlightRef == nullptr) return;
+        if (past.back().highlightRef == nullptr) return;
     }
 }
 }  // namespace GraphScene
