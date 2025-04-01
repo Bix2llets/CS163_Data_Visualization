@@ -272,6 +272,10 @@ void registerInput() {
         return;
     }
 
+    if (addPane.isRandomPressed(0)) {
+        int newNodeLabel = rand() % 1000;
+        addPane.getForm(0, 0).setText(std::to_string(newNodeLabel));
+    }
     if (addPane.isButtonPressed(2)) {
         // ! For random graph generation
         addStep(-1, nullptr);
@@ -322,6 +326,21 @@ void registerInput() {
         return;
     }
 
+    if (addPane.isRandomPressed(1)) {
+        Form &form = addPane.getForm(1, 0);
+        auto nodeList = graph.getNodeList();
+        if (nodeList.size() < 2) return;
+        int firstNodePlace = rand() % nodeList.size();
+        int secondNodePlace = rand() % nodeList.size();
+        while(secondNodePlace == firstNodePlace) secondNodePlace = rand() % nodeList.size();
+        int weight = rand() % 10000;
+        std::stringstream ss;
+        ss << nodeList[firstNodePlace]->getLabel() << " ";
+        ss << nodeList[secondNodePlace]->getLabel() << " ";
+        ss << weight;
+        std::string str = ss.str();
+        form.setText(str);
+    }
     if (deletePane.isButtonPressed(0)) {
         std::string data = deletePane.getForm(0, 0).getText();
         deletePane.getForm(0, 0).clear();
