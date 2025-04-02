@@ -12,7 +12,7 @@ const int MAX_TEXT_LENGTH = 3;
 #include <iostream>
 
 double hashState::mTimeStep;
-hashState::hashState() : mhash(10) {
+hashState::hashState() : mhash(60) {
     showCreateOptions = false;
     showTextBox = false;
     editMode = false;

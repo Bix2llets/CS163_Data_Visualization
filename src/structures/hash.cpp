@@ -5,10 +5,12 @@ hash::hash(int _m = 10) : Itr(), m(_m) {
     loop = 0;
     core = ActionList();
     root.clear();
-    hashNode *node = new hashNode(100, 400, -1);
-    root.push_back(node);
-    for (int i = 1; i < m; i++) {
-        node = new hashNode(root[i - 1]->getPosition().x + xOFFSET, root[i - 1]->getPosition().y, -1);
+    hashNode *node; //= new hashNode(100, 350, -1);
+    //root.push_back(node);
+    int numRow = m / 15 + 1;
+    for (int i = 0; i < m; i++) {
+        int X = i / 15, Y = i % 15; /// location in matrix
+        node = new hashNode(100 + xOFFSET * Y, 400 + (X - numRow / 2) * yOFFSET, -1);
         root.push_back(node);
     }
     ItrHistory.clear(); 
@@ -200,7 +202,7 @@ void hash::draw(hashNode* node) {
 void hash::draw() {
     if (!endLoop()) mLib::DrawTextHash(core[loop].index);
     else mLib::DrawTextHash(-1);
-    for (int i = 0; i < m - 1; i ++) DrawArrowWithCircles(root[i]->getPosition(), root[i + 1]->getPosition(), NODE_RADIUS, (Color) {0, 160, 216, 241}, 2.5);
+    //for (int i = 0; i < m - 1; i ++) DrawArrowWithCircles(root[i]->getPosition(), root[i + 1]->getPosition(), NODE_RADIUS, (Color) {0, 160, 216, 241}, 2.5);
     for (int i = 0; i < m; i++) {
         DrawTextEx(mLib::mFont, std::to_string(i).c_str(), (Vector2){root[i]->getPosition().x - 10, root[i]->getPosition().y - 50}, 20, 2, WHITE);
         draw(root[i]);
