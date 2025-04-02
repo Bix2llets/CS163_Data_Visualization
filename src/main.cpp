@@ -1,77 +1,138 @@
+// Include necessary libraries and headers
+#define RAYGUI_IMPLEMENTATION
+#include <cmath>
+#include <cstdlib>
 #include <iostream>
+#include <mLib/Utility.hpp>
+#include <queue>
+#include <string>
 #include <unordered_map>
 #include <vector>
-#include <string>
-#include <queue>
-#include <cmath>
-#include "..\..\..\src\TrieState.hpp"
-#define RAYGUI_IMPLEMENTATION
-#include "raygui.h"
 
+#include "AVLState.hpp"
+#include "GraphScene.h"
+#include "MenuPane.h"
+#include "TrieState.hpp"
+#include "appMenu.h"
+#include "colorPalette.h"
+#include "form.h"
+#include "hashState.hpp"
+#include "mainLoop.h"
+#include "raygui.h"
+#include "singlyLInkedList.h"
+#include "utility.h"
+#include "welcomeMenu.h"
+
+// Constants
 const int SCREEN_WIDTH = 1366;
 const int SCREEN_HEIGHT = 768;
+const float DELTA_TIME = 1.0 / 24;
 
+// Enums and global variables
 enum State {
     MENU,
-    TRIE
+    TRIE,
+    AVL,
+    HASH_TABLE,
 };
 
 State state = MENU;
-
 TrieState trieState;
+AVLState avlState;
+HashState _hashState;
 
-#include <memory>
-
-#include "GUIObject.h"
-#include "button.h"
-#include "singlyLInkedList.h"
-#include "raylib.h"
-#include "utility.h"
-#include "colorPalette.h"
-
+// Color settings
 using namespace ColorPalette::FlatUI;
-int main() {
+using namespace ColorPalette;
+
+ColorSet elementTheme = {WET_ASPHALT,
+                         MIDNIGHT_BLUE,
+                         CLOUDS,
+                         ASBESTOS,
+                         DrawUtility::EDGE_NORMAL,
+                         DrawUtility::EDGE_HIGHLIGHTED};
+
+Color backgroundColor = GBLight::BACKGROUND4;
+
+void raylibInit() {
     InitWindow(1600, 900, "CS163 Data visualizer");
     SetTargetFPS(60);
-    TextUtility::init();
-    SinglyLinkedList ll(50, GetRenderHeight() / 2);
+    DrawUtility::init();
+    GuiSetStyle(SLIDER, BORDER_COLOR_NORMAL,
+                ColorToInt(AppMenu::buttonPalette->borderNormal));
+    GuiSetStyle(SLIDER, BORDER_COLOR_FOCUSED,
+                ColorToInt(AppMenu::buttonPalette->borderNormal));
+    GuiSetStyle(SLIDER, BORDER_COLOR_PRESSED,
+                ColorToInt(AppMenu::buttonPalette->borderNormal));
+    GuiSetStyle(SLIDER, BORDER_WIDTH, 2);
+    GuiSetStyle(SLIDER, BASE_COLOR_NORMAL,
+                ColorToInt(AppMenu::buttonPalette->backgroundNormal));
+    GuiSetStyle(SLIDER, BASE_COLOR_FOCUSED,
+                ColorToInt(AppMenu::buttonPalette->backgroundHighlight));
+    GuiSetStyle(SLIDER, BASE_COLOR_PRESSED,
+                ColorToInt(GBLight::FOREGROUND4));
+    GuiSetStyle(SLIDER, TEXT_COLOR_NORMAL,
+                ColorToInt(AppMenu::buttonPalette->textNormal));
+    GuiSetStyle(SLIDER, TEXT_COLOR_FOCUSED,
+                ColorToInt(AppMenu::buttonPalette->textHighlight));
+    GuiSetStyle(SLIDER, TEXT_COLOR_PRESSED,
+                ColorToInt(AppMenu::buttonPalette->textHighlight));
+    GuiSetStyle(DEFAULT, TEXT_SIZE, DrawUtility::NORMAL_SIZE);
+    GuiSetFont(DrawUtility::inter20);
+}
 
-    ll.setColor(ColorPalette::FlatUI::MIDNIGHT_BLUE, ColorPalette::FlatUI::FLAT_ORANGE, ColorPalette::FlatUI::WET_ASPHALT);
-    Button button1(400, 400, 100, 50, "Add Node", 12, ASBESTOS, CLOUDS, MIDNIGHT_BLUE);
-    Button button2(500, 400, 100, 50, "Remove End");
-    int nodeData = 0;
-    trieState = TrieState();
+void loadSpecs() {
+    MenuTable::Constructor((Vector2){10, 650}, (Vector2){200, 50},
+                           (Vector2){700, 750}, (Vector2){50, 50});
+    
+    Vector2 menuPanePosition = {MenuTable::showMenu.getPosition().x +
+        MenuTable::showMenu.getDimension().x + 20 +
+        MenuTable::basePane.getDimension().x,
+    MenuTable::showMenu.getPosition().y};
 
-    GuiSetStyle(BUTTON, BORDER_COLOR_NORMAL, 0x008080FF);  
-    GuiSetStyle(BUTTON, BASE_COLOR_NORMAL, 0x20B2AAFF);    //light sea green
-    GuiSetStyle(BUTTON, TEXT_COLOR_NORMAL, 0xFFFFFFFF);    //white
-    GuiSetStyle(DEFAULT, TEXT_SIZE, 24);
+    SLLScene::setPanePosition(menuPanePosition);
+    SLLScene::setDelay(0.05f);
 
+    GraphScene::setPanePosition(menuPanePosition);
+    AVLState::initPanes(menuPanePosition);
+    TrieState::initPanes(menuPanePosition);
+    HashState::initPanes(menuPanePosition); // Already static
+    Animation::setUpdateRate(10.f);
+    AnimationColor::setUpdateRate(1.f);
+}
+
+void otherInit() {
+    srand(time(NULL));
+    AppMenu::init();
+    SLLScene::init();
+    GraphScene::init();
+    mLib::Init();
+}
+// Main function
+int main() {
+    // Initialize Raylib and Raygui
+    raylibInit();
+    loadSpecs();
+    otherInit();
+
+    std::vector<std::string> exampleCode = {
+        "#include <iostream>", "",  "using namespace std;", "",
+        "int main()",          "{", "    return 0;",        "}"};
+    AppMenu::loadCode(exampleCode);
     while (!WindowShouldClose()) {
+        // Update goes here
+        Loop::registerInput();
+        Loop::update();
+        // Render goes here
         BeginDrawing();
-        ClearBackground(RAYWHITE);
-        switch ( state )
-        {
-            case MENU:
-            {
-                if (GuiButton((Rectangle){10, 10, 100, 50}, "Trie")) {
-                    state = TRIE;
-                }
-                break;
-            }
-            case TRIE:
-            {
-                trieState.handleInput();
-                trieState.update();
-                trieState.render();
-                if (GuiButton((Rectangle){10, 10, 100, 50}, "Back")) {
-                    state = MENU;
-                }
-                break;
-            }
-        }
+        ClearBackground(backgroundColor);
+        // pane.render();
+        Loop::render();
         EndDrawing();
     }
+
+    // On exit events
     std::cout << "Program ran successfully\n";
     CloseWindow();
+    SLLScene::clearScene();
 }

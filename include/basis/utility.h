@@ -3,11 +3,36 @@
 
 #include "raylib.h"
 #include "raymath.h"
-namespace TextUtility {
-extern Font fontInter;
-const int NORMAL_SIZE = 14;
-const int SPACING = 1;
+enum class VerticalAlignment {
+    TOP, 
+    CENTERED,
+    BOTTOM
+};
+enum class HorizontalAlignment {
+    LEFT, 
+    CENTERED,
+    RIGHT
+};
+namespace DrawUtility {
+extern Font inter20;
+extern Font inter16;
+extern Font inter12;
+extern Font jbm20;
+extern const int NORMAL_SIZE;
+extern const int SPACING ;
 void init();
-void renderText(std::string text, Vector2 position, Font font, Color textColor,
-                int fontSize, int spacing);
+void drawText(std::string text, Vector2 position, Font font, Color textColor,
+                int fontSize, int spacing, VerticalAlignment verticalAlign, HorizontalAlignment horizontalAlign);
+
+void drawEdge(Vector2 beginPostion, Vector2 endPosition, Color color);
+
+extern const Color EDGE_NORMAL;
+extern const Color EDGE_HIGHLIGHTED;
+extern const Color TEXT_COLOR;
+
 }  // namespace TextUtility
+
+
+Vector2 randomPosition();
+
+bool isStrNum(std::string str);

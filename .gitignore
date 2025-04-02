@@ -1,3 +1,5 @@
 build/
 build/build.ninja
 build/compile_commands.json
+*.exe
+DATA_VISUALIZER.exe
