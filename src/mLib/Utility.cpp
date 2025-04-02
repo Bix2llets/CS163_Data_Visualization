@@ -31,9 +31,16 @@ namespace mLib
         "for char x in word",
         "   if cur->c[x] == NULL, return false", // 14
         "   cur = cur->c[x]", // 15
+        "...",
+        "End", // 19
+    };
+
+    const std::vector<std::string> TrieDelete2 = {
+        "Begin",  // 12
+        "...",
         "if cur->isEndOfWord = false, return false", 
         "cur->isEndOfWord = false", // 16
-        "while cur->c.size() = 0 and cur != root, ",
+        "while cur.isLeaf() & !cur.isEnd() & cur != root,",
         "   temp = cur, cur = cur->parent", // 17
         "   delete temp", // 18
         "End", // 19
@@ -91,6 +98,13 @@ namespace mLib
         "   node.data = S.data", // 17
         "   delete successor S", // 18
         "else delete node", // 19
+        "...",
+        "End", // 25
+    };
+
+    const std::vector<std::string> AVLDelete2 = {
+        "Begin", // 14
+        "...",
         "rebalance", // 20
         "Case 1: Left rotation", // 21
         "Case 2: Right rotation", // 22

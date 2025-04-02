@@ -65,12 +65,14 @@ namespace mLib
     extern const std::vector<std::string> TrieInsert;
     extern const std::vector<std::string> TrieSearch;
     extern const std::vector<std::string> TrieDelete;
+    extern const std::vector<std::string> TrieDelete2;
     extern const std::vector<std::string> hashInsert;
     extern const std::vector<std::string> hashSearch;
     extern const std::vector<std::string> hashDelete;
     extern const std::vector<std::string> AVLInsert;
     extern const std::vector<std::string> AVLSearch;
     extern const std::vector<std::string> AVLDelete;
+    extern const std::vector<std::string> AVLDelete2;
     inline void DrawTextTrie(int index) {
         if (index == -1) {
             row = index;
@@ -89,12 +91,19 @@ namespace mLib
                 AppMenu::setHighlight(&row);
             }
             else {
-                row = index - 12;
-                if (row > 1) row++;
-                if (row > 4) row++;
-                if (row > 6) row++;
-                AppMenu::loadCode(TrieDelete);
-                AppMenu::setHighlight(&row);
+                if (index <= 15) {
+                    AppMenu::loadCode(TrieDelete);
+                    row = index - 12;
+                    if (row > 1) row++;
+                    AppMenu::setHighlight(&row);
+                }
+                else {
+                    AppMenu::loadCode(TrieDelete2);
+                    row = index - 16;
+                    row += 3;
+                    if (row > 3) row++;
+                    AppMenu::setHighlight(&row);
+                }
             }
     }
     inline void DrawTextHash(int index) {
@@ -133,10 +142,18 @@ namespace mLib
             AppMenu::setHighlight(&row);
         }
         else {
-            AppMenu::loadCode(AVLDelete);
-            row = index - 14;
-            if (row > 1) row ++;
-            AppMenu::setHighlight(&row);
+            if (index <= 19 ) {
+                AppMenu::loadCode(AVLDelete);
+                row = index - 14;
+                if (row > 1) row++;
+                AppMenu::setHighlight(&row);
+            }
+            else {
+                AppMenu::loadCode(AVLDelete2);
+                index -= 20;
+                index += 2;
+                AppMenu::setHighlight(&index);
+            }
         }
     }
 }   

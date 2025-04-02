@@ -124,7 +124,7 @@ void Trie::remove(std::string word) {
         actions.push_back({17, SETLECT, parent});
         actions.push_back({18, DELETE, current});
         current = parent;
-        if (current->children.size() > 1) flag = false;
+        if (current->children.size() > 1 || current->isEndOfWord) flag = false;
     }
     actions.push_back({19, CLEAR, current});
     core.insert(core.end(), actions.begin(), actions.end());
