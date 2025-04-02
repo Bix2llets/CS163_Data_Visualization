@@ -72,6 +72,4 @@ namespace SLLScene {
     void correctAnimation();
 
     void setPanePosition(Vector2 newPosition);
-
-
 }

@@ -134,4 +134,5 @@ int main() {
     // On exit events
     std::cout << "Program ran successfully\n";
     CloseWindow();
+    SLLScene::clearScene();
 }

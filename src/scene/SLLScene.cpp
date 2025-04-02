@@ -149,7 +149,9 @@ void SLLScene::update() {
 void SLLScene::addStep(int highlightIndex,
                        std::vector<std::string> const* ref) {
     while (future.size()) {
+        future.back().sll.freeMemory();
         future.pop_back();
+
     }
     SLL newSll;
     if (steps.size())
