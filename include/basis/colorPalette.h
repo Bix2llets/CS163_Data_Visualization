@@ -8,8 +8,10 @@ struct ColorSet {
     Color borderNormal;
     Color borderHighlight;
 };
-extern const ColorSet COLOR_SET_1;
-extern const ColorSet BUTTON_SET_1;
+extern const ColorSet COLOR_SET_LIGHT;
+extern const ColorSet BUTTON_SET_LIGHT;
+extern ColorSet buttonColorSet;
+extern ColorSet nodeColorSet;
 
 namespace ColorPalette {
 const int MAX_TRANSPARENCY = 255;

@@ -2,7 +2,7 @@
 
 const int GraphNode::RADIUS = 25;
 const int GraphNode::BORDER_WIDTH = 4;
-ColorSet const *GraphNode::PALETTE  = &COLOR_SET_1;
+ColorSet const *GraphNode::PALETTE  = &nodeColorSet;
 
 Color const *GraphNode::HOVER = &GBLight::LIGHT_GREEN;
 const float GraphNode::MASS = 1;

@@ -110,8 +110,9 @@ void render() {
     if (currentScene == SceneList::MAIN_MENU) {
         WelcomeMenu::render();
     } else {
-        // if (currentScene == SceneList::AVL || currentScene == SceneList::HASH || currentScene == SceneList::TRIE) ;
-        // else DrawRectangleLines(UPPER_LEFT.x, UPPER_LEFT.y, LOWER_RIGHT.x - UPPER_LEFT.x, LOWER_RIGHT.y - UPPER_LEFT.y, BLUE);
+        ClearBackground(GBDark::BACKGROUND0S);
+        DrawRectangle(UPPER_LEFT.x, UPPER_LEFT.y, LOWER_RIGHT.x - UPPER_LEFT.x, LOWER_RIGHT.y - UPPER_LEFT.y, GBLight::BACKGROUND4);
+        DrawRectangleLinesEx({UPPER_LEFT.x, UPPER_LEFT.y, LOWER_RIGHT.x - UPPER_LEFT.x, LOWER_RIGHT.y - UPPER_LEFT.y}, 3.0f, GBLight::FOREGROUND4);
         if (renderFunc) renderFunc();
         AppMenu::render();
         MenuTable::render();

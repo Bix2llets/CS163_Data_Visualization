@@ -4,7 +4,7 @@ float SLLScene::stepDelay = 1.f;
 float SLLScene::timeLeft = 0.f;
 
 const Rectangle SLLScene::CANVAS = {100, 100, 1400, 600};
-ColorSet const* SLLScene::NODE_PALETTE = &COLOR_SET_1;
+ColorSet const* SLLScene::NODE_PALETTE = &nodeColorSet;
 
 float SLLScene::animationRate = 1.0f;
 SLL SLLScene::sll(CANVAS, animationRate);
@@ -16,13 +16,13 @@ std::deque<SLLScene::SLLStorage> SLLScene::future;
 
 const Vector2 SLLScene::STARTING_PANE_POSITION = {100, 100};
 MenuPane SLLScene::addPane(STARTING_PANE_POSITION, &GBLight::BACKGROUND1,
-                           &BUTTON_SET_1, &BUTTON_SET_1);
+                           &buttonColorSet, &buttonColorSet);
 MenuPane SLLScene::deletePane(STARTING_PANE_POSITION, &GBLight::BACKGROUND1,
-                              &BUTTON_SET_1, &BUTTON_SET_1);
+                              &buttonColorSet, &buttonColorSet);
 MenuPane SLLScene::algoPane(STARTING_PANE_POSITION, &GBLight::BACKGROUND1,
-                            &BUTTON_SET_1, &BUTTON_SET_1);
+                            &buttonColorSet, &buttonColorSet);
 MenuPane SLLScene::miscPane(STARTING_PANE_POSITION, &GBLight::BACKGROUND1,
-                            &BUTTON_SET_1, &BUTTON_SET_1);
+                            &buttonColorSet, &buttonColorSet);
 const std::vector<std::string> SLLScene::PSEUDO_INSERT = {
     "Traverse the linked list", "Create new node", "Update the linked list"};
 const std::vector<std::string> SLLScene::PSEUDO_DELETE = {

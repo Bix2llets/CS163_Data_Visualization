@@ -3,7 +3,7 @@
 #include "menuPane.h"
 #include "raygui.h"
 namespace MenuTable {
-Vector2 optionPosition = {10, 650};
+Vector2 optionPosition = {10, 660};
 Vector2 optionDimension = {200, 50};
 
 Vector2 sliderBarPos = {400, 400};
@@ -18,31 +18,31 @@ float minValue = 0.5f, maxValue = 5.f, sliderValue = 1.f;
 int MaxSizeNum = 3, MaxSizeText = 5, MaxSizeWeight = 5;
 TextureBox backwardButton =
     TextureBox(buttonPos, sliderBarDimension, (Rectangle){0, 0, 100, 100},
-               &mLib::backward, &BUTTON_SET_1);
+               &mLib::backward, &buttonColorSet);
 TextureBox forwardButton = TextureBox(
     (Vector2){buttonPos.x + (buttonDimension.x + buttonDistance.x) * 4,
               buttonPos.y},
     buttonDimension, (Rectangle){0, 0, 100, 100}, &mLib::forward,
-    &BUTTON_SET_1);
+    &buttonColorSet);
 TextureBox playButton = TextureBox(
     (Vector2){buttonPos.x + (buttonDimension.x + buttonDistance.x) * 2,
               buttonPos.y},
-    buttonDimension, (Rectangle){0, 0, 100, 100}, &mLib::pause, &BUTTON_SET_1);
+    buttonDimension, (Rectangle){0, 0, 100, 100}, &mLib::pause, &buttonColorSet);
 TextureBox pauseButton = TextureBox(
     (Vector2){buttonPos.x + (buttonDimension.x + buttonDistance.x) * 2,
               buttonPos.y},
-    buttonDimension, (Rectangle){0, 0, 100, 100}, &mLib::expand, &BUTTON_SET_1);
+    buttonDimension, (Rectangle){0, 0, 100, 100}, &mLib::expand, &buttonColorSet);
 TextureBox prevButton = TextureBox(
     (Vector2){buttonPos.x + (buttonDimension.x + buttonDistance.x),
               buttonPos.y},
-    buttonDimension, (Rectangle){0, 0, 100, 100}, &mLib::prev, &BUTTON_SET_1);
+    buttonDimension, (Rectangle){0, 0, 100, 100}, &mLib::prev, &buttonColorSet);
 TextureBox nextButton = TextureBox(
     (Vector2){buttonPos.x + (buttonDimension.x + buttonDistance.x) * 3,
               buttonPos.y},
-    buttonDimension, (Rectangle){0, 0, 100, 100}, &mLib::next, &BUTTON_SET_1);
+    buttonDimension, (Rectangle){0, 0, 100, 100}, &mLib::next, &buttonColorSet);
 Button showMenu = Button(optionPosition,
                          (Vector2){sliderBarDimension.y, sliderBarDimension.x},
-                         ">", 20, &BUTTON_SET_1);
+                         ">", 20, &buttonColorSet);
 Button clearButton = Button(optionPosition, sliderBarDimension, "Clear", 20,
                             AppMenu::buttonPalette);
 Button importButton = Button(optionPosition, sliderBarDimension, "Import", 20,
@@ -63,7 +63,7 @@ std::vector<std::pair<Button*, Type>> GUIObjects = {};
 // * For menu panes
 MenuPane basePane({optionPosition.x + 10 + showMenu.getDimension().x,
                    optionPosition.y},
-                  &GBLight::BACKGROUND1, &BUTTON_SET_1, &BUTTON_SET_1);
+                  &GBLight::BACKGROUND1, &buttonColorSet, &buttonColorSet);
 MenuPane* addPane;
 MenuPane* deletePane;
 MenuPane* algoPane;

@@ -8,7 +8,7 @@
 #include "menuPane.h"
 class TrieState
 {
-    ColorSet const *buttonPalette = &BUTTON_SET_1;
+    ColorSet const *buttonPalette = &buttonColorSet;
     
     public:
         TrieState();

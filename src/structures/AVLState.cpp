@@ -15,16 +15,16 @@ const int MAX_TEXT_LENGTH = 3;
 
 #include <iostream>
 
-ColorSet const *AVLState::buttonPalette = &BUTTON_SET_1;
+ColorSet const *AVLState::buttonPalette = &buttonColorSet;
 
-MenuPane AVLState::addPane({0, 0}, &GBLight::BACKGROUND1, &BUTTON_SET_1,
-                           &BUTTON_SET_1);
-MenuPane AVLState::removePane({0, 0}, &GBLight::BACKGROUND1, &BUTTON_SET_1,
-                              &BUTTON_SET_1);
-MenuPane AVLState::algoPane({0, 0}, &GBLight::BACKGROUND1, &BUTTON_SET_1,
-                            &BUTTON_SET_1);
-MenuPane AVLState::storagePane({0, 0}, &GBLight::BACKGROUND1, &BUTTON_SET_1,
-                               &BUTTON_SET_1);
+MenuPane AVLState::addPane({0, 0}, &GBLight::BACKGROUND1, &buttonColorSet,
+                           &buttonColorSet);
+MenuPane AVLState::removePane({0, 0}, &GBLight::BACKGROUND1, &buttonColorSet,
+                              &buttonColorSet);
+MenuPane AVLState::algoPane({0, 0}, &GBLight::BACKGROUND1, &buttonColorSet,
+                            &buttonColorSet);
+MenuPane AVLState::storagePane({0, 0}, &GBLight::BACKGROUND1, &buttonColorSet,
+                               &buttonColorSet);
 double AVLState::mTimeStep;
 AVLState::AVLState() : mAVL() {
     showCreateOptions = false;

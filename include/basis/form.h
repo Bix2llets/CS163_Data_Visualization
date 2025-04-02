@@ -25,7 +25,7 @@ class Form : public GUIObject, public Toggleable {
     void recordFocus();
 
    public:
-    Form(Rectangle drawInfo, ColorSet const *palette = &BUTTON_SET_1)
+    Form(Rectangle drawInfo, ColorSet const *palette = &buttonColorSet)
         : GUIObject{drawInfo.x, drawInfo.y},
           width{drawInfo.width},
           height{drawInfo.height},

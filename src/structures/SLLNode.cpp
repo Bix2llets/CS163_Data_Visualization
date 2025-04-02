@@ -1,6 +1,6 @@
 #include "SLLNode.h"
 
-ColorSet const *Node::PALETTE = &COLOR_SET_1;
+ColorSet const *Node::PALETTE = &nodeColorSet;
 void Node::render() {
     DrawCircle(position.x, position.y, radius, borderColor.getCurrentColor());
     DrawCircleV(position, radius - 3, PALETTE->backgroundNormal);

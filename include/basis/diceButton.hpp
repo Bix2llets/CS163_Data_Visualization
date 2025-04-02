@@ -10,7 +10,7 @@ class DiceButton : public Button{
         float Timer;
         int loop;
     public:
-    DiceButton(Vector2 position = {0, 0}, Vector2 dimension = {0, 0}, ColorSet const *palette = &BUTTON_SET_1)
+    DiceButton(Vector2 position = {0, 0}, Vector2 dimension = {0, 0}, ColorSet const *palette = &buttonColorSet)
      : Button{position, dimension, "", 0,
               palette}, Timer{0}, loop{0} {
               };

@@ -107,6 +107,8 @@ void otherInit() {
     SLLScene::init();
     GraphScene::init();
     mLib::Init();
+    buttonColorSet = BUTTON_SET_LIGHT;
+    nodeColorSet = COLOR_SET_LIGHT;
 }
 // Main function
 int main() {

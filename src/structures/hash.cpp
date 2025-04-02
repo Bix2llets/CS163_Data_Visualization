@@ -1,7 +1,7 @@
 #include "hash.hpp"
 #include <mLib/Utility.hpp>
 
-ColorSet const *Hash::PALETTE = &COLOR_SET_1;
+ColorSet const *Hash::PALETTE = &nodeColorSet;
 Hash::Hash(int _m = 10) : Itr(), m(_m) {
     loop = 0;
     core = ActionList();

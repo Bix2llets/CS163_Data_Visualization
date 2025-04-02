@@ -2,7 +2,7 @@
 
 #include <mLib/Utility.hpp>
 
-ColorSet const *AVL::PALETTE = &COLOR_SET_1;
+ColorSet const *AVL::PALETTE = &nodeColorSet;
 AVL::AVL() : Itr() {
     loop = 0;
     core = ActionList();

@@ -100,10 +100,13 @@ Color FOREGROUND3 = GetColor(0x665C54ff);
 Color FOREGROUND4 = GetColor(0x7C6F64ff);
 
 }  // namespace GBLight
-const ColorSet COLOR_SET_1 = {
+const ColorSet COLOR_SET_LIGHT = {
     GBLight::FOREGROUND2, GBLight::FOREGROUND0, GBLight::BACKGROUND2,
     GBLight::BACKGROUND4, GBLight::FOREGROUND0, GBLight::DARK_YELLOW,
 };
-const ColorSet BUTTON_SET_1 = {GBLight::FOREGROUND2, GBLight::FOREGROUND0,
+const ColorSet BUTTON_SET_LIGHT = {GBLight::FOREGROUND2, GBLight::FOREGROUND0,
                                GBLight::BACKGROUND2, GBLight::BACKGROUND4,
                                GBLight::FOREGROUND0, GBLight::FOREGROUND0};
+
+ColorSet buttonColorSet;
+ColorSet nodeColorSet;
