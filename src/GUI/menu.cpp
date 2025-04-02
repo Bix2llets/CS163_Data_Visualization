@@ -3,13 +3,13 @@
 #include "menuPane.h"
 #include "raygui.h"
 namespace MenuTable {
-Vector2 optionPosition = {10, 600};
+Vector2 optionPosition = {10, 650};
 Vector2 optionDimension = {200, 50};
 
-Vector2 sliderBarPos = {500, 400};
+Vector2 sliderBarPos = {400, 400};
 Vector2 sliderBarDimension = {50, 50};
 
-Vector2 buttonPos = {600, 700};
+Vector2 buttonPos = {600, 750};
 Vector2 buttonDimension = {50, 50};
 Vector2 buttonDistance = {10, 0};
 
@@ -204,7 +204,7 @@ void render() {
     AnimationColor::setUpdateRate(sliderValue);
     AVLState::setAnimationSpeed(sliderValue);
     TrieState::setAnimationSpeed(sliderValue);
-    hashState::setAnimationSpeed(sliderValue);
+    HashState::setAnimationSpeed(sliderValue);
 }
 
 void handleInput() {

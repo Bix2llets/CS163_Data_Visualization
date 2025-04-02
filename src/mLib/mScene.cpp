@@ -3,7 +3,7 @@
 namespace mScene {
     AVLState avl;
     TrieState trie;
-    hashState hash;
+    HashState hash;
     void runAVL() {
         avl.run();
     }

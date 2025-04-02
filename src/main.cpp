@@ -39,7 +39,7 @@ enum State {
 State state = MENU;
 TrieState trieState;
 AVLState avlState;
-hashState _hashState;
+HashState _hashState;
 
 // Color settings
 using namespace ColorPalette::FlatUI;
@@ -90,13 +90,13 @@ void loadSpecs() {
         MenuTable::basePane.getDimension().x,
     MenuTable::showMenu.getPosition().y};
 
-    
     SLLScene::setPanePosition(menuPanePosition);
     SLLScene::setDelay(0.05f);
 
     GraphScene::setPanePosition(menuPanePosition);
     AVLState::initPanes(menuPanePosition);
     TrieState::initPanes(menuPanePosition);
+    HashState::initPanes(menuPanePosition); // Already static
     Animation::setUpdateRate(10.f);
     AnimationColor::setUpdateRate(1.f);
 }

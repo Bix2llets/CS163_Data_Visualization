@@ -8,9 +8,8 @@
 #include <cmath>
 #include "raylib.h"
 #include "hashNode.hpp"
-
-
-class hash {
+#include "colorPalette.h"
+class Hash {
     private: 
         enum hashAction {
             INIT,
@@ -49,8 +48,9 @@ class hash {
         int m, flag, flagUndo;
         std::vector<hashNode *> root;
     public: 
+        static ColorSet const *PALETTE;
         void printTable();
-        hash(int _m) ;
+        Hash(int _m) ;
         bool Action(bool isReversed);
         bool doAction(action Action);
         bool Undo(action Action);
@@ -59,7 +59,7 @@ class hash {
         void remove(int value);
         void draw();
         void update(double currTime, double rate);
-        ~hash();
+        ~Hash();
         bool completedAllActions();
         bool completeAnimation();
         bool reachedEnd();

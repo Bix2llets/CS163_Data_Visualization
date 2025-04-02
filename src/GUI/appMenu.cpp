@@ -12,7 +12,7 @@ ColorSet const* codeBlockColor = new ColorSet{
 
 Vector2 panelPosition{50, 760};
 Vector2 buttonDimension = {200, 40};
-Vector2 codeBlockPosition{1050, 520};
+Vector2 codeBlockPosition{1050, 650};
 Vector2 codeLineSize{500, 25};
 Vector2 buttonDistance = {8, 8};
 Button backButton({10, 10, buttonDimension.x, buttonDimension.y}, "Back",
@@ -31,7 +31,7 @@ int verticalCellCount = 3;
 int horizontalCellCount = 2;
 
 void init() {
-    codeList.resize(15);
+    codeList.resize(10);
     for (int i = 0; i < codeList.size(); i++) {
         float x = codeBlockPosition.x;
         float y = codeBlockPosition.y + i * codeLineSize.y;
