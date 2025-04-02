@@ -150,9 +150,9 @@ namespace mLib
             }
             else {
                 AppMenu::loadCode(AVLDelete2);
-                index -= 20;
-                index += 2;
-                AppMenu::setHighlight(&index);
+                row = index - 20;
+                row += 2;
+                AppMenu::setHighlight(&row);
             }
         }
     }
