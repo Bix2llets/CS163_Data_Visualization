@@ -13,7 +13,7 @@ Vector2 buttonPos = {600, 700};
 Vector2 buttonDimension = {50, 50};
 Vector2 buttonDistance = {10, 0};
 
-float minValue = 1.f, maxValue = 100.f, sliderValue = 50.f;
+float minValue = 0.5f, maxValue = 5.f, sliderValue = 1.f;
 
 int MaxSizeNum = 3, MaxSizeText = 5, MaxSizeWeight = 5;
 TextureBox backwardButton =
@@ -77,7 +77,7 @@ void Constructor(Vector2 _optionPosition = {10, 600},
     sliderBarPos = _sliderBarPos;
     sliderBarDimension = _sliderBarDimension;
 
-    minValue = 1.f, maxValue = 100.f, sliderValue = 50.f;
+    // minValue = 1.f, maxValue = 100.f, sliderValue = 50.f;
 
     MaxSizeNum = 3, MaxSizeText = 5, MaxSizeWeight = 5;
 
@@ -191,15 +191,20 @@ void render() {
     prevButton.render();
     nextButton.render();
     ///* Slider bar **/
-    ///
-
     GuiSliderBar(
         (Rectangle){
             sliderBarPos.x + sliderBarDimension.x,
             sliderBarPos.y + sliderBarDimension.y + sliderBarDimension.y / 2,
             sliderBarDimension.x * 3, sliderBarDimension.y / 2},
-        "Time Step", TextFormat("%.2f", sliderValue), &sliderValue, minValue,
+        "Speed", TextFormat("%.2fx", sliderValue), &sliderValue, minValue,
         maxValue);
+
+    // Update animation speed based on slider value
+    Animation::setUpdateRate(sliderValue);
+    AnimationColor::setUpdateRate(sliderValue);
+    AVLState::setAnimationSpeed(sliderValue);
+    TrieState::setAnimationSpeed(sliderValue);
+    hashState::setAnimationSpeed(sliderValue);
 }
 
 void handleInput() {

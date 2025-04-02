@@ -15,6 +15,7 @@ include_directories(include/structures)
 include_directories(include/animation)
 include_directories(include/scene)
 include_directories(include)
+include_directories(include/structures/graph)
 add_executable(
     ${PROJECT_NAME}
     src/main.cpp

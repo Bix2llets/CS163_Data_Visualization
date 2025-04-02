@@ -20,6 +20,7 @@ class AVLState
         static void initPanes(Vector2 position); // Initialize panes
         ~AVLState();
         static MenuPane addPane, removePane, algoPane, storagePane; // New panes
+        static void setAnimationSpeed(float factor);
     private:
         AVL mAVL;
         bool showCreateOptions;
@@ -28,7 +29,8 @@ class AVLState
         int isReversed;
         int textDestionation;
         char textBox[100], requestText[100];
-        double mTime, mTimeStep, mTimeStepSlider;
+        static double mTimeStep;
+        double mTime, mTimeStepSlider;
         bool animationPlaying, pendingPause, showRunStepByStep;
         float sliderValue;
 

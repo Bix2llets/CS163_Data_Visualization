@@ -11,7 +11,7 @@ const int MAX_TEXT_LENGTH = 3;
 
 #include <iostream>
 
-
+double hashState::mTimeStep;
 hashState::hashState() : mhash(10) {
     showCreateOptions = false;
     showTextBox = false;
@@ -242,4 +242,8 @@ void hashState::run() {
         }
     }
     render();
+}
+
+void hashState::setAnimationSpeed(float factor) {
+    mTimeStep = 1.0f / factor;
 }

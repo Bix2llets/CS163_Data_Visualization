@@ -25,7 +25,7 @@ MenuPane AVLState::algoPane({0, 0}, &GBLight::BACKGROUND1, &BUTTON_SET_1,
                             &BUTTON_SET_1);
 MenuPane AVLState::storagePane({0, 0}, &GBLight::BACKGROUND1, &BUTTON_SET_1,
                                &BUTTON_SET_1);
-
+double AVLState::mTimeStep;
 AVLState::AVLState() : mAVL() {
     showCreateOptions = false;
     showTextBox = false;
@@ -419,4 +419,8 @@ void AVLState::run() {
         }
     }
     render();
+}
+
+void AVLState::setAnimationSpeed(float factor) {
+    mTimeStep = 1.0f / factor;
 }

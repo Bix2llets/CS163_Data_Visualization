@@ -70,7 +70,7 @@ void raylibInit() {
     GuiSetStyle(SLIDER, BASE_COLOR_FOCUSED,
                 ColorToInt(AppMenu::buttonPalette->backgroundHighlight));
     GuiSetStyle(SLIDER, BASE_COLOR_PRESSED,
-                ColorToInt(AppMenu::buttonPalette->backgroundHighlight));
+                ColorToInt(GBLight::FOREGROUND4));
     GuiSetStyle(SLIDER, TEXT_COLOR_NORMAL,
                 ColorToInt(AppMenu::buttonPalette->textNormal));
     GuiSetStyle(SLIDER, TEXT_COLOR_FOCUSED,

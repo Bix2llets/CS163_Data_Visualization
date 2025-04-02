@@ -9,7 +9,11 @@
 #include "textureButton.hpp"
 #include "menuPane.h"
 #include <mLib/Utility.hpp>
-
+#include "TrieState.hpp"
+#include "AVLState.hpp"
+// #include "graphScene.h"
+#include "SLLScene.h"
+#include "hashState.hpp"
 namespace MenuTable {
     enum Type {
         CREATE, // show random, clear, and import button

@@ -12,7 +12,7 @@ const int MAX_TEXT_LENGTH = 5;
 
 #include <iostream>
 
-
+double TrieState::mTimeStep;
 TrieState::TrieState() : mTrie() {
     showCreateOptions = false;
     showTextBox = false;
@@ -349,4 +349,8 @@ void TrieState::run() {
         }
     }
     render();
+}
+
+void TrieState::setAnimationSpeed(float factor) {
+    mTimeStep = 1.0f / factor;
 }

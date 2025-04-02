@@ -20,6 +20,8 @@ class TrieState
         
         static void initPanes(Vector2 position);
         static MenuPane addPane, removePane, algoPane, storagePane;
+
+        static void setAnimationSpeed(float factor);
     private:
         Trie mTrie;
         bool showCreateOptions;
@@ -28,7 +30,8 @@ class TrieState
         int isReversed;
         int textDestionation;
         char textBox[100], requestText[100];
-        double mTime, mTimeStep, mTimeStepSlider;
+        double static mTimeStep;
+        double mTime, mTimeStepSlider;
         bool animationPlaying, pendingPause, showRunStepByStep;
         float sliderValue;
 

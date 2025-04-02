@@ -107,9 +107,9 @@ void render() {
     } else {
         if (currentScene == SceneList::AVL || currentScene == SceneList::HASH || currentScene == SceneList::TRIE) ;
         else DrawRectangleLines(UPPER_LEFT.x, UPPER_LEFT.y, LOWER_RIGHT.x - UPPER_LEFT.x, LOWER_RIGHT.y - UPPER_LEFT.y, BLUE);
+        if (renderFunc) renderFunc();
         AppMenu::render();
         MenuTable::render();
-        if (renderFunc) renderFunc();
     }
     
 }

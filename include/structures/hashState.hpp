@@ -17,6 +17,8 @@ class hashState
         void render();
         void run();
         ~hashState();
+
+        static void setAnimationSpeed(float factor);
     private:
         hash mhash;
         bool showCreateOptions;
@@ -25,7 +27,8 @@ class hashState
         int isReversed;
         int textDestionation;
         char textBox[100], requestText[100];
-        double mTime, mTimeStep, mTimeStepSlider;
+        static double mTimeStep;
+        double mTime, mTimeStepSlider;
         bool animationPlaying, pendingPause, showRunStepByStep;
         float sliderValue;
 
