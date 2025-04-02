@@ -18,7 +18,7 @@ MenuPane HashState::removePane({0, 0}, &GBLight::BACKGROUND1, &BUTTON_SET_1, &BU
 MenuPane HashState::algoPane({0, 0}, &GBLight::BACKGROUND1, &BUTTON_SET_1, &BUTTON_SET_1);
 MenuPane HashState::storagePane({0, 0}, &GBLight::BACKGROUND1, &BUTTON_SET_1, &BUTTON_SET_1);
 
-HashState::HashState() : mhash(10) {
+HashState::HashState() : mhash(60) {
     showCreateOptions = false;
     showTextBox = false;
     editMode = false;

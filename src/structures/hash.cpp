@@ -206,7 +206,7 @@ void Hash::draw(hashNode* node) {
 void Hash::draw() {
     if (!endLoop()) mLib::DrawTextHash(core[loop].index);
     else mLib::DrawTextHash(-1);
-    for (int i = 0; i < m - 1; i ++) DrawArrowWithCircles(root[i]->getPosition(), root[i + 1]->getPosition(), NODE_RADIUS, PALETTE->borderNormal, 2.5);
+    //for (int i = 0; i < m - 1; i ++) DrawArrowWithCircles(root[i]->getPosition(), root[i + 1]->getPosition(), NODE_RADIUS, PALETTE->borderNormal, 2.5);
     for (int i = 0; i < m; i++) {
         DrawUtility::drawText(std::to_string(i).c_str(), Vector2Add(root[i]->getPosition(), Vector2{0, -50}), DrawUtility::inter20, PALETTE->textNormal, 20, 1, VerticalAlignment::CENTERED, HorizontalAlignment::CENTERED);
         // DrawTextEx(mLib::mFont, std::to_string(i).c_str(), (Vector2){root[i]->getPosition().x - 10, root[i]->getPosition().y - 50}, 20, 2, WHITE);
