@@ -6,13 +6,19 @@
 #include <mLib/tinyfiledialogs.h>
 #include <cstdlib>
 #include <colorPalette.h>
+#include "menuPane.h"
 
 const int MAX_TEXT_LENGTH = 3;
 
 #include <iostream>
 
-double hashState::mTimeStep;
-hashState::hashState() : mhash(60) {
+double HashState::mTimeStep;
+MenuPane HashState::addPane({0, 0}, &GBLight::BACKGROUND1, &BUTTON_SET_1, &BUTTON_SET_1);
+MenuPane HashState::removePane({0, 0}, &GBLight::BACKGROUND1, &BUTTON_SET_1, &BUTTON_SET_1);
+MenuPane HashState::algoPane({0, 0}, &GBLight::BACKGROUND1, &BUTTON_SET_1, &BUTTON_SET_1);
+MenuPane HashState::storagePane({0, 0}, &GBLight::BACKGROUND1, &BUTTON_SET_1, &BUTTON_SET_1);
+
+HashState::HashState() : mhash(10) {
     showCreateOptions = false;
     showTextBox = false;
     editMode = false;
@@ -46,12 +52,40 @@ hashState::hashState() : mhash(60) {
     // mEnterButton->enable();
 }
 
-hashState::~hashState() {
+HashState::~HashState() {
 }
 
 #include <cassert>
 
-void hashState::handleInput() {
+void HashState::initPanes(Vector2 position) { // Updated to static
+    addPane.setPosition(position);
+    removePane.setPosition(position);
+    algoPane.setPosition(position);
+    storagePane.setPosition(position);
+
+    addPane.newLine(0, 1, "Add", {"Value"}, {0}, true);
+    addPane.newLine(1, 0, "Random", {}, {}, false);
+
+    removePane.newLine(0, 1, "Remove", {"Value"}, {0}, true);
+    removePane.newLine(1, 0, "Clear", {}, {}, false);
+
+    algoPane.newLine(0, 1, "Search", {"Value"}, {0}, true);
+
+    storagePane.newLine(0, 0, "Save", {}, {}, false);
+    storagePane.newLine(1, 0, "Load", {}, {}, false);
+
+    addPane.calibrate();
+    removePane.calibrate();
+    algoPane.calibrate();
+    storagePane.calibrate();
+
+    addPane.disable();
+    removePane.disable();
+    algoPane.disable();
+    storagePane.disable();
+}
+
+void HashState::handleInput() {
     assert(mLib::mFont.texture.id != 0);
     // if (mCreateButton->isPressed()) {
     //     showCreateOptions = !showCreateOptions;
@@ -180,9 +214,90 @@ void hashState::handleInput() {
     //     mTimeStepSlider = newMin + (newMax - newMin) * (sliderValue - minValue) / (maxValue - minValue);
     //     mTimeStep = 2.0f - mTimeStepSlider + 0.1f;
     // }
+
+    if (addPane.isButtonPressed(0)) {
+        std::string data = addPane.getForm(0, 0).getText();
+        addPane.getForm(0, 0).clear();
+        if (!isStrNum(data)) return;
+        mhash.insert(std::stoi(data));
+    }
+
+    if (addPane.isRandomPressed(0)) {
+        int randomValue = rand() % 1000;
+        addPane.getForm(0, 0).setText(std::to_string(randomValue));
+    }
+
+    if (removePane.isButtonPressed(0)) {
+        std::string data = removePane.getForm(0, 0).getText();
+        removePane.getForm(0, 0).clear();
+        if (!isStrNum(data)) return;
+        mhash.remove(std::stoi(data));
+    }
+
+    if (removePane.isButtonPressed(1)) {
+        mhash = Hash(10);  // Reset the hash table
+    }
+
+    if (removePane.isRandomPressed(0)) {
+        int value = rand() % 1000;
+        removePane.getForm(0, 0).setText(std::to_string(value));
+        return;
+    }
+    if (algoPane.isButtonPressed(0)) {
+        std::string data = algoPane.getForm(0, 0).getText();
+        algoPane.getForm(0, 0).clear();
+        if (!isStrNum(data)) return;
+        mhash.search(std::stoi(data));
+    }
+
+    if (algoPane.isRandomPressed(0)) {
+        int value = rand() % 1000;
+        algoPane.getForm(0, 0).setText(std::to_string(value));
+    }
+
+    if (storagePane.isButtonPressed(0)) {  // Save functionality
+        const char *filePath = tinyfd_saveFileDialog(
+            "Save Hash Table", "hashtable.txt", 1, (const char *[]){"*.txt"},
+            "Text files (*.txt)");
+        if (filePath) {
+            std::ofstream outFile(filePath);
+            if (!outFile) {
+                tinyfd_messageBox("Error", "Failed to open file for saving.", "ok", "error", 1);
+                return;
+            }
+            // std::vector<int> valueList = mhash.getValues();
+            // std::sort(valueList.begin(), valueList.end());
+            // for (int x : valueList) outFile << x << " ";
+            outFile << "\n";
+            outFile.close();
+        }
+    }
+
+    if (storagePane.isButtonPressed(1)) {  // Load functionality
+        const char *filePath = tinyfd_openFileDialog(
+            "Load Hash Table", "hashtable.txt", 1, (const char *[]){"*.txt"},
+            "Text files (*.txt)", 0);
+        if (filePath) {
+            std::ifstream inFile(filePath);
+            if (!inFile) {
+                tinyfd_messageBox("Error", "Failed to open file for loading.", "ok", "error", 1);
+                return;
+            }
+            // mhash = hash(10);  // Reset the hash table
+            int n;
+            while (inFile >> n) {
+                mhash.insert(n);
+                while (mhash.completedAllActions() == 0) {
+                    mhash.update(1e-15, 1e-15);
+                    mhash.Action(0);
+                }
+            }
+            inFile.close();
+        }
+    }
 }
 
-void hashState::update() {
+void HashState::update() {
     if (editMode) {
         if (strlen(textBox) == 0) ;
         else
@@ -192,7 +307,7 @@ void hashState::update() {
     showRunStepByStep = mhash.completeAnimation();
 }
 
-void hashState::render() {
+void HashState::render() {
     if (showTextBox & mhash.completedAllActions())
     {
         if (textDestionation == 1) DrawTextEx(mLib::mFont, "Searching", (Vector2) {10 + 250, 700}, 30, 2, WHITE);
@@ -215,7 +330,7 @@ void hashState::render() {
     mhash.completedAllActions() ? WHITE : animationPlaying ? GREEN : RED);
 }
 
-void hashState::run() {
+void HashState::run() {
     handleInput();
     mTime += GetFrameTime();
     update();
@@ -244,6 +359,6 @@ void hashState::run() {
     render();
 }
 
-void hashState::setAnimationSpeed(float factor) {
+void HashState::setAnimationSpeed(float factor) {
     mTimeStep = 1.0f / factor;
 }

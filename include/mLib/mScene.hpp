@@ -8,7 +8,7 @@
 namespace mScene {
     extern AVLState avl;
     extern TrieState trie;
-    extern hashState hash;
+    extern HashState hash;
     void runAVL();
     void runTrie();
     void runHash();

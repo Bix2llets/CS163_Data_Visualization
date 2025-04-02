@@ -12,7 +12,7 @@ ColorSet const* codeBlockColor = new ColorSet{
 
 Vector2 panelPosition{50, 760};
 Vector2 buttonDimension = {200, 40};
-Vector2 codeBlockPosition{1050, 620};
+Vector2 codeBlockPosition{1050, 650};
 Vector2 codeLineSize{500, 25};
 Vector2 buttonDistance = {8, 8};
 Button backButton({10, 10, buttonDimension.x, buttonDimension.y}, "Back",

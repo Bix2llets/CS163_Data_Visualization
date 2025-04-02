@@ -5,22 +5,29 @@
 #include <cstring>
 #include "hash.hpp"
 #include "button.h"
+#include "menuPane.h"
 
-class hashState
+class HashState
 {
     ColorSet const *buttonPalette = &BUTTON_SET_1;
     
     public:
-        hashState();
+        HashState();
         void handleInput();
         void update();
         void render();
         void run();
-        ~hashState();
+        static void initPanes(Vector2 position); // Changed to static
+        ~HashState();
 
         static void setAnimationSpeed(float factor);
+
+        static MenuPane addPane;
+        static MenuPane removePane;
+        static MenuPane algoPane;
+        static MenuPane storagePane;
     private:
-        hash mhash;
+        Hash mhash;
         bool showCreateOptions;
         bool showTextBox;
         bool editMode;
@@ -31,6 +38,8 @@ class hashState
         double mTime, mTimeStepSlider;
         bool animationPlaying, pendingPause, showRunStepByStep;
         float sliderValue;
+
+        // Menu panes
 
         Button *mCreateButton, *mSearchButton, *mInsertButton, *mDeleteButton;
         Button *mClearButton, *mRandomButton, *mCustomButton;

@@ -68,6 +68,11 @@ void registerInput() {
         if (WelcomeMenu::isHashTablePressed()) {
             currentScene = SceneList::HASH;
             renderFunc = &mScene::runHash;
+
+            MenuTable::addPane = &HashState::addPane;
+            MenuTable::deletePane = &HashState::removePane;
+            MenuTable::algoPane = &HashState::algoPane;
+            MenuTable::storagePane = &HashState::storagePane;
         }
         if (WelcomeMenu::isLinkedListPressed()) {
             currentScene = SceneList::LINKED_LIST;
