@@ -385,14 +385,14 @@ void AVLState::render() {
     //     mRandomButton->render();
     //     mCustomButton->render();
     // }
-    DrawTextEx(mLib::mFont,
-               mAVL.completedAllActions() ? "Animation Completed"
-               : animationPlaying         ? "Animation Running"
-                                          : "Animation Paused",
-               (Vector2){1200, 10}, 30, 2,
-               mAVL.completedAllActions() ? WHITE
-               : animationPlaying         ? GREEN
-                                          : RED);
+    // DrawTextEx(mLib::mFont,
+    //            mAVL.completedAllActions() ? "Animation Completed"
+    //            : animationPlaying         ? "Animation Running"
+    //                                       : "Animation Paused",
+    //            (Vector2){1200, 10}, 30, 2,
+    //            mAVL.completedAllActions() ? WHITE
+    //            : animationPlaying         ? GREEN
+    //                                       : RED);
 }
 
 void AVLState::run() {

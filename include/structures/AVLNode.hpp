@@ -11,7 +11,7 @@ class AVLNode : public Animation {
         AVLNode *left, *right;
         bool valid, targeted;
         int height, value, heightLeft, heightRight, balanceLeft, balanceRight, balance, targetValue, PosInParent;
-        inline AVLNode(int x, int y, int value, AVLNode *parent, int P) : Animation(x, y), parent(parent), value(value), PosInParent(P) {
+        inline AVLNode(float x, float y, int value, AVLNode *parent, int P) : Animation(x, y), parent(parent), value(value), PosInParent(P) {
             left = right = NULL;
             valid = targeted = false;
             height = 1; balance = 0;

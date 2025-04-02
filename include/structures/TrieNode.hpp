@@ -11,7 +11,7 @@ class TrieNode : public Animation {
         std::map<char, TrieNode*> children;
         bool isEndOfWord, valid;
         char character;
-        inline TrieNode(int x, int y, char character, TrieNode *parent) : Animation(x, y), parent(parent), character(character) {
+        inline TrieNode(float x, float y, char character, TrieNode *parent) : Animation(x, y), parent(parent), character(character) {
             children.clear();
             isEndOfWord = valid = false;
             setPosition((Vector2){x, y});

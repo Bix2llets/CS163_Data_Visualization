@@ -191,10 +191,10 @@ void render() {
     prevButton.render();
     nextButton.render();
     ///* Slider bar **/
+    Vector2 centerPauseButton = Vector2Add(pauseButton.getPosition(), Vector2Scale(pauseButton.getDimension(), 0.5f));
+    Vector2 sliderPosition = Vector2Add(centerPauseButton, Vector2{- sliderBarDimension.x * 3 / 2, 50});
     GuiSliderBar(
-        (Rectangle){
-            sliderBarPos.x + sliderBarDimension.x,
-            sliderBarPos.y + sliderBarDimension.y + sliderBarDimension.y / 2,
+        (Rectangle){sliderPosition.x, sliderPosition.y,
             sliderBarDimension.x * 3, sliderBarDimension.y / 2},
         "Speed", TextFormat("%.2fx", sliderValue), &sliderValue, minValue,
         maxValue);

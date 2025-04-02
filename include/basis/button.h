@@ -56,7 +56,7 @@ class Button : public GUIObject, public Toggleable {
 
     Vector2 getDimension() const { return dimension; }
 
-    virtual void render();
+    void render();
 
     void setText(std::string newText);
 

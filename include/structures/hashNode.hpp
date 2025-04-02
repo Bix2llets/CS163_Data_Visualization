@@ -9,7 +9,7 @@ class hashNode : public Animation {
     public:
         bool targeted;
         int value, targetValue;
-        inline hashNode(int x, int y, int value) : Animation(x, y), value(value) {
+        inline hashNode(float x, float y, int value) : Animation(x, y), value(value) {
             targetValue = -1;
             targeted = false;
             setPosition((Vector2){x, y});
