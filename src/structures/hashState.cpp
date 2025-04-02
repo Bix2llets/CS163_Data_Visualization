@@ -238,11 +238,21 @@ void HashState::handleInput() {
         mhash = Hash(10);  // Reset the hash table
     }
 
+    if (removePane.isRandomPressed(0)) {
+        int value = rand() % 1000;
+        removePane.getForm(0, 0).setText(std::to_string(value));
+        return;
+    }
     if (algoPane.isButtonPressed(0)) {
         std::string data = algoPane.getForm(0, 0).getText();
         algoPane.getForm(0, 0).clear();
         if (!isStrNum(data)) return;
         mhash.search(std::stoi(data));
+    }
+
+    if (algoPane.isRandomPressed(0)) {
+        int value = rand() % 1000;
+        algoPane.getForm(0, 0).setText(std::to_string(value));
     }
 
     if (storagePane.isButtonPressed(0)) {  // Save functionality
