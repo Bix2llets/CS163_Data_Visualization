@@ -261,7 +261,7 @@ void Trie::draw() {
     else mLib::DrawTextTrie(-1);
     drawArrow(root);
     draw(root);
-    if (Itr.show) DrawRing(Itr.animation->getPosition(), NODE_RADIUS, NODE_RADIUS + 5, 0, 360, 20, (Color) {255, 116, 109, 255});
+    if (Itr.show) DrawRing(Itr.animation->getPosition(), NODE_RADIUS, NODE_RADIUS + 5, 0, 360, 20, GBLight::DARK_RED);
 }
 
 void Trie::drawArrow(TrieNode* root) {

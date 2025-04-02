@@ -70,7 +70,7 @@ void AVLState::initPanes(Vector2 position) {
     addPane.newLine(1, 0, "Random", {}, {}, false);
 
     removePane.newLine(0, 1, "Remove", {"Value"}, {0}, true);
-    removePane.newLine(0, 0, "Clear", {}, {}, false);
+    removePane.newLine(1, 0, "Clear", {}, {}, false);
 
     algoPane.newLine(0, 1, "Search", {"Value"}, {0}, true);
 
