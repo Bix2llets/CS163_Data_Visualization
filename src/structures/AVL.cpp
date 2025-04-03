@@ -396,7 +396,7 @@ bool AVL::doAction(action Action) {
                 AVLNode *left_Right_LeftChild = righ_LeftChild->left;
                 // left rotation on leftChild
                 leftChild->right = left_Right_LeftChild;
-                if (left_Right_LeftChild != NULL) left_Right_LeftChild->parent = leftChild;
+                if (left_Right_LeftChild != NULL) left_Right_LeftChild->parent = leftChild, left_Right_LeftChild->PosInParent = 1;
                 righ_LeftChild->left = leftChild;
                 leftChild->parent = righ_LeftChild;
                 righ_LeftChild->parent = Action.node, righ_LeftChild->PosInParent = 0;
@@ -413,7 +413,7 @@ bool AVL::doAction(action Action) {
                 AVLNode *right_Left_RightChild = left_RightChild->right;
                 // right rotation on rightChild
                 rightChild->left = right_Left_RightChild;
-                if (right_Left_RightChild != NULL) right_Left_RightChild->parent = rightChild;
+                if (right_Left_RightChild != NULL) right_Left_RightChild->parent = rightChild, right_Left_RightChild->PosInParent = 0;
                 left_RightChild->right = rightChild;
                 rightChild->parent = left_RightChild;
                 left_RightChild->parent = Action.node, left_RightChild->PosInParent = 1;
