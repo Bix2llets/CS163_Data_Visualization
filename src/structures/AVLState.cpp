@@ -245,8 +245,11 @@ void AVLState::handleInput() {
         int size;
         if (!isStrNum(data)) size = GetRandomValue(1, 15);
         else size = std::stoi(data);
+        std::cout << "starting insert" << std::endl;
+        std::vector<int> values = {778, 808, 175, 316, 699, 457, 678, 246, 688};
         for (int i = 0; i < size; i++) {
             int x = GetRandomValue(0, 1000000000) % 1000;
+            x = values[i];
             std::cout << "insert success" << ' ' << x << std::endl;
             mAVL.insert(x);
             while (mAVL.completedAllActions() == 0) {
@@ -255,6 +258,7 @@ void AVLState::handleInput() {
             }
         }
         mAVL.setNULLPos(mAVL.getRoot());
+        mTime = 0;
     }
 
     if (removePane.isButtonPressed(0)) {
