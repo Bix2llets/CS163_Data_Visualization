@@ -359,9 +359,29 @@ void AVLState::update() {
             textBox[strlen(textBox) - 1] = '\0';
     }
     showRunStepByStep = mAVL.completeAnimation();
+    mAVL.update(mTime, mTimeStep);
+    if (mTime >= mTimeStep && (animationPlaying || isReversed != -1)) {
+        mTime = 0;
+        if (isReversed == -1) {
+            if (mAVL.Action(0)) {
+                showRunStepByStep = 1;
+                if (pendingPause) {
+                    pendingPause = 0;
+                    animationPlaying = 0;
+                }
+            }
+        } else {
+            if (mAVL.Action(isReversed)) {
+                if (isReversed == 1 && mAVL.reachedStart())
+                mAVL.ClearOperator();
+                isReversed = -1;
+            }
+        }
+    }
 }
 
 void AVLState::render() {
+    mTime += GetFrameTime();
     if (showTextBox & mAVL.completedAllActions()) {
         if (textDestionation == 1)
             DrawTextEx(mLib::mFont, "Searching", (Vector2){10 + 250, 700}, 30,
@@ -397,27 +417,8 @@ void AVLState::render() {
 
 void AVLState::run() {
     handleInput();
-    mTime += GetFrameTime();
     update();
-    mAVL.update(mTime, mTimeStep);
-    if (mTime >= mTimeStep && (animationPlaying || isReversed != -1)) {
-        mTime = 0;
-        if (isReversed == -1) {
-            if (mAVL.Action(0)) {
-                showRunStepByStep = 1;
-                if (pendingPause) {
-                    pendingPause = 0;
-                    animationPlaying = 0;
-                }
-            }
-        } else {
-            if (mAVL.Action(isReversed)) {
-                if (isReversed == 1 && mAVL.reachedStart())
-                    mAVL.ClearOperator();
-                isReversed = -1;
-            }
-        }
-    }
+    
     render();
 }
 
