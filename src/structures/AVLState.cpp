@@ -222,6 +222,8 @@ void AVLState::handleInput() {
     // }
 
     if (addPane.isButtonPressed(0)) {
+        if (!mAVL.completedAllActions()) return;
+
         std::string data = addPane.getForm(0, 0).getText();
         addPane.getForm(0, 0).clear();
         if (!isStrNum(data)) return;
@@ -239,6 +241,7 @@ void AVLState::handleInput() {
     }
 
     if (addPane.isButtonPressed(1)) {  
+        if (!mAVL.completedAllActions()) return;
         mAVL = AVL();
         std::string data = addPane.getForm(1, 0).getText();
         addPane.getForm(1, 0).clear();
@@ -263,6 +266,8 @@ void AVLState::handleInput() {
     }
 
     if (removePane.isButtonPressed(0)) {
+        if (!mAVL.completedAllActions()) return;
+
         std::string data = removePane.getForm(0, 0).getText();
         removePane.getForm(0, 0).clear();
         if (!isStrNum(data)) return;
@@ -288,10 +293,12 @@ void AVLState::handleInput() {
         removePane.getForm(0, 0).setText(std::to_string(values[place]));
     }
     if (removePane.isButtonPressed(1)) {
+        if (!mAVL.completedAllActions()) return;
         mAVL = AVL();
         return;
     }
     if (algoPane.isButtonPressed(0)) {  // Search functionality
+        if (!mAVL.completedAllActions()) return;
         std::string data = algoPane.getForm(0, 0).getText();
         algoPane.getForm(0, 0).clear();
         if (!isStrNum(data)) return;
@@ -310,6 +317,7 @@ void AVLState::handleInput() {
     }
 
     if (storagePane.isButtonPressed(0)) {  // Save functionality
+        if (!mAVL.completedAllActions()) return;
         const char *filePath = tinyfd_saveFileDialog(
             "Save AVL Tree", "avltree.txt", 1, (const char *[]){"*.txt"},
             "Text files (*.txt)");
@@ -341,6 +349,7 @@ void AVLState::handleInput() {
     }
 
     if (storagePane.isButtonPressed(1)) {  // Load functionality
+        if (!mAVL.completedAllActions()) return;
         const char *filePath = tinyfd_openFileDialog(
             "Load AVL Tree", "avltree.txt", 1, (const char *[]){"*.txt"},
             "Text files (*.txt)", 0);
