@@ -18,7 +18,7 @@ MenuPane HashState::removePane({0, 0}, &GBLight::BACKGROUND1, &buttonColorSet, &
 MenuPane HashState::algoPane({0, 0}, &GBLight::BACKGROUND1, &buttonColorSet, &buttonColorSet);
 MenuPane HashState::storagePane({0, 0}, &GBLight::BACKGROUND1, &buttonColorSet, &buttonColorSet);
 
-HashState::HashState() : mhash(0) {
+HashState::HashState() : mhash(60) {
     showCreateOptions = false;
     showTextBox = false;
     editMode = false;
@@ -64,7 +64,7 @@ void HashState::initPanes(Vector2 position) { // Updated to static
     storagePane.setPosition(position);
 
     addPane.newLine(0, 1, "Add", {"Value"}, {0}, true);
-    addPane.newLine(1, 2, "Create", {"Size", "Num value"}, {0, 0}, true);
+    addPane.newLine(1, 0, "Random", {}, {}, false);
 
     removePane.newLine(0, 1, "Remove", {"Value"}, {0}, true);
     removePane.newLine(1, 0, "Clear", {}, {}, false);
@@ -227,34 +227,6 @@ void HashState::handleInput() {
         addPane.getForm(0, 0).setText(std::to_string(randomValue));
     }
 
-    if (addPane.isButtonPressed(1)) {
-        std::string data = addPane.getForm(1, 0).getText();
-        addPane.getForm(1, 0).clear();
-        int size;
-        if (!isStrNum(data)) size = GetRandomValue(1, 60);
-        else size = std::stoi(data);
-        mhash = Hash(size);  
-        int numValue;
-        if (!isStrNum(addPane.getForm(1, 1).getText())) numValue = GetRandomValue(0, size);
-        else numValue = std::min(size, std::stoi(addPane.getForm(1, 1).getText()));
-        addPane.getForm(1, 1).clear();
-        for (int i = 0; i < numValue; i++) {
-            int x = GetRandomValue(0, 1000000000) % 1000;
-            mhash.insert(x);
-            while (mhash.completedAllActions() == 0) {
-                mhash.update(1e-15, 1e-15);
-                mhash.Action(0);
-            }
-        }
-    }
-
-    if (addPane.isRandomPressed(1)) {
-        int size = GetRandomValue(1, 60);
-        addPane.getForm(1, 0).setText(std::to_string(size));
-        int numValue = GetRandomValue(0, size);
-        addPane.getForm(1, 1).setText(std::to_string(numValue));
-    } 
-
     if (removePane.isButtonPressed(0)) {
         std::string data = removePane.getForm(0, 0).getText();
         removePane.getForm(0, 0).clear();
@@ -263,7 +235,7 @@ void HashState::handleInput() {
     }
 
     if (removePane.isButtonPressed(1)) {
-        mhash = Hash(0);  // Reset the hash table
+        mhash = Hash(10);  // Reset the hash table
     }
 
     if (removePane.isRandomPressed(0)) {
