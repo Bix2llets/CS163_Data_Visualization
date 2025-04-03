@@ -67,7 +67,7 @@ void AVLState::initPanes(Vector2 position) {
     algoPane.setPosition(position);
     storagePane.setPosition(position);
     addPane.newLine(0, 1, "Add", {"Value"}, {0}, true);
-    addPane.newLine(1, 0, "Random", {}, {}, false);
+    addPane.newLine(1, 1, "Create", {"Size"}, {0}, true);
 
     removePane.newLine(0, 1, "Remove", {"Value"}, {0}, true);
     removePane.newLine(1, 0, "Clear", {}, {}, false);
@@ -233,9 +233,20 @@ void AVLState::handleInput() {
         addPane.getForm(0, 0).setText(std::to_string(randomValue));
     }
 
+    if (addPane.isRandomPressed(1)) {
+        int size = GetRandomValue(1, 15);
+        addPane.getForm(1, 0).setText(std::to_string(size));
+    }
+
     if (addPane.isButtonPressed(1)) {  
         mAVL = AVL();
-        for (int i = 0; i < GetRandomValue(5, 10); i++) {
+        std::string data = addPane.getForm(1, 0).getText();
+        addPane.getForm(1, 0).clear();
+        int size;
+        if (!isStrNum(data)) size = GetRandomValue(1, 15);
+        else size = std::stoi(data);
+        std::cout << size << '\n';
+        for (int i = 0; i < size; i++) {
             int x = GetRandomValue(0, 1000000000) % 1000;
             mAVL.insert(x);
             while (mAVL.completedAllActions() == 0) {

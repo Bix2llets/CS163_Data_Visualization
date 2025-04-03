@@ -63,7 +63,7 @@ void AVL::calcPosition(AVLNode *root) {
     if (nodes.size() == 0) return;
     int mid = nodes.size() / 2;
     nodes[mid]->setTargetedPosition(
-        (Vector2){700, nodes[mid]->getTargetedPosition().y});
+        (Vector2){800, nodes[mid]->getTargetedPosition().y});
     for (int i = mid - 1; i >= 0; i--)
         nodes[i]->setTargetedPosition(
             (Vector2){nodes[i + 1]->getTargetedPosition().x - xOFFSET / 2,

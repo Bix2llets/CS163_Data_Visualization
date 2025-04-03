@@ -46,6 +46,7 @@ bool Hash::Action(bool isReversed) {
 }
 
 void Hash::insert(int value) {
+    if (m == 0) return;
     ActionList actions;
     int index = value % m;
     actions.push_back({0, INIT, NULL});
@@ -66,6 +67,7 @@ void Hash::insert(int value) {
 }
 
 void Hash::search(int value) {
+    if (m == 0) return;
     ActionList actions;
     actions.push_back({5, INIT, NULL});
     int index = value % m;
@@ -83,6 +85,7 @@ void Hash::search(int value) {
 }
 
 void Hash::remove(int value) {
+    if (m == 0) return;
     ActionList actions;
     actions.push_back({10, INIT, NULL});
     int index = value % m;

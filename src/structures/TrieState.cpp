@@ -64,7 +64,7 @@ void TrieState::initPanes(Vector2 position) {
     storagePane.setPosition(position);
 
     addPane.newLine(0, 1, "Add", {"Word"}, {1}, true);
-    addPane.newLine(1, 0, "Random", {}, {}, false);
+    addPane.newLine(1, 1, "Create", {"Num word"}, {1}, true);
 
     removePane.newLine(0, 1, "Remove", {"Word"}, {1}, false);
     removePane.newLine(1, 0, "Clear", {}, {}, false);
@@ -220,9 +220,19 @@ void TrieState::handleInput() {
         addPane.getForm(0, 0).setText(randomWord);
     }
 
+    if (addPane.isRandomPressed(1)) {
+        int size = GetRandomValue(1, 15);
+        addPane.getForm(1, 0).setText(std::to_string(size));
+    }
+
     if (addPane.isButtonPressed(1)) {
         mTrie = Trie();
-        for (int i = 0; i < GetRandomValue(5, 10); i++) {
+        std::string data = addPane.getForm(1, 0).getText();
+        addPane.getForm(1, 0).clear();
+        int size;
+        if (!isStrNum(data)) size = GetRandomValue(1, 15);
+        else size = std::stoi(data);
+        for (int i = 0; i < size; i++) {
             char randomWord[MAX_TEXT_LENGTH + 1];
             mLib::GenerateRandomText(randomWord);
             mTrie.insert(randomWord);
