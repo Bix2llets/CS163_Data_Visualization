@@ -1,5 +1,5 @@
 #include "AVLState.hpp"
-
+#include "menu.hpp"
 #include <colorPalette.h>
 #include <mLib/tinyfiledialogs.h>
 
@@ -371,6 +371,32 @@ void AVLState::handleInput() {
             }
             inFile.close();
         }
+    }
+    if (MenuTable::prevButton.isPressed()) {  // Undo functionality
+        if (!mAVL.completedAllActions()) return;
+        isReversed = 1;;
+    }
+
+    if (MenuTable::nextButton.isPressed()) {  // Redo functionality
+        if (!mAVL.completedAllActions()) return;
+        isReversed = 0;
+    }
+
+    if (MenuTable::forwardButton.isPressed()) {  // Forward functionality
+        if (!mAVL.completedAllActions()) return;
+        while (!mAVL.completedAllActions()) {
+            mAVL.update(1e-15, 1e-15);
+            mAVL.Action(0);
+        }
+    }
+
+    if (MenuTable::backwardButton.isPressed()) {  // Backward functionality
+        if (!mAVL.completedAllActions()) return;
+        do {
+            mAVL.update(1e-15, 1e-15);
+            mAVL.Action(1);
+        } while (!mAVL.completedAllActions() && !mAVL.reachedStart());
+        mAVL.ClearOperator();
     }
 }
 
