@@ -25,18 +25,15 @@ class AVLState
         AVL mAVL;
         bool showCreateOptions;
         bool showTextBox;
-        bool editMode;
         int isReversed;
-        int textDestionation;
-        char textBox[100], requestText[100];
         static double mTimeStep;
         double mTime, mTimeStepSlider;
-        bool animationPlaying, pendingPause, showRunStepByStep;
+        bool animationPlaying, pendingPause;
         float sliderValue;
 
-        Button *mCreateButton, *mSearchButton, *mInsertButton, *mDeleteButton;
-        Button *mClearButton, *mRandomButton, *mCustomButton;
-        Button *mRandomValueButton, *mEnterButton;
+        // Button *mCreateButton, *mSearchButton, *mInsertButton, *mDeleteButton;
+        // Button *mClearButton, *mRandomButton, *mCustomButton;
+        // Button *mRandomValueButton, *mEnterButton;
 
 };
 

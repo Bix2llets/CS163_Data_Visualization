@@ -67,6 +67,11 @@ class Hash {
         void ClearOperator();
         inline bool endLoop() { return loop == core.size(); }
         inline bool startLoop() { return loop == 0; }
+        void setNULLPos() {
+            for (int i = 0; i < m; i++) {
+                root[i]->setPosition((Vector2){800, 100});
+            }
+        }
     private:
         void draw(hashNode *root);
         void DrawArrowWithCircles(Vector2 start, Vector2 end, float radius, Color color, float thickness);

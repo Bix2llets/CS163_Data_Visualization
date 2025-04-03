@@ -68,6 +68,14 @@ class Trie {
         void ClearOperator();
         inline bool endLoop() { return loop == core.size(); }
         inline bool startLoop() { return loop == 0; }
+        TrieNode *getRoot() { return root; }
+        void setNULLPos(TrieNode *root) {
+            if (root == NULL) return;
+            root->setPosition((Vector2){800, 100});
+            for (auto child : root->children) {
+                setNULLPos(child.second);
+            }
+        }
     private:
         Vector2 calcPosition(TrieNode *root);
         void APosition(TrieNode *root);

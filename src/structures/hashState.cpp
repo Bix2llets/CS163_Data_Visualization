@@ -247,6 +247,8 @@ void HashState::handleInput() {
                 mhash.Action(0);
             }
         }
+        mhash.setNULLPos();
+        mTime = 0;
     }
 
     if (addPane.isRandomPressed(1)) {
@@ -326,16 +328,18 @@ void HashState::handleInput() {
         }
     }
 
-    if (MenuTable::prevButton.isPressed()) {  // Undo functionality
-        isReversed = 1;
+    if (MenuTable::prevButton.isPressed() && !*MenuTable::isPlaying) {  // Undo functionality
+        //if (!mAVL.completeAnimation()) return;
+        isReversed = 1;;
     }
 
-    if (MenuTable::nextButton.isPressed()) {  // Redo functionality
+    if (MenuTable::nextButton.isPressed() && !*MenuTable::isPlaying) {  // Redo functionality
+        //if (!mAVL.completeAnimation()) return;
         isReversed = 0;
     }
 
     if (MenuTable::forwardButton.isPressed()) {  // Forward functionality
-        while (mhash.completedAllActions() == 0) {
+        while (!mhash.completedAllActions()) {
             mhash.update(1e-15, 1e-15);
             mhash.Action(0);
         }
@@ -345,9 +349,17 @@ void HashState::handleInput() {
         do {
             mhash.update(1e-15, 1e-15);
             mhash.Action(1);
-        } while (mhash.completedAllActions() == 0 && mhash.reachedStart() == 0);
+        } while (!mhash.completedAllActions() && !mhash.reachedStart());
         mhash.ClearOperator();
     }
+
+    if (MenuTable::pauseButton.isPressed()) animationPlaying = 1;
+    if (MenuTable::playButton.isPressed()) {
+        if (mhash.completedAllActions()) animationPlaying = 0;
+        else pendingPause = 1;
+    }
+
+    if (pendingPause || isReversed != -1) update();
 }
 
 void HashState::update() {

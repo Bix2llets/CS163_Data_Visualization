@@ -176,6 +176,9 @@ std::pair<bool, bool> Hash::doFadeEffect(double curr, double Trans, hashNode *ta
 }
 
 void Hash::update(double currTime, double rate) {
+    for (int i = 0; i < m; i++) {
+        root[i]->displace(currTime, rate);
+    }
     if (Itr.show) {
         Itr.setTarget();
         Itr.animation->displace(currTime, rate);
@@ -237,7 +240,11 @@ bool Hash::completedAllActions() {
 }
 
 bool Hash::completeAnimation() {
-    return Itr.animation->isCompleted();
+    bool f = 1;
+    for (int i = 0; i < m; i++) {
+        f &= root[i]->isCompleted();
+    }
+    return Itr.animation->isCompleted() & f;
 }
 
 bool Hash::reachedEnd() {

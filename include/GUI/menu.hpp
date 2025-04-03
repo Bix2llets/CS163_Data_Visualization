@@ -35,7 +35,7 @@ namespace MenuTable {
     extern edgeInsertBox edgeBox;
     extern std::string requestText, requestNum;
     extern std::vector<std::string> requestEdge; // u, v, w
-    extern bool showMenuFlag, requestClear, requestImport, requestRandom, inAnimationProcess, isPlaying;
+    extern bool showMenuFlag, requestClear, requestImport, requestRandom, inAnimationProcess, *isPlaying;
     extern std::vector<std::pair<Button *, Type>> GUIObjects;
     extern int MaxSizeNum, MaxSizeText, MaxSizeWeight;
     extern MenuPane basePane;

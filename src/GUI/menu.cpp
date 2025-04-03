@@ -58,7 +58,7 @@ std::string requestText = "";
 std::string requestNum = "";
 std::vector<std::string> requestEdge = {"", "", ""};
 bool showMenuFlag = false, requestClear = false, requestImport = false,
-     requestRandom = false, inAnimationProcess = false, isPlaying = true;
+     requestRandom = false, inAnimationProcess = false, *isPlaying = &Loop::isRunning;
 std::vector<std::pair<Button*, Type>> GUIObjects = {};
 // * For menu panes
 MenuPane basePane({optionPosition.x + 10 + showMenu.getDimension().x,
@@ -107,7 +107,7 @@ void Constructor(Vector2 _optionPosition = {10, 600},
     requestNum = "";
     requestEdge = {"", "", ""};
     showMenuFlag = false, requestClear = false, requestImport = false,
-    requestRandom = false, inAnimationProcess = false, isPlaying = true;
+    requestRandom = false, inAnimationProcess = false, isPlaying = &Loop::isRunning;
     GUIObjects = {};
 }
 

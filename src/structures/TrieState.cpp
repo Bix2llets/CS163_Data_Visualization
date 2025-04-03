@@ -248,6 +248,8 @@ void TrieState::handleInput() {
                 mTrie.Action(0);
             }
         }
+        mTrie.setNULLPos(mTrie.getRoot());
+        mTime = 0;
     }
 
     if (removePane.isButtonPressed(0)) {  // Remove operation
@@ -306,19 +308,24 @@ void TrieState::handleInput() {
             inFile.close();
         }
     }
-    if (MenuTable::prevButton.isPressed()) { 
-        if (mTrie.completedAllActions()) {    
-            isReversed = 1;                 
+    if (MenuTable::prevButton.isPressed() && !*MenuTable::isPlaying) {  // Undo functionality
+        //if (!mAVL.completeAnimation()) return;
+        isReversed = 1;;
+    }
+
+    if (MenuTable::nextButton.isPressed() && !*MenuTable::isPlaying) {  // Redo functionality
+        //if (!mAVL.completeAnimation()) return;
+        isReversed = 0;
+    }
+
+    if (MenuTable::forwardButton.isPressed()) {  // Forward functionality
+        while (!mTrie.completedAllActions()) {
+            mTrie.update(1e-15, 1e-15);
+            mTrie.Action(0);
         }
     }
 
-    if (MenuTable::nextButton.isPressed()) {
-        if (mTrie.completedAllActions()) {
-            isReversed = 0;
-        }
-    }
-
-    if (MenuTable::backwardButton.isPressed()) {
+    if (MenuTable::backwardButton.isPressed()) {  // Backward functionality
         do {
             mTrie.update(1e-15, 1e-15);
             mTrie.Action(1);
@@ -326,12 +333,13 @@ void TrieState::handleInput() {
         mTrie.ClearOperator();
     }
 
-    if (MenuTable::forwardButton.isPressed()) {
-        while (!mTrie.completedAllActions()) {
-            mTrie.update(1e-15, 1e-15);
-            mTrie.Action(0);
-        }
+    if (MenuTable::pauseButton.isPressed()) animationPlaying = 1;
+    if (MenuTable::playButton.isPressed()) {
+        if (mTrie.completedAllActions()) animationPlaying = 0;
+        else pendingPause = 1;
     }
+
+    if (pendingPause || isReversed != -1) update();
 }
 
 void TrieState::update() {
