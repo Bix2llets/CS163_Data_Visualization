@@ -76,6 +76,8 @@ namespace mLib
     inline void DrawTextTrie(int index) {
         if (index == -1) {
             row = index;
+            AppMenu::loadCode(TrieInsert);
+            AppMenu::setHighlight(&row);
             return;
         }
         if (index <= 5) {
@@ -109,6 +111,8 @@ namespace mLib
     inline void DrawTextHash(int index) {
         if (index == -1) {
             row = index;
+            AppMenu::loadCode(hashInsert);
+            AppMenu::setHighlight(&row);
             return;
         }
         if (index <= 4) {
@@ -130,6 +134,8 @@ namespace mLib
     inline void DrawTextAVL(int index) {
         if (index == -1) {
             row = index;
+            AppMenu::loadCode(AVLInsert);
+            AppMenu::setHighlight(&row);
             return;
         }
         if (index <= 8) {
