@@ -257,6 +257,7 @@ void AVLState::handleInput() {
                 mAVL.Action(0);
             }
         }
+        mAVL.printDebug(mAVL.getRoot());
         mAVL.setNULLPos(mAVL.getRoot());
         mTime = 0;
     }

@@ -81,6 +81,7 @@ class AVL {
     inline AVLNode *getRoot() { return root; }
     static ColorSet const *PALETTE;
     void setNULLPos(AVLNode *root);
+    void printDebug(AVLNode *root);
    private:
     void calcPosition(AVLNode *root);
     std::vector<AVLNode *> getNodes(AVLNode *root);
