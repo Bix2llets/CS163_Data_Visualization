@@ -1,4 +1,5 @@
 #include "hashState.hpp"
+#include "menu.hpp"
 #include "raygui.h"
 #include <mLib/Utility.hpp>
 #include <cstring>
@@ -323,6 +324,29 @@ void HashState::handleInput() {
             }
             inFile.close();
         }
+    }
+
+    if (MenuTable::prevButton.isPressed()) {  // Undo functionality
+        isReversed = 1;
+    }
+
+    if (MenuTable::nextButton.isPressed()) {  // Redo functionality
+        isReversed = 0;
+    }
+
+    if (MenuTable::forwardButton.isPressed()) {  // Forward functionality
+        while (mhash.completedAllActions() == 0) {
+            mhash.update(1e-15, 1e-15);
+            mhash.Action(0);
+        }
+    }
+
+    if (MenuTable::backwardButton.isPressed()) {  // Backward functionality
+        do {
+            mhash.update(1e-15, 1e-15);
+            mhash.Action(1);
+        } while (mhash.completedAllActions() == 0 && mhash.reachedStart() == 0);
+        mhash.ClearOperator();
     }
 }
 

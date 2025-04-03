@@ -1,5 +1,5 @@
 #include "TrieState.hpp"
-
+#include "menu.hpp"
 #include <colorPalette.h>
 #include <mLib/tinyfiledialogs.h>
 
@@ -304,6 +304,32 @@ void TrieState::handleInput() {
             mTrie = Trie();
             // mTrie.loadFromFile(inFile);
             inFile.close();
+        }
+    }
+    if (MenuTable::prevButton.isPressed()) { 
+        if (mTrie.completedAllActions()) {    
+            isReversed = 1;                 
+        }
+    }
+
+    if (MenuTable::nextButton.isPressed()) {
+        if (mTrie.completedAllActions()) {
+            isReversed = 0;
+        }
+    }
+
+    if (MenuTable::backwardButton.isPressed()) {
+        do {
+            mTrie.update(1e-15, 1e-15);
+            mTrie.Action(1);
+        } while (!mTrie.completedAllActions() && !mTrie.reachedStart());
+        mTrie.ClearOperator();
+    }
+
+    if (MenuTable::forwardButton.isPressed()) {
+        while (!mTrie.completedAllActions()) {
+            mTrie.update(1e-15, 1e-15);
+            mTrie.Action(0);
         }
     }
 }
