@@ -245,15 +245,16 @@ void AVLState::handleInput() {
         int size;
         if (!isStrNum(data)) size = GetRandomValue(1, 15);
         else size = std::stoi(data);
-        std::cout << size << '\n';
         for (int i = 0; i < size; i++) {
             int x = GetRandomValue(0, 1000000000) % 1000;
+            std::cout << "insert success" << ' ' << x << std::endl;
             mAVL.insert(x);
             while (mAVL.completedAllActions() == 0) {
-                mAVL.update(1e-15, 1e-15);
+                mAVL.update(1, 1);
                 mAVL.Action(0);
             }
         }
+        mAVL.setNULLPos(mAVL.getRoot());
     }
 
     if (removePane.isButtonPressed(0)) {

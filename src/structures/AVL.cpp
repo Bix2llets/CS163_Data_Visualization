@@ -13,6 +13,13 @@ AVL::AVL() : Itr() {
     flag = flagUndo = -1;
 }
 
+void AVL::setNULLPos(AVLNode *root) {
+    if (root == NULL) return;
+    root->setPosition((Vector2){800, 100});
+    setNULLPos(root->left);
+    setNULLPos(root->right);
+}
+
 bool AVL::Action(bool isReversed) {
     if (isReversed == 0 && loop == core.size()) return true;
     if (isReversed == 1 && loop == 0) return true;
@@ -78,7 +85,7 @@ std::pair<int, int> AVL::insert(AVLNode *par, AVLNode *&root, int value,
                                 ActionList &actions) {
     if (root == NULL) {
         if (par == NULL)
-            root = new AVLNode(700, 100, value, par, 0);
+            root = new AVLNode(300, 100, value, par, 0);
         else
             root = new AVLNode(par->getPosition().x, par->getPosition().y,
                                value, par, par->value < value);

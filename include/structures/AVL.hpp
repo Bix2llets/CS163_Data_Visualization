@@ -80,7 +80,7 @@ class AVL {
     inline bool startLoop() { return loop == 0; }
     inline AVLNode *getRoot() { return root; }
     static ColorSet const *PALETTE;
-
+    void setNULLPos(AVLNode *root);
    private:
     void calcPosition(AVLNode *root);
     std::vector<AVLNode *> getNodes(AVLNode *root);
