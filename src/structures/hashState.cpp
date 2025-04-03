@@ -298,6 +298,29 @@ void HashState::handleInput() {
 }
 
 void HashState::update() {
+    
+    mhash.update(mTime, mTimeStep);
+    if (mTime >= mTimeStep && (animationPlaying || isReversed != -1)) {
+        mTime = 0;
+        if (isReversed == -1)
+        {
+            if (mhash.Action(0))
+            {
+                showRunStepByStep = 1;
+                if (pendingPause) {
+                    pendingPause = 0;
+                    animationPlaying = 0;
+                }
+            }
+        }
+        else
+        {
+            if (mhash.Action(isReversed)) {
+                if (isReversed == 1 && mhash.reachedStart()) mhash.ClearOperator();
+                isReversed = -1;
+            }
+        }
+    }
     if (editMode) {
         if (strlen(textBox) == 0) ;
         else
@@ -305,9 +328,11 @@ void HashState::update() {
             else textBox[strlen(textBox) - 1] = '\0';
     }
     showRunStepByStep = mhash.completeAnimation();
+    
 }
 
 void HashState::render() {
+    mTime += GetFrameTime();
     if (showTextBox & mhash.completedAllActions())
     {
         if (textDestionation == 1) DrawTextEx(mLib::mFont, "Searching", (Vector2) {10 + 250, 700}, 30, 2, WHITE);
@@ -332,30 +357,8 @@ void HashState::render() {
 
 void HashState::run() {
     handleInput();
-    mTime += GetFrameTime();
+
     update();
-    mhash.update(mTime, mTimeStep);
-    if (mTime >= mTimeStep && (animationPlaying || isReversed != -1)) {
-        mTime = 0;
-        if (isReversed == -1)
-        {
-            if (mhash.Action(0))
-            {
-                showRunStepByStep = 1;
-                if (pendingPause) {
-                    pendingPause = 0;
-                    animationPlaying = 0;
-                }
-            }
-        }
-        else
-        {
-            if (mhash.Action(isReversed)) {
-                if (isReversed == 1 && mhash.reachedStart()) mhash.ClearOperator();
-                isReversed = -1;
-            }
-        }
-    }
     render();
 }
 

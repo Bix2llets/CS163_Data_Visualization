@@ -69,7 +69,10 @@ void registerInput() {
         }
         if (WelcomeMenu::isHashTablePressed()) {
             currentScene = SceneList::HASH;
-            renderFunc = &mScene::runHash;
+            renderFunc = []() { mScene::hash.render(); };
+            updateFunc = []() { mScene::hash.update(); };
+            recordFunc = []() { mScene::hash.handleInput(); };
+
 
             MenuTable::addPane = &HashState::addPane;
             MenuTable::deletePane = &HashState::removePane;
@@ -91,7 +94,10 @@ void registerInput() {
         }
         if (WelcomeMenu::isTriePressed()) {
             currentScene = TRIE;
-            renderFunc = &mScene::runTrie;
+            renderFunc = []() { mScene::trie.render(); };
+            updateFunc = []() { mScene::trie.update(); };
+            recordFunc = []() { mScene::trie.handleInput(); };
+
 
             MenuTable::addPane = &TrieState::addPane;
             MenuTable::deletePane = &TrieState::removePane;
