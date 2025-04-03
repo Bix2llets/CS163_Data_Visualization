@@ -257,8 +257,8 @@ void SLLScene::recordInput() {
     }
     if (deletePane.isButtonPressed(0)) {
         // * Delete at end and delete at somewhere else
-        auto location = deletePane.getText(1, 0);
-
+        auto location = deletePane.getText(0, 0);
+        
         if (isStrNum(location)) {
             SLLScene::removeAt(std::stoi(location));
             AppMenu::loadCode(SLLScene::PSEUDO_DELETE);
