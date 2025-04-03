@@ -57,6 +57,8 @@ Color backgroundColor = GBLight::BACKGROUND4;
 void raylibInit() {
     InitWindow(1600, 900, "CS163 Data visualizer");
     SetTargetFPS(60);
+    buttonColorSet = BUTTON_SET_LIGHT;
+    nodeColorSet = COLOR_SET_LIGHT;
     DrawUtility::init();
     GuiSetStyle(SLIDER, BORDER_COLOR_NORMAL,
                 ColorToInt(AppMenu::buttonPalette->borderNormal));
@@ -107,8 +109,6 @@ void otherInit() {
     SLLScene::init();
     GraphScene::init();
     mLib::Init();
-    buttonColorSet = BUTTON_SET_LIGHT;
-    nodeColorSet = COLOR_SET_LIGHT;
 }
 // Main function
 int main() {
