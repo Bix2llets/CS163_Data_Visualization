@@ -15,16 +15,16 @@ const int MAX_TEXT_LENGTH = 3;
 
 #include <iostream>
 
-ColorSet const *AVLState::buttonPalette = &BUTTON_SET_1;
+ColorSet const *AVLState::buttonPalette = &buttonColorSet;
 
-MenuPane AVLState::addPane({0, 0}, &GBLight::BACKGROUND1, &BUTTON_SET_1,
-                           &BUTTON_SET_1);
-MenuPane AVLState::removePane({0, 0}, &GBLight::BACKGROUND1, &BUTTON_SET_1,
-                              &BUTTON_SET_1);
-MenuPane AVLState::algoPane({0, 0}, &GBLight::BACKGROUND1, &BUTTON_SET_1,
-                            &BUTTON_SET_1);
-MenuPane AVLState::storagePane({0, 0}, &GBLight::BACKGROUND1, &BUTTON_SET_1,
-                               &BUTTON_SET_1);
+MenuPane AVLState::addPane({0, 0}, &GBLight::BACKGROUND1, &buttonColorSet,
+                           &buttonColorSet);
+MenuPane AVLState::removePane({0, 0}, &GBLight::BACKGROUND1, &buttonColorSet,
+                              &buttonColorSet);
+MenuPane AVLState::algoPane({0, 0}, &GBLight::BACKGROUND1, &buttonColorSet,
+                            &buttonColorSet);
+MenuPane AVLState::storagePane({0, 0}, &GBLight::BACKGROUND1, &buttonColorSet,
+                               &buttonColorSet);
 double AVLState::mTimeStep;
 AVLState::AVLState() : mAVL() {
     showCreateOptions = false;
@@ -376,9 +376,29 @@ void AVLState::update() {
             textBox[strlen(textBox) - 1] = '\0';
     }
     showRunStepByStep = mAVL.completeAnimation();
+    mAVL.update(mTime, mTimeStep);
+    if (mTime >= mTimeStep && (animationPlaying || isReversed != -1)) {
+        mTime = 0;
+        if (isReversed == -1) {
+            if (mAVL.Action(0)) {
+                showRunStepByStep = 1;
+                if (pendingPause) {
+                    pendingPause = 0;
+                    animationPlaying = 0;
+                }
+            }
+        } else {
+            if (mAVL.Action(isReversed)) {
+                if (isReversed == 1 && mAVL.reachedStart())
+                mAVL.ClearOperator();
+                isReversed = -1;
+            }
+        }
+    }
 }
 
 void AVLState::render() {
+    mTime += GetFrameTime();
     if (showTextBox & mAVL.completedAllActions()) {
         if (textDestionation == 1)
             DrawTextEx(mLib::mFont, "Searching", (Vector2){10 + 250, 700}, 30,
@@ -414,27 +434,8 @@ void AVLState::render() {
 
 void AVLState::run() {
     handleInput();
-    mTime += GetFrameTime();
     update();
-    mAVL.update(mTime, mTimeStep);
-    if (mTime >= mTimeStep && (animationPlaying || isReversed != -1)) {
-        mTime = 0;
-        if (isReversed == -1) {
-            if (mAVL.Action(0)) {
-                showRunStepByStep = 1;
-                if (pendingPause) {
-                    pendingPause = 0;
-                    animationPlaying = 0;
-                }
-            }
-        } else {
-            if (mAVL.Action(isReversed)) {
-                if (isReversed == 1 && mAVL.reachedStart())
-                    mAVL.ClearOperator();
-                isReversed = -1;
-            }
-        }
-    }
+    
     render();
 }
 

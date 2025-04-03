@@ -9,7 +9,7 @@
 
 class HashState
 {
-    ColorSet const *buttonPalette = &BUTTON_SET_1;
+    ColorSet const *buttonPalette = &buttonColorSet;
     
     public:
         HashState();

@@ -2,7 +2,7 @@
 
 namespace AppMenu {
 
-ColorSet const* buttonPalette = &BUTTON_SET_1;
+ColorSet const* buttonPalette = &buttonColorSet;
 
 ColorSet const* codeBlockColor = new ColorSet{
     Color{46, 52, 64, 255},    Color{46, 52, 64, 255},

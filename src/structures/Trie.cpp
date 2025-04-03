@@ -1,7 +1,7 @@
 #include "Trie.hpp"
 #include <mLib/Utility.hpp>
 
-ColorSet const *Trie::PALETTE = &COLOR_SET_1;
+ColorSet const *Trie::PALETTE = &nodeColorSet;
 Color const *Trie::finalNodeColor = &GBLight::BACKGROUND0H;
 Trie::Trie() : Itr() {
     loop = 0;

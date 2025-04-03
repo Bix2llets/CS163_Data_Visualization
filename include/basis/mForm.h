@@ -8,7 +8,7 @@ class mForm : public Form {
         bool mode;
         int maxSize;
     public :
-        mForm(Rectangle drawInfo, ColorSet const *palette = &COLOR_SET_1, bool mode = 0, int maxSize = 100) 
+        mForm(Rectangle drawInfo, ColorSet const *palette = &nodeColorSet, bool mode = 0, int maxSize = 100) 
         : Form(drawInfo, palette), 
         mode{mode}, 
         maxSize{maxSize} {};

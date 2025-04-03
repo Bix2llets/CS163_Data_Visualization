@@ -105,7 +105,7 @@ void MenuPane::newLine(int row, int numberOfForms,
             formList[row].size() * (ELEMENT_DISTANCE.x + FORM_DIMENSION.x);
         diceButton[row] =
             DiceButton(dicePosition, {RANDOM_DIMENSION.x, RANDOM_DIMENSION.y},
-                       &BUTTON_SET_1);
+                       &buttonColorSet);
     } else {
         haveRandom[row] = false;
     }

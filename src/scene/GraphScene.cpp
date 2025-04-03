@@ -20,12 +20,12 @@ const std::vector<std::string> PSEUDO_DIJKSTRA = {
     "Set the distance to source to 0", "Set the distance to others to infinity",
     "Choose vertex with minimum distance", "Examine the adjacent vextices"};
 
-MenuPane addPane({0, 0}, &GBLight::BACKGROUND1, &BUTTON_SET_1, &BUTTON_SET_1);
-MenuPane deletePane({0, 0}, &GBLight::BACKGROUND1, &BUTTON_SET_1,
-                    &BUTTON_SET_1);
-MenuPane algoPane({0, 0}, &GBLight::BACKGROUND1, &BUTTON_SET_1, &BUTTON_SET_1);
-MenuPane storagePane({0, 0}, &GBLight::BACKGROUND1, &BUTTON_SET_1,
-                     &BUTTON_SET_1);
+MenuPane addPane({0, 0}, &GBLight::BACKGROUND1, &buttonColorSet, &buttonColorSet);
+MenuPane deletePane({0, 0}, &GBLight::BACKGROUND1, &buttonColorSet,
+                    &buttonColorSet);
+MenuPane algoPane({0, 0}, &GBLight::BACKGROUND1, &buttonColorSet, &buttonColorSet);
+MenuPane storagePane({0, 0}, &GBLight::BACKGROUND1, &buttonColorSet,
+                     &buttonColorSet);
 void setPanePosition(Vector2 position) {
     addPane.setPosition(position);
     deletePane.setPosition(position);
