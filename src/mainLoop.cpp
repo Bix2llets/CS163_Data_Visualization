@@ -118,9 +118,9 @@ void render() {
     if (currentScene == SceneList::MAIN_MENU) {
         WelcomeMenu::render();
     } else {
-        // ClearBackground(GBDark::BACKGROUND0S);
-        // DrawRectangle(UPPER_LEFT.x, UPPER_LEFT.y, LOWER_RIGHT.x - UPPER_LEFT.x, LOWER_RIGHT.y - UPPER_LEFT.y, GBLight::BACKGROUND4);
-        // DrawRectangleLinesEx({UPPER_LEFT.x, UPPER_LEFT.y, LOWER_RIGHT.x - UPPER_LEFT.x, LOWER_RIGHT.y - UPPER_LEFT.y}, 3.0f, GBLight::FOREGROUND4);
+        ClearBackground(GBDark::BACKGROUND0S);
+        DrawRectangle(UPPER_LEFT.x, UPPER_LEFT.y, LOWER_RIGHT.x - UPPER_LEFT.x, LOWER_RIGHT.y - UPPER_LEFT.y, GBLight::BACKGROUND4);
+        DrawRectangleLinesEx({UPPER_LEFT.x, UPPER_LEFT.y, LOWER_RIGHT.x - UPPER_LEFT.x, LOWER_RIGHT.y - UPPER_LEFT.y}, 3.0f, GBLight::FOREGROUND4);
         if (renderFunc) renderFunc();
         AppMenu::render();
         MenuTable::render();
