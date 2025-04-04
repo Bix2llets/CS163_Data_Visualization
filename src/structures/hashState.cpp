@@ -381,7 +381,7 @@ void HashState::update() {
         else
         {
             if (mhash.Action(isReversed)) {
-                if (isReversed == 1 && mhash.reachedStart()) 
+                if (isReversed == 1 && mhash.reachedStart()) ;
                 //mhash.ClearOperator();
                 isReversed = -1;
             }

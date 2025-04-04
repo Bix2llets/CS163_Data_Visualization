@@ -292,7 +292,7 @@ void AVLState::update() {
             }
         } else {
             if (mAVL.Action(isReversed)) {
-                if (isReversed == 1 && mAVL.reachedStart())
+                if (isReversed == 1 && mAVL.reachedStart()) ;
                 //mAVL.ClearOperator();
                 isReversed = -1;
             }

@@ -25,7 +25,7 @@ class Animation : public GUIObject {
     bool isCompleted() const;
     static void setUpdateRate(float newRate);
     // * For linear motion
-    void update();
+    //void update();
 
     // * For customized motion
     double bezier(double t);

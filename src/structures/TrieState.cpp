@@ -370,7 +370,7 @@ void TrieState::update() {
             }
         } else {
             if (mTrie.Action(isReversed)) {
-                if (isReversed == 1 && mTrie.reachedStart())
+                if (isReversed == 1 && mTrie.reachedStart()) ;
                     //mTrie.ClearOperator();
                 isReversed = -1;
             }
