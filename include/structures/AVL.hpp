@@ -33,7 +33,7 @@ class AVL {
     struct ItrAction {
         Animation *animation;
         bool show;
-        AVLNode *targetedNode;
+        AVLNode *targetedNode, *preNode;
         void setTarget() {
             if (targetedNode == NULL)
                 animation->setTargetedPosition((Vector2){0, 0});
@@ -43,7 +43,7 @@ class AVL {
         }
         ItrAction() {
             animation = new Animation(0, 0);
-            targetedNode = NULL;
+            targetedNode = preNode = NULL;
             show = false;
         }
     };

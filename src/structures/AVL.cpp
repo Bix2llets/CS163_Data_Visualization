@@ -261,16 +261,20 @@ void AVL::remove(int value) {
 bool AVL::Undo(action Action) {
     switch (Action.action) {
         case INIT:
-            Itr.show = false;
+            Itr = ItrAction();
             return true;
         case CLEAR:
             Itr.show = true;
             return true;
         case SETLECT:
-            Itr.targetedNode = ItrHistory.back().first;
-            Itr.setTarget();
-            if (Itr.animation->isCompleted()) ItrHistory.pop_back();
-            if (Itr.animation->isCompleted()) return true;
+            if (ItrHistory.size() && ItrHistory.back().first != Itr.targetedNode) {
+                Itr.preNode = Itr.targetedNode;
+                Itr.targetedNode = ItrHistory.back().first;
+                Itr.animation->setHashAlpha(0);
+                Itr.setTarget();
+            }
+            if (Itr.animation -> isCompleted()) ItrHistory.pop_back();
+            if (Itr.animation -> isCompleted()) return true;
             return false;
         case CREATE:
             Action.node->valid = false;
@@ -413,13 +417,17 @@ bool AVL::doAction(action Action) {
             Itr.show = true;
             return true;
         case CLEAR:
-            Itr.show = false;
+            //Itr.show = false;
+            Itr = ItrAction();
             return true;
         case SETLECT:
-            if (ItrHistory.size() == 0 || ItrHistory.back().second != loop)
+            if (ItrHistory.size() == 0 || ItrHistory.back().second != loop) {
                 ItrHistory.push_back({Itr.targetedNode, loop});
-            Itr.targetedNode = Action.node;
-            Itr.setTarget();
+                Itr.preNode = Itr.targetedNode;
+                Itr.targetedNode = Action.node;
+                Itr.animation->setHashAlpha(0);
+                Itr.setTarget();
+            }
             if (Itr.animation->isCompleted()) return true;
             return false;
         case CREATE:
@@ -605,13 +613,23 @@ void AVL::draw(AVLNode *root) {
     draw(root->left);
     draw(root->right);
     Color backgroundColor;
-    if (root->targeted || !root->isCompletedAlpha()) {
-        backgroundColor = GBLight::DARK_RED;
-        backgroundColor.a -= root->alpha;
-    }
-    else
-        backgroundColor = PALETTE->backgroundNormal;
+    backgroundColor = PALETTE->backgroundNormal;
     DrawCircleV(root->getPosition(), NODE_RADIUS - 3, backgroundColor);
+    if (Itr.show && root == Itr.targetedNode) {
+        Color tmp = GBLight::LIGHT_RED;
+        tmp.a -= Itr.animation->getHashAlpha();
+        DrawCircleV(Itr.targetedNode->getPosition(), NODE_RADIUS - 3, tmp);
+    }
+    if (Itr.show && root == Itr.preNode) {
+        Color tmp = GBLight::LIGHT_RED;
+        tmp.a -= (255.f - Itr.animation->getHashAlpha());
+        DrawCircleV(Itr.preNode->getPosition(), NODE_RADIUS - 3, tmp);
+    }
+    if (root->targeted || !root->isCompletedAlpha()) {
+        backgroundColor = GBLight::DARK_YELLOW;
+        backgroundColor.a -= root->alpha;
+        DrawCircleV(root->getPosition(), NODE_RADIUS - 3, backgroundColor);
+    }
     Color color = mLib::highlightColor;
     color.a = 255.f - root->getAlpha();
     DrawCircleV(root->getPosition(), NODE_RADIUS - 3, color);
@@ -644,6 +662,11 @@ void AVL::draw(AVLNode *root) {
                           PALETTE->textNormal, 20, DrawUtility::SPACING,
                           VerticalAlignment::CENTERED,
                           HorizontalAlignment::CENTERED);
+    Color colorText = WHITE;
+    if (Itr.show && root == Itr.targetedNode) colorText.a -= Itr.animation->getHashAlpha();
+    else if (Itr.show && root == Itr.preNode) colorText.a -= (255.f - Itr.animation->getHashAlpha());
+    else colorText = PALETTE->textNormal;
+    DrawUtility::drawText(text, root->getPosition(), DrawUtility::inter20, colorText, 20, 1, VerticalAlignment::CENTERED, HorizontalAlignment::CENTERED);
     if (root->targeted || !root->isCompletedAlpha()) {
         Color colorText = WHITE;
         colorText.a -= root->alpha;
@@ -664,9 +687,9 @@ void AVL::draw() {
         mLib::DrawTextAVL(-1);
     drawArrow(root);
     draw(root);
-    if (Itr.show)
-        DrawRing(Itr.animation->getPosition(), NODE_RADIUS, NODE_RADIUS + 3, 0,
-                 360, 20, GBLight::DARK_RED);
+    // if (Itr.show)
+    //     DrawRing(Itr.animation->getPosition(), NODE_RADIUS, NODE_RADIUS + 3, 0,
+    //              360, 20, GBLight::DARK_RED);
 }
 
 void AVL::drawArrow(AVLNode *root) {
