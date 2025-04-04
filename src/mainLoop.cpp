@@ -120,8 +120,13 @@ void render() {
     } else {
         ClearBackground(GBDark::BACKGROUND0S);
         DrawRectangle(UPPER_LEFT.x, UPPER_LEFT.y, LOWER_RIGHT.x - UPPER_LEFT.x, LOWER_RIGHT.y - UPPER_LEFT.y, GBLight::BACKGROUND4);
-        DrawRectangleLinesEx({UPPER_LEFT.x, UPPER_LEFT.y, LOWER_RIGHT.x - UPPER_LEFT.x, LOWER_RIGHT.y - UPPER_LEFT.y}, 3.0f, GBLight::FOREGROUND4);
         if (renderFunc) renderFunc();
+        DrawRectangleLinesEx({UPPER_LEFT.x, UPPER_LEFT.y, LOWER_RIGHT.x - UPPER_LEFT.x, LOWER_RIGHT.y - UPPER_LEFT.y}, 3.0f, GBLight::FOREGROUND4);
+        // * For covering
+        DrawRectangle(0, LOWER_RIGHT.y, GetRenderWidth(), GetRenderHeight(), GBDark::BACKGROUND0S);
+        DrawRectangle(LOWER_RIGHT.x, 0, GetRenderWidth() - LOWER_RIGHT.x, GetRenderHeight(), GBDark::BACKGROUND0S);
+        DrawRectangle(0, 0, GetRenderWidth(), UPPER_LEFT.y, GBDark::BACKGROUND0S);
+        DrawRectangle(0, 0, UPPER_LEFT.x, GetRenderHeight(), GBDark::BACKGROUND0S);
         AppMenu::render();
         MenuTable::render();
     }

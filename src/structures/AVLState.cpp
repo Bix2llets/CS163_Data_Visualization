@@ -242,13 +242,15 @@ void AVLState::handleInput() {
             inFile.close();
         }
     }
-    if (MenuTable::prevButton.isPressed() && !*MenuTable::isPlaying) {  // Undo functionality
+    if (MenuTable::prevButton.isPressed()) {  // Undo functionality
         //if (!mAVL.completeAnimation()) return;
+        MenuTable::pauseAnimation();
         isReversed = 1;;
     }
-
-    if (MenuTable::nextButton.isPressed() && !*MenuTable::isPlaying) {  // Redo functionality
+    
+    if (MenuTable::nextButton.isPressed()) {  // Redo functionality
         //if (!mAVL.completeAnimation()) return;
+        MenuTable::pauseAnimation();
         isReversed = 0;
     }
 

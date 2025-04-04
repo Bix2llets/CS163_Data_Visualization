@@ -67,7 +67,7 @@ void TrieState::initPanes(Vector2 position) {
     storagePane.setPosition(position);
 
     addPane.newLine(0, 1, "Add", {"Word"}, {1}, true);
-    addPane.newLine(1, 1, "Create", {"Num word"}, {1}, true);
+    addPane.newLine(1, 1, "Create", {"Num word"}, {0}, true);
 
     removePane.newLine(0, 1, "Remove", {"Word"}, {1}, false);
     removePane.newLine(1, 0, "Clear", {}, {}, false);

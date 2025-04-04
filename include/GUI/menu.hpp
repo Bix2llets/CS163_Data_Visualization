@@ -49,6 +49,9 @@ namespace MenuTable {
     void handleInput();
     void CLEAR();
     void pack(Button *obj, Type type);
+
+    void continueAnimation();
+    void pauseAnimation();
 };
 
 #endif // MENU_HPP

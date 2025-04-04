@@ -24,6 +24,10 @@ class Animation : public GUIObject {
     void setPosition(Vector2 newPosition);
     bool isCompleted() const;
     static void setUpdateRate(float newRate);
+    // * For linear motion
+    void update();
+
+    // * For customized motion
     double bezier(double t);
     bool displace(double currentTime, double TRANS_TIME);
     bool fadeEffect(double currentTime, double TRANS_TIME);
