@@ -18,7 +18,7 @@ MenuPane HashState::addPane({0, 0}, &GBLight::BACKGROUND1, &buttonColorSet, &but
 MenuPane HashState::removePane({0, 0}, &GBLight::BACKGROUND1, &buttonColorSet, &buttonColorSet);
 MenuPane HashState::algoPane({0, 0}, &GBLight::BACKGROUND1, &buttonColorSet, &buttonColorSet);
 MenuPane HashState::storagePane({0, 0}, &GBLight::BACKGROUND1, &buttonColorSet, &buttonColorSet);
-
+ColorSet const *HashState::buttonPalette = &buttonColorSet;
 HashState::HashState() : mhash(0) {
     showCreateOptions = false;
     showTextBox = false;
