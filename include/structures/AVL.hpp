@@ -10,6 +10,7 @@
 #include "AVLNode.hpp"
 #include "colorPalette.h"
 #include "raylib.h"
+#include <mLib/changeProcedure.hpp>
 
 class AVL {
    private:
@@ -104,6 +105,8 @@ class AVL {
     std::vector<int> changeList, rotateList;
     std::pair<bool, bool> doFadeEffect(AVLNode *root, double currTime,
                                        double TransTime, AVLNode *targetedNode);
+    std::pair<ChangeProcedure, AVLNode*>  changing;
+
 };
 
 #endif  // AVL_HPP

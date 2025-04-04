@@ -3,7 +3,7 @@
 #include <mLib/Utility.hpp>
 
 ColorSet const *AVL::PALETTE = &nodeColorSet;
-AVL::AVL() : Itr() {
+AVL::AVL() : Itr(), changing({ChangeProcedure(-1, -1, NULL), NULL}) {
     loop = 0;
     core = ActionList();
     root = NULL;
@@ -289,15 +289,24 @@ bool AVL::Undo(action Action) {
             }
             return isCompleted(root);
         case target:
+            if (Action.node->targeted) Action.node->setUnTarget();
             Action.node->targeted = false;
-            return true;
+            return Action.node->isCompletedAlpha();
         case untarget:
+            if (!Action.node->targeted) Action.node->setTarget();
             Action.node->targeted = true;
-            return true;
+            return Action.node->isCompletedAlpha();
         case changeValue:
-            Action.node->value = changeList.back();
-            changeList.pop_back();
-            return true;
+            if (changing.second == NULL) {
+                Action.node->targetValue = Action.node->value;
+                changing = {ChangeProcedure(Action.node->value, changeList.back(), &Action.node->value), Action.node};
+                changeList.pop_back();
+            }
+            if (changing.first.isCompleted()) {
+                changing = {ChangeProcedure(-1, -1, NULL), NULL};
+                return true;
+            }
+            return false;
         case LL:
             if (rotateList.size() && rotateList.back() == loop - 1) {
                 rotateList.pop_back();
@@ -434,16 +443,25 @@ bool AVL::doAction(action Action) {
             return isCompleted(root);
         }
         case target:
+            if (!Action.node->targeted) Action.node->setTarget();
             Action.node->targeted = true;
-            return true;
+            return Action.node->isCompletedAlpha();
         case untarget:
+            if (Action.node->targeted) Action.node->setUnTarget();
             Action.node->targeted = false;
-            return true;
+            return Action.node->isCompletedAlpha();
         case changeValue:
-            changeList.push_back(Action.node->value);
-            Action.node->value = Action.node->targetValue;
-            Action.node->targetValue = -1;
-            return true;
+            if (changing.second == NULL) {
+                changeList.push_back(Action.node->value);
+                changing = {ChangeProcedure(Action.node->value, Action.node->targetValue, &Action.node->value), Action.node};
+                Action.node->targetValue = -1;
+            }
+            if (changing.first.isCompleted()) {
+                std::cout << Action.node->value << ' ' << changing.first.getNewValue() << std::endl;
+                changing = {ChangeProcedure(-1, -1, NULL), NULL};
+                return true;
+            }
+            return false;
         case LL: {
             if (rotateList.size() == 0 || rotateList.back() != loop) {
                 rotateList.push_back(loop);
@@ -559,6 +577,7 @@ bool AVL::isCompleted(AVLNode *root) {
 void AVL::update(AVLNode *root, double currTime, double rate) {
     if (root == NULL) return;
     root->displace(currTime, rate);
+    root->updateAlpha(currTime, rate);
     update(root->left, currTime, rate);
     update(root->right, currTime, rate);
 }
@@ -576,6 +595,7 @@ void AVL::update(double currTime, double rate) {
         flagUndo =
             doFadeEffect(root, currTime, rate, core[loop - 1].node).first;
     }
+    if (changing.second != NULL) changing.first.updateAlpha(currTime, rate);
 }
 
 #include <cstring>
@@ -585,13 +605,38 @@ void AVL::draw(AVLNode *root) {
     draw(root->left);
     draw(root->right);
     Color backgroundColor;
-    if (root->targeted)
-        backgroundColor = PALETTE->backgroundHighlight;
+    if (root->targeted || !root->isCompletedAlpha()) {
+        backgroundColor = GBLight::DARK_RED;
+        backgroundColor.a -= root->alpha;
+    }
     else
         backgroundColor = PALETTE->backgroundNormal;
     DrawCircleV(root->getPosition(), NODE_RADIUS - 3, backgroundColor);
+    Color color = mLib::highlightColor;
+    color.a = 255.f - root->getAlpha();
+    DrawCircleV(root->getPosition(), NODE_RADIUS - 3, color);
     DrawRing(root->getPosition(), NODE_RADIUS - 3, NODE_RADIUS, 0, 360, 20,
              PALETTE->borderNormal);
+
+    if (changing.second == root) {
+        Color colorText = WHITE;
+        colorText.a -= changing.first.getAlpha();
+        char *text = new char[std::to_string(changing.first.getNewValue()).length() + 1];
+        strcpy(text, std::to_string(changing.first.getNewValue()).c_str());
+        DrawUtility::drawText(text, root->getPosition(), mLib::mFont,
+                              colorText, 20, DrawUtility::SPACING,
+                              VerticalAlignment::CENTERED,
+                              HorizontalAlignment::CENTERED);
+        colorText = WHITE;
+        colorText.a -= (255.f - changing.first.getAlpha());
+        text = new char[std::to_string(changing.first.getOldValue()).length() + 1];
+        strcpy(text, std::to_string(changing.first.getOldValue()).c_str());
+        DrawUtility::drawText(text, root->getPosition(), mLib::mFont,
+                              colorText, 20, DrawUtility::SPACING,
+                              VerticalAlignment::CENTERED,
+                              HorizontalAlignment::CENTERED);
+        return ;
+    }
     std::string value = std::to_string(root->value);
     char *text = new char[value.length() + 1];
     strcpy(text, value.c_str());
@@ -599,6 +644,15 @@ void AVL::draw(AVLNode *root) {
                           PALETTE->textNormal, 20, DrawUtility::SPACING,
                           VerticalAlignment::CENTERED,
                           HorizontalAlignment::CENTERED);
+    if (root->targeted || !root->isCompletedAlpha()) {
+        Color colorText = WHITE;
+        colorText.a -= root->alpha;
+        DrawUtility::drawText(value.c_str(), root->getPosition(), mLib::mFont,
+        colorText, 20, DrawUtility::SPACING,
+        VerticalAlignment::CENTERED,
+        HorizontalAlignment::CENTERED);
+        
+    }
     // DrawTextEx(mLib::mFont, text, (Vector2){root->getPosition().x - 12,
     // root->getPosition().y - 12}, 20, 2, WHITE);
 }

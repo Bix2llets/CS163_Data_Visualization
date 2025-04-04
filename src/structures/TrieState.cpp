@@ -330,7 +330,7 @@ void TrieState::handleInput() {
             mTrie.update(1e-15, 1e-15);
             mTrie.Action(1);
         } while (!mTrie.completedAllActions() && !mTrie.reachedStart());
-        mTrie.ClearOperator();
+        //mTrie.ClearOperator();
     }
 
     if (MenuTable::pauseButton.isPressed()) animationPlaying = 1;
@@ -371,7 +371,7 @@ void TrieState::update() {
         } else {
             if (mTrie.Action(isReversed)) {
                 if (isReversed == 1 && mTrie.reachedStart())
-                    mTrie.ClearOperator();
+                    //mTrie.ClearOperator();
                 isReversed = -1;
             }
         }

@@ -350,7 +350,7 @@ void HashState::handleInput() {
             mhash.update(1e-15, 1e-15);
             mhash.Action(1);
         } while (!mhash.completedAllActions() && !mhash.reachedStart());
-        mhash.ClearOperator();
+        //mhash.ClearOperator();
     }
 
     if (MenuTable::pauseButton.isPressed()) animationPlaying = 1;
@@ -381,7 +381,8 @@ void HashState::update() {
         else
         {
             if (mhash.Action(isReversed)) {
-                if (isReversed == 1 && mhash.reachedStart()) mhash.ClearOperator();
+                if (isReversed == 1 && mhash.reachedStart()) 
+                //mhash.ClearOperator();
                 isReversed = -1;
             }
         }

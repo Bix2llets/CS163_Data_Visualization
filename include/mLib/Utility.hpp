@@ -40,6 +40,7 @@ namespace mLib
         }
         text[length] = '\0'; 
     }
+    extern Color highlightColor;
     extern Font mFont;
     extern int row;
     extern Texture2D diceTexture[6], dice, pause, play, prev, next, forward, backward, expand, collapse;

@@ -247,7 +247,8 @@ void Trie::draw(TrieNode *root) {
     if (root == NULL) return;
     for (auto &child : root->children) draw(child.second);
     DrawCircleV(root->getPosition(), NODE_RADIUS - 3, root->isEndOfWord ? *finalNodeColor : PALETTE->backgroundNormal);
-    Color color = PALETTE->backgroundNormal;
+    //Color color = PALETTE->backgroundNormal;
+    Color color = mLib::highlightColor;
     color.a = 255.f - root->getAlpha();
     DrawCircleV(root->getPosition(), NODE_RADIUS - 3, color);
     DrawRing(root->getPosition(), NODE_RADIUS - 3, NODE_RADIUS, 0, 360, 20, PALETTE->borderNormal);
