@@ -55,10 +55,10 @@ namespace mLib
         dice = LoadTexture("assets/dice/dice.png");
         pause = LoadTexture("assets/animationButton/pause.png");
         play = LoadTexture("assets/animationButton/play.png");
-        prev = LoadTexture("assets/animationButton/prev.png");
-        next = LoadTexture("assets/animationButton/next.png");
-        forward = LoadTexture("assets/animationButton/forward.png");
-        backward = LoadTexture("assets/animationButton/backward.png");
+        prev = LoadTexture("assets/animationButton/backward.png");
+        next = LoadTexture("assets/animationButton/forward.png");
+        forward = LoadTexture("assets/animationButton/next.png");
+        backward = LoadTexture("assets/animationButton/prev.png");
         expand = LoadTexture("assets/animationButton/expand.png");
         collapse = LoadTexture("assets/animationButton/collapse.png");
     }

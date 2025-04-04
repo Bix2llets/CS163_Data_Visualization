@@ -328,15 +328,23 @@ void handleInput() {
     }
 
     if (playButton.isPressed()) {
-        Loop::isRunning = false;
-        playButton.disable();
-        pauseButton.enable();
+        pauseAnimation();
     } else
         if (pauseButton.isPressed()) {
         Loop::isRunning = true;
-        pauseButton.disable();
-        playButton.enable();
+        continueAnimation();
     }
 };
 
+void pauseAnimation() {
+    Loop::isRunning = false;
+    playButton.disable();
+    pauseButton.enable();
+}
+
+void continueAnimation() {
+    Loop::isRunning = true;
+    pauseButton.disable();
+    playButton.enable();
+}
 };  // namespace MenuTable
