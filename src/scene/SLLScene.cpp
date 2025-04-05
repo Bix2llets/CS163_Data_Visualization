@@ -190,8 +190,6 @@ void SLLScene::find(std::string val) {
 
     currSll.highlightTo(nodeIndex);  // since node index is actual node - 1;
     curr->borderColor.transitionToward(resultColor);
-    addStep(1, &PSEUDO_SEARCH);
-    addStep(-1, &PSEUDO_SEARCH);
 }
 
 void SLLScene::clearScene() {
@@ -273,7 +271,7 @@ void SLLScene::recordInput() {
         deletePane.getForm(0, 0).setText(location);
     }
     if (algoPane.isButtonPressed(0)) {
-        auto value = algoPane.getText(2, 0);
+        auto value = algoPane.getText(0, 0);
 
         if (isStrNum(value)) {
             SLLScene::find(value);
