@@ -38,8 +38,11 @@ Button AVLTree(LEFT_MARGIN,
                BUTTON_WIDTH, BUTTON_HEIGHT, "AVL Tree", FONT_SIZE, &buttonColorSet);
 
 void render() {
-    DrawRectangleGradientEx({0, 0, BANNER_WIDTH, BANNER_HEIGHT}, GBDark::BACKGROUND0,
-        GBDark::FOREGROUND0, GBDark::FOREGROUND0, GBDark::BACKGROUND0);
+    Vector2 bannerLocation = {GetRenderWidth() / 2 + 10, 125};
+    DrawRectangleGradientV(0, 0, GetRenderWidth(), GetRenderHeight() / 10 * 2, GBLight::BACKGROUND4, Color{0, 0, 0, 0});
+    DrawUtility::drawText("Data Visualizer", bannerLocation, DrawUtility::noto, buttonColorSet.textNormal, 100, 1, VerticalAlignment::CENTERED, HorizontalAlignment::CENTERED);
+
+
     trie.render();
     linkedList.render();
     graph.render();
