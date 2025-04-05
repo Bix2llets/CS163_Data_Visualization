@@ -333,8 +333,8 @@ void TrieState::handleInput() {
         //mTrie.ClearOperator();
     }
 
-    if (MenuTable::pauseButton.isPressed()) animationPlaying = 1;
-    if (MenuTable::playButton.isPressed()) {
+    if (MenuTable::pauseButton.isPressed() || *MenuTable::isPlaying) animationPlaying = 1;
+    if (MenuTable::playButton.isPressed() || !*MenuTable::isPlaying) {
         if (mTrie.completedAllActions()) animationPlaying = 0;
         else pendingPause = 1;
     }

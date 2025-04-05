@@ -101,7 +101,6 @@ std::pair<int, int> AVL::insert(AVLNode *par, AVLNode *&root, int value,
         actions.push_back({2, SETLECT, root});
         return {1, 0};
     }
-
     actions.push_back({1, SETLECT, root});
     if (value < root->value)
         std::tie(root->heightLeft, root->balanceLeft) =
@@ -117,19 +116,33 @@ std::pair<int, int> AVL::insert(AVLNode *par, AVLNode *&root, int value,
     if (balance > 1) {
         if (value < root->left->value) {
             actions.push_back({5, Right, root});
+            int hLeft = root->left->heightLeft;
+            int hRight = std::max(root->left->heightRight, root->heightRight) + 1;
+            return {std::max(hLeft, hRight) + 1, hLeft - hRight};
         } else {
             actions.push_back({6, LL, root});
             actions.push_back({6, Right, root});
+            int hLeft = std::max(root->left->right->heightLeft,
+                                 root->left->heightLeft) + 1;
+            int hRight = std::max(root->left->right->heightRight, root->heightRight) + 1;
+            return {std::max(hLeft, hRight) + 1, hLeft - hRight};
         }
-        return {std::max(root->heightLeft, root->heightRight), 1};
+        //return {std::max(root->heightLeft, root->heightRight), 1};
     } else if (balance < -1) {
         if (value > root->right->value) {
             actions.push_back({4, Left, root});
+            int hLeft = std::max(root->right->heightLeft, root->heightLeft) + 1;
+            int hRight = root->right->heightRight;
+            return {std::max(hLeft, hRight) + 1, hLeft - hRight};
         } else {
             actions.push_back({7, RR, root});
             actions.push_back({7, Left, root});
+            int hLeft = std::max(root->right->left->heightLeft, root->heightLeft) + 1;
+            int hRight = std::max(root->right->left->heightRight,
+                                  root->right->heightRight) + 1;
+            return {std::max(hLeft, hRight) + 1, hLeft - hRight};
         }
-        return {std::max(root->heightLeft, root->heightRight), -1};
+        //return {std::max(root->heightLeft, root->heightRight), -1};
     }
     return {std::max(root->heightLeft, root->heightRight) + 1, balance};
 }
@@ -138,8 +151,10 @@ void AVL::insert(int value) {
     ActionList actions;
     actions.push_back({0, INIT, NULL});
     insert(NULL, root, value, actions);
+    actions.push_back({3, SETLECT, NULL});
     actions.push_back({8, CLEAR, NULL});
     core.insert(core.end(), actions.begin(), actions.end());
+    std::cout << "done procedure " << value << "\n";
 }
 
 void AVL::search(AVLNode *root, int value, ActionList &actions) {
@@ -162,6 +177,7 @@ void AVL::search(int value) {
     ActionList actions;
     actions.push_back({9, INIT, NULL});
     search(root, value, actions);
+    actions.push_back({13, SETLECT, NULL});
     actions.push_back({13, CLEAR, NULL});
     core.insert(core.end(), actions.begin(), actions.end());
 }
@@ -206,19 +222,33 @@ std::pair<int, int> AVL::remove(AVLNode *par, AVLNode *root, int value,
     if (balance > 1) {
         if (root->left->balance >= 0) {
             actions.push_back({22, Right, root});
+            int hLeft = std::max(root->left->heightLeft, root->heightLeft) + 1;
+            int hRight = root->right->heightRight;
+            return {std::max(hLeft, hRight) + 1, hLeft - hRight};
         } else {
             actions.push_back({23, LL, root});
             actions.push_back({23, Right, root});
+            int hLeft = std::max(root->left->right->heightLeft, root->heightLeft) + 1;
+            int hRight = std::max(root->left->right->heightRight,
+                                  root->right->heightRight) + 1;
+            return {std::max(hLeft, hRight) + 1, hLeft - hRight};
         }
-        return {std::max(root->heightLeft, root->heightRight), 1};
+        //return {std::max(root->heightLeft, root->heightRight), 1};
     } else if (balance < -1) {
         if (root->right->balance <= 0) {
             actions.push_back({21, Left, root});
+            int hLeft = std::max(root->right->heightLeft, root->heightLeft) + 1;
+            int hRight = root->right->heightRight;
+            return {std::max(hLeft, hRight) + 1, hLeft - hRight};
         } else {
             actions.push_back({24, RR, root});
             actions.push_back({24, Left, root});
+            int hLeft = std::max(root->right->left->heightLeft, root->heightLeft) + 1;
+            int hRight = std::max(root->right->left->heightRight,
+                                  root->right->heightRight) + 1;
+            return {std::max(hLeft, hRight) + 1, hLeft - hRight};
         }
-        return {std::max(root->heightLeft, root->heightRight), -1};
+        //return {std::max(root->heightLeft, root->heightRight), -1};
     }
     return {std::max(root->heightLeft, root->heightRight) + 1, balance};
 }
@@ -255,6 +285,8 @@ void AVL::remove(int value) {
             }
             break;
         }
+    actions.push_back({20, SETLECT, NULL});
+    std::swap(actions[actions.size() - 1], actions[actions.size() - 2]);
     core.insert(core.end(), actions.begin(), actions.end());
 }
 

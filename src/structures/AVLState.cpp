@@ -133,6 +133,7 @@ void AVLState::handleInput() {
         mAVL.printDebug(mAVL.getRoot());
         mAVL.setNULLPos(mAVL.getRoot());
         mTime = 0;
+        std::cout << "done\n";
     }
 
     if (removePane.isButtonPressed(0)) {
@@ -242,15 +243,24 @@ void AVLState::handleInput() {
             inFile.close();
         }
     }
-    if (MenuTable::prevButton.isPressed()) {  // Undo functionality
+    // if (MenuTable::prevButton.isPressed()) {  // Undo functionality
+    //     //if (!mAVL.completeAnimation()) return;
+    //     MenuTable::pauseAnimation();
+    //     isReversed = 1;;
+    // }
+    
+    // if (MenuTable::nextButton.isPressed()) {  // Redo functionality
+    //     //if (!mAVL.completeAnimation()) return;
+    //     MenuTable::pauseAnimation();
+    //     isReversed = 0;
+    // }
+
+    if (MenuTable::prevButton.isPressed() && !*MenuTable::isPlaying) {  // Undo functionality
         //if (!mAVL.completeAnimation()) return;
-        MenuTable::pauseAnimation();
         isReversed = 1;;
     }
-    
-    if (MenuTable::nextButton.isPressed()) {  // Redo functionality
+    if (MenuTable::nextButton.isPressed() && !*MenuTable::isPlaying) {  // Redo functionality
         //if (!mAVL.completeAnimation()) return;
-        MenuTable::pauseAnimation();
         isReversed = 0;
     }
 
@@ -269,8 +279,8 @@ void AVLState::handleInput() {
         //mAVL.ClearOperator();
     }
 
-    if (MenuTable::pauseButton.isPressed()) animationPlaying = 1;
-    if (MenuTable::playButton.isPressed()) {
+    if (MenuTable::pauseButton.isPressed() || *MenuTable::isPlaying) animationPlaying = 1;
+    if (MenuTable::playButton.isPressed() || !*MenuTable::isPlaying) {
         if (mAVL.completedAllActions()) animationPlaying = 0;
         else pendingPause = 1;
     }
