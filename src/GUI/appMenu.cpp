@@ -4,11 +4,7 @@ namespace AppMenu {
 
 ColorSet const* buttonPalette = &buttonColorSet;
 
-ColorSet const* codeBlockColor = new ColorSet{
-    Color{46, 52, 64, 255},    Color{46, 52, 64, 255},
-    Color{216, 222, 233, 255}, Color{211, 255, 206, 255},
-    Color{59, 66, 82, 255},    Color{59, 66, 82, 255},
-};
+ColorSet const* codeBlockColor = &buttonColorSet;
 
 Vector2 panelPosition{50, 760};
 Vector2 buttonDimension = {200, 40};

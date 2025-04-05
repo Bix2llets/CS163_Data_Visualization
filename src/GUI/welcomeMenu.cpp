@@ -16,32 +16,40 @@ const int FONT_SIZE = 20;
 const int LEFT_MARGIN = 200;
 const int UPPER_MARGIN = 50;
 const int BUTTON_DISTANCE = 40;
-const ColorSet BUTTON_COLOR{WET_ASPHALT, MIDNIGHT_BLUE, CLOUDS, SILVER, BLACK, BLACK};
-Button trie(LEFT_MARGIN, BANNER_HEIGHT + UPPER_MARGIN, BUTTON_WIDTH,
-            BUTTON_HEIGHT, "Trie", FONT_SIZE, &buttonColorSet);
-Button linkedList(LEFT_MARGIN,
+const ColorSet BUTTON_COLOR{WET_ASPHALT, MIDNIGHT_BLUE, CLOUDS,
+                            SILVER,      BLACK,         BLACK};
+Button trie(250,
+            BANNER_HEIGHT + UPPER_MARGIN +
+                1 * (BUTTON_HEIGHT + BUTTON_DISTANCE),
+            BUTTON_WIDTH, BUTTON_HEIGHT, "Trie", FONT_SIZE, &buttonColorSet);
+Button linkedList(650,
                   BANNER_HEIGHT + UPPER_MARGIN +
                       1 * (BUTTON_HEIGHT + BUTTON_DISTANCE),
                   BUTTON_WIDTH, BUTTON_HEIGHT, "Linked List", FONT_SIZE,
                   &buttonColorSet);
-Button graph(LEFT_MARGIN,
+Button graph(1050,
              BANNER_HEIGHT + UPPER_MARGIN +
-                 2 * (BUTTON_HEIGHT + BUTTON_DISTANCE),
+                 1 * (BUTTON_HEIGHT + BUTTON_DISTANCE),
              BUTTON_WIDTH, BUTTON_HEIGHT, "Graph", FONT_SIZE, &buttonColorSet);
-Button hashTable(LEFT_MARGIN,
+Button hashTable(450,
                  BANNER_HEIGHT + UPPER_MARGIN +
                      3 * (BUTTON_HEIGHT + BUTTON_DISTANCE),
-                 BUTTON_WIDTH, BUTTON_HEIGHT, "Hash table", FONT_SIZE, &buttonColorSet);
-Button AVLTree(LEFT_MARGIN,
+                 BUTTON_WIDTH, BUTTON_HEIGHT, "Hash table", FONT_SIZE,
+                 &buttonColorSet);
+Button AVLTree(850,
                BANNER_HEIGHT + UPPER_MARGIN +
-                   4 * (BUTTON_HEIGHT + BUTTON_DISTANCE),
-               BUTTON_WIDTH, BUTTON_HEIGHT, "AVL Tree", FONT_SIZE, &buttonColorSet);
+                   3 * (BUTTON_HEIGHT + BUTTON_DISTANCE),
+               BUTTON_WIDTH, BUTTON_HEIGHT, "AVL Tree", FONT_SIZE,
+               &buttonColorSet);
 
 void render() {
     Vector2 bannerLocation = {GetRenderWidth() / 2 + 10, 125};
-    DrawRectangleGradientV(0, 0, GetRenderWidth(), GetRenderHeight() / 10 * 2, GBLight::BACKGROUND4, Color{0, 0, 0, 0});
-    DrawUtility::drawText("Data Visualizer", bannerLocation, DrawUtility::noto, buttonColorSet.textNormal, 100, 1, VerticalAlignment::CENTERED, HorizontalAlignment::CENTERED);
-
+    DrawRectangleGradientV(0, 0, GetRenderWidth(), GetRenderHeight() / 10 * 2,
+                           GBLight::BACKGROUND3, Color{0, 0, 0, 0});
+    DrawUtility::drawText("Data Visualizer", bannerLocation, DrawUtility::noto,
+                          buttonColorSet.textNormal, 100, 1,
+                          VerticalAlignment::CENTERED,
+                          HorizontalAlignment::CENTERED);
 
     trie.render();
     linkedList.render();
