@@ -2,8 +2,7 @@
 #include "menu.hpp"
 #include "raygui.h"
 #include <mLib/Utility.hpp>
-#include <cstring>
-#include <fstream>
+#include <cstring>#include <fstream>
 #include <mLib/tinyfiledialogs.h>
 #include <cstdlib>
 #include <colorPalette.h>
@@ -217,6 +216,7 @@ void HashState::handleInput() {
     // }
 
     if (addPane.isButtonPressed(0)) {
+        if (!mhash.completedAllActions()) return;
         std::string data = addPane.getForm(0, 0).getText();
         addPane.getForm(0, 0).clear();
         if (!isStrNum(data)) return;
@@ -260,6 +260,8 @@ void HashState::handleInput() {
 
 
     if (removePane.isButtonPressed(0)) {
+        if (!mhash.completedAllActions()) return;
+
         std::string data = removePane.getForm(0, 0).getText();
         removePane.getForm(0, 0).clear();
         if (!isStrNum(data)) return;
@@ -276,6 +278,8 @@ void HashState::handleInput() {
         return;
     }
     if (algoPane.isButtonPressed(0)) {
+        if (!mhash.completedAllActions()) return;
+
         std::string data = algoPane.getForm(0, 0).getText();
         algoPane.getForm(0, 0).clear();
         if (!isStrNum(data)) return;
@@ -328,17 +332,22 @@ void HashState::handleInput() {
         }
     }
 
-    if (MenuTable::prevButton.isPressed() && !*MenuTable::isPlaying) {  // Undo functionality
+    if (MenuTable::prevButton.isPressed()) {  // Undo functionality
+        MenuTable::pauseAnimation();
         //if (!mAVL.completeAnimation()) return;
         isReversed = 1;;
     }
 
-    if (MenuTable::nextButton.isPressed() && !*MenuTable::isPlaying) {  // Redo functionality
+    if (MenuTable::nextButton.isPressed()) {  // Redo functionality
+        MenuTable::pauseAnimation();
+
         //if (!mAVL.completeAnimation()) return;
         isReversed = 0;
     }
 
     if (MenuTable::forwardButton.isPressed()) {  // Forward functionality
+        MenuTable::pauseAnimation();
+
         while (!mhash.completedAllActions()) {
             mhash.update(1e-15, 1e-15);
             mhash.Action(0);
@@ -346,6 +355,8 @@ void HashState::handleInput() {
     }
 
     if (MenuTable::backwardButton.isPressed()) {  // Backward functionality
+        MenuTable::pauseAnimation();
+
         do {
             mhash.update(1e-15, 1e-15);
             mhash.Action(1);
