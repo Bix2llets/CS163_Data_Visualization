@@ -40,6 +40,7 @@ namespace mLib
         }
         text[length] = '\0'; 
     }
+    extern Color highlightColor;
     extern Font mFont;
     extern int row;
     extern Texture2D diceTexture[6], dice, pause, play, prev, next, forward, backward, expand, collapse;
@@ -55,10 +56,10 @@ namespace mLib
         dice = LoadTexture("assets/dice/dice.png");
         pause = LoadTexture("assets/animationButton/pause.png");
         play = LoadTexture("assets/animationButton/play.png");
-        prev = LoadTexture("assets/animationButton/prev.png");
-        next = LoadTexture("assets/animationButton/next.png");
-        forward = LoadTexture("assets/animationButton/forward.png");
-        backward = LoadTexture("assets/animationButton/backward.png");
+        prev = LoadTexture("assets/animationButton/backward.png");
+        next = LoadTexture("assets/animationButton/forward.png");
+        forward = LoadTexture("assets/animationButton/next.png");
+        backward = LoadTexture("assets/animationButton/prev.png");
         expand = LoadTexture("assets/animationButton/expand.png");
         collapse = LoadTexture("assets/animationButton/collapse.png");
     }
@@ -76,6 +77,8 @@ namespace mLib
     inline void DrawTextTrie(int index) {
         if (index == -1) {
             row = index;
+            AppMenu::loadCode(TrieInsert);
+            AppMenu::setHighlight(&row);
             return;
         }
         if (index <= 5) {
@@ -109,6 +112,8 @@ namespace mLib
     inline void DrawTextHash(int index) {
         if (index == -1) {
             row = index;
+            AppMenu::loadCode(hashInsert);
+            AppMenu::setHighlight(&row);
             return;
         }
         if (index <= 4) {
@@ -130,6 +135,8 @@ namespace mLib
     inline void DrawTextAVL(int index) {
         if (index == -1) {
             row = index;
+            AppMenu::loadCode(AVLInsert);
+            AppMenu::setHighlight(&row);
             return;
         }
         if (index <= 8) {

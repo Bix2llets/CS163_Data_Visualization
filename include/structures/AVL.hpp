@@ -10,6 +10,7 @@
 #include "AVLNode.hpp"
 #include "colorPalette.h"
 #include "raylib.h"
+#include <mLib/changeProcedure.hpp>
 
 class AVL {
    private:
@@ -32,7 +33,7 @@ class AVL {
     struct ItrAction {
         Animation *animation;
         bool show;
-        AVLNode *targetedNode;
+        AVLNode *targetedNode, *preNode;
         void setTarget() {
             if (targetedNode == NULL)
                 animation->setTargetedPosition((Vector2){0, 0});
@@ -42,7 +43,7 @@ class AVL {
         }
         ItrAction() {
             animation = new Animation(0, 0);
-            targetedNode = NULL;
+            targetedNode = preNode = NULL;
             show = false;
         }
     };
@@ -80,7 +81,8 @@ class AVL {
     inline bool startLoop() { return loop == 0; }
     inline AVLNode *getRoot() { return root; }
     static ColorSet const *PALETTE;
-
+    void setNULLPos(AVLNode *root);
+    void printDebug(AVLNode *root);
    private:
     void calcPosition(AVLNode *root);
     std::vector<AVLNode *> getNodes(AVLNode *root);
@@ -103,6 +105,8 @@ class AVL {
     std::vector<int> changeList, rotateList;
     std::pair<bool, bool> doFadeEffect(AVLNode *root, double currTime,
                                        double TransTime, AVLNode *targetedNode);
+    std::pair<ChangeProcedure, AVLNode*>  changing;
+
 };
 
 #endif  // AVL_HPP

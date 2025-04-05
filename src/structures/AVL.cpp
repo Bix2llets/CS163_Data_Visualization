@@ -2,8 +2,8 @@
 
 #include <mLib/Utility.hpp>
 
-ColorSet const *AVL::PALETTE = &COLOR_SET_1;
-AVL::AVL() : Itr() {
+ColorSet const *AVL::PALETTE = &nodeColorSet;
+AVL::AVL() : Itr(), changing({ChangeProcedure(-1, -1, NULL), NULL}) {
     loop = 0;
     core = ActionList();
     root = NULL;
@@ -11,6 +11,21 @@ AVL::AVL() : Itr() {
     rotateList.clear();
     changeList.clear();
     flag = flagUndo = -1;
+}
+
+void AVL::printDebug(AVLNode *root) {
+    if (root == NULL) return;
+    std::cout << root->PosInParent << ' ';
+    std::cout << root->value << " " << (root->left ? root->left->value : -1) << " " << (root->right ? root->right->value : -1) << "\n";
+    printDebug(root->left);
+    printDebug(root->right);
+}
+
+void AVL::setNULLPos(AVLNode *root) {
+    if (root == NULL) return;
+    root->setPosition((Vector2){800, 100});
+    setNULLPos(root->left);
+    setNULLPos(root->right);
 }
 
 bool AVL::Action(bool isReversed) {
@@ -63,7 +78,7 @@ void AVL::calcPosition(AVLNode *root) {
     if (nodes.size() == 0) return;
     int mid = nodes.size() / 2;
     nodes[mid]->setTargetedPosition(
-        (Vector2){700, nodes[mid]->getTargetedPosition().y});
+        (Vector2){800, nodes[mid]->getTargetedPosition().y});
     for (int i = mid - 1; i >= 0; i--)
         nodes[i]->setTargetedPosition(
             (Vector2){nodes[i + 1]->getTargetedPosition().x - xOFFSET / 2,
@@ -78,7 +93,7 @@ std::pair<int, int> AVL::insert(AVLNode *par, AVLNode *&root, int value,
                                 ActionList &actions) {
     if (root == NULL) {
         if (par == NULL)
-            root = new AVLNode(700, 100, value, par, 0);
+            root = new AVLNode(300, 100, value, par, 0);
         else
             root = new AVLNode(par->getPosition().x, par->getPosition().y,
                                value, par, par->value < value);
@@ -86,7 +101,6 @@ std::pair<int, int> AVL::insert(AVLNode *par, AVLNode *&root, int value,
         actions.push_back({2, SETLECT, root});
         return {1, 0};
     }
-
     actions.push_back({1, SETLECT, root});
     if (value < root->value)
         std::tie(root->heightLeft, root->balanceLeft) =
@@ -102,19 +116,33 @@ std::pair<int, int> AVL::insert(AVLNode *par, AVLNode *&root, int value,
     if (balance > 1) {
         if (value < root->left->value) {
             actions.push_back({5, Right, root});
+            int hLeft = root->left->heightLeft;
+            int hRight = std::max(root->left->heightRight, root->heightRight) + 1;
+            return {std::max(hLeft, hRight) + 1, hLeft - hRight};
         } else {
             actions.push_back({6, LL, root});
             actions.push_back({6, Right, root});
+            int hLeft = std::max(root->left->right->heightLeft,
+                                 root->left->heightLeft) + 1;
+            int hRight = std::max(root->left->right->heightRight, root->heightRight) + 1;
+            return {std::max(hLeft, hRight) + 1, hLeft - hRight};
         }
-        return {std::max(root->heightLeft, root->heightRight), 1};
+        //return {std::max(root->heightLeft, root->heightRight), 1};
     } else if (balance < -1) {
         if (value > root->right->value) {
             actions.push_back({4, Left, root});
+            int hLeft = std::max(root->right->heightLeft, root->heightLeft) + 1;
+            int hRight = root->right->heightRight;
+            return {std::max(hLeft, hRight) + 1, hLeft - hRight};
         } else {
             actions.push_back({7, RR, root});
             actions.push_back({7, Left, root});
+            int hLeft = std::max(root->right->left->heightLeft, root->heightLeft) + 1;
+            int hRight = std::max(root->right->left->heightRight,
+                                  root->right->heightRight) + 1;
+            return {std::max(hLeft, hRight) + 1, hLeft - hRight};
         }
-        return {std::max(root->heightLeft, root->heightRight), -1};
+        //return {std::max(root->heightLeft, root->heightRight), -1};
     }
     return {std::max(root->heightLeft, root->heightRight) + 1, balance};
 }
@@ -123,8 +151,10 @@ void AVL::insert(int value) {
     ActionList actions;
     actions.push_back({0, INIT, NULL});
     insert(NULL, root, value, actions);
+    actions.push_back({3, SETLECT, NULL});
     actions.push_back({8, CLEAR, NULL});
     core.insert(core.end(), actions.begin(), actions.end());
+    std::cout << "done procedure " << value << "\n";
 }
 
 void AVL::search(AVLNode *root, int value, ActionList &actions) {
@@ -147,6 +177,7 @@ void AVL::search(int value) {
     ActionList actions;
     actions.push_back({9, INIT, NULL});
     search(root, value, actions);
+    actions.push_back({13, SETLECT, NULL});
     actions.push_back({13, CLEAR, NULL});
     core.insert(core.end(), actions.begin(), actions.end());
 }
@@ -191,19 +222,33 @@ std::pair<int, int> AVL::remove(AVLNode *par, AVLNode *root, int value,
     if (balance > 1) {
         if (root->left->balance >= 0) {
             actions.push_back({22, Right, root});
+            int hLeft = std::max(root->left->heightLeft, root->heightLeft) + 1;
+            int hRight = root->right->heightRight;
+            return {std::max(hLeft, hRight) + 1, hLeft - hRight};
         } else {
             actions.push_back({23, LL, root});
             actions.push_back({23, Right, root});
+            int hLeft = std::max(root->left->right->heightLeft, root->heightLeft) + 1;
+            int hRight = std::max(root->left->right->heightRight,
+                                  root->right->heightRight) + 1;
+            return {std::max(hLeft, hRight) + 1, hLeft - hRight};
         }
-        return {std::max(root->heightLeft, root->heightRight), 1};
+        //return {std::max(root->heightLeft, root->heightRight), 1};
     } else if (balance < -1) {
         if (root->right->balance <= 0) {
             actions.push_back({21, Left, root});
+            int hLeft = std::max(root->right->heightLeft, root->heightLeft) + 1;
+            int hRight = root->right->heightRight;
+            return {std::max(hLeft, hRight) + 1, hLeft - hRight};
         } else {
             actions.push_back({24, RR, root});
             actions.push_back({24, Left, root});
+            int hLeft = std::max(root->right->left->heightLeft, root->heightLeft) + 1;
+            int hRight = std::max(root->right->left->heightRight,
+                                  root->right->heightRight) + 1;
+            return {std::max(hLeft, hRight) + 1, hLeft - hRight};
         }
-        return {std::max(root->heightLeft, root->heightRight), -1};
+        //return {std::max(root->heightLeft, root->heightRight), -1};
     }
     return {std::max(root->heightLeft, root->heightRight) + 1, balance};
 }
@@ -240,22 +285,28 @@ void AVL::remove(int value) {
             }
             break;
         }
+    actions.push_back({20, SETLECT, NULL});
+    std::swap(actions[actions.size() - 1], actions[actions.size() - 2]);
     core.insert(core.end(), actions.begin(), actions.end());
 }
 
 bool AVL::Undo(action Action) {
     switch (Action.action) {
         case INIT:
-            Itr.show = false;
+            Itr = ItrAction();
             return true;
         case CLEAR:
             Itr.show = true;
             return true;
         case SETLECT:
-            Itr.targetedNode = ItrHistory.back().first;
-            Itr.setTarget();
-            if (Itr.animation->isCompleted()) ItrHistory.pop_back();
-            if (Itr.animation->isCompleted()) return true;
+            if (ItrHistory.size() && ItrHistory.back().first != Itr.targetedNode) {
+                Itr.preNode = Itr.targetedNode;
+                Itr.targetedNode = ItrHistory.back().first;
+                Itr.animation->setHashAlpha(0);
+                Itr.setTarget();
+            }
+            if (Itr.animation -> isCompleted()) ItrHistory.pop_back();
+            if (Itr.animation -> isCompleted()) return true;
             return false;
         case CREATE:
             Action.node->valid = false;
@@ -274,15 +325,24 @@ bool AVL::Undo(action Action) {
             }
             return isCompleted(root);
         case target:
+            if (Action.node->targeted) Action.node->setUnTarget();
             Action.node->targeted = false;
-            return true;
+            return Action.node->isCompletedAlpha();
         case untarget:
+            if (!Action.node->targeted) Action.node->setTarget();
             Action.node->targeted = true;
-            return true;
+            return Action.node->isCompletedAlpha();
         case changeValue:
-            Action.node->value = changeList.back();
-            changeList.pop_back();
-            return true;
+            if (changing.second == NULL) {
+                Action.node->targetValue = Action.node->value;
+                changing = {ChangeProcedure(Action.node->value, changeList.back(), &Action.node->value), Action.node};
+                changeList.pop_back();
+            }
+            if (changing.first.isCompleted()) {
+                changing = {ChangeProcedure(-1, -1, NULL), NULL};
+                return true;
+            }
+            return false;
         case LL:
             if (rotateList.size() && rotateList.back() == loop - 1) {
                 rotateList.pop_back();
@@ -389,13 +449,17 @@ bool AVL::doAction(action Action) {
             Itr.show = true;
             return true;
         case CLEAR:
-            Itr.show = false;
+            //Itr.show = false;
+            Itr = ItrAction();
             return true;
         case SETLECT:
-            if (ItrHistory.size() == 0 || ItrHistory.back().second != loop)
+            if (ItrHistory.size() == 0 || ItrHistory.back().second != loop) {
                 ItrHistory.push_back({Itr.targetedNode, loop});
-            Itr.targetedNode = Action.node;
-            Itr.setTarget();
+                Itr.preNode = Itr.targetedNode;
+                Itr.targetedNode = Action.node;
+                Itr.animation->setHashAlpha(0);
+                Itr.setTarget();
+            }
             if (Itr.animation->isCompleted()) return true;
             return false;
         case CREATE:
@@ -419,16 +483,25 @@ bool AVL::doAction(action Action) {
             return isCompleted(root);
         }
         case target:
+            if (!Action.node->targeted) Action.node->setTarget();
             Action.node->targeted = true;
-            return true;
+            return Action.node->isCompletedAlpha();
         case untarget:
+            if (Action.node->targeted) Action.node->setUnTarget();
             Action.node->targeted = false;
-            return true;
+            return Action.node->isCompletedAlpha();
         case changeValue:
-            changeList.push_back(Action.node->value);
-            Action.node->value = Action.node->targetValue;
-            Action.node->targetValue = -1;
-            return true;
+            if (changing.second == NULL) {
+                changeList.push_back(Action.node->value);
+                changing = {ChangeProcedure(Action.node->value, Action.node->targetValue, &Action.node->value), Action.node};
+                Action.node->targetValue = -1;
+            }
+            if (changing.first.isCompleted()) {
+                std::cout << Action.node->value << ' ' << changing.first.getNewValue() << std::endl;
+                changing = {ChangeProcedure(-1, -1, NULL), NULL};
+                return true;
+            }
+            return false;
         case LL: {
             if (rotateList.size() == 0 || rotateList.back() != loop) {
                 rotateList.push_back(loop);
@@ -439,7 +512,7 @@ bool AVL::doAction(action Action) {
                 // left rotation on leftChild
                 leftChild->right = left_Right_LeftChild;
                 if (left_Right_LeftChild != NULL)
-                    left_Right_LeftChild->parent = leftChild;
+                    left_Right_LeftChild->parent = leftChild, left_Right_LeftChild->PosInParent = 1;
                 righ_LeftChild->left = leftChild;
                 leftChild->parent = righ_LeftChild;
                 righ_LeftChild->parent = Action.node,
@@ -459,7 +532,7 @@ bool AVL::doAction(action Action) {
                 // right rotation on rightChild
                 rightChild->left = right_Left_RightChild;
                 if (right_Left_RightChild != NULL)
-                    right_Left_RightChild->parent = rightChild;
+                    right_Left_RightChild->parent = rightChild, right_Left_RightChild->PosInParent = 0;
                 left_RightChild->right = rightChild;
                 rightChild->parent = left_RightChild;
                 left_RightChild->parent = Action.node,
@@ -544,6 +617,7 @@ bool AVL::isCompleted(AVLNode *root) {
 void AVL::update(AVLNode *root, double currTime, double rate) {
     if (root == NULL) return;
     root->displace(currTime, rate);
+    root->updateAlpha(currTime, rate);
     update(root->left, currTime, rate);
     update(root->right, currTime, rate);
 }
@@ -561,6 +635,7 @@ void AVL::update(double currTime, double rate) {
         flagUndo =
             doFadeEffect(root, currTime, rate, core[loop - 1].node).first;
     }
+    if (changing.second != NULL) changing.first.updateAlpha(currTime, rate);
 }
 
 #include <cstring>
@@ -570,13 +645,48 @@ void AVL::draw(AVLNode *root) {
     draw(root->left);
     draw(root->right);
     Color backgroundColor;
-    if (root->targeted)
-        backgroundColor = PALETTE->backgroundHighlight;
-    else
-        backgroundColor = PALETTE->backgroundNormal;
+    backgroundColor = PALETTE->backgroundNormal;
     DrawCircleV(root->getPosition(), NODE_RADIUS - 3, backgroundColor);
+    if (Itr.show && root == Itr.targetedNode) {
+        Color tmp = GBLight::LIGHT_RED;
+        tmp.a -= Itr.animation->getHashAlpha();
+        DrawCircleV(Itr.targetedNode->getPosition(), NODE_RADIUS - 3, tmp);
+    }
+    if (Itr.show && root == Itr.preNode) {
+        Color tmp = GBLight::LIGHT_RED;
+        tmp.a -= (255.f - Itr.animation->getHashAlpha());
+        DrawCircleV(Itr.preNode->getPosition(), NODE_RADIUS - 3, tmp);
+    }
+    if (root->targeted || !root->isCompletedAlpha()) {
+        backgroundColor = GBLight::DARK_YELLOW;
+        backgroundColor.a -= root->alpha;
+        DrawCircleV(root->getPosition(), NODE_RADIUS - 3, backgroundColor);
+    }
+    Color color = mLib::highlightColor;
+    color.a = 255.f - root->getAlpha();
+    DrawCircleV(root->getPosition(), NODE_RADIUS - 3, color);
     DrawRing(root->getPosition(), NODE_RADIUS - 3, NODE_RADIUS, 0, 360, 20,
              PALETTE->borderNormal);
+
+    if (changing.second == root) {
+        Color colorText = WHITE;
+        colorText.a -= changing.first.getAlpha();
+        char *text = new char[std::to_string(changing.first.getNewValue()).length() + 1];
+        strcpy(text, std::to_string(changing.first.getNewValue()).c_str());
+        DrawUtility::drawText(text, root->getPosition(), mLib::mFont,
+                              colorText, 20, DrawUtility::SPACING,
+                              VerticalAlignment::CENTERED,
+                              HorizontalAlignment::CENTERED);
+        colorText = WHITE;
+        colorText.a -= (255.f - changing.first.getAlpha());
+        text = new char[std::to_string(changing.first.getOldValue()).length() + 1];
+        strcpy(text, std::to_string(changing.first.getOldValue()).c_str());
+        DrawUtility::drawText(text, root->getPosition(), mLib::mFont,
+                              colorText, 20, DrawUtility::SPACING,
+                              VerticalAlignment::CENTERED,
+                              HorizontalAlignment::CENTERED);
+        return ;
+    }
     std::string value = std::to_string(root->value);
     char *text = new char[value.length() + 1];
     strcpy(text, value.c_str());
@@ -584,6 +694,20 @@ void AVL::draw(AVLNode *root) {
                           PALETTE->textNormal, 20, DrawUtility::SPACING,
                           VerticalAlignment::CENTERED,
                           HorizontalAlignment::CENTERED);
+    Color colorText = WHITE;
+    if (Itr.show && root == Itr.targetedNode) colorText.a -= Itr.animation->getHashAlpha();
+    else if (Itr.show && root == Itr.preNode) colorText.a -= (255.f - Itr.animation->getHashAlpha());
+    else colorText = PALETTE->textNormal;
+    DrawUtility::drawText(text, root->getPosition(), DrawUtility::inter20, colorText, 20, 1, VerticalAlignment::CENTERED, HorizontalAlignment::CENTERED);
+    if (root->targeted || !root->isCompletedAlpha()) {
+        Color colorText = WHITE;
+        colorText.a -= root->alpha;
+        DrawUtility::drawText(value.c_str(), root->getPosition(), mLib::mFont,
+        colorText, 20, DrawUtility::SPACING,
+        VerticalAlignment::CENTERED,
+        HorizontalAlignment::CENTERED);
+        
+    }
     // DrawTextEx(mLib::mFont, text, (Vector2){root->getPosition().x - 12,
     // root->getPosition().y - 12}, 20, 2, WHITE);
 }
@@ -595,9 +719,9 @@ void AVL::draw() {
         mLib::DrawTextAVL(-1);
     drawArrow(root);
     draw(root);
-    if (Itr.show)
-        DrawRing(Itr.animation->getPosition(), NODE_RADIUS, NODE_RADIUS + 3, 0,
-                 360, 20, GBLight::DARK_RED);
+    // if (Itr.show)
+    //     DrawRing(Itr.animation->getPosition(), NODE_RADIUS, NODE_RADIUS + 3, 0,
+    //              360, 20, GBLight::DARK_RED);
 }
 
 void AVL::drawArrow(AVLNode *root) {

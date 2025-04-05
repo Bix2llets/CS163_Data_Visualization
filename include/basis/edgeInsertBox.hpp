@@ -16,7 +16,7 @@ class edgeInsertBox {
 
    public:
     edgeInsertBox(Vector2 position, Vector2 dimension, int fontSize = 20,
-                  ColorSet const *palette = &BUTTON_SET_1, bool mode = 0,
+                  ColorSet const *palette = &buttonColorSet, bool mode = 0,
                   int maxSize = 100, int maxSizeW = 100)
         : textBoxU{{position.x, position.y, dimension.x / 2, dimension.y},
                    palette,

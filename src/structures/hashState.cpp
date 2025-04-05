@@ -1,8 +1,8 @@
 #include "hashState.hpp"
+#include "menu.hpp"
 #include "raygui.h"
 #include <mLib/Utility.hpp>
-#include <cstring>
-#include <fstream>
+#include <cstring>#include <fstream>
 #include <mLib/tinyfiledialogs.h>
 #include <cstdlib>
 #include <colorPalette.h>
@@ -13,12 +13,12 @@ const int MAX_TEXT_LENGTH = 3;
 #include <iostream>
 
 double HashState::mTimeStep;
-MenuPane HashState::addPane({0, 0}, &GBLight::BACKGROUND1, &BUTTON_SET_1, &BUTTON_SET_1);
-MenuPane HashState::removePane({0, 0}, &GBLight::BACKGROUND1, &BUTTON_SET_1, &BUTTON_SET_1);
-MenuPane HashState::algoPane({0, 0}, &GBLight::BACKGROUND1, &BUTTON_SET_1, &BUTTON_SET_1);
-MenuPane HashState::storagePane({0, 0}, &GBLight::BACKGROUND1, &BUTTON_SET_1, &BUTTON_SET_1);
-
-HashState::HashState() : mhash(60) {
+MenuPane HashState::addPane({0, 0}, &GBLight::BACKGROUND1, &buttonColorSet, &buttonColorSet);
+MenuPane HashState::removePane({0, 0}, &GBLight::BACKGROUND1, &buttonColorSet, &buttonColorSet);
+MenuPane HashState::algoPane({0, 0}, &GBLight::BACKGROUND1, &buttonColorSet, &buttonColorSet);
+MenuPane HashState::storagePane({0, 0}, &GBLight::BACKGROUND1, &buttonColorSet, &buttonColorSet);
+ColorSet const *HashState::buttonPalette = &buttonColorSet;
+HashState::HashState() : mhash(0) {
     showCreateOptions = false;
     showTextBox = false;
     editMode = false;
@@ -64,7 +64,7 @@ void HashState::initPanes(Vector2 position) { // Updated to static
     storagePane.setPosition(position);
 
     addPane.newLine(0, 1, "Add", {"Value"}, {0}, true);
-    addPane.newLine(1, 0, "Random", {}, {}, false);
+    addPane.newLine(1, 2, "Create", {"Size", "Num value"}, {0, 0}, true);
 
     removePane.newLine(0, 1, "Remove", {"Value"}, {0}, true);
     removePane.newLine(1, 0, "Clear", {}, {}, false);
@@ -216,6 +216,7 @@ void HashState::handleInput() {
     // }
 
     if (addPane.isButtonPressed(0)) {
+        if (!mhash.completedAllActions()) return;
         std::string data = addPane.getForm(0, 0).getText();
         addPane.getForm(0, 0).clear();
         if (!isStrNum(data)) return;
@@ -227,7 +228,40 @@ void HashState::handleInput() {
         addPane.getForm(0, 0).setText(std::to_string(randomValue));
     }
 
+    if (addPane.isButtonPressed(1)) {
+        std::string data = addPane.getForm(1, 0).getText();
+        addPane.getForm(1, 0).clear();
+        int size;
+        if (!isStrNum(data)) size = GetRandomValue(1, 60);
+        else size = std::stoi(data);
+        mhash = Hash(size);  
+        int numValue;
+        if (!isStrNum(addPane.getForm(1, 1).getText())) numValue = GetRandomValue(0, size);
+        else numValue = std::min(size, std::stoi(addPane.getForm(1, 1).getText()));
+        addPane.getForm(1, 1).clear();
+        for (int i = 0; i < numValue; i++) {
+            int x = GetRandomValue(0, 1000000000) % 1000;
+            mhash.insert(x);
+            while (mhash.completedAllActions() == 0) {
+                mhash.update(1e-15, 1e-15);
+                mhash.Action(0);
+            }
+        }
+        mhash.setNULLPos();
+        mTime = 0;
+    }
+
+    if (addPane.isRandomPressed(1)) {
+        int size = GetRandomValue(1, 60);
+        addPane.getForm(1, 0).setText(std::to_string(size));
+        int numValue = GetRandomValue(0, size);
+        addPane.getForm(1, 1).setText(std::to_string(numValue));
+    } 
+
+
     if (removePane.isButtonPressed(0)) {
+        if (!mhash.completedAllActions()) return;
+
         std::string data = removePane.getForm(0, 0).getText();
         removePane.getForm(0, 0).clear();
         if (!isStrNum(data)) return;
@@ -235,7 +269,7 @@ void HashState::handleInput() {
     }
 
     if (removePane.isButtonPressed(1)) {
-        mhash = Hash(10);  // Reset the hash table
+        mhash = Hash(0);  // Reset the hash table
     }
 
     if (removePane.isRandomPressed(0)) {
@@ -244,6 +278,8 @@ void HashState::handleInput() {
         return;
     }
     if (algoPane.isButtonPressed(0)) {
+        if (!mhash.completedAllActions()) return;
+
         std::string data = algoPane.getForm(0, 0).getText();
         algoPane.getForm(0, 0).clear();
         if (!isStrNum(data)) return;
@@ -295,9 +331,73 @@ void HashState::handleInput() {
             inFile.close();
         }
     }
+
+    if (MenuTable::prevButton.isPressed()) {  // Undo functionality
+        MenuTable::pauseAnimation();
+        //if (!mAVL.completeAnimation()) return;
+        isReversed = 1;;
+    }
+
+    if (MenuTable::nextButton.isPressed()) {  // Redo functionality
+        MenuTable::pauseAnimation();
+
+        //if (!mAVL.completeAnimation()) return;
+        isReversed = 0;
+    }
+
+    if (MenuTable::forwardButton.isPressed()) {  // Forward functionality
+        MenuTable::pauseAnimation();
+
+        while (!mhash.completedAllActions()) {
+            mhash.update(1e-15, 1e-15);
+            mhash.Action(0);
+        }
+    }
+
+    if (MenuTable::backwardButton.isPressed()) {  // Backward functionality
+        MenuTable::pauseAnimation();
+
+        do {
+            mhash.update(1e-15, 1e-15);
+            mhash.Action(1);
+        } while (!mhash.completedAllActions() && !mhash.reachedStart());
+        //mhash.ClearOperator();
+    }
+
+    if (MenuTable::pauseButton.isPressed() || *MenuTable::isPlaying) animationPlaying = 1;
+    if (MenuTable::playButton.isPressed() || !*MenuTable::isPlaying) {
+        if (mhash.completedAllActions()) animationPlaying = 0;
+        else pendingPause = 1;
+    }
+
+    if (pendingPause || isReversed != -1) update();
 }
 
 void HashState::update() {
+    
+    mhash.update(mTime, mTimeStep);
+    if (mTime >= mTimeStep && (animationPlaying || isReversed != -1)) {
+        mTime = 0;
+        if (isReversed == -1)
+        {
+            if (mhash.Action(0))
+            {
+                showRunStepByStep = 1;
+                if (pendingPause) {
+                    pendingPause = 0;
+                    animationPlaying = 0;
+                }
+            }
+        }
+        else
+        {
+            if (mhash.Action(isReversed)) {
+                if (isReversed == 1 && mhash.reachedStart()) ;
+                //mhash.ClearOperator();
+                isReversed = -1;
+            }
+        }
+    }
     if (editMode) {
         if (strlen(textBox) == 0) ;
         else
@@ -305,9 +405,11 @@ void HashState::update() {
             else textBox[strlen(textBox) - 1] = '\0';
     }
     showRunStepByStep = mhash.completeAnimation();
+    
 }
 
 void HashState::render() {
+    mTime += GetFrameTime();
     if (showTextBox & mhash.completedAllActions())
     {
         if (textDestionation == 1) DrawTextEx(mLib::mFont, "Searching", (Vector2) {10 + 250, 700}, 30, 2, WHITE);
@@ -332,30 +434,8 @@ void HashState::render() {
 
 void HashState::run() {
     handleInput();
-    mTime += GetFrameTime();
+
     update();
-    mhash.update(mTime, mTimeStep);
-    if (mTime >= mTimeStep && (animationPlaying || isReversed != -1)) {
-        mTime = 0;
-        if (isReversed == -1)
-        {
-            if (mhash.Action(0))
-            {
-                showRunStepByStep = 1;
-                if (pendingPause) {
-                    pendingPause = 0;
-                    animationPlaying = 0;
-                }
-            }
-        }
-        else
-        {
-            if (mhash.Action(isReversed)) {
-                if (isReversed == 1 && mhash.reachedStart()) mhash.ClearOperator();
-                isReversed = -1;
-            }
-        }
-    }
     render();
 }
 

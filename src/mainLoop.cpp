@@ -44,7 +44,9 @@ void registerInput() {
     if (currentScene == SceneList::MAIN_MENU) {
         if (WelcomeMenu::isAVLTreePressed()) {
             currentScene = SceneList::AVL;
-            renderFunc = &mScene::runAVL;
+            renderFunc = []() { mScene::avl.render(); };
+            updateFunc = []() { mScene::avl.update(); };
+            recordFunc = []() { mScene::avl.handleInput(); };
 
             MenuTable::addPane = &AVLState::addPane;
             MenuTable::deletePane = &AVLState::removePane;
@@ -67,7 +69,10 @@ void registerInput() {
         }
         if (WelcomeMenu::isHashTablePressed()) {
             currentScene = SceneList::HASH;
-            renderFunc = &mScene::runHash;
+            renderFunc = []() { mScene::hash.render(); };
+            updateFunc = []() { mScene::hash.update(); };
+            recordFunc = []() { mScene::hash.handleInput(); };
+
 
             MenuTable::addPane = &HashState::addPane;
             MenuTable::deletePane = &HashState::removePane;
@@ -89,7 +94,10 @@ void registerInput() {
         }
         if (WelcomeMenu::isTriePressed()) {
             currentScene = TRIE;
-            renderFunc = &mScene::runTrie;
+            renderFunc = []() { mScene::trie.render(); };
+            updateFunc = []() { mScene::trie.update(); };
+            recordFunc = []() { mScene::trie.handleInput(); };
+
 
             MenuTable::addPane = &TrieState::addPane;
             MenuTable::deletePane = &TrieState::removePane;
@@ -110,9 +118,15 @@ void render() {
     if (currentScene == SceneList::MAIN_MENU) {
         WelcomeMenu::render();
     } else {
-        // if (currentScene == SceneList::AVL || currentScene == SceneList::HASH || currentScene == SceneList::TRIE) ;
-        // else DrawRectangleLines(UPPER_LEFT.x, UPPER_LEFT.y, LOWER_RIGHT.x - UPPER_LEFT.x, LOWER_RIGHT.y - UPPER_LEFT.y, BLUE);
+        ClearBackground(GBDark::BACKGROUND0S);
+        DrawRectangle(UPPER_LEFT.x, UPPER_LEFT.y, LOWER_RIGHT.x - UPPER_LEFT.x, LOWER_RIGHT.y - UPPER_LEFT.y, GBLight::BACKGROUND4);
         if (renderFunc) renderFunc();
+        DrawRectangleLinesEx({UPPER_LEFT.x, UPPER_LEFT.y, LOWER_RIGHT.x - UPPER_LEFT.x, LOWER_RIGHT.y - UPPER_LEFT.y}, 3.0f, GBLight::FOREGROUND4);
+        // * For covering
+        DrawRectangle(0, LOWER_RIGHT.y, GetRenderWidth(), GetRenderHeight(), GBDark::BACKGROUND0S);
+        DrawRectangle(LOWER_RIGHT.x, 0, GetRenderWidth() - LOWER_RIGHT.x, GetRenderHeight(), GBDark::BACKGROUND0S);
+        DrawRectangle(0, 0, GetRenderWidth(), UPPER_LEFT.y, GBDark::BACKGROUND0S);
+        DrawRectangle(0, 0, UPPER_LEFT.x, GetRenderHeight(), GBDark::BACKGROUND0S);
         AppMenu::render();
         MenuTable::render();
     }

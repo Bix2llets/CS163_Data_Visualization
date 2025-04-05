@@ -4,7 +4,7 @@ float SLLScene::stepDelay = 1.f;
 float SLLScene::timeLeft = 0.f;
 
 const Rectangle SLLScene::CANVAS = {100, 100, 1400, 600};
-ColorSet const* SLLScene::NODE_PALETTE = &COLOR_SET_1;
+ColorSet const* SLLScene::NODE_PALETTE = &nodeColorSet;
 
 float SLLScene::animationRate = 1.0f;
 SLL SLLScene::sll(CANVAS, animationRate);
@@ -16,13 +16,13 @@ std::deque<SLLScene::SLLStorage> SLLScene::future;
 
 const Vector2 SLLScene::STARTING_PANE_POSITION = {100, 100};
 MenuPane SLLScene::addPane(STARTING_PANE_POSITION, &GBLight::BACKGROUND1,
-                           &BUTTON_SET_1, &BUTTON_SET_1);
+                           &buttonColorSet, &buttonColorSet);
 MenuPane SLLScene::deletePane(STARTING_PANE_POSITION, &GBLight::BACKGROUND1,
-                              &BUTTON_SET_1, &BUTTON_SET_1);
+                              &buttonColorSet, &buttonColorSet);
 MenuPane SLLScene::algoPane(STARTING_PANE_POSITION, &GBLight::BACKGROUND1,
-                            &BUTTON_SET_1, &BUTTON_SET_1);
+                            &buttonColorSet, &buttonColorSet);
 MenuPane SLLScene::miscPane(STARTING_PANE_POSITION, &GBLight::BACKGROUND1,
-                            &BUTTON_SET_1, &BUTTON_SET_1);
+                            &buttonColorSet, &buttonColorSet);
 const std::vector<std::string> SLLScene::PSEUDO_INSERT = {
     "Traverse the linked list", "Create new node", "Update the linked list"};
 const std::vector<std::string> SLLScene::PSEUDO_DELETE = {
@@ -68,6 +68,7 @@ void SLLScene::addAt(std::string data, int place) {
         size = steps.back().sll.nodeCount;
     else
         size = sll.nodeCount;
+    if (size == 0 && place != 0) return;
     if (place > size) {
         addStep(0, &PSEUDO_INSERT);
         steps.back().sll.deHighlight();
@@ -107,7 +108,8 @@ void SLLScene::removeAt(int place) {
         size = steps.back().sll.nodeCount;
     else
         size = sll.nodeCount;
-    if (place > size || size == 0) {
+    if (size == 0) return;
+    if (place > size) {
         addStep(0, &PSEUDO_DELETE);
         steps.back().sll.deHighlight();
         steps.back().sll.highlightTo(size);
@@ -255,8 +257,8 @@ void SLLScene::recordInput() {
     }
     if (deletePane.isButtonPressed(0)) {
         // * Delete at end and delete at somewhere else
-        auto location = deletePane.getText(1, 0);
-
+        auto location = deletePane.getText(0, 0);
+        
         if (isStrNum(location)) {
             SLLScene::removeAt(std::stoi(location));
             AppMenu::loadCode(SLLScene::PSEUDO_DELETE);
@@ -266,7 +268,8 @@ void SLLScene::recordInput() {
         }
     }
     if (deletePane.isRandomPressed(0)) {
-        std::string location = std::to_string(rand() % (sll.nodeCount + 1));
+        if (sll.nodeCount == 0) return;
+        std::string location = std::to_string(rand() % (sll.nodeCount));
         deletePane.getForm(0, 0).setText(location);
     }
     if (algoPane.isButtonPressed(0)) {

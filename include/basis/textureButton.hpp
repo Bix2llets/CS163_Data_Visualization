@@ -13,7 +13,7 @@ class TextureBox : public Button {
 
    public:
     TextureBox(Vector2 position, Vector2 dimension, Rectangle ori,
-               Texture2D *texture, ColorSet const *palette = &BUTTON_SET_1)
+               Texture2D *texture, ColorSet const *palette = &buttonColorSet)
         : Button{position, dimension, "", 20, palette},
           ori{ori},
           texture{texture} {};

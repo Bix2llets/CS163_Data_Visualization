@@ -9,6 +9,7 @@
 #include "raylib.h"
 #include "hashNode.hpp"
 #include "colorPalette.h"
+#include <mLib/changeProcedure.hpp>
 class Hash {
     private: 
         enum hashAction {
@@ -24,14 +25,14 @@ class Hash {
         struct ItrAction {
             Animation *animation;
             bool show;
-            hashNode *targetedNode;
+            hashNode *targetedNode, *preNode;
             void setTarget() {
                 if (targetedNode == NULL) animation->setTargetedPosition((Vector2){0, 0});
                 else animation->setTargetedPosition(targetedNode->getTargetedPosition());
             }
             ItrAction() {
                 animation = new Animation(0, 0);
-                targetedNode = NULL;
+                targetedNode = preNode = NULL;
                 show = false;
             }
         };
@@ -67,6 +68,11 @@ class Hash {
         void ClearOperator();
         inline bool endLoop() { return loop == core.size(); }
         inline bool startLoop() { return loop == 0; }
+        void setNULLPos() {
+            for (int i = 0; i < m; i++) {
+                root[i]->setPosition((Vector2){800, 100});
+            }
+        }
     private:
         void draw(hashNode *root);
         void DrawArrowWithCircles(Vector2 start, Vector2 end, float radius, Color color, float thickness);
@@ -76,7 +82,7 @@ class Hash {
         std::vector<std::pair<hashNode*, int>> ItrHistory;
         std::vector<int> changeList;
         std::pair<bool, bool> doFadeEffect(double currTime, double TransTime, hashNode *targetedNode);
-
+        std::pair<ChangeProcedure, hashNode*>  changing;
 };
 
 
