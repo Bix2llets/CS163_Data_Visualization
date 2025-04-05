@@ -215,6 +215,7 @@ void TrieState::handleInput() {
     // }
 
     if (addPane.isButtonPressed(0)) {
+        if (!mTrie.completedAllActions()) return;
         std::string word = addPane.getForm(0, 0).getText();
         addPane.getForm(0, 0).clear();
         if (word.empty()) return;
@@ -253,6 +254,8 @@ void TrieState::handleInput() {
     }
 
     if (removePane.isButtonPressed(0)) {  // Remove operation
+        if (!mTrie.completedAllActions()) return;
+
         std::string word = removePane.getForm(0, 0).getText();
         removePane.getForm(0, 0).clear();
         if (word.empty()) return;
@@ -271,6 +274,8 @@ void TrieState::handleInput() {
     }
 
     if (algoPane.isRandomPressed(0)) {
+        if (!mTrie.completedAllActions()) return;
+
         char randomWord[MAX_TEXT_LENGTH + 1];
         mLib::GenerateRandomText(randomWord);
         algoPane.getForm(0, 0).setText(randomWord);
@@ -308,24 +313,28 @@ void TrieState::handleInput() {
             inFile.close();
         }
     }
-    if (MenuTable::prevButton.isPressed() && !*MenuTable::isPlaying) {  // Undo functionality
+    if (MenuTable::prevButton.isPressed()) {  // Undo functionality
+        MenuTable::pauseAnimation();
         //if (!mAVL.completeAnimation()) return;
         isReversed = 1;;
     }
-
-    if (MenuTable::nextButton.isPressed() && !*MenuTable::isPlaying) {  // Redo functionality
+    
+    if (MenuTable::nextButton.isPressed()) {  // Redo functionality
+        MenuTable::pauseAnimation();
         //if (!mAVL.completeAnimation()) return;
         isReversed = 0;
     }
-
+    
     if (MenuTable::forwardButton.isPressed()) {  // Forward functionality
+        MenuTable::pauseAnimation();
         while (!mTrie.completedAllActions()) {
             mTrie.update(1e-15, 1e-15);
             mTrie.Action(0);
         }
     }
-
+    
     if (MenuTable::backwardButton.isPressed()) {  // Backward functionality
+        MenuTable::pauseAnimation();
         do {
             mTrie.update(1e-15, 1e-15);
             mTrie.Action(1);

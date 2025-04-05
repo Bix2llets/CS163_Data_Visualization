@@ -111,7 +111,6 @@ void AVLState::handleInput() {
     }
 
     if (addPane.isButtonPressed(1)) {  
-        if (!mAVL.completedAllActions()) return;
         mAVL = AVL();
         std::string data = addPane.getForm(1, 0).getText();
         addPane.getForm(1, 0).clear();
@@ -163,7 +162,6 @@ void AVLState::handleInput() {
         removePane.getForm(0, 0).setText(std::to_string(values[place]));
     }
     if (removePane.isButtonPressed(1)) {
-        if (!mAVL.completedAllActions()) return;
         mAVL = AVL();
         return;
     }
