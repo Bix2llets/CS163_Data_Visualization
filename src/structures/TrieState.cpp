@@ -292,7 +292,10 @@ void TrieState::handleInput() {
                                   "ok", "error", 1);
                 return;
             }
-            // mTrie.saveToFile(outFile);
+            std::vector<std::string> words = mTrie.getWords();
+            for (const auto &word : words) {
+                outFile << word << "\n";  // Write each word to the file
+            }
             outFile.close();
         }
     }
@@ -309,7 +312,14 @@ void TrieState::handleInput() {
                 return;
             }
             mTrie = Trie();
-            // mTrie.loadFromFile(inFile);
+            std::string line;
+            while (std::getline(inFile, line)) {
+                mTrie.insert(line);
+                while (!mTrie.completedAllActions()) {
+                    mTrie.update(1e-15, 1e-15);
+                    mTrie.Action(0);
+                }
+            }
             inFile.close();
         }
     }

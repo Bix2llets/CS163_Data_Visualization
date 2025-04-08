@@ -210,7 +210,7 @@ void AVLState::handleInput() {
                 if (curr->right) nodeList.push(curr->right);
             }
 
-            std::sort(valueList.begin(), valueList.end());
+            //std::sort(valueList.begin(), valueList.end());
             for (int x : valueList) outFile << x << " ";
             outFile << "\n";
             outFile.close();
