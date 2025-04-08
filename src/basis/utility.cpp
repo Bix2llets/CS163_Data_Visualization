@@ -10,6 +10,7 @@ Font inter20;
 Font jbm20;
 Font inter16;
 Font inter12;
+Font noto;
 void drawText(std::string text, Vector2 position, Font font, Color textColor,
               int fontSize, int spacing, VerticalAlignment verticalAlign,
               HorizontalAlignment horizontalAlign) {
@@ -32,6 +33,7 @@ void init() {
     inter16 = LoadFontEx("assets/Inter-Black.ttf", 16, NULL, 0);
     inter12 = LoadFontEx("assets/Inter-Black.ttf", 12, NULL, 0);
     jbm20 = LoadFontEx("assets/jetbrainsMono.ttf", 20, NULL, 0);
+    noto = LoadFontEx("assets/NotoSerif-Regular.ttf", 100, nullptr, 0);
 }
 void drawEdge(Vector2 beginPosition, Vector2 endPosition, Color color) {
     if (Vector2Distance(beginPosition, endPosition) == 0) return;

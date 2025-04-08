@@ -180,18 +180,22 @@ void SLLScene::find(std::string val) {
     Node* curr = currSll.root;
     currSll.deHighlight();
     int nodeIndex = sll.locate(val);
+
+    // The index of the node, zero index
+
     if (nodeIndex == -1) {
         currSll.highlightTo(sll.nodeCount);
         addStep(-1, &PSEUDO_SEARCH);
         return;
     }
 
-    for (int i = 0; i < nodeIndex; i++) curr = curr->nextNode;
-
+    
     currSll.highlightTo(nodeIndex);  // since node index is actual node - 1;
-    curr->borderColor.transitionToward(resultColor);
     addStep(1, &PSEUDO_SEARCH);
-    addStep(-1, &PSEUDO_SEARCH);
+    SLL& lastSll = steps.back().sll;
+    curr = lastSll.root;
+    for (int i = 0; i < nodeIndex; i++) curr = curr->nextNode;
+    curr->borderColor.transitionToward(resultColor);
 }
 
 void SLLScene::clearScene() {
@@ -273,7 +277,7 @@ void SLLScene::recordInput() {
         deletePane.getForm(0, 0).setText(location);
     }
     if (algoPane.isButtonPressed(0)) {
-        auto value = algoPane.getText(2, 0);
+        auto value = algoPane.getText(0, 0);
 
         if (isStrNum(value)) {
             SLLScene::find(value);
