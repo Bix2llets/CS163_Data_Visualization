@@ -180,15 +180,21 @@ void SLLScene::find(std::string val) {
     Node* curr = currSll.root;
     currSll.deHighlight();
     int nodeIndex = sll.locate(val);
+
+    // The index of the node, zero index
+
     if (nodeIndex == -1) {
         currSll.highlightTo(sll.nodeCount);
         addStep(-1, &PSEUDO_SEARCH);
         return;
     }
 
-    for (int i = 0; i < nodeIndex; i++) curr = curr->nextNode;
-
+    
     currSll.highlightTo(nodeIndex);  // since node index is actual node - 1;
+    addStep(1, &PSEUDO_SEARCH);
+    SLL& lastSll = steps.back().sll;
+    curr = lastSll.root;
+    for (int i = 0; i < nodeIndex; i++) curr = curr->nextNode;
     curr->borderColor.transitionToward(resultColor);
 }
 
