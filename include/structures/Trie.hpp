@@ -76,6 +76,24 @@ class Trie {
                 setNULLPos(child.second);
             }
         }
+        std::vector<std::string> getWords() {
+            std::vector<std::string> words;
+            std::queue<std::pair<TrieNode *, std::string> > nodeQueue;
+            if (root) nodeQueue.push({root, ""});
+            while (!nodeQueue.empty()) {
+                auto current = nodeQueue.front();
+                nodeQueue.pop();
+                TrieNode *node = current.first;
+                std::string prefix = current.second;
+                if (node->isEndOfWord) {
+                    words.push_back(prefix);
+                }
+                for (auto child : node->children) {
+                    nodeQueue.push({child.second, prefix + child.first});
+                }
+            }
+            return words;
+        }
     private:
         Vector2 calcPosition(TrieNode *root);
         void APosition(TrieNode *root);

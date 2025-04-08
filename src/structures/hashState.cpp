@@ -301,9 +301,9 @@ void HashState::handleInput() {
                 tinyfd_messageBox("Error", "Failed to open file for saving.", "ok", "error", 1);
                 return;
             }
-            // std::vector<int> valueList = mhash.getValues();
-            // std::sort(valueList.begin(), valueList.end());
-            // for (int x : valueList) outFile << x << " ";
+            std::vector<int> valueList = mhash.getValues();
+            std::sort(valueList.begin(), valueList.end());
+            for (int x : valueList) outFile << x << " ";
             outFile << "\n";
             outFile.close();
         }
@@ -320,15 +320,19 @@ void HashState::handleInput() {
                 return;
             }
             // mhash = hash(10);  // Reset the hash table
+            std::vector<int> valueList;
             int n;
-            while (inFile >> n) {
-                mhash.insert(n);
+            while (inFile >> n) valueList.push_back(n);
+            inFile.close();
+            n = valueList.size();
+            mhash = Hash(n);  // Reset the hash table
+            for (int i = 0; i < n; i++) {
+                mhash.insert(valueList[i]);
                 while (mhash.completedAllActions() == 0) {
                     mhash.update(1e-15, 1e-15);
                     mhash.Action(0);
                 }
             }
-            inFile.close();
         }
     }
 
