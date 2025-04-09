@@ -51,13 +51,13 @@ TrieState::~TrieState() {}
 
 #include <cassert>
 
-MenuPane TrieState::addPane({0, 0}, &GBLight::BACKGROUND1, &buttonColorSet,
+MenuPane TrieState::addPane({0, 0}, &paneBackground, &buttonColorSet,
                             &buttonColorSet);
-MenuPane TrieState::removePane({0, 0}, &GBLight::BACKGROUND1, &buttonColorSet,
+MenuPane TrieState::removePane({0, 0}, &paneBackground, &buttonColorSet,
                                &buttonColorSet);
-MenuPane TrieState::algoPane({0, 0}, &GBLight::BACKGROUND1, &buttonColorSet,
+MenuPane TrieState::algoPane({0, 0}, &paneBackground, &buttonColorSet,
                              &buttonColorSet);
-MenuPane TrieState::storagePane({0, 0}, &GBLight::BACKGROUND1, &buttonColorSet,
+MenuPane TrieState::storagePane({0, 0}, &paneBackground, &buttonColorSet,
                                 &buttonColorSet);
 
 void TrieState::initPanes(Vector2 position) {

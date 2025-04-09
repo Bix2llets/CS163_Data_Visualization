@@ -3,7 +3,7 @@
 
 // #include "graph/graph.h"
 #include "graph/node.h"
-
+#include "colorPalette.h"
 class GraphEdge : public GUIObject {
     friend class Graph;
 
@@ -17,9 +17,9 @@ class GraphEdge : public GUIObject {
     // Drawing info
     const static int THICKNESS;
     AnimationColor color;
-    const static Color& NORMAL_COLOR;
-    const static Color& HIGHLIGHT_COLOR;
-    const static Color& TEXT_COLOR;
+    const static Color* NORMAL_COLOR;
+    const static Color* HIGHLIGHT_COLOR;
+    const static Color* TEXT_COLOR;
 
     bool isHighlighted;
     bool isOpaque;
@@ -30,7 +30,7 @@ class GraphEdge : public GUIObject {
         : node1{node1},
           node2{node2},
           weight{weight},
-          color{NORMAL_COLOR, NORMAL_COLOR},
+          color{*NORMAL_COLOR, *NORMAL_COLOR},
           GUIObject(Vector2Scale(
               Vector2Add(node1->getPosition(), node2->getPosition()), 0.5f)),
           isHighlighted{false},

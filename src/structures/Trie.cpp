@@ -246,7 +246,7 @@ void Trie::update(double currTime, double rate) {
 void Trie::draw(TrieNode *root) {
     if (root == NULL) return;
     for (auto &child : root->children) draw(child.second);
-    DrawCircleV(root->getPosition(), NODE_RADIUS - 3, root->isEndOfWord ? *finalNodeColor : PALETTE->backgroundNormal);
+    DrawCircleV(root->getPosition(), NODE_RADIUS - 3, root->isEndOfWord ? PALETTE->backgroundHighlight : PALETTE->backgroundNormal);
     //Color color = PALETTE->backgroundNormal;
     Color color = mLib::highlightColor;
     color.a = 255.f - root->getAlpha();

@@ -1,8 +1,8 @@
 #include "graph/edge.h"
 
-const Color &GraphEdge::NORMAL_COLOR = GBLight::FOREGROUND0;
-const Color &GraphEdge::HIGHLIGHT_COLOR = GBLight::LIGHT_YELLOW;
-const Color &GraphEdge::TEXT_COLOR = GBLight::FOREGROUND2;
+const Color* GraphEdge::NORMAL_COLOR = &nodeColorSet.borderNormal;
+const Color* GraphEdge::HIGHLIGHT_COLOR = &nodeColorSet.borderHighlight;
+const Color* GraphEdge::TEXT_COLOR = &nodeColorSet.textNormal;
 const int GraphEdge::THICKNESS = 2;
 void GraphEdge::update() {
     Vector2 newPosition =
@@ -17,7 +17,7 @@ void GraphEdge::render() {
                           color.getCurrentColor());
 }
 void GraphEdge::renderText() {
-    Color textColor = TEXT_COLOR;
+    Color textColor = *TEXT_COLOR;
     Color backTextColor = GBLight::LIGHT_GRAY;
     textColor.a = color.getCurrentColor().a;
     backTextColor.a = 180 * color.getCurrentColor().a / 255;
@@ -33,14 +33,14 @@ void GraphEdge::renderText() {
 void GraphEdge::highlight(bool isImmediate) {
     isHighlighted = true;
     color.setBaseColor(color.getCurrentColor());
-    color.setTargetColor({HIGHLIGHT_COLOR.r, HIGHLIGHT_COLOR.g, HIGHLIGHT_COLOR.b, color.getTargetColor().a});
+    color.setTargetColor({HIGHLIGHT_COLOR->r, HIGHLIGHT_COLOR->g, HIGHLIGHT_COLOR->b, color.getTargetColor().a});
     color.setFactor(float(isImmediate));
 }
 
 void GraphEdge::deHighlight(bool isImmediate) {
     isHighlighted = false;
     color.setBaseColor(color.getCurrentColor());
-    color.setTargetColor({NORMAL_COLOR.r, NORMAL_COLOR.g, NORMAL_COLOR.b, color.getTargetColor().a});
+    color.setTargetColor({NORMAL_COLOR->r, NORMAL_COLOR->g, NORMAL_COLOR->b, color.getTargetColor().a});
     color.setFactor(float(isImmediate));
 }
 

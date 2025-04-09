@@ -13,10 +13,10 @@ const int MAX_TEXT_LENGTH = 3;
 #include <iostream>
 
 double HashState::mTimeStep;
-MenuPane HashState::addPane({0, 0}, &GBLight::BACKGROUND1, &buttonColorSet, &buttonColorSet);
-MenuPane HashState::removePane({0, 0}, &GBLight::BACKGROUND1, &buttonColorSet, &buttonColorSet);
-MenuPane HashState::algoPane({0, 0}, &GBLight::BACKGROUND1, &buttonColorSet, &buttonColorSet);
-MenuPane HashState::storagePane({0, 0}, &GBLight::BACKGROUND1, &buttonColorSet, &buttonColorSet);
+MenuPane HashState::addPane({0, 0}, &paneBackground, &buttonColorSet, &buttonColorSet);
+MenuPane HashState::removePane({0, 0}, &paneBackground, &buttonColorSet, &buttonColorSet);
+MenuPane HashState::algoPane({0, 0}, &paneBackground, &buttonColorSet, &buttonColorSet);
+MenuPane HashState::storagePane({0, 0}, &paneBackground, &buttonColorSet, &buttonColorSet);
 ColorSet const *HashState::buttonPalette = &buttonColorSet;
 HashState::HashState() : mhash(0) {
     showCreateOptions = false;

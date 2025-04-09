@@ -16,7 +16,10 @@ extern Vector2 buttonDimension;
 extern ColorSet const *buttonPalette;
 extern Vector2 panelPosition;
 
+extern bool isDarkMode;
 extern Button backButton;
+
+extern Button colorModeButton;
 extern int horizontalCellCount;
 extern int verticalCellCount;
 

@@ -109,6 +109,7 @@ void otherInit() {
     SLLScene::init();
     GraphScene::init();
     mLib::Init();
+    Loop::setColorPalette();
 }
 // Main function
 int main() {
@@ -127,7 +128,7 @@ int main() {
         Loop::update();
         // Render goes here
         BeginDrawing();
-        ClearBackground(backgroundColor);
+        ClearBackground(buttonColorSet.backgroundNormal);
         // pane.render();
         Loop::render();
         EndDrawing();
