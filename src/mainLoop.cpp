@@ -1,5 +1,5 @@
 #include "mainLoop.h"
-
+#include "raygui.h"
 #include <mLib/mScene.hpp>
 
 #include "graphScene.h"
@@ -46,6 +46,7 @@ void setColorPalette() {
         backgroundSet = BACKGROUND_SET_DARK;
         paneBackground = TokyoNight::NIGHT_BLACK;
         nodeDragHighlight = TokyoNight::NIGHT_GREEN;
+        sliderIndicator = TokyoNight::NIGHT_YELLOW;
         AppMenu::colorModeButton.setText("Night mode");
         mLib::highlightColor = GBLight::LIGHT_YELLOW;
     } else {
@@ -54,6 +55,7 @@ void setColorPalette() {
         backgroundSet = BACKGROUND_SET_LIGHT;
         paneBackground = GBLight::BACKGROUND1;
         nodeDragHighlight = GBLight::DARK_GREEN;
+        sliderIndicator = GBLight::BACKGROUND4;
         AppMenu::colorModeButton.setText("Light mode");
         mLib::highlightColor = GBLight::LIGHT_GREEN;
     }
@@ -62,6 +64,7 @@ void registerInput() {
     if (AppMenu::colorModeButton.isPressed()) {
         AppMenu::isDarkMode = !AppMenu::isDarkMode;
         setColorPalette();
+        configSlider();
     }
     if (currentScene == SceneList::MAIN_MENU) {
         if (WelcomeMenu::isAVLTreePressed()) {
@@ -157,6 +160,27 @@ void render() {
         MenuTable::render();
     }
     AppMenu::colorModeButton.render();
+}
+
+void configSlider() {
+    GuiSetStyle(SLIDER, BORDER_COLOR_NORMAL,
+                ColorToInt(AppMenu::buttonPalette->borderNormal));
+    GuiSetStyle(SLIDER, BORDER_COLOR_FOCUSED,
+                ColorToInt(AppMenu::buttonPalette->borderNormal));
+    GuiSetStyle(SLIDER, BORDER_COLOR_PRESSED,
+                ColorToInt(AppMenu::buttonPalette->borderNormal));
+    GuiSetStyle(SLIDER, BORDER_WIDTH, 2);
+    GuiSetStyle(SLIDER, BASE_COLOR_NORMAL,
+                ColorToInt(AppMenu::buttonPalette->backgroundNormal));
+    GuiSetStyle(SLIDER, BASE_COLOR_FOCUSED,
+                ColorToInt(AppMenu::buttonPalette->backgroundHighlight));
+    GuiSetStyle(SLIDER, BASE_COLOR_PRESSED, ColorToInt(sliderIndicator));
+    GuiSetStyle(SLIDER, TEXT_COLOR_NORMAL,
+                ColorToInt(AppMenu::buttonPalette->textNormal));
+    GuiSetStyle(SLIDER, TEXT_COLOR_FOCUSED,
+                ColorToInt(AppMenu::buttonPalette->textHighlight));
+    GuiSetStyle(SLIDER, TEXT_COLOR_PRESSED,
+                ColorToInt(AppMenu::buttonPalette->textHighlight));
 }
 
 }  // namespace Loop

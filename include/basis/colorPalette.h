@@ -10,15 +10,16 @@ struct ColorSet {
 };
 extern const ColorSet COLOR_SET_LIGHT;
 extern const ColorSet BUTTON_SET_LIGHT;
+extern const ColorSet BACKGROUND_SET_LIGHT;
 extern const ColorSet COLOR_SET_DARK;
 extern const ColorSet BUTTON_SET_DARK;
-extern const ColorSet BACKGROUND_SET_LIGHT;
 extern const ColorSet BACKGROUND_SET_DARK;
 extern ColorSet buttonColorSet;
 extern ColorSet nodeColorSet;
 extern ColorSet backgroundSet;
 extern Color paneBackground;
 extern Color nodeDragHighlight;
+extern Color sliderIndicator;
 namespace ColorPalette {
 const int MAX_TRANSPARENCY = 255;
 namespace FlatUI {
