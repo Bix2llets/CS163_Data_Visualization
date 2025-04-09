@@ -100,13 +100,59 @@ Color FOREGROUND3 = GetColor(0x665C54ff);
 Color FOREGROUND4 = GetColor(0x7C6F64ff);
 
 }  // namespace GBLight
+
+namespace TokyoNight {
+::Color NIGHT_RED = GetColor(0xf7768eFF);
+::Color NIGHT_ORANGE = GetColor(0xff9e64FF);
+::Color NIGHT_YELLOW = GetColor(0xe0af68FF);
+::Color NIGHT_WHITE = GetColor(0xcfc9c2FF);
+::Color NIGHT_GREEN = GetColor(0x9ece6aFF);
+::Color NIGHT_CYAN = GetColor(0x73dacaFF);
+::Color NIGHT_TOOTHPASTE = GetColor(0xb4f9f8FF);
+::Color NIGHT_DIAMOND = GetColor(0x2ac3deFF);
+::Color NIGHT_LIGHTBLUE = GetColor(0x7dcfffFF);
+::Color NIGHT_DEEPBLUE = GetColor(0x7aa2f7FF);
+::Color NIGHT_PURPLE = GetColor(0xbb9af7FF);
+::Color NIGHT_PALEPURPLE = GetColor(0xc0caf5FF);
+::Color NIGHT_GRAY = GetColor(0xa9b1d6FF);
+::Color NIGHT_LIGHTGRAY = GetColor(0x9aa5ceFF);
+::Color NIGHT_DEEPGRAY = GetColor(0x565f89FF);
+::Color NIGHT_MIDGRAY = GetColor(0x414868FF);
+::Color NIGHT_BLACK = GetColor(0x24283bFF);
+::Color NIGHT_PURPLEBLACK = GetColor(0x1a1b26FF);
+}  // namespace TokyoNight
 const ColorSet COLOR_SET_LIGHT = {
     GBLight::FOREGROUND2, GBLight::FOREGROUND0, GBLight::BACKGROUND2,
     GBLight::BACKGROUND4, GBLight::FOREGROUND0, GBLight::DARK_YELLOW,
 };
 const ColorSet BUTTON_SET_LIGHT = {GBLight::FOREGROUND2, GBLight::FOREGROUND0,
-                               GBLight::BACKGROUND2, GBLight::BACKGROUND4,
-                               GBLight::FOREGROUND0, GBLight::FOREGROUND0};
+                                   GBLight::BACKGROUND2, GBLight::BACKGROUND4,
+                                   GBLight::FOREGROUND0, GBLight::FOREGROUND0};
+
+const ColorSet COLOR_SET_DARK = {
+    TokyoNight::NIGHT_GRAY, TokyoNight::NIGHT_DIAMOND, 
+    TokyoNight::NIGHT_DEEPGRAY, TokyoNight::NIGHT_DEEPGRAY,
+    TokyoNight::NIGHT_DEEPBLUE, TokyoNight::NIGHT_ORANGE
+};
+
+const ColorSet BUTTON_SET_DARK = {
+    TokyoNight::NIGHT_CYAN, TokyoNight::NIGHT_TOOTHPASTE, 
+    TokyoNight::NIGHT_MIDGRAY, TokyoNight::NIGHT_BLACK,
+    TokyoNight::NIGHT_PALEPURPLE, TokyoNight::NIGHT_PURPLE
+};
+
+const ColorSet BACKGROUND_SET_LIGHT = {
+    GBLight::BACKGROUND3, GBLight::BACKGROUND3,
+    GBDark::BACKGROUND0S, GBLight::BACKGROUND4,
+    GBLight::FOREGROUND4, GBLight::FOREGROUND4
+};
+const ColorSet BACKGROUND_SET_DARK = {
+    TokyoNight::NIGHT_CYAN, TokyoNight::NIGHT_DEEPBLUE,
+    TokyoNight::NIGHT_MIDGRAY, TokyoNight::NIGHT_BLACK,
+    TokyoNight::NIGHT_LIGHTGRAY, TokyoNight::NIGHT_LIGHTGRAY,
+};
 
 ColorSet buttonColorSet;
 ColorSet nodeColorSet;
+ColorSet backgroundSet;
+Color paneBackground;

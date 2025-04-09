@@ -44,15 +44,15 @@ Button showMenu = Button(optionPosition,
                          (Vector2){sliderBarDimension.y, sliderBarDimension.x},
                          ">", 20, &buttonColorSet);
 Button clearButton = Button(optionPosition, sliderBarDimension, "Clear", 20,
-                            AppMenu::buttonPalette);
+                            &buttonColorSet);
 Button importButton = Button(optionPosition, sliderBarDimension, "Import", 20,
-                             AppMenu::buttonPalette);
+    &buttonColorSet);
 Button randomButton = Button(optionPosition, sliderBarDimension, "Random", 20,
-                             AppMenu::buttonPalette);
+    &buttonColorSet);
 InsertBox insertBox = InsertBox(optionPosition, optionDimension, 20,
-                                AppMenu::buttonPalette, 0, MaxSizeNum);
+    &buttonColorSet, 0, MaxSizeNum);
 edgeInsertBox edgeBox =
-    edgeInsertBox(optionPosition, optionDimension, 20, AppMenu::buttonPalette,
+    edgeInsertBox(optionPosition, optionDimension, 20, &buttonColorSet,
                   0, MaxSizeNum, MaxSizeWeight);
 std::string requestText = "";
 std::string requestNum = "";
@@ -63,7 +63,7 @@ std::vector<std::pair<Button*, Type>> GUIObjects = {};
 // * For menu panes
 MenuPane basePane({optionPosition.x + 10 + showMenu.getDimension().x,
                    optionPosition.y},
-                  &GBLight::BACKGROUND1, &buttonColorSet, &buttonColorSet);
+                  &paneBackground, &buttonColorSet, &buttonColorSet);
 MenuPane* addPane;
 MenuPane* deletePane;
 MenuPane* algoPane;

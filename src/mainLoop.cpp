@@ -1,6 +1,8 @@
 #include "mainLoop.h"
-#include "graphScene.h"
+
 #include <mLib/mScene.hpp>
+
+#include "graphScene.h"
 
 namespace Loop {
 float elapsedSinceLastUpdate = 0.f;
@@ -24,7 +26,6 @@ void checkForReturn() {
         MenuTable::algoPane = nullptr;
         MenuTable::storagePane = nullptr;
     }
-    
 }
 void update() {
     elapsedSinceLastUpdate += GetFrameTime();
@@ -38,9 +39,26 @@ void update() {
     }
 }
 
+void setColorPalette() {
+    if (AppMenu::isDarkMode) {
+        nodeColorSet = COLOR_SET_DARK;
+        buttonColorSet = BUTTON_SET_DARK;
+        backgroundSet = BACKGROUND_SET_DARK;
+        paneBackground = TokyoNight::NIGHT_BLACK;
+        AppMenu::colorModeButton.setText("Night mode");
+    } else {
+        nodeColorSet = COLOR_SET_LIGHT;
+        buttonColorSet = BUTTON_SET_LIGHT;
+        backgroundSet = BACKGROUND_SET_LIGHT;
+        paneBackground = GBLight::BACKGROUND1;
+        AppMenu::colorModeButton.setText("Light mode");
+    }
+}
 void registerInput() {
-
-
+    if (AppMenu::colorModeButton.isPressed()) {
+        AppMenu::isDarkMode = !AppMenu::isDarkMode;
+        setColorPalette();
+    }
     if (currentScene == SceneList::MAIN_MENU) {
         if (WelcomeMenu::isAVLTreePressed()) {
             currentScene = SceneList::AVL;
@@ -65,14 +83,12 @@ void registerInput() {
             MenuTable::deletePane = &GraphScene::deletePane;
             MenuTable::algoPane = &GraphScene::algoPane;
             MenuTable::storagePane = &GraphScene::storagePane;
-
         }
         if (WelcomeMenu::isHashTablePressed()) {
             currentScene = SceneList::HASH;
             renderFunc = []() { mScene::hash.render(); };
             updateFunc = []() { mScene::hash.update(); };
             recordFunc = []() { mScene::hash.handleInput(); };
-
 
             MenuTable::addPane = &HashState::addPane;
             MenuTable::deletePane = &HashState::removePane;
@@ -98,19 +114,16 @@ void registerInput() {
             updateFunc = []() { mScene::trie.update(); };
             recordFunc = []() { mScene::trie.handleInput(); };
 
-
             MenuTable::addPane = &TrieState::addPane;
             MenuTable::deletePane = &TrieState::removePane;
             MenuTable::algoPane = &TrieState::algoPane;
             MenuTable::storagePane = &TrieState::storagePane;
-
         }
         return;
     }
     checkForReturn();
-    
-    if (recordFunc) recordFunc();
 
+    if (recordFunc) recordFunc();
 }
 
 void render() {
@@ -118,19 +131,28 @@ void render() {
     if (currentScene == SceneList::MAIN_MENU) {
         WelcomeMenu::render();
     } else {
-        ClearBackground(GBDark::BACKGROUND0S);
-        DrawRectangle(UPPER_LEFT.x, UPPER_LEFT.y, LOWER_RIGHT.x - UPPER_LEFT.x, LOWER_RIGHT.y - UPPER_LEFT.y, GBLight::BACKGROUND4);
+        ClearBackground(backgroundSet.backgroundNormal);
+        DrawRectangle(UPPER_LEFT.x, UPPER_LEFT.y, LOWER_RIGHT.x - UPPER_LEFT.x,
+                      LOWER_RIGHT.y - UPPER_LEFT.y,
+                      backgroundSet.backgroundHighlight);
         if (renderFunc) renderFunc();
-        DrawRectangleLinesEx({UPPER_LEFT.x, UPPER_LEFT.y, LOWER_RIGHT.x - UPPER_LEFT.x, LOWER_RIGHT.y - UPPER_LEFT.y}, 3.0f, GBLight::FOREGROUND4);
+        DrawRectangleLinesEx(
+            {UPPER_LEFT.x, UPPER_LEFT.y, LOWER_RIGHT.x - UPPER_LEFT.x,
+             LOWER_RIGHT.y - UPPER_LEFT.y},
+            3.0f, backgroundSet.borderNormal);
         // * For covering
-        DrawRectangle(0, LOWER_RIGHT.y, GetRenderWidth(), GetRenderHeight(), GBDark::BACKGROUND0S);
-        DrawRectangle(LOWER_RIGHT.x, 0, GetRenderWidth() - LOWER_RIGHT.x, GetRenderHeight(), GBDark::BACKGROUND0S);
-        DrawRectangle(0, 0, GetRenderWidth(), UPPER_LEFT.y, GBDark::BACKGROUND0S);
-        DrawRectangle(0, 0, UPPER_LEFT.x, GetRenderHeight(), GBDark::BACKGROUND0S);
+        DrawRectangle(0, LOWER_RIGHT.y, GetRenderWidth(), GetRenderHeight(),
+                      backgroundSet.backgroundNormal);
+        DrawRectangle(LOWER_RIGHT.x, 0, GetRenderWidth() - LOWER_RIGHT.x,
+                      GetRenderHeight(), backgroundSet.backgroundNormal);
+        DrawRectangle(0, 0, GetRenderWidth(), UPPER_LEFT.y,
+                      backgroundSet.backgroundNormal);
+        DrawRectangle(0, 0, UPPER_LEFT.x, GetRenderHeight(),
+                      backgroundSet.backgroundNormal);
         AppMenu::render();
         MenuTable::render();
     }
-    
+    AppMenu::colorModeButton.render();
 }
 
 }  // namespace Loop

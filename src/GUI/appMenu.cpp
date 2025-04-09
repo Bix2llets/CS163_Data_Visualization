@@ -13,7 +13,9 @@ Vector2 codeLineSize{500, 25};
 Vector2 buttonDistance = {8, 8};
 Button backButton({10, 10, buttonDimension.x, buttonDimension.y}, "Back",
                   DrawUtility::NORMAL_SIZE, buttonPalette);
+Button colorModeButton({1600 - buttonDimension.x - 10, 10, buttonDimension.x, buttonDimension.y}, "", DrawUtility::NORMAL_SIZE, buttonPalette, &DrawUtility::inter20);
 
+bool isDarkMode = false;
 std::vector<TextBox> codeList;
 std::vector<GUIObject*> renderList;
 
@@ -37,8 +39,9 @@ void init() {
         codeList[i] = temp;
         // ;if (i % 2 == 0) codeList[i].setHighlight(true);
     }
-
+    isDarkMode = false;
     renderList.push_back(&backButton);
+    // renderList.push_back(&colorModeButton);
 }
 
 void render() {

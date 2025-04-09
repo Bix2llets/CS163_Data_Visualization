@@ -109,6 +109,7 @@ void otherInit() {
     SLLScene::init();
     GraphScene::init();
     mLib::Init();
+    Loop::setColorPalette();
 }
 // Main function
 int main() {

@@ -23,6 +23,7 @@ extern void (*renderFunc)();
 extern void (*updateFunc)();
 extern void (*recordFunc)();
 
+void setColorPalette();
 void registerInput();
 void update();
 void render();
