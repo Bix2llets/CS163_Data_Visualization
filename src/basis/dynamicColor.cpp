@@ -18,7 +18,7 @@ void DynamicColor::setTargetColor(Color const *target) {
 void DynamicColor::transitionToward(Color const *target) {
     startingColor = targetColor;
     targetColor = target; 
-    // factor = 0.f;
+    factor = 0.f;
     assignColor();
 }
 
@@ -33,5 +33,6 @@ void DynamicColor::assignColor() {
     
     AnimationColor::setBaseColor(base);
     AnimationColor::setTargetColor(target);
+    // factor = 0.f;
     
 }

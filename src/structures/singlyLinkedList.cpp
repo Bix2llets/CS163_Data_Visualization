@@ -337,27 +337,23 @@ void SLL::highlightTo(int place) {
     if (place < 0) return;
     Node* curr = root;
     while (curr && place) {
-        curr->borderColor.transitionToward(NODE_PALETTE->borderHighlight);
-        curr->edgeColor.transitionToward(NODE_PALETTE->borderHighlight);
+        curr->borderColor.transitionToward(&NODE_PALETTE->borderHighlight);
+        curr->edgeColor.transitionToward(&NODE_PALETTE->borderHighlight);
         curr = curr->nextNode;
         place--;
     }
     if (curr == nullptr) return;
-    curr->borderColor.transitionToward(NODE_PALETTE->borderHighlight);
+    curr->borderColor.transitionToward(&NODE_PALETTE->borderHighlight);
 }
 
 void SLL::deHighlight() {
     Node* curr = root;
     Color normalColor = NODE_PALETTE->borderNormal;
     while (curr) {
-        curr->borderColor.setBaseColor(normalColor);
-        curr->borderColor.setCurrentColor(normalColor);
-        curr->borderColor.setTargetColor(normalColor);
-        curr->borderColor.setFactor(1.f);
-        curr->edgeColor.setBaseColor(normalColor);
-        curr->edgeColor.setCurrentColor(normalColor);
-        curr->edgeColor.setTargetColor(normalColor);
-        curr->edgeColor.setFactor(1.f);
+        curr->borderColor.transitionToward(&NODE_PALETTE->borderNormal);
+        curr->borderColor.makeFinish();
+        curr->edgeColor.transitionToward(&NODE_PALETTE->borderNormal);
+        curr->edgeColor.makeFinish();
         curr = curr->nextNode;
     }
 }

@@ -195,7 +195,7 @@ void SLLScene::find(std::string val) {
     SLL& lastSll = steps.back().sll;
     curr = lastSll.root;
     for (int i = 0; i < nodeIndex; i++) curr = curr->nextNode;
-    curr->borderColor.transitionToward(resultColor);
+    curr->borderColor.transitionToward(&resultColor);
 }
 
 void SLLScene::clearScene() {

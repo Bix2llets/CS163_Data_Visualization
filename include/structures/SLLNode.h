@@ -1,7 +1,7 @@
 #include <cmath>
 #pragma once
 #include "animation.h"
-#include "animationColor.h"
+#include "DynamicColor.h"
 #include "arrow.h"
 #include "colorPalette.h"
 #include "raylib.h"
@@ -17,8 +17,8 @@ class Node : public Animation {
     friend class SLL;
     public:
     static ColorSet const *PALETTE;
-    AnimationColor borderColor;
-    AnimationColor edgeColor;
+    DynamicColor borderColor;
+    DynamicColor edgeColor;
     Node* nextNode;
     Node(std::string data, float x, float y, int radius = 50);
     Node(int data, float x, float y, int radius = 50);
