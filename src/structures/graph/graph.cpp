@@ -44,7 +44,8 @@ void Graph::applyPullForce() {
     //     edge->node1->applyForce(Vector2Scale(r12, force));
     //     edge->node2->applyForce(Vector2Scale(r12, -force));
     // }
-
+    
+    // * Charge model
     for (std::shared_ptr<GraphNode> node1: nodeList) {
         for (std::shared_ptr<GraphNode> node2: nodeList) {
             if (node1->getLabel() >= node2->getLabel()) continue;
@@ -62,7 +63,6 @@ void Graph::applyPullForce() {
         }
     } 
 
-    // * Charge model
 }
 
 void Graph::applyCentricForce() {

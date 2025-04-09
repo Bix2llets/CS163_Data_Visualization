@@ -18,7 +18,7 @@ void GraphEdge::render() {
 }
 void GraphEdge::renderText() {
     Color textColor = *TEXT_COLOR;
-    Color backTextColor = GBLight::LIGHT_GRAY;
+    Color backTextColor = nodeColorSet.backgroundNormal;
     textColor.a = color.getCurrentColor().a;
     backTextColor.a = 180 * color.getCurrentColor().a / 255;
     Vector2 textDimension = MeasureTextEx(DrawUtility::inter20, std::to_string(weight).c_str(), 16, DrawUtility::SPACING);
