@@ -132,7 +132,7 @@ const ColorSet BUTTON_SET_LIGHT = {GBLight::FOREGROUND2, GBLight::FOREGROUND0,
 const ColorSet COLOR_SET_DARK = {
     TokyoNight::NIGHT_GRAY, TokyoNight::NIGHT_DIAMOND, 
     TokyoNight::NIGHT_MIDGRAY, TokyoNight::NIGHT_PURPLEBLACK,
-    TokyoNight::NIGHT_LIGHTGRAY, TokyoNight::NIGHT_ORANGE
+    TokyoNight::NIGHT_LIGHTGRAY, TokyoNight::NIGHT_YELLOW
 };
 
 const ColorSet BUTTON_SET_DARK = {
