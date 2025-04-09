@@ -13,7 +13,7 @@ Vector2 buttonPos = {600, 750};
 Vector2 buttonDimension = {50, 50};
 Vector2 buttonDistance = {10, 0};
 
-float minValue = 0.5f, maxValue = 5.f, sliderValue = 1.f;
+float minValue = 0.01f, maxValue = 5.f, sliderValue = 1.f;
 
 int MaxSizeNum = 3, MaxSizeText = 5, MaxSizeWeight = 5;
 TextureBox backwardButton =

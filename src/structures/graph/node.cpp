@@ -69,24 +69,13 @@ void GraphNode::removeEdge(std::shared_ptr<GraphNode> dest) {
 void GraphNode::finishAnimation() { borderColor.setFactor(1.0f); }
 void GraphNode::highlight(bool isImmediate) {
     isHighlighted = true;
-    borderColor.setBaseColor(borderColor.getCurrentColor());
-    Color target = borderColor.getTargetColor();
-    target.r = PALETTE->borderHighlight.r;
-    target.g = PALETTE->borderHighlight.g;
-    target.b = PALETTE->borderHighlight.b;
-    borderColor.setTargetColor(target);
+    borderColor.transitionToward(&PALETTE->borderHighlight);
     borderColor.setFactor(float(isImmediate));
 }
 
 void GraphNode::deHighlight(bool isImmediate) {
     isHighlighted = false;
-    borderColor.setBaseColor(borderColor.getCurrentColor());
-    Color target = borderColor.getTargetColor();
-    target.r = PALETTE->borderHighlight.r;
-    target.g = PALETTE->borderHighlight.g;
-    target.b = PALETTE->borderHighlight.b;
-    borderColor.setTargetColor(target);
-    borderColor.setTargetColor(PALETTE->borderNormal);
+    borderColor.transitionToward(&PALETTE->borderNormal);
     borderColor.setFactor(float(isImmediate));
 }
 
@@ -110,15 +99,12 @@ bool GraphNode::isConnected(std::shared_ptr<GraphNode> node) {
     return true;
 }
 
-AnimationColor &GraphNode::getBorderColor() { return borderColor; }
-
 void GraphNode::makeOpaque(bool isImmediate) {
     Color target = borderColor.getTargetColor();
     isOpaque = true;
     target.a = 255;
 
-    borderColor.setBaseColor(borderColor.getCurrentColor());
-    borderColor.setTargetColor(target);
+    borderColor.AnimationColor::setTargetColor(target);
     borderColor.setFactor(float(isImmediate));
 }
 
@@ -128,8 +114,7 @@ void GraphNode::makeTransparent(bool isImmediate) {
 
     target.a = 0;
 
-    borderColor.setBaseColor(borderColor.getCurrentColor());
-    borderColor.setTargetColor(target);
+    borderColor.AnimationColor::setTargetColor(target);
     borderColor.setFactor(float(isImmediate));
 }
 

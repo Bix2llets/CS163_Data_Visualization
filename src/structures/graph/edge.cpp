@@ -32,36 +32,30 @@ void GraphEdge::renderText() {
 }
 void GraphEdge::highlight(bool isImmediate) {
     isHighlighted = true;
-    color.setBaseColor(color.getCurrentColor());
-    color.setTargetColor({HIGHLIGHT_COLOR->r, HIGHLIGHT_COLOR->g, HIGHLIGHT_COLOR->b, color.getTargetColor().a});
+    color.transitionToward(HIGHLIGHT_COLOR);
     color.setFactor(float(isImmediate));
 }
 
 void GraphEdge::deHighlight(bool isImmediate) {
     isHighlighted = false;
-    color.setBaseColor(color.getCurrentColor());
-    color.setTargetColor({NORMAL_COLOR->r, NORMAL_COLOR->g, NORMAL_COLOR->b, color.getTargetColor().a});
+    color.transitionToward(NORMAL_COLOR);
     color.setFactor(float(isImmediate));
 }
 
 void GraphEdge::makeTransparent(bool isImmediate) {
     isOpaque = false;
-    Color current = color.getCurrentColor();
     Color target = color.getTargetColor();
     target.a = 0;
-    color.setBaseColor(current);
-    color.setTargetColor(target);
+    color.AnimationColor::transitionToward(target);
     color.setFactor(float(isImmediate));
 }
 
 void GraphEdge::makeOpaque(bool isImmediate) {
     isOpaque = true;
-    Color current = color.getCurrentColor();
 
     Color target = color.getTargetColor();
     target.a = 255;
-    color.setBaseColor(current);
-    color.setTargetColor(target);
+    color.AnimationColor::transitionToward(target);
     color.setFactor(float(isImmediate));
 }
 

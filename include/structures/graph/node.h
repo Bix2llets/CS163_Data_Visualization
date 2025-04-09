@@ -4,7 +4,7 @@
 
 #include "GUIObject.h"
 #include "animation.h"
-#include "animationColor.h"
+#include "dynamicColor.h"
 #include "colorPalette.h"
 #include "mainLoop.h"
 #include "raylib.h"
@@ -19,7 +19,7 @@ class GraphNode : public GUIObject {
     std::vector<OutgoingEdge> adjacentList;
     // Drawing info
     const static int BORDER_WIDTH;
-    AnimationColor borderColor;
+    DynamicColor borderColor;
     // For force directed
     Vector2 velocity;
     const static float MASS;
@@ -33,7 +33,7 @@ class GraphNode : public GUIObject {
     const static int RADIUS;
     GraphNode(int label, float posX, float posY)
         : label{label},
-          borderColor{PALETTE->borderNormal, PALETTE->borderNormal},
+          borderColor{&PALETTE->borderNormal, &PALETTE->borderNormal},
           GUIObject{posX, posY},
           velocity{0.f, 0.f},
           isHighlighted{false},
@@ -64,8 +64,6 @@ class GraphNode : public GUIObject {
     void applyForce(Vector2 force);
 
     bool isConnected(std::shared_ptr<GraphNode> node);
-
-    AnimationColor &getBorderColor();
 
     void makeOpaque(bool isImmediate);
     void makeTransparent(bool isImmediate);
