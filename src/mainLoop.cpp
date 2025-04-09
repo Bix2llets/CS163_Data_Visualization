@@ -47,7 +47,7 @@ void setColorPalette() {
         paneBackground = TokyoNight::NIGHT_BLACK;
         nodeDragHighlight = TokyoNight::NIGHT_GREEN;
         AppMenu::colorModeButton.setText("Night mode");
-        mLib::highlightColor = {0,100,0,255};
+        mLib::highlightColor = GBLight::LIGHT_YELLOW;
     } else {
         nodeColorSet = COLOR_SET_LIGHT;
         buttonColorSet = BUTTON_SET_LIGHT;
@@ -55,7 +55,7 @@ void setColorPalette() {
         paneBackground = GBLight::BACKGROUND1;
         nodeDragHighlight = GBLight::DARK_GREEN;
         AppMenu::colorModeButton.setText("Light mode");
-        mLib::highlightColor = {128,239,128,255};
+        mLib::highlightColor = GBLight::LIGHT_GREEN;
     }
 }
 void registerInput() {
