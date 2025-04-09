@@ -15,13 +15,13 @@ std::deque<SLLScene::SLLStorage> SLLScene::past;
 std::deque<SLLScene::SLLStorage> SLLScene::future;
 
 const Vector2 SLLScene::STARTING_PANE_POSITION = {100, 100};
-MenuPane SLLScene::addPane(STARTING_PANE_POSITION, &GBLight::BACKGROUND1,
+MenuPane SLLScene::addPane(STARTING_PANE_POSITION, &paneBackground,
                            &buttonColorSet, &buttonColorSet);
-MenuPane SLLScene::deletePane(STARTING_PANE_POSITION, &GBLight::BACKGROUND1,
+MenuPane SLLScene::deletePane(STARTING_PANE_POSITION, &paneBackground,
                               &buttonColorSet, &buttonColorSet);
-MenuPane SLLScene::algoPane(STARTING_PANE_POSITION, &GBLight::BACKGROUND1,
+MenuPane SLLScene::algoPane(STARTING_PANE_POSITION, &paneBackground,
                             &buttonColorSet, &buttonColorSet);
-MenuPane SLLScene::miscPane(STARTING_PANE_POSITION, &GBLight::BACKGROUND1,
+MenuPane SLLScene::miscPane(STARTING_PANE_POSITION, &paneBackground,
                             &buttonColorSet, &buttonColorSet);
 const std::vector<std::string> SLLScene::PSEUDO_INSERT = {
     "Traverse the linked list", "Create new node", "Update the linked list"};

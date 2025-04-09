@@ -123,7 +123,7 @@ namespace TokyoNight {
 }  // namespace TokyoNight
 const ColorSet COLOR_SET_LIGHT = {
     GBLight::FOREGROUND2, GBLight::FOREGROUND0, GBLight::BACKGROUND2,
-    GBLight::BACKGROUND4, GBLight::FOREGROUND0, GBLight::DARK_YELLOW,
+    GBLight::BACKGROUND3, GBLight::FOREGROUND0, GBLight::DARK_YELLOW,
 };
 const ColorSet BUTTON_SET_LIGHT = {GBLight::FOREGROUND2, GBLight::FOREGROUND0,
                                    GBLight::BACKGROUND2, GBLight::BACKGROUND4,
@@ -131,12 +131,12 @@ const ColorSet BUTTON_SET_LIGHT = {GBLight::FOREGROUND2, GBLight::FOREGROUND0,
 
 const ColorSet COLOR_SET_DARK = {
     TokyoNight::NIGHT_GRAY, TokyoNight::NIGHT_DIAMOND, 
-    TokyoNight::NIGHT_DEEPGRAY, TokyoNight::NIGHT_DEEPGRAY,
-    TokyoNight::NIGHT_DEEPBLUE, TokyoNight::NIGHT_ORANGE
+    TokyoNight::NIGHT_DEEPGRAY, TokyoNight::NIGHT_PURPLEBLACK,
+    TokyoNight::NIGHT_LIGHTGRAY, TokyoNight::NIGHT_ORANGE
 };
 
 const ColorSet BUTTON_SET_DARK = {
-    TokyoNight::NIGHT_CYAN, TokyoNight::NIGHT_TOOTHPASTE, 
+    TokyoNight::NIGHT_LIGHTBLUE, TokyoNight::NIGHT_TOOTHPASTE, 
     TokyoNight::NIGHT_MIDGRAY, TokyoNight::NIGHT_BLACK,
     TokyoNight::NIGHT_PALEPURPLE, TokyoNight::NIGHT_PURPLE
 };
@@ -156,3 +156,4 @@ ColorSet buttonColorSet;
 ColorSet nodeColorSet;
 ColorSet backgroundSet;
 Color paneBackground;
+Color nodeDragHighlight;

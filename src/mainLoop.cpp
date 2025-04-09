@@ -45,12 +45,14 @@ void setColorPalette() {
         buttonColorSet = BUTTON_SET_DARK;
         backgroundSet = BACKGROUND_SET_DARK;
         paneBackground = TokyoNight::NIGHT_BLACK;
+        nodeDragHighlight = TokyoNight::NIGHT_GREEN;
         AppMenu::colorModeButton.setText("Night mode");
     } else {
         nodeColorSet = COLOR_SET_LIGHT;
         buttonColorSet = BUTTON_SET_LIGHT;
         backgroundSet = BACKGROUND_SET_LIGHT;
         paneBackground = GBLight::BACKGROUND1;
+        nodeDragHighlight = GBLight::DARK_GREEN;
         AppMenu::colorModeButton.setText("Light mode");
     }
 }

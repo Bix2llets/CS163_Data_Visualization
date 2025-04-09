@@ -128,7 +128,7 @@ int main() {
         Loop::update();
         // Render goes here
         BeginDrawing();
-        ClearBackground(backgroundColor);
+        ClearBackground(buttonColorSet.backgroundNormal);
         // pane.render();
         Loop::render();
         EndDrawing();

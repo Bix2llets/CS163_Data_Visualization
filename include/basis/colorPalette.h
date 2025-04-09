@@ -18,6 +18,7 @@ extern ColorSet buttonColorSet;
 extern ColorSet nodeColorSet;
 extern ColorSet backgroundSet;
 extern Color paneBackground;
+extern Color nodeDragHighlight;
 namespace ColorPalette {
 const int MAX_TRANSPARENCY = 255;
 namespace FlatUI {
