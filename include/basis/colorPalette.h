@@ -133,5 +133,6 @@ extern ::Color NIGHT_DEEPGRAY;
 extern ::Color NIGHT_MIDGRAY;
 extern ::Color NIGHT_BLACK;
 extern ::Color NIGHT_PURPLEBLACK;
+extern ::Color NIGHT_LIGHTWHITE;
 
 } // namespace TokyoNight

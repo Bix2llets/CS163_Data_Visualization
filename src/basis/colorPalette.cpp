@@ -120,6 +120,7 @@ namespace TokyoNight {
 ::Color NIGHT_MIDGRAY = GetColor(0x414868FF);
 ::Color NIGHT_BLACK = GetColor(0x24283bFF);
 ::Color NIGHT_PURPLEBLACK = GetColor(0x1a1b26FF);
+::Color NIGHT_LIGHTWHITE = GetColor(0xe6e7edFF);
 }  // namespace TokyoNight
 const ColorSet COLOR_SET_LIGHT = {
     GBLight::FOREGROUND2, GBLight::FOREGROUND0, GBLight::BACKGROUND2,
@@ -130,7 +131,7 @@ const ColorSet BUTTON_SET_LIGHT = {GBLight::FOREGROUND2, GBLight::FOREGROUND0,
                                    GBLight::FOREGROUND0, GBLight::FOREGROUND0};
 
 const ColorSet COLOR_SET_DARK = {
-    TokyoNight::NIGHT_GRAY, TokyoNight::NIGHT_DIAMOND, 
+    TokyoNight::NIGHT_LIGHTWHITE, TokyoNight::NIGHT_DIAMOND, 
     TokyoNight::NIGHT_MIDGRAY, TokyoNight::NIGHT_PURPLEBLACK,
     TokyoNight::NIGHT_LIGHTGRAY, TokyoNight::NIGHT_YELLOW
 };
