@@ -75,10 +75,11 @@ class Hash {
         }
         std::vector<int> getValues() {
             std::vector<int> values;
-            for (int i = 0; i < m; i++) {
-                if (root[i]->value != -1) values.push_back(root[i]->value);
-            }
+            for (int i = 0; i < m; i++) values.push_back(root[i]->value);
             return values;
+        }
+        void setValues(std::vector<int> values) {
+            for (int i = 0; i < m; i++) root[i]->value = values[i];
         }
     private:
         void draw(hashNode *root);

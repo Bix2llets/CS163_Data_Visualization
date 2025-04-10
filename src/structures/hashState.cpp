@@ -302,7 +302,7 @@ void HashState::handleInput() {
                 return;
             }
             std::vector<int> valueList = mhash.getValues();
-            std::sort(valueList.begin(), valueList.end());
+            //std::sort(valueList.begin(), valueList.end());
             for (int x : valueList) outFile << x << " ";
             outFile << "\n";
             outFile.close();
@@ -326,13 +326,14 @@ void HashState::handleInput() {
             inFile.close();
             n = valueList.size();
             mhash = Hash(n);  // Reset the hash table
-            for (int i = 0; i < n; i++) {
-                mhash.insert(valueList[i]);
-                while (mhash.completedAllActions() == 0) {
-                    mhash.update(1e-15, 1e-15);
-                    mhash.Action(0);
-                }
-            }
+            mhash.setValues(valueList);
+            // for (int i = 0; i < n; i++) {
+            //     mhash.insert(valueList[i]);
+            //     while (mhash.completedAllActions() == 0) {
+            //         mhash.update(1e-15, 1e-15);
+            //         mhash.Action(0);
+            //     }
+            // }
         }
     }
 
