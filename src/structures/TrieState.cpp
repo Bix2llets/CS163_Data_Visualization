@@ -51,13 +51,13 @@ TrieState::~TrieState() {}
 
 #include <cassert>
 
-MenuPane TrieState::addPane({0, 0}, &GBLight::BACKGROUND1, &buttonColorSet,
+MenuPane TrieState::addPane({0, 0}, &paneBackground, &buttonColorSet,
                             &buttonColorSet);
-MenuPane TrieState::removePane({0, 0}, &GBLight::BACKGROUND1, &buttonColorSet,
+MenuPane TrieState::removePane({0, 0}, &paneBackground, &buttonColorSet,
                                &buttonColorSet);
-MenuPane TrieState::algoPane({0, 0}, &GBLight::BACKGROUND1, &buttonColorSet,
+MenuPane TrieState::algoPane({0, 0}, &paneBackground, &buttonColorSet,
                              &buttonColorSet);
-MenuPane TrieState::storagePane({0, 0}, &GBLight::BACKGROUND1, &buttonColorSet,
+MenuPane TrieState::storagePane({0, 0}, &paneBackground, &buttonColorSet,
                                 &buttonColorSet);
 
 void TrieState::initPanes(Vector2 position) {
@@ -292,7 +292,10 @@ void TrieState::handleInput() {
                                   "ok", "error", 1);
                 return;
             }
-            // mTrie.saveToFile(outFile);
+            std::vector<std::string> words = mTrie.getWords();
+            for (const auto &word : words) {
+                outFile << word << "\n";  // Write each word to the file
+            }
             outFile.close();
         }
     }
@@ -309,7 +312,14 @@ void TrieState::handleInput() {
                 return;
             }
             mTrie = Trie();
-            // mTrie.loadFromFile(inFile);
+            std::string line;
+            while (std::getline(inFile, line)) {
+                mTrie.insert(line);
+                while (!mTrie.completedAllActions()) {
+                    mTrie.update(1e-15, 1e-15);
+                    mTrie.Action(0);
+                }
+            }
             inFile.close();
         }
     }

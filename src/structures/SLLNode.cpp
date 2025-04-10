@@ -15,8 +15,8 @@ Node::Node(std::string data, float x, float y, int radius)
     : data{data},
       Animation{x, y},
       radius{radius},
-      borderColor{PALETTE->borderNormal, PALETTE->borderNormal},
-      edgeColor{PALETTE->borderHighlight, PALETTE->borderNormal},
+      borderColor{&PALETTE->borderNormal, &PALETTE->borderNormal},
+      edgeColor{&PALETTE->borderNormal, &PALETTE->borderNormal},
       nextNode{nullptr} {};
 
 Node::Node(int data, float x, float y, int radius)

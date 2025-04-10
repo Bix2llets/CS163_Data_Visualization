@@ -154,7 +154,6 @@ void AVL::insert(int value) {
     actions.push_back({3, SETLECT, NULL});
     actions.push_back({8, CLEAR, NULL});
     core.insert(core.end(), actions.begin(), actions.end());
-    std::cout << "done procedure " << value << "\n";
 }
 
 void AVL::search(AVLNode *root, int value, ActionList &actions) {
@@ -497,7 +496,6 @@ bool AVL::doAction(action Action) {
                 Action.node->targetValue = -1;
             }
             if (changing.first.isCompleted()) {
-                std::cout << Action.node->value << ' ' << changing.first.getNewValue() << std::endl;
                 changing = {ChangeProcedure(-1, -1, NULL), NULL};
                 return true;
             }
@@ -756,7 +754,7 @@ void AVL::DrawArrowWithCircles(Vector2 start, Vector2 end, float radius,
 }
 
 bool AVL::completedAllActions() {
-    if (loop < core.size()) std::cout << core[loop].action << std::endl;
+    //if (loop < core.size()) std::cout << core[loop].action << std::endl;
     return loop == core.size();
 }
 

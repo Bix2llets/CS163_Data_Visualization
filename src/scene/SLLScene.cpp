@@ -15,13 +15,13 @@ std::deque<SLLScene::SLLStorage> SLLScene::past;
 std::deque<SLLScene::SLLStorage> SLLScene::future;
 
 const Vector2 SLLScene::STARTING_PANE_POSITION = {100, 100};
-MenuPane SLLScene::addPane(STARTING_PANE_POSITION, &GBLight::BACKGROUND1,
+MenuPane SLLScene::addPane(STARTING_PANE_POSITION, &paneBackground,
                            &buttonColorSet, &buttonColorSet);
-MenuPane SLLScene::deletePane(STARTING_PANE_POSITION, &GBLight::BACKGROUND1,
+MenuPane SLLScene::deletePane(STARTING_PANE_POSITION, &paneBackground,
                               &buttonColorSet, &buttonColorSet);
-MenuPane SLLScene::algoPane(STARTING_PANE_POSITION, &GBLight::BACKGROUND1,
+MenuPane SLLScene::algoPane(STARTING_PANE_POSITION, &paneBackground,
                             &buttonColorSet, &buttonColorSet);
-MenuPane SLLScene::miscPane(STARTING_PANE_POSITION, &GBLight::BACKGROUND1,
+MenuPane SLLScene::miscPane(STARTING_PANE_POSITION, &paneBackground,
                             &buttonColorSet, &buttonColorSet);
 const std::vector<std::string> SLLScene::PSEUDO_INSERT = {
     "Traverse the linked list", "Create new node", "Update the linked list"};
@@ -174,24 +174,27 @@ void SLLScene::render() { sll.render(); }
 void SLLScene::find(std::string val) {
     if (steps.size() > 1) return;
     correctAnimation();
-    Color resultColor = GBLight::LIGHT_RED;
     addStep(0, &PSEUDO_SEARCH);
     SLL& currSll = steps.back().sll;
     Node* curr = currSll.root;
     currSll.deHighlight();
     int nodeIndex = sll.locate(val);
+
+    // The index of the node, zero index
+
     if (nodeIndex == -1) {
         currSll.highlightTo(sll.nodeCount);
         addStep(-1, &PSEUDO_SEARCH);
         return;
     }
 
-    for (int i = 0; i < nodeIndex; i++) curr = curr->nextNode;
-
+    
     currSll.highlightTo(nodeIndex);  // since node index is actual node - 1;
-    curr->borderColor.transitionToward(resultColor);
     addStep(1, &PSEUDO_SEARCH);
-    addStep(-1, &PSEUDO_SEARCH);
+    SLL& lastSll = steps.back().sll;
+    curr = lastSll.root;
+    for (int i = 0; i < nodeIndex; i++) curr = curr->nextNode;
+    curr->borderColor.transitionToward(&nodeResultColor);
 }
 
 void SLLScene::clearScene() {
@@ -273,7 +276,7 @@ void SLLScene::recordInput() {
         deletePane.getForm(0, 0).setText(location);
     }
     if (algoPane.isButtonPressed(0)) {
-        auto value = algoPane.getText(2, 0);
+        auto value = algoPane.getText(0, 0);
 
         if (isStrNum(value)) {
             SLLScene::find(value);

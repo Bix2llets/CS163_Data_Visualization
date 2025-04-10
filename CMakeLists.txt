@@ -33,6 +33,7 @@ add_executable(
     src/basis/insertBox.cpp
     src/basis/edgeInsertBox.cpp
     src/basis/textureButton.cpp
+    src/basis/dynamicColor.cpp
 
     src/animation/animation.cpp
     # src/animation/arrow.cpp

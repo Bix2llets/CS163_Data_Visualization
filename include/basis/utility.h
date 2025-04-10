@@ -18,6 +18,7 @@ extern Font inter20;
 extern Font inter16;
 extern Font inter12;
 extern Font jbm20;
+extern Font noto;
 extern const int NORMAL_SIZE;
 extern const int SPACING ;
 void init();

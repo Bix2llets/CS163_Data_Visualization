@@ -73,6 +73,14 @@ class Hash {
                 root[i]->setPosition((Vector2){800, 100});
             }
         }
+        std::vector<int> getValues() {
+            std::vector<int> values;
+            for (int i = 0; i < m; i++) values.push_back(root[i]->value);
+            return values;
+        }
+        void setValues(std::vector<int> values) {
+            for (int i = 0; i < m; i++) root[i]->value = values[i];
+        }
     private:
         void draw(hashNode *root);
         void DrawArrowWithCircles(Vector2 start, Vector2 end, float radius, Color color, float thickness);

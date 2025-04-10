@@ -12,10 +12,11 @@ void Graph::applyPushForce() {
             if (node1->getLabel() >= node2->getLabel()) continue;
             float nodeDistanceSqr =
                 Vector2DistanceSqr(node1->getPosition(), node2->getPosition());
+            // if (sqrt(nodeDistanceSqr) > IDEAL_LENGTH) continue;
             if (nodeDistanceSqr <= 1e-6) {
                 node1->applyForce({1, 0});
                 node2->applyForce({-1, 0});
-                continue;
+                continue;       
             }
             Vector2 r12 =
                 Vector2Subtract(node2->getPosition(), node1->getPosition());
@@ -43,13 +44,14 @@ void Graph::applyPullForce() {
     //     edge->node1->applyForce(Vector2Scale(r12, force));
     //     edge->node2->applyForce(Vector2Scale(r12, -force));
     // }
-
+    
+    // * Charge model
     for (std::shared_ptr<GraphNode> node1: nodeList) {
         for (std::shared_ptr<GraphNode> node2: nodeList) {
             if (node1->getLabel() >= node2->getLabel()) continue;
             float length = Vector2Distance(node1->getPosition(), node2->getPosition());
             float baseLength = IDEAL_LENGTH;
-            if (length <= baseLength) continue;
+            // if (length <= baseLength) continue;
             float lengthDiff = length - baseLength;
             float force = PULL_FACTOR * lengthDiff;
             Vector2 r12 = Vector2Subtract(node2->getPosition(), node1->getPosition());
@@ -61,7 +63,6 @@ void Graph::applyPullForce() {
         }
     } 
 
-    // * Charge model
 }
 
 void Graph::applyCentricForce() {

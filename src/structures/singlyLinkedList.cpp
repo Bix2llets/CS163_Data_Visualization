@@ -23,6 +23,12 @@ void SLL::update() {
     }
     // update gradient color
     curr = root;
+    while(curr) {
+        curr->borderColor.assignColor();
+        curr->edgeColor.assignColor();
+        curr = curr->nextNode;
+    }
+    curr = root;
     while (curr) {
         curr->borderColor.update();
         // std::cerr << curr->borderColor.getAnimationRate() << "\n";
@@ -50,6 +56,8 @@ void SLL::addEnd(std::string data) {
                      drawArea.y + NODE_RADIUS - DISTANCE_VERTICAL / 3,
                      NODE_RADIUS);
         nodeCount++;
+        root->borderColor.assignColor();
+        root->edgeColor.assignColor();
         return;
     }
 
@@ -66,6 +74,8 @@ void SLL::addEnd(std::string data) {
     curr->nextNode =
         new Node(data, nextTargetPosition.x - DISTANCE_HORIZONTAL / 3,
                  nextTargetPosition.y - DISTANCE_VERTICAL / 3, NODE_RADIUS);
+    curr->nextNode->borderColor.assignColor();
+    curr->nextNode->edgeColor.assignColor();
     nodeCount++;
     return;
 }
@@ -115,6 +125,8 @@ void SLL::addAt(std::string data, int place) {
                      drawArea.y + NODE_RADIUS - DISTANCE_VERTICAL / 3,
                      NODE_RADIUS);
         nodeCount++;
+        node->borderColor.assignColor();
+        node->edgeColor.assignColor();
         if (root == nullptr) {
             root = node;
             return;
@@ -141,6 +153,8 @@ void SLL::addAt(std::string data, int place) {
 
     node->nextNode = curr->nextNode;
     curr->nextNode = node;
+    node->borderColor.assignColor();
+    node->edgeColor.assignColor();
     nodeCount++;
     return;
 }
@@ -337,27 +351,23 @@ void SLL::highlightTo(int place) {
     if (place < 0) return;
     Node* curr = root;
     while (curr && place) {
-        curr->borderColor.transitionToward(NODE_PALETTE->borderHighlight);
-        curr->edgeColor.transitionToward(NODE_PALETTE->borderHighlight);
+        curr->borderColor.transitionToward(&NODE_PALETTE->borderHighlight);
+        curr->edgeColor.transitionToward(&NODE_PALETTE->borderHighlight);
         curr = curr->nextNode;
         place--;
     }
     if (curr == nullptr) return;
-    curr->borderColor.transitionToward(NODE_PALETTE->borderHighlight);
+    curr->borderColor.transitionToward(&NODE_PALETTE->borderHighlight);
 }
 
 void SLL::deHighlight() {
     Node* curr = root;
     Color normalColor = NODE_PALETTE->borderNormal;
     while (curr) {
-        curr->borderColor.setBaseColor(normalColor);
-        curr->borderColor.setCurrentColor(normalColor);
-        curr->borderColor.setTargetColor(normalColor);
-        curr->borderColor.setFactor(1.f);
-        curr->edgeColor.setBaseColor(normalColor);
-        curr->edgeColor.setCurrentColor(normalColor);
-        curr->edgeColor.setTargetColor(normalColor);
-        curr->edgeColor.setFactor(1.f);
+        curr->borderColor.transitionToward(&NODE_PALETTE->borderNormal);
+        curr->borderColor.makeFinish();
+        curr->edgeColor.transitionToward(&NODE_PALETTE->borderNormal);
+        curr->edgeColor.makeFinish();
         curr = curr->nextNode;
     }
 }

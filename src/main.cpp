@@ -54,31 +54,15 @@ ColorSet elementTheme = {WET_ASPHALT,
 
 Color backgroundColor = GBLight::BACKGROUND4;
 
+void setSliderColor() {
+
+}
 void raylibInit() {
     InitWindow(1600, 900, "CS163 Data visualizer");
     SetTargetFPS(60);
     buttonColorSet = BUTTON_SET_LIGHT;
     nodeColorSet = COLOR_SET_LIGHT;
     DrawUtility::init();
-    GuiSetStyle(SLIDER, BORDER_COLOR_NORMAL,
-                ColorToInt(AppMenu::buttonPalette->borderNormal));
-    GuiSetStyle(SLIDER, BORDER_COLOR_FOCUSED,
-                ColorToInt(AppMenu::buttonPalette->borderNormal));
-    GuiSetStyle(SLIDER, BORDER_COLOR_PRESSED,
-                ColorToInt(AppMenu::buttonPalette->borderNormal));
-    GuiSetStyle(SLIDER, BORDER_WIDTH, 2);
-    GuiSetStyle(SLIDER, BASE_COLOR_NORMAL,
-                ColorToInt(AppMenu::buttonPalette->backgroundNormal));
-    GuiSetStyle(SLIDER, BASE_COLOR_FOCUSED,
-                ColorToInt(AppMenu::buttonPalette->backgroundHighlight));
-    GuiSetStyle(SLIDER, BASE_COLOR_PRESSED,
-                ColorToInt(GBLight::FOREGROUND4));
-    GuiSetStyle(SLIDER, TEXT_COLOR_NORMAL,
-                ColorToInt(AppMenu::buttonPalette->textNormal));
-    GuiSetStyle(SLIDER, TEXT_COLOR_FOCUSED,
-                ColorToInt(AppMenu::buttonPalette->textHighlight));
-    GuiSetStyle(SLIDER, TEXT_COLOR_PRESSED,
-                ColorToInt(AppMenu::buttonPalette->textHighlight));
     GuiSetStyle(DEFAULT, TEXT_SIZE, DrawUtility::NORMAL_SIZE);
     GuiSetFont(DrawUtility::inter20);
 }
@@ -109,6 +93,8 @@ void otherInit() {
     SLLScene::init();
     GraphScene::init();
     mLib::Init();
+    Loop::setColorPalette();
+    Loop::configSlider();
 }
 // Main function
 int main() {
@@ -127,7 +113,7 @@ int main() {
         Loop::update();
         // Render goes here
         BeginDrawing();
-        ClearBackground(backgroundColor);
+        ClearBackground(buttonColorSet.backgroundNormal);
         // pane.render();
         Loop::render();
         EndDrawing();

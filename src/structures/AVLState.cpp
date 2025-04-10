@@ -17,13 +17,13 @@ const int MAX_TEXT_LENGTH = 3;
 
 ColorSet const *AVLState::buttonPalette = &buttonColorSet;
 
-MenuPane AVLState::addPane({0, 0}, &GBLight::BACKGROUND1, &buttonColorSet,
+MenuPane AVLState::addPane({0, 0}, &paneBackground, &buttonColorSet,
                            &buttonColorSet);
-MenuPane AVLState::removePane({0, 0}, &GBLight::BACKGROUND1, &buttonColorSet,
+MenuPane AVLState::removePane({0, 0}, &paneBackground, &buttonColorSet,
                               &buttonColorSet);
-MenuPane AVLState::algoPane({0, 0}, &GBLight::BACKGROUND1, &buttonColorSet,
+MenuPane AVLState::algoPane({0, 0}, &paneBackground, &buttonColorSet,
                             &buttonColorSet);
-MenuPane AVLState::storagePane({0, 0}, &GBLight::BACKGROUND1, &buttonColorSet,
+MenuPane AVLState::storagePane({0, 0}, &paneBackground, &buttonColorSet,
                                &buttonColorSet);
 double AVLState::mTimeStep;
 AVLState::AVLState() : mAVL() {
@@ -117,22 +117,19 @@ void AVLState::handleInput() {
         int size;
         if (!isStrNum(data)) size = GetRandomValue(1, 15);
         else size = std::stoi(data);
-        std::cout << "starting insert" << std::endl;
         //std::vector<int> values = {778, 808, 175, 316, 699, 457, 678, 246, 688};
         for (int i = 0; i < size; i++) {
             int x = GetRandomValue(0, 1000000000) % 1000;
             //x = values[i];
-            std::cout << "insert success" << ' ' << x << std::endl;
             mAVL.insert(x);
             while (mAVL.completedAllActions() == 0) {
                 mAVL.update(1, 1);
                 mAVL.Action(0);
             }
         }
-        mAVL.printDebug(mAVL.getRoot());
+        //mAVL.printDebug(mAVL.getRoot());
         mAVL.setNULLPos(mAVL.getRoot());
         mTime = 0;
-        std::cout << "done\n";
     }
 
     if (removePane.isButtonPressed(0)) {
@@ -210,7 +207,7 @@ void AVLState::handleInput() {
                 if (curr->right) nodeList.push(curr->right);
             }
 
-            std::sort(valueList.begin(), valueList.end());
+            //std::sort(valueList.begin(), valueList.end());
             for (int x : valueList) outFile << x << " ";
             outFile << "\n";
             outFile.close();
@@ -253,16 +250,19 @@ void AVLState::handleInput() {
     //     isReversed = 0;
     // }
 
-    if (MenuTable::prevButton.isPressed() && !*MenuTable::isPlaying) {  // Undo functionality
+    if (MenuTable::prevButton.isPressed()) {  // Undo functionality
         //if (!mAVL.completeAnimation()) return;
+        MenuTable::pauseAnimation();
         isReversed = 1;;
     }
-    if (MenuTable::nextButton.isPressed() && !*MenuTable::isPlaying) {  // Redo functionality
+    if (MenuTable::nextButton.isPressed()) {  // Redo functionality
         //if (!mAVL.completeAnimation()) return;
+        MenuTable::pauseAnimation();
         isReversed = 0;
     }
 
     if (MenuTable::forwardButton.isPressed()) {  // Forward functionality
+        MenuTable::pauseAnimation();
         while (!mAVL.completedAllActions()) {
             mAVL.update(1e-15, 1e-15);
             mAVL.Action(0);
@@ -270,6 +270,7 @@ void AVLState::handleInput() {
     }
 
     if (MenuTable::backwardButton.isPressed()) {  // Backward functionality
+        MenuTable::pauseAnimation();
         do {
             mAVL.update(1e-15, 1e-15);
             mAVL.Action(1);

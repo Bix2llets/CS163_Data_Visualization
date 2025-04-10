@@ -4,7 +4,7 @@ namespace mLib
 {
     Font mFont;
     int row;
-    Color highlightColor = ORANGE;
+    Color highlightColor = {128,239,128,255};
     Texture2D diceTexture[6], dice, pause, play, prev, next, backward, forward, expand, collapse;
     const std::vector<std::string> TrieInsert = {
         "Begin",  // 0      

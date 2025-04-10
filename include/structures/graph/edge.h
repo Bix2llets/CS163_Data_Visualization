@@ -3,7 +3,8 @@
 
 // #include "graph/graph.h"
 #include "graph/node.h"
-
+#include "colorPalette.h"
+#include "dynamicColor.h"
 class GraphEdge : public GUIObject {
     friend class Graph;
 
@@ -16,10 +17,10 @@ class GraphEdge : public GUIObject {
    private:
     // Drawing info
     const static int THICKNESS;
-    AnimationColor color;
-    const static Color& NORMAL_COLOR;
-    const static Color& HIGHLIGHT_COLOR;
-    const static Color& TEXT_COLOR;
+    DynamicColor color;
+    const static Color* NORMAL_COLOR;
+    const static Color* HIGHLIGHT_COLOR;
+    const static Color* TEXT_COLOR;
 
     bool isHighlighted;
     bool isOpaque;

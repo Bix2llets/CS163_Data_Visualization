@@ -23,6 +23,8 @@ extern void (*renderFunc)();
 extern void (*updateFunc)();
 extern void (*recordFunc)();
 
+void configSlider();
+void setColorPalette();
 void registerInput();
 void update();
 void render();

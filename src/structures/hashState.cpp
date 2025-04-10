@@ -13,10 +13,10 @@ const int MAX_TEXT_LENGTH = 3;
 #include <iostream>
 
 double HashState::mTimeStep;
-MenuPane HashState::addPane({0, 0}, &GBLight::BACKGROUND1, &buttonColorSet, &buttonColorSet);
-MenuPane HashState::removePane({0, 0}, &GBLight::BACKGROUND1, &buttonColorSet, &buttonColorSet);
-MenuPane HashState::algoPane({0, 0}, &GBLight::BACKGROUND1, &buttonColorSet, &buttonColorSet);
-MenuPane HashState::storagePane({0, 0}, &GBLight::BACKGROUND1, &buttonColorSet, &buttonColorSet);
+MenuPane HashState::addPane({0, 0}, &paneBackground, &buttonColorSet, &buttonColorSet);
+MenuPane HashState::removePane({0, 0}, &paneBackground, &buttonColorSet, &buttonColorSet);
+MenuPane HashState::algoPane({0, 0}, &paneBackground, &buttonColorSet, &buttonColorSet);
+MenuPane HashState::storagePane({0, 0}, &paneBackground, &buttonColorSet, &buttonColorSet);
 ColorSet const *HashState::buttonPalette = &buttonColorSet;
 HashState::HashState() : mhash(0) {
     showCreateOptions = false;
@@ -301,9 +301,9 @@ void HashState::handleInput() {
                 tinyfd_messageBox("Error", "Failed to open file for saving.", "ok", "error", 1);
                 return;
             }
-            // std::vector<int> valueList = mhash.getValues();
-            // std::sort(valueList.begin(), valueList.end());
-            // for (int x : valueList) outFile << x << " ";
+            std::vector<int> valueList = mhash.getValues();
+            //std::sort(valueList.begin(), valueList.end());
+            for (int x : valueList) outFile << x << " ";
             outFile << "\n";
             outFile.close();
         }
@@ -320,15 +320,20 @@ void HashState::handleInput() {
                 return;
             }
             // mhash = hash(10);  // Reset the hash table
+            std::vector<int> valueList;
             int n;
-            while (inFile >> n) {
-                mhash.insert(n);
-                while (mhash.completedAllActions() == 0) {
-                    mhash.update(1e-15, 1e-15);
-                    mhash.Action(0);
-                }
-            }
+            while (inFile >> n) valueList.push_back(n);
             inFile.close();
+            n = valueList.size();
+            mhash = Hash(n);  // Reset the hash table
+            mhash.setValues(valueList);
+            // for (int i = 0; i < n; i++) {
+            //     mhash.insert(valueList[i]);
+            //     while (mhash.completedAllActions() == 0) {
+            //         mhash.update(1e-15, 1e-15);
+            //         mhash.Action(0);
+            //     }
+            // }
         }
     }
 

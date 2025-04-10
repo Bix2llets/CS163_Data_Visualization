@@ -4,11 +4,7 @@ namespace AppMenu {
 
 ColorSet const* buttonPalette = &buttonColorSet;
 
-ColorSet const* codeBlockColor = new ColorSet{
-    Color{46, 52, 64, 255},    Color{46, 52, 64, 255},
-    Color{216, 222, 233, 255}, Color{211, 255, 206, 255},
-    Color{59, 66, 82, 255},    Color{59, 66, 82, 255},
-};
+ColorSet const* codeBlockColor = &buttonColorSet;
 
 Vector2 panelPosition{50, 760};
 Vector2 buttonDimension = {200, 40};
@@ -17,7 +13,9 @@ Vector2 codeLineSize{500, 25};
 Vector2 buttonDistance = {8, 8};
 Button backButton({10, 10, buttonDimension.x, buttonDimension.y}, "Back",
                   DrawUtility::NORMAL_SIZE, buttonPalette);
+Button colorModeButton({1600 - buttonDimension.x - 10, 10, buttonDimension.x, buttonDimension.y}, "", DrawUtility::NORMAL_SIZE, buttonPalette, &DrawUtility::inter20);
 
+bool isDarkMode = false;
 std::vector<TextBox> codeList;
 std::vector<GUIObject*> renderList;
 
@@ -41,8 +39,9 @@ void init() {
         codeList[i] = temp;
         // ;if (i % 2 == 0) codeList[i].setHighlight(true);
     }
-
+    isDarkMode = false;
     renderList.push_back(&backButton);
+    // renderList.push_back(&colorModeButton);
 }
 
 void render() {
@@ -63,6 +62,8 @@ void render() {
         object->render();
     }
     for (TextBox box : codeList) box.render();
+    if (highlightValue != nullptr && *highlightValue >= 0)
+        codeList[*highlightValue].render();
 }
 
 void loadCode(const std::vector<std::string>& strVect) {
