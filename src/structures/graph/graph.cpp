@@ -16,7 +16,7 @@ void Graph::applyPushForce() {
             if (nodeDistanceSqr <= 1e-6) {
                 node1->applyForce({1, 0});
                 node2->applyForce({-1, 0});
-                continue;
+                continue;       
             }
             Vector2 r12 =
                 Vector2Subtract(node2->getPosition(), node1->getPosition());
