@@ -20,6 +20,7 @@ extern ColorSet backgroundSet;
 extern Color paneBackground;
 extern Color nodeDragHighlight;
 extern Color sliderIndicator;
+extern Color nodeResultColor;
 namespace ColorPalette {
 const int MAX_TRANSPARENCY = 255;
 namespace FlatUI {
@@ -135,4 +136,4 @@ extern ::Color NIGHT_BLACK;
 extern ::Color NIGHT_PURPLEBLACK;
 extern ::Color NIGHT_LIGHTWHITE;
 
-} // namespace TokyoNight
+}  // namespace TokyoNight

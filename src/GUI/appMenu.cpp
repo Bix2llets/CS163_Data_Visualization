@@ -62,6 +62,8 @@ void render() {
         object->render();
     }
     for (TextBox box : codeList) box.render();
+    if (highlightValue != nullptr && *highlightValue >= 0)
+        codeList[*highlightValue].render();
 }
 
 void loadCode(const std::vector<std::string>& strVect) {

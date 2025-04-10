@@ -174,7 +174,6 @@ void SLLScene::render() { sll.render(); }
 void SLLScene::find(std::string val) {
     if (steps.size() > 1) return;
     correctAnimation();
-    Color resultColor = GBLight::LIGHT_RED;
     addStep(0, &PSEUDO_SEARCH);
     SLL& currSll = steps.back().sll;
     Node* curr = currSll.root;
@@ -195,7 +194,7 @@ void SLLScene::find(std::string val) {
     SLL& lastSll = steps.back().sll;
     curr = lastSll.root;
     for (int i = 0; i < nodeIndex; i++) curr = curr->nextNode;
-    curr->borderColor.transitionToward(&resultColor);
+    curr->borderColor.transitionToward(&nodeResultColor);
 }
 
 void SLLScene::clearScene() {

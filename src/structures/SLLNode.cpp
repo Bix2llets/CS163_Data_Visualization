@@ -6,7 +6,7 @@ void Node::render() {
     DrawCircleV(position, radius - 3, PALETTE->backgroundNormal);
 
     DrawUtility::drawText(data, position, DrawUtility::inter20,
-                          PALETTE->borderNormal, DrawUtility::NORMAL_SIZE,
+                          PALETTE->textNormal, DrawUtility::NORMAL_SIZE,
                           DrawUtility::SPACING, VerticalAlignment::CENTERED,
                           HorizontalAlignment::CENTERED);
 }

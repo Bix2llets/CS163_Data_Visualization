@@ -49,6 +49,7 @@ void setColorPalette() {
         sliderIndicator = TokyoNight::NIGHT_YELLOW;
         AppMenu::colorModeButton.setText("Night mode");
         mLib::highlightColor = GBLight::LIGHT_YELLOW;
+        nodeResultColor = TokyoNight::NIGHT_RED;
     } else {
         nodeColorSet = COLOR_SET_LIGHT;
         buttonColorSet = BUTTON_SET_LIGHT;
@@ -58,6 +59,7 @@ void setColorPalette() {
         sliderIndicator = GBLight::BACKGROUND4;
         AppMenu::colorModeButton.setText("Light mode");
         mLib::highlightColor = GBLight::LIGHT_GREEN;
+        nodeResultColor = GBLight::DARK_RED;
     }
 }
 void registerInput() {
