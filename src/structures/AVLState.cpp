@@ -252,17 +252,15 @@ void AVLState::handleInput() {
 
     if (MenuTable::prevButton.isPressed()) {  // Undo functionality
         //if (!mAVL.completeAnimation()) return;
-        MenuTable::pauseAnimation();
+        // MenuTable::pauseAnimation();
         isReversed = 1;;
     }
     if (MenuTable::nextButton.isPressed()) {  // Redo functionality
         //if (!mAVL.completeAnimation()) return;
-        MenuTable::pauseAnimation();
         isReversed = 0;
     }
 
     if (MenuTable::forwardButton.isPressed()) {  // Forward functionality
-        MenuTable::pauseAnimation();
         while (!mAVL.completedAllActions()) {
             mAVL.update(1e-15, 1e-15);
             mAVL.Action(0);
@@ -270,7 +268,7 @@ void AVLState::handleInput() {
     }
 
     if (MenuTable::backwardButton.isPressed()) {  // Backward functionality
-        MenuTable::pauseAnimation();
+        // MenuTable::pauseAnimation();
         do {
             mAVL.update(1e-15, 1e-15);
             mAVL.Action(1);

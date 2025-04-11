@@ -216,13 +216,13 @@ void removeEdge(std::shared_ptr<GraphNode> node1,
 void prevStep() {
     if (past.empty()) return;
     graph.finishAnimation();
-    while (steps.size()) {
-        future.push_front(steps.back());
-        steps.pop_back();
-    }
+    // while (steps.size()) {
+    //     future.push_front(steps.back());
+    //     steps.pop_back();
+    // }
     Action lastAction = past.back();
     past.pop_back();
-    future.push_front(lastAction);
+    steps.push_front(lastAction);
 
     currentHighlighting = lastAction.highlightedLine;
     if (lastAction.highlightRef) AppMenu::loadCode(*lastAction.highlightRef);
@@ -265,19 +265,20 @@ void prevStep() {
 }
 
 void nextStep() {
+    if (!steps.size()) return;
     if (steps.size()) {
         graph.finishAnimation();
         timeLeft = 0;
         updateAnimation();
         return;
     }
-    if (future.empty()) return;
-    graph.finishAnimation();
-    timeLeft = 0;
-    Action nextAction = future.front();
-    future.pop_front();
-    steps.push_back(nextAction);
-    updateAnimation();
+    // if (future.empty()) return;
+    // graph.finishAnimation();
+    // timeLeft = 0;
+    // Action nextAction = future.front();
+    // future.pop_front();
+    // steps.push_back(nextAction);
+    // updateAnimation();
 }
 
 void registerInput() {
@@ -709,7 +710,7 @@ void backward() {
 
 void forward() {
     // ! Tommorrow I will fix this.
-    while (future.size() || steps.size()) {
+    while (steps.size()) {
         nextStep();
         if (past.back().highlightRef == nullptr) return;
     }

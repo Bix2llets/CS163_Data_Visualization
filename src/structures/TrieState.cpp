@@ -324,19 +324,19 @@ void TrieState::handleInput() {
         }
     }
     if (MenuTable::prevButton.isPressed()) {  // Undo functionality
-        MenuTable::pauseAnimation();
+        // MenuTable::pauseAnimation();
         //if (!mAVL.completeAnimation()) return;
         isReversed = 1;;
     }
     
     if (MenuTable::nextButton.isPressed()) {  // Redo functionality
-        MenuTable::pauseAnimation();
+        // MenuTable::pauseAnimation();
         //if (!mAVL.completeAnimation()) return;
         isReversed = 0;
     }
     
     if (MenuTable::forwardButton.isPressed()) {  // Forward functionality
-        MenuTable::pauseAnimation();
+        // MenuTable::pauseAnimation();
         while (!mTrie.completedAllActions()) {
             mTrie.update(1e-15, 1e-15);
             mTrie.Action(0);
@@ -344,7 +344,7 @@ void TrieState::handleInput() {
     }
     
     if (MenuTable::backwardButton.isPressed()) {  // Backward functionality
-        MenuTable::pauseAnimation();
+        // MenuTable::pauseAnimation();
         do {
             mTrie.update(1e-15, 1e-15);
             mTrie.Action(1);

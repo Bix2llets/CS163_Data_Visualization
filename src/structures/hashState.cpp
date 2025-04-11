@@ -338,20 +338,20 @@ void HashState::handleInput() {
     }
 
     if (MenuTable::prevButton.isPressed()) {  // Undo functionality
-        MenuTable::pauseAnimation();
+        // MenuTable::pauseAnimation();
         //if (!mAVL.completeAnimation()) return;
         isReversed = 1;;
     }
 
     if (MenuTable::nextButton.isPressed()) {  // Redo functionality
-        MenuTable::pauseAnimation();
+        // MenuTable::pauseAnimation();
 
         //if (!mAVL.completeAnimation()) return;
         isReversed = 0;
     }
 
     if (MenuTable::forwardButton.isPressed()) {  // Forward functionality
-        MenuTable::pauseAnimation();
+        // MenuTable::pauseAnimation();
 
         while (!mhash.completedAllActions()) {
             mhash.update(1e-15, 1e-15);
@@ -360,7 +360,7 @@ void HashState::handleInput() {
     }
 
     if (MenuTable::backwardButton.isPressed()) {  // Backward functionality
-        MenuTable::pauseAnimation();
+        // MenuTable::pauseAnimation();
 
         do {
             mhash.update(1e-15, 1e-15);

@@ -73,8 +73,8 @@ void SLLScene::addAt(std::string data, int place) {
         addStep(0, &PSEUDO_INSERT);
         steps.back().sll.deHighlight();
         steps.back().sll.highlightTo(size);
-        addStep(-1, &PSEUDO_INSERT);
-        steps.back().sll.deHighlight();
+        // addStep(-1, &PSEUDO_INSERT);
+        // steps.back().sll.deHighlight();
         return;
     }
     addStep(0, &PSEUDO_INSERT);
@@ -88,8 +88,8 @@ void SLLScene::addAt(std::string data, int place) {
     }
     addStep(2, &PSEUDO_INSERT);
     steps.back().sll.moveAt(place);
-    addStep(-1, &PSEUDO_INSERT);
-    steps.back().sll.deHighlight();
+    // addStep(-1, &PSEUDO_INSERT);
+    // steps.back().sll.deHighlight();
 };
 void SLLScene::removeEnd() {
     int place = 0;
@@ -113,8 +113,8 @@ void SLLScene::removeAt(int place) {
         addStep(0, &PSEUDO_DELETE);
         steps.back().sll.deHighlight();
         steps.back().sll.highlightTo(size);
-        addStep(-1, &PSEUDO_DELETE);
-        steps.back().sll.deHighlight();
+        // addStep(-1, &PSEUDO_DELETE);
+        // steps.back().sll.deHighlight();
         return;
     }
     addStep(0, &PSEUDO_DELETE);
@@ -126,8 +126,8 @@ void SLLScene::removeAt(int place) {
     steps.back().sll.removeAt(place);
     addStep(2, &PSEUDO_DELETE);
     steps.back().sll.shiftBackward(place);
-    addStep(-1, &PSEUDO_DELETE);
-    steps.back().sll.deHighlight();
+    // addStep(-1, &PSEUDO_DELETE);
+    // steps.back().sll.deHighlight();
 };
 void SLLScene::update() {
     sll.update();
@@ -381,9 +381,10 @@ void SLLScene::nextStep() {
         if (steps.front().highlightRef)
             AppMenu::loadCode(*steps.front().highlightRef);
     } else {
-        if (future.size() == 0) return;
-        steps.push_back(future.front());
-        future.pop_front();
+        return;
+        // if (future.size() == 0) return;
+        // steps.push_back(future.front());
+        // future.pop_front();
     }
 }
 
@@ -391,13 +392,13 @@ void SLLScene::prevStep() {
     if (past.size() == 0) return;
     // * There is animation in queue, future has none
     // * Transfer the rest into future
-    while (steps.size() > 1) {
-        future.push_front(steps.back());
-        steps.pop_back();
-    }
+    // while (steps.size() > 1) {
+    //     future.push_front(steps.back());
+    //     steps.pop_back();
+    // }
     // * NO animation queuing
-    future.push_front(steps.front());
-    steps.pop_front();
+    // future.push_front(steps.front());
+    // steps.pop_front();
     steps.push_front(past.back());
     past.pop_back();
 
