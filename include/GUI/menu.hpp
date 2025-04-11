@@ -4,8 +4,8 @@
 #include "button.h"
 #include "mainLoop.h"
 #include "CodePane.h"
-#include "insertBox.hpp"
-#include "edgeInsertBox.hpp"
+// #include "insertBox.hpp"
+// #include "edgeInsertBox.hpp"
 #include "textureButton.hpp"
 #include "menuPane.h"
 #include <mLib/Utility.hpp>
