@@ -6,9 +6,9 @@
 #include "animation.h"
 #include "dynamicColor.h"
 #include "colorPalette.h"
-#include "mainLoop.h"
 #include "raylib.h"
 #include "utility.h"
+#include "AppInfo.h"
 class GraphNode : public GUIObject {
    private:
     struct OutgoingEdge {

@@ -2,6 +2,7 @@
 
 #include <sstream>
 #include <unordered_map>
+#include "menu.hpp"
 namespace GraphScene {
 Graph graph;
 std::deque<Action> past;
@@ -272,13 +273,6 @@ void nextStep() {
         updateAnimation();
         return;
     }
-    // if (future.empty()) return;
-    // graph.finishAnimation();
-    // timeLeft = 0;
-    // Action nextAction = future.front();
-    // future.pop_front();
-    // steps.push_back(nextAction);
-    // updateAnimation();
 }
 
 void registerInput() {
@@ -466,7 +460,6 @@ void registerInput() {
             }
 
             inFile.close();
-            // tinyfd_messageBox("Success", "Graph loaded successfully.", "ok", "info", 1);
         }
         return;
     }
@@ -612,11 +605,9 @@ void dijkstra(int source) {
                 // * Animation
                 addStep(3, &PSEUDO_DIJKSTRA);
                 addEdgeChange(curr.first, edge.first, {0, 1, 1, 1, 0});
-                // if (edge.first == dest) return;
             }
         }
     }
-    // addStep(-1, nullptr);
 }
 void addStep(int highlightedLine, std::vector<std::string> const *ref) {
     steps.push_back(Action());
@@ -709,7 +700,6 @@ void backward() {
 }
 
 void forward() {
-    // ! Tommorrow I will fix this.
     while (steps.size()) {
         nextStep();
         if (past.back().highlightRef == nullptr) return;

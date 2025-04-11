@@ -74,8 +74,6 @@ void SLLScene::addAt(std::string data, int place) {
         addStep(0, &PSEUDO_INSERT);
         steps.back().sll.deHighlight();
         steps.back().sll.highlightTo(size);
-        // addStep(-1, &PSEUDO_INSERT);
-        // steps.back().sll.deHighlight();
         return;
     }
     addStep(0, &PSEUDO_INSERT);
@@ -89,8 +87,6 @@ void SLLScene::addAt(std::string data, int place) {
     }
     addStep(2, &PSEUDO_INSERT);
     steps.back().sll.moveAt(place);
-    // addStep(-1, &PSEUDO_INSERT);
-    // steps.back().sll.deHighlight();
 };
 void SLLScene::removeEnd() {
     int place = 0;
@@ -114,8 +110,6 @@ void SLLScene::removeAt(int place) {
         addStep(0, &PSEUDO_DELETE);
         steps.back().sll.deHighlight();
         steps.back().sll.highlightTo(size);
-        // addStep(-1, &PSEUDO_DELETE);
-        // steps.back().sll.deHighlight();
         return;
     }
     addStep(0, &PSEUDO_DELETE);
@@ -127,8 +121,6 @@ void SLLScene::removeAt(int place) {
     steps.back().sll.removeAt(place);
     addStep(2, &PSEUDO_DELETE);
     steps.back().sll.shiftBackward(place);
-    // addStep(-1, &PSEUDO_DELETE);
-    // steps.back().sll.deHighlight();
 };
 void SLLScene::update() {
     sll.update();
@@ -166,7 +158,6 @@ void SLLScene::addStep(int highlightIndex,
     newStorage.highlightIndex = highlightIndex;
     newStorage.highlightRef = ref;
     steps.push_back(newStorage);
-    // if (highlightIndex == -1) future.push_front(newStorage);
 }
 
 void SLLScene::render() { sll.render(); }
@@ -211,10 +202,6 @@ void SLLScene::clearScene() {
 }
 
 void SLLScene::recordInput() {
-    // ! THIS NEED REVAMP
-    // auto location = AppMenu::locationBox.getValue();
-    // auto value = AppMenu::valueBox.getValue();
-    // auto& buttonPanel = AppMenu::buttonPanel;
     if (addPane.isButtonPressed(1)) {
         addStep(-1, nullptr);
         int length = rand() % 20 + 10;
@@ -278,10 +265,6 @@ void SLLScene::recordInput() {
             AppMenu::loadCode(SLLScene::PSEUDO_SEARCH);
         }
     }
-    // if (algoPane.isRandomPressed(0)) {
-    //     auto value = rand() % 10000;
-    //     algoPane.getForm(0, 0).setText(std::to_string(value));
-    // }
 
     if (miscPane.isButtonPressed(0)) {
         // * Save
@@ -322,50 +305,6 @@ void SLLScene::recordInput() {
     if (MenuTable::nextButton.isPressed()) nextStep();
 }
 
-// if (buttonPanel[1][0].isPressed()) {
-//     // * Remove at end
-//     SLLScene::removeEnd();
-//     AppMenu::loadCode(SLLScene::PSEUDO_DELETE);
-// }
-// if (buttonPanel[0][1].isPressed()) {
-//     if (value.first && location.first) {
-//         SLLScene::addAt(std::to_string(value.second), location.second);
-//         AppMenu::loadCode(SLLScene::PSEUDO_INSERT);
-//         AppMenu::locationBox.clear();
-//         AppMenu::valueBox.clear();
-//     }
-// }
-// if (buttonPanel[1][1].isPressed()) {
-//     if (location.first) {
-//         SLLScene::removeAt(location.second);
-//         AppMenu::loadCode(SLLScene::PSEUDO_DELETE);
-//         AppMenu::locationBox.clear();
-//     }
-// }
-// if (buttonPanel[2][1].isPressed()) {
-//     if (value.first) {
-//         SLLScene::find(std::to_string(value.second));
-//         AppMenu::loadCode(SLLScene::PSEUDO_SEARCH);
-//         AppMenu::valueBox.clear();
-//     }
-// }
-// if (AppMenu::undoButton.isPressed()) {
-//     prevStep();
-//     // Loop::isRunning = false;
-// }
-// if (AppMenu::redoButton.isPressed()) {
-//     nextStep();
-//     // Loop::isRunning = true;
-// }
-// if (AppMenu::backwardButton.isPressed()) {
-//     backward();
-//     // Loop::isRunning = false;
-// }
-// if (AppMenu::forwardButton.isPressed()) {
-//     forward();
-//     // Loop::isRunning = true;
-// }
-
 void SLLScene::nextStep() {
     if (steps.size() > 1) {
         past.push_back(steps.front());
@@ -378,23 +317,11 @@ void SLLScene::nextStep() {
         sll.finishAnimation();
     } else {
         return;
-        // if (future.size() == 0) return;
-        // steps.push_back(future.front());
-        // future.pop_front();
     }
 }
 
 void SLLScene::prevStep() {
     if (past.size() == 0) return;
-    // * There is animation in queue, future has none
-    // * Transfer the rest into future
-    // while (steps.size() > 1) {
-    //     future.push_front(steps.back());
-    //     steps.pop_back();
-    // }
-    // * NO animation queuing
-    // future.push_front(steps.front());
-    // steps.pop_front();
     steps.push_front(past.back());
     past.pop_back();
 

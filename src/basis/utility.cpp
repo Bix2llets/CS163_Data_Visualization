@@ -54,8 +54,8 @@ void drawEdge(Vector2 beginPosition, Vector2 endPosition, Color color) {
 }  // namespace DrawUtility
 
 Vector2 randomPosition() {
-    float posX = float(rand() % int(Loop::LOWER_RIGHT.x - Loop::UPPER_LEFT.x) + Loop::UPPER_LEFT.x);
-    float posY = float(rand() % int(Loop::LOWER_RIGHT.y - Loop::UPPER_LEFT.y) + Loop::UPPER_LEFT.y);
+    float posX = float(rand() % int(AppInfo::LOWER_RIGHT.x - AppInfo::UPPER_LEFT.x) + AppInfo::UPPER_LEFT.x);
+    float posY = float(rand() % int(AppInfo::LOWER_RIGHT.y - AppInfo::UPPER_LEFT.y) + AppInfo::UPPER_LEFT.y);
     return Vector2{posX, posY};
 }
 

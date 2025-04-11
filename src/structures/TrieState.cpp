@@ -10,10 +10,10 @@
 
 #include "menuPane.h"
 #include "raygui.h"
+#include <iostream>
 
 const int MAX_TEXT_LENGTH = 5;
 
-#include <iostream>
 
 double TrieState::mTimeStep;
 TrieState::TrieState() : mTrie() {

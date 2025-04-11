@@ -29,25 +29,25 @@ void GraphNode::update() {
 
     // * Motion update
     if (!dragged) {
-        Vector2 displacement = Vector2Scale(velocity, Loop::DELTA_TIME);
+        Vector2 displacement = Vector2Scale(velocity, AppInfo::DELTA_TIME);
         position = Vector2Add(position, displacement);
         velocity = Vector2Scale(velocity, 0.90f);
     }
 
-    if (position.x < Loop::UPPER_LEFT.x + RADIUS) {
-        position.x = Loop::UPPER_LEFT.x + RADIUS;
+    if (position.x < AppInfo::UPPER_LEFT.x + RADIUS) {
+        position.x = AppInfo::UPPER_LEFT.x + RADIUS;
         velocity.x = -velocity.x * 0.2f;
     }
-    if (position.x > Loop::LOWER_RIGHT.x - RADIUS) {
-        position.x = Loop::LOWER_RIGHT.x - RADIUS;
+    if (position.x > AppInfo::LOWER_RIGHT.x - RADIUS) {
+        position.x = AppInfo::LOWER_RIGHT.x - RADIUS;
         velocity.x = -velocity.x * 0.2f;
     }
-    if (position.y < Loop::UPPER_LEFT.y + RADIUS) {
-        position.y = Loop::UPPER_LEFT.y + RADIUS;
+    if (position.y < AppInfo::UPPER_LEFT.y + RADIUS) {
+        position.y = AppInfo::UPPER_LEFT.y + RADIUS;
         velocity.y = -velocity.y * 0.2f;
     }
-    if (position.y > Loop::LOWER_RIGHT.y - RADIUS) {
-        position.y = Loop::LOWER_RIGHT.y - RADIUS;
+    if (position.y > AppInfo::LOWER_RIGHT.y - RADIUS) {
+        position.y = AppInfo::LOWER_RIGHT.y - RADIUS;
         velocity.y = -velocity.y * 0.2f;
     }
 }
@@ -83,7 +83,7 @@ void GraphNode::setVelocity(Vector2 newVelocity) { velocity = newVelocity; }
 
 void GraphNode::applyForce(Vector2 force) {
     Vector2 acceleration = Vector2Scale(force, 1.0f / MASS);
-    Vector2 deltaVelocity = Vector2Scale(acceleration, Loop::DELTA_TIME);
+    Vector2 deltaVelocity = Vector2Scale(acceleration, AppInfo::DELTA_TIME);
 
     velocity = Vector2Add(velocity, deltaVelocity);
     velocity = Vector2ClampValue(velocity, -2400.f / 10, 2400.f / 10);

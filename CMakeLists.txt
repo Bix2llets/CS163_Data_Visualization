@@ -43,10 +43,10 @@ add_executable(
     src/GUI/appMenu.cpp
     src/GUI/menuPane.cpp
     src/GUI/menu.cpp
+    src/GUI/AppInfo.cpp
     
     src/mLib/Utility.cpp 
     src/mLib/tinyfiledialogs.cpp
-    src/mLib/mScene.cpp
 
     src/structures/SLLNode.cpp
     src/structures/singlyLinkedList.cpp
@@ -66,11 +66,16 @@ add_executable(
     src/structures/hash.cpp
     src/structures/hashState.cpp
     src/mLib/Utility.cpp
-    src/mLib/tinyfiledialogs.cpp
-
+    
     src/scene/SLLScene.cpp
     src/scene/GraphScene.cpp
+    src/scene/TrieScene.cpp
+    src/scene/AVLScene.cpp
+    src/scene/HashScene.cpp
     src/mainLoop.cpp
+
+    src/mLib/tinyfiledialogs.cpp
+
 )
 # For build and run purpose
 file(COPY ${RAYLIB}

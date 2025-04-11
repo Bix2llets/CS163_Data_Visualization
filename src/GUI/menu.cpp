@@ -80,21 +80,8 @@ void Constructor(Vector2 _optionPosition = {10, 600},
     sliderBarPos = _sliderBarPos;
     sliderBarDimension = _sliderBarDimension;
 
-    // minValue = 1.f, maxValue = 100.f, sliderValue = 50.f;
 
     MaxSizeNum = 3, MaxSizeText = 5, MaxSizeWeight = 5;
-
-    // clearButton = Button(optionPosition, sliderBarDimension, "Clear", 20,
-    //                      AppMenu::buttonPalette);
-    // importButton = Button(optionPosition, sliderBarDimension, "Import", 20,
-    //                       AppMenu::buttonPalette);
-    // randomButton = Button(optionPosition, sliderBarDimension, "Random", 20,
-    //                       AppMenu::buttonPalette);
-    // insertBox = InsertBox(optionPosition, optionDimension, 20,
-    //                       AppMenu::buttonPalette, 0, MaxSizeNum);
-    // edgeBox =
-    //     edgeInsertBox(optionPosition, optionDimension, 20,
-    //                   AppMenu::buttonPalette, 0, MaxSizeNum, MaxSizeWeight);
     basePane.newLine(0, 0, "Add", {}, {}, false);
     basePane.newLine(1, 0, "Remove", {}, {}, false);
     basePane.newLine(2, 0, "Algorithm", {}, {}, false);
@@ -149,43 +136,10 @@ void render() {
     handleInput();
     showMenu.render();
     if (showMenuFlag) {
-        // std::cout << GUIObjects.size() << std::endl;
         basePane.render();
         if (addPane) addPane->render();
         if (deletePane) deletePane->render();
         if (algoPane) algoPane->render();
-        if (storagePane) storagePane->render();
-        // for (auto &obj : GUIObjects) {
-        //     if (obj.first != nullptr) {
-        //         obj.first->render();
-        //         if (obj.first->isOpen() && inAnimationProcess == false) {
-        //             if (obj.second == EdgeInsert)
-        //                 requestEdge = edgeBox.render();
-        //             else if (obj.second == NumInsert)
-        //                 requestNum = insertBox.render();
-        //             else if (obj.second == TextInsert)
-        //                 requestText = insertBox.render();
-        //             else if (obj.second == CREATE) {
-        //                 clearButton.render();
-        //                 importButton.render();
-        //                 randomButton.render();
-        //                 if (clearButton.isPressed()) {
-        //                     requestClear = true;
-        //                     requestImport = false;
-        //                     requestRandom = false;
-        //                 } else if (importButton.isPressed()) {
-        //                     requestImport = true;
-        //                     requestClear = false;
-        //                     requestRandom = false;
-        //                 } else if (randomButton.isPressed()) {
-        //                     requestRandom = true;
-        //                     requestImport = false;
-        //                     requestClear = false;
-        //                 }
-        //             }  // else assert(Type::None != obj.second);
-        // }
-        // }
-        // }
     }
     backwardButton.render();
     forwardButton.render();
