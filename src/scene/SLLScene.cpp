@@ -1,4 +1,5 @@
 #include "SLLScene.h"
+
 #include <cstdlib>
 float SLLScene::stepDelay = 1.f;
 float SLLScene::timeLeft = 0.f;
@@ -153,7 +154,6 @@ void SLLScene::addStep(int highlightIndex,
     while (future.size()) {
         future.back().sll.freeMemory();
         future.pop_back();
-
     }
     SLL newSll;
     if (steps.size())
@@ -188,7 +188,6 @@ void SLLScene::find(std::string val) {
         return;
     }
 
-    
     currSll.highlightTo(nodeIndex);  // since node index is actual node - 1;
     addStep(1, &PSEUDO_SEARCH);
     SLL& lastSll = steps.back().sll;
@@ -219,17 +218,13 @@ void SLLScene::recordInput() {
     if (addPane.isButtonPressed(1)) {
         addStep(-1, nullptr);
         int length = rand() % 20 + 10;
-        SLL &newSll = steps.back().sll;
-        while(newSll.nodeCount) 
-            newSll.removeEnd();
-        for (int i = 0; i < length; i++)
-        {
-
+        SLL& newSll = steps.back().sll;
+        while (newSll.nodeCount) newSll.removeEnd();
+        for (int i = 0; i < length; i++) {
             newSll.addEnd(std::to_string(rand() % 10000));
             newSll.moveAt(newSll.nodeCount - 1);
         }
         newSll.finishAnimation();
-        
     }
     if (addPane.isButtonPressed(0)) {
         // * Add at end
@@ -261,7 +256,7 @@ void SLLScene::recordInput() {
     if (deletePane.isButtonPressed(0)) {
         // * Delete at end and delete at somewhere else
         auto location = deletePane.getText(0, 0);
-        
+
         if (isStrNum(location)) {
             SLLScene::removeAt(std::stoi(location));
             AppMenu::loadCode(SLLScene::PSEUDO_DELETE);
@@ -380,6 +375,7 @@ void SLLScene::nextStep() {
         highlightedRow = steps.front().highlightIndex;
         if (steps.front().highlightRef)
             AppMenu::loadCode(*steps.front().highlightRef);
+        sll.finishAnimation();
     } else {
         return;
         // if (future.size() == 0) return;
