@@ -9,17 +9,17 @@
 #include <unordered_map>
 #include <vector>
 
-#include "AVLState.hpp"
+#include "AVLScene.h"
 #include "GraphScene.h"
 #include "MenuPane.h"
-#include "TrieState.hpp"
-#include "appMenu.h"
+#include "TrieScene.h"
+#include "codePane.h"
 #include "colorPalette.h"
 #include "form.h"
-#include "hashState.hpp"
+#include "hashScene.h"
 #include "mainLoop.h"
 #include "raygui.h"
-#include "singlyLInkedList.h"
+#include "SLL/singlyLInkedList.h"
 #include "utility.h"
 #include "welcomeMenu.h"
 
@@ -89,7 +89,7 @@ void loadSpecs() {
 
 void otherInit() {
     srand(time(NULL));
-    AppMenu::init();
+    CodePane::init();
     SLLScene::init();
     GraphScene::init();
     mLib::Init();
@@ -106,7 +106,7 @@ int main() {
     std::vector<std::string> exampleCode = {
         "#include <iostream>", "",  "using namespace std;", "",
         "int main()",          "{", "    return 0;",        "}"};
-    AppMenu::loadCode(exampleCode);
+    CodePane::loadCode(exampleCode);
     while (!WindowShouldClose()) {
         // Update goes here
         Loop::registerInput();

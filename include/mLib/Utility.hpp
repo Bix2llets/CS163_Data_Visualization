@@ -2,7 +2,8 @@
 #define UTILITY_HPP
 
 #include "raylib.h"
-#include "appMenu.h"
+#include "CodePane.h"
+#include <string>
 #include <cstring>
 
 namespace mLib
@@ -77,89 +78,89 @@ namespace mLib
     inline void DrawTextTrie(int index) {
         if (index == -1) {
             row = index;
-            AppMenu::loadCode(TrieInsert);
-            AppMenu::setHighlight(&row);
+            CodePane::loadCode(TrieInsert);
+            CodePane::setHighlight(&row);
             return;
         }
         if (index <= 5) {
             row = index;
             if (row > 1) row++;
-            AppMenu::loadCode(TrieInsert);
-            AppMenu::setHighlight(&row);
+            CodePane::loadCode(TrieInsert);
+            CodePane::setHighlight(&row);
         }   
         else if (index <= 11) {
                 row = index - 6;
                 if (row > 1) row++;
-                AppMenu::loadCode(TrieSearch);
-                AppMenu::setHighlight(&row);
+                CodePane::loadCode(TrieSearch);
+                CodePane::setHighlight(&row);
             }
             else {
                 if (index <= 15) {
-                    AppMenu::loadCode(TrieDelete);
+                    CodePane::loadCode(TrieDelete);
                     row = index - 12;
                     if (row > 1) row++;
-                    AppMenu::setHighlight(&row);
+                    CodePane::setHighlight(&row);
                 }
                 else {
-                    AppMenu::loadCode(TrieDelete2);
+                    CodePane::loadCode(TrieDelete2);
                     row = index - 16;
                     row += 3;
                     if (row > 3) row++;
-                    AppMenu::setHighlight(&row);
+                    CodePane::setHighlight(&row);
                 }
             }
     }
     inline void DrawTextHash(int index) {
         if (index == -1) {
             row = index;
-            AppMenu::loadCode(hashInsert);
-            AppMenu::setHighlight(&row);
+            CodePane::loadCode(hashInsert);
+            CodePane::setHighlight(&row);
             return;
         }
         if (index <= 4) {
             row = index;
-            AppMenu::loadCode(hashInsert);
-            AppMenu::setHighlight(&row);
+            CodePane::loadCode(hashInsert);
+            CodePane::setHighlight(&row);
         }
         else if (index <= 9) {
                 row = index - 5;
-                AppMenu::loadCode(hashSearch);
-                AppMenu::setHighlight(&row);
+                CodePane::loadCode(hashSearch);
+                CodePane::setHighlight(&row);
             }
         else {
             row = index - 10;
-            AppMenu::loadCode(hashDelete);
-            AppMenu::setHighlight(&row);
+            CodePane::loadCode(hashDelete);
+            CodePane::setHighlight(&row);
         }
     }
     inline void DrawTextAVL(int index) {
         if (index == -1) {
             row = index;
-            AppMenu::loadCode(AVLInsert);
-            AppMenu::setHighlight(&row);
+            CodePane::loadCode(AVLInsert);
+            CodePane::setHighlight(&row);
             return;
         }
         if (index <= 8) {
-            AppMenu::loadCode(AVLInsert);
+            CodePane::loadCode(AVLInsert);
             row = index;
-            AppMenu::setHighlight(&row);
+            CodePane::setHighlight(&row);
         } else if (index <= 13) {
-            AppMenu::loadCode(AVLSearch);
+            CodePane::loadCode(AVLSearch);
             row = index - 9;
-            AppMenu::setHighlight(&row);
+            CodePane::setHighlight(&row);
         }
         else {
             if (index <= 19 ) {
-                AppMenu::loadCode(AVLDelete);
+                CodePane::loadCode(AVLDelete);
                 row = index - 14;
                 if (row > 1) row++;
-                AppMenu::setHighlight(&row);
+                CodePane::setHighlight(&row);
             }
             else {
-                AppMenu::loadCode(AVLDelete2);
+                CodePane::loadCode(AVLDelete2);
                 row = index - 20;
                 row += 2;
-                AppMenu::setHighlight(&row);
+                CodePane::setHighlight(&row);
             }
         }
     }

@@ -15,7 +15,6 @@ Vector2 buttonDistance = {10, 0};
 
 float minValue = 0.01f, maxValue = 5.f, sliderValue = 1.f;
 
-int MaxSizeNum = 3, MaxSizeText = 5, MaxSizeWeight = 5;
 TextureBox backwardButton =
     TextureBox(buttonPos, sliderBarDimension, (Rectangle){0, 0, 100, 100},
                &mLib::backward, &buttonColorSet);
@@ -45,24 +44,7 @@ TextureBox nextButton = TextureBox(
 Button showMenu = Button(optionPosition,
                          (Vector2){sliderBarDimension.y, sliderBarDimension.x},
                          ">", 20, &buttonColorSet);
-Button clearButton =
-    Button(optionPosition, sliderBarDimension, "Clear", 20, &buttonColorSet);
-Button importButton =
-    Button(optionPosition, sliderBarDimension, "Import", 20, &buttonColorSet);
-Button randomButton =
-    Button(optionPosition, sliderBarDimension, "Random", 20, &buttonColorSet);
-InsertBox insertBox = InsertBox(optionPosition, optionDimension, 20,
-                                &buttonColorSet, 0, MaxSizeNum);
-edgeInsertBox edgeBox =
-    edgeInsertBox(optionPosition, optionDimension, 20, &buttonColorSet, 0,
-                  MaxSizeNum, MaxSizeWeight);
-std::string requestText = "";
-std::string requestNum = "";
-std::vector<std::string> requestEdge = {"", "", ""};
-bool showMenuFlag = false, requestClear = false, requestImport = false,
-     requestRandom = false, inAnimationProcess = false,
-     *isPlaying = &Loop::isRunning;
-std::vector<std::pair<Button*, Type>> GUIObjects = {};
+bool showMenuFlag = false, *isPlaying = &Loop::isRunning;
 // * For menu panes
 MenuPane basePane({optionPosition.x + 10 + showMenu.getDimension().x,
                    optionPosition.y},
@@ -81,7 +63,6 @@ void Constructor(Vector2 _optionPosition = {10, 600},
     sliderBarDimension = _sliderBarDimension;
 
 
-    MaxSizeNum = 3, MaxSizeText = 5, MaxSizeWeight = 5;
     basePane.newLine(0, 0, "Add", {}, {}, false);
     basePane.newLine(1, 0, "Remove", {}, {}, false);
     basePane.newLine(2, 0, "Algorithm", {}, {}, false);
@@ -93,44 +74,15 @@ void Constructor(Vector2 _optionPosition = {10, 600},
     storagePane = nullptr;
     showMenu.setDimension(
         {showMenu.getDimension().x, basePane.getDimension().y});
-    requestText = "";
-    requestNum = "";
-    requestEdge = {"", "", ""};
-    showMenuFlag = false, requestClear = false, requestImport = false,
-    requestRandom = false, inAnimationProcess = false,
+    showMenuFlag = false;
     isPlaying = &Loop::isRunning;
-    GUIObjects = {};
 }
 
 void init() {
-    clearButton.disable();
-    importButton.disable();
-    randomButton.disable();
     pauseButton.disable();
     playButton.enable();
 }
 
-void CLEAR() {
-    requestText = "";
-    requestNum = "";
-    requestEdge = {"", "", ""};
-    sliderValue = 50.f;
-    showMenuFlag = false;
-    GUIObjects.clear();
-}
-
-void pack(Button* obj, Type type) {
-    std::cout << "pack" << std::endl;
-    if (obj == nullptr) return;
-    std::cout << "pack 1" << std::endl;
-    obj->setPosition(
-        (Vector2){optionPosition.x + showMenu.getDimension().x,
-                  optionPosition.y + optionDimension.y * GUIObjects.size()});
-    obj->setDimension(optionDimension);
-    GUIObjects.push_back(std::make_pair(obj, type));
-    showMenu.setDimension(
-        (Vector2){optionDimension.y, optionDimension.y * GUIObjects.size()});
-}
 
 void render() {
     handleInput();

@@ -102,7 +102,7 @@ void updateAnimation() {
         timeLeft = TIME_DELAY;
         currentHighlighting = nextAction.highlightedLine;
         if (nextAction.highlightRef)
-            AppMenu::loadCode(*nextAction.highlightRef);
+            CodePane::loadCode(*nextAction.highlightRef);
 
         for (NodeChange nodeChange : nextAction.nodeChange) {
             auto node = graph.findNode(nodeChange.label);
@@ -226,7 +226,7 @@ void prevStep() {
     steps.push_front(lastAction);
 
     currentHighlighting = lastAction.highlightedLine;
-    if (lastAction.highlightRef) AppMenu::loadCode(*lastAction.highlightRef);
+    if (lastAction.highlightRef) CodePane::loadCode(*lastAction.highlightRef);
     for (auto [label1, label2, weight] : lastAction.edgeAdded)
         graph.removeEdge(label1, label2);
     for (auto [label1, label2, weight] : lastAction.edgeDeleted)
@@ -276,7 +276,7 @@ void nextStep() {
 }
 
 void registerInput() {
-    using namespace AppMenu;
+    using namespace CodePane;
 
     if (addPane.isButtonPressed(0)) {
         std::string data = addPane.getForm(0, 0).getText();

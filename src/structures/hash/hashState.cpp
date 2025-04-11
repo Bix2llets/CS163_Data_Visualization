@@ -1,4 +1,4 @@
-#include "hashState.hpp"
+#include "hash/hashState.hpp"
 #include "menu.hpp"
 #include "raygui.h"
 #include <mLib/Utility.hpp>

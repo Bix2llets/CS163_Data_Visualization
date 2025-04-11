@@ -1,4 +1,4 @@
-#include "Trie.hpp"
+#include "trie/Trie.hpp"
 #include <mLib/Utility.hpp>
 
 ColorSet const *Trie::PALETTE = &nodeColorSet;

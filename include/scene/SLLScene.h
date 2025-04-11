@@ -1,6 +1,6 @@
 #pragma once
-#include "singlyLinkedList.h"
-#include "appMenu.h"
+#include "SLL/singlyLinkedList.h"
+#include "CodePane.h"
 #include "mainLoop.h"
 #include "utility.h"
 #include "menuPane.h"

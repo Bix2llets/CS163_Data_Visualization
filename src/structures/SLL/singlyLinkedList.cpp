@@ -1,6 +1,6 @@
 
-#include "singlyLinkedList.h"
-#include "SLLScene.h"
+#include "SLL/singlyLinkedList.h"
+// #include "SLLScene.h"
 #include "colorPalette.h"
 ColorSet const *SLL::NODE_PALETTE = &nodeColorSet;
 const int SLL::NODE_RADIUS = 30;

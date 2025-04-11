@@ -1,4 +1,4 @@
-#include "hash.hpp"
+#include "hash/hash.hpp"
 #include <mLib/Utility.hpp>
 
 ColorSet const *Hash::PALETTE = &nodeColorSet;

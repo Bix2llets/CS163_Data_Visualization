@@ -1,4 +1,4 @@
-#include "TrieState.hpp"
+#include "trie/TrieState.hpp"
 #include "menu.hpp"
 #include <colorPalette.h>
 #include <mLib/tinyfiledialogs.h>

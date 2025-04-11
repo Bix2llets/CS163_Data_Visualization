@@ -1,6 +1,6 @@
-#include "appMenu.h"
+#include "CodePane.h"
 
-namespace AppMenu {
+namespace CodePane {
 
 ColorSet const* buttonPalette = &buttonColorSet;
 

@@ -137,7 +137,7 @@ void SLLScene::update() {
         sll = steps.front().sll.clone();
         highlightedRow = steps.front().highlightIndex;
         if (steps.front().highlightRef != nullptr)
-            AppMenu::loadCode(*steps.front().highlightRef);
+            CodePane::loadCode(*steps.front().highlightRef);
         timeLeft = steps.size() ? stepDelay : 0;
     }
 };
@@ -221,11 +221,11 @@ void SLLScene::recordInput() {
         if (isStrNum(value)) {
             if (isStrNum(location)) {
                 SLLScene::addAt(value, std::stoi(location));
-                AppMenu::loadCode(SLLScene::PSEUDO_INSERT);
+                CodePane::loadCode(SLLScene::PSEUDO_INSERT);
 
             } else if (location.size() == 0) {
                 SLLScene::addEnd(value);
-                AppMenu::loadCode(SLLScene::PSEUDO_INSERT);
+                CodePane::loadCode(SLLScene::PSEUDO_INSERT);
             }
 
             addPane.getForm(0, 0).clear();
@@ -246,10 +246,10 @@ void SLLScene::recordInput() {
 
         if (isStrNum(location)) {
             SLLScene::removeAt(std::stoi(location));
-            AppMenu::loadCode(SLLScene::PSEUDO_DELETE);
+            CodePane::loadCode(SLLScene::PSEUDO_DELETE);
         } else if (location.size() == 0) {
             SLLScene::removeEnd();
-            AppMenu::loadCode(SLLScene::PSEUDO_DELETE);
+            CodePane::loadCode(SLLScene::PSEUDO_DELETE);
         }
     }
     if (deletePane.isRandomPressed(0)) {
@@ -262,7 +262,7 @@ void SLLScene::recordInput() {
 
         if (isStrNum(value)) {
             SLLScene::find(value);
-            AppMenu::loadCode(SLLScene::PSEUDO_SEARCH);
+            CodePane::loadCode(SLLScene::PSEUDO_SEARCH);
         }
     }
 
@@ -313,7 +313,7 @@ void SLLScene::nextStep() {
         sll = steps.front().sll.clone();
         highlightedRow = steps.front().highlightIndex;
         if (steps.front().highlightRef)
-            AppMenu::loadCode(*steps.front().highlightRef);
+            CodePane::loadCode(*steps.front().highlightRef);
         sll.finishAnimation();
     } else {
         return;
@@ -328,7 +328,7 @@ void SLLScene::prevStep() {
     sll = steps.front().sll.clone();
     highlightedRow = steps.front().highlightIndex;
     if (steps.front().highlightRef)
-        AppMenu::loadCode(*steps.front().highlightRef);
+        CodePane::loadCode(*steps.front().highlightRef);
     sll.finishAnimation();
 }
 
@@ -346,7 +346,7 @@ void SLLScene::backward() {
     sll.finishAnimation();
     highlightedRow = steps.front().highlightIndex;
     if (steps.front().highlightRef)
-        AppMenu::loadCode(*steps.front().highlightRef);
+        CodePane::loadCode(*steps.front().highlightRef);
 }
 
 void SLLScene::forward() {

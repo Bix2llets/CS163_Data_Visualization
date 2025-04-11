@@ -40,7 +40,7 @@ add_executable(
     src/animation/animationColor.cpp
     
     src/GUI/welcomeMenu.cpp
-    src/GUI/appMenu.cpp
+    src/GUI/CodePane.cpp
     src/GUI/menuPane.cpp
     src/GUI/menu.cpp
     src/GUI/AppInfo.cpp
@@ -48,23 +48,18 @@ add_executable(
     src/mLib/Utility.cpp 
     src/mLib/tinyfiledialogs.cpp
 
-    src/structures/SLLNode.cpp
-    src/structures/singlyLinkedList.cpp
-    src/structures/Trie.cpp
-    src/structures/TrieState.cpp
-    src/structures/Trie.cpp
-    src/structures/AVL.cpp
-    src/structures/AVLState.cpp
-    src/structures/hash.cpp
-    src/structures/hashState.cpp
+    src/structures/SLL/SLLNode.cpp
+    src/structures/SLL/singlyLinkedList.cpp
+    src/structures/trie/Trie.cpp
+    src/structures/trie/TrieState.cpp
 
     src/structures/graph/edge.cpp
     src/structures/graph/node.cpp
     src/structures/graph/graph.cpp
-    src/structures/AVL.cpp 
-    src/structures/AVLState.cpp
-    src/structures/hash.cpp
-    src/structures/hashState.cpp
+    src/structures/AVL/AVL.cpp 
+    src/structures/AVL/AVLState.cpp
+    src/structures/hash/hash.cpp
+    src/structures/hash/hashState.cpp
     src/mLib/Utility.cpp
     
     src/scene/SLLScene.cpp

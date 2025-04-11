@@ -6,7 +6,7 @@
 #include "form.h"
 #include "textbox.h"
 
-namespace AppMenu {
+namespace CodePane {
 // Render info
 extern Vector2 codeBlockPosition;
 extern Vector2 codeLineSize;

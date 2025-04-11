@@ -1,4 +1,4 @@
-#include "SLLNode.h"
+#include "SLL/SLLNode.h"
 
 ColorSet const *Node::PALETTE = &nodeColorSet;
 void Node::render() {

@@ -13,7 +13,7 @@ void (*renderFunc)() = nullptr;
 void (*updateFunc)() = nullptr;
 void (*recordFunc)() = nullptr;
 void checkForReturn() {
-    if (AppMenu::backButton.isPressed()) {
+    if (CodePane::backButton.isPressed()) {
         currentScene = MAIN_MENU;
         updateFunc = nullptr;
         recordFunc = nullptr;
@@ -36,14 +36,14 @@ void update() {
 }
 
 void setColorPalette() {
-    if (AppMenu::isDarkMode) {
+    if (CodePane::isDarkMode) {
         nodeColorSet = COLOR_SET_DARK;
         buttonColorSet = BUTTON_SET_DARK;
         backgroundSet = BACKGROUND_SET_DARK;
         paneBackground = TokyoNight::NIGHT_BLACK;
         nodeDragHighlight = TokyoNight::NIGHT_GREEN;
         sliderIndicator = TokyoNight::NIGHT_YELLOW;
-        AppMenu::colorModeButton.setText("Night mode");
+        CodePane::colorModeButton.setText("Night mode");
         mLib::highlightColor = GBLight::LIGHT_YELLOW;
         nodeResultColor = TokyoNight::NIGHT_RED;
     } else {
@@ -53,14 +53,14 @@ void setColorPalette() {
         paneBackground = GBLight::BACKGROUND1;
         nodeDragHighlight = GBLight::DARK_GREEN;
         sliderIndicator = GBLight::BACKGROUND4;
-        AppMenu::colorModeButton.setText("Light mode");
+        CodePane::colorModeButton.setText("Light mode");
         mLib::highlightColor = GBLight::LIGHT_GREEN;
         nodeResultColor = GBLight::DARK_RED;
     }
 }
 void registerInput() {
-    if (AppMenu::colorModeButton.isPressed()) {
-        AppMenu::isDarkMode = !AppMenu::isDarkMode;
+    if (CodePane::colorModeButton.isPressed()) {
+        CodePane::isDarkMode = !CodePane::isDarkMode;
         setColorPalette();
         configSlider();
     }
@@ -81,7 +81,7 @@ void registerInput() {
             renderFunc = &GraphScene::render;
             updateFunc = &GraphScene::update;
             recordFunc = &GraphScene::registerInput;
-            AppMenu::highlightValue = &GraphScene::currentHighlighting;
+            CodePane::highlightValue = &GraphScene::currentHighlighting;
 
             MenuTable::addPane = &GraphScene::addPane;
             MenuTable::deletePane = &GraphScene::deletePane;
@@ -109,7 +109,7 @@ void registerInput() {
             MenuTable::deletePane = &SLLScene::deletePane;
             MenuTable::algoPane = &SLLScene::algoPane;
             MenuTable::storagePane = &SLLScene::miscPane;
-            AppMenu::highlightValue = &SLLScene::highlightedRow;
+            CodePane::highlightValue = &SLLScene::highlightedRow;
         }
         if (WelcomeMenu::isTriePressed()) {
             currentScene = TRIE;
@@ -155,31 +155,31 @@ void render() {
                       backgroundSet.backgroundNormal);
         DrawRectangle(0, 0, AppInfo::UPPER_LEFT.x, GetRenderHeight(),
                       backgroundSet.backgroundNormal);
-        AppMenu::render();
+        CodePane::render();
         MenuTable::render();
     }
-    AppMenu::colorModeButton.render();
+    CodePane::colorModeButton.render();
 }
 
 void configSlider() {
     GuiSetStyle(SLIDER, BORDER_COLOR_NORMAL,
-                ColorToInt(AppMenu::buttonPalette->borderNormal));
+                ColorToInt(CodePane::buttonPalette->borderNormal));
     GuiSetStyle(SLIDER, BORDER_COLOR_FOCUSED,
-                ColorToInt(AppMenu::buttonPalette->borderNormal));
+                ColorToInt(CodePane::buttonPalette->borderNormal));
     GuiSetStyle(SLIDER, BORDER_COLOR_PRESSED,
-                ColorToInt(AppMenu::buttonPalette->borderNormal));
+                ColorToInt(CodePane::buttonPalette->borderNormal));
     GuiSetStyle(SLIDER, BORDER_WIDTH, 2);
     GuiSetStyle(SLIDER, BASE_COLOR_NORMAL,
-                ColorToInt(AppMenu::buttonPalette->backgroundNormal));
+                ColorToInt(CodePane::buttonPalette->backgroundNormal));
     GuiSetStyle(SLIDER, BASE_COLOR_FOCUSED,
-                ColorToInt(AppMenu::buttonPalette->backgroundHighlight));
+                ColorToInt(CodePane::buttonPalette->backgroundHighlight));
     GuiSetStyle(SLIDER, BASE_COLOR_PRESSED, ColorToInt(sliderIndicator));
     GuiSetStyle(SLIDER, TEXT_COLOR_NORMAL,
-                ColorToInt(AppMenu::buttonPalette->textNormal));
+                ColorToInt(CodePane::buttonPalette->textNormal));
     GuiSetStyle(SLIDER, TEXT_COLOR_FOCUSED,
-                ColorToInt(AppMenu::buttonPalette->textHighlight));
+                ColorToInt(CodePane::buttonPalette->textHighlight));
     GuiSetStyle(SLIDER, TEXT_COLOR_PRESSED,
-                ColorToInt(AppMenu::buttonPalette->textHighlight));
+                ColorToInt(CodePane::buttonPalette->textHighlight));
 }
 
 }  // namespace Loop
