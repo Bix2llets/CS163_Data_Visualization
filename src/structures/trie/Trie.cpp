@@ -248,18 +248,18 @@ void Trie::draw(TrieNode *root) {
     for (auto &child : root->children) draw(child.second);
     DrawCircleV(root->getPosition(), NODE_RADIUS - 3, root->isEndOfWord ? PALETTE->backgroundHighlight : PALETTE->backgroundNormal);
     //Color color = PALETTE->backgroundNormal;
-    Color color = mLib::highlightColor;
+    Color color = nodeColorSet.borderHighlight;
     color.a = 255.f - root->getAlpha();
     DrawCircleV(root->getPosition(), NODE_RADIUS - 3, color);
     DrawRing(root->getPosition(), NODE_RADIUS - 3, NODE_RADIUS, 0, 360, 20, PALETTE->borderNormal);
     char str[2] = {root->character, '\0'};
     Utility::drawText(str, root->getPosition(), Utility::inter20, PALETTE->textNormal, 20, 1, VerticalAlignment::CENTERED, HorizontalAlignment::CENTERED);
-    // DrawTextEx(mLib::mFont, str, (Vector2){root->getPosition().x - 12, root->getPosition().y - 12}, 20, 2, WHITE);
+    // DrawTextEx(mLib::inter30, str, (Vector2){root->getPosition().x - 12, root->getPosition().y - 12}, 20, 2, WHITE);
 }
 
 void Trie::draw() {
-    if (!endLoop()) mLib::DrawTextTrie(core[loop].index);
-    else mLib::DrawTextTrie(-1);
+    if (!endLoop()) Utility::DrawTextTrie(core[loop].index);
+    else Utility::DrawTextTrie(-1);
     drawArrow(root);
     draw(root);
     if (Itr.show) DrawRing(Itr.animation->getPosition(), NODE_RADIUS, NODE_RADIUS + 5, 0, 360, 20, GBLight::DARK_RED);

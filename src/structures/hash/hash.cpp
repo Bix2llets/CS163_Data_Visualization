@@ -234,7 +234,7 @@ void Hash::draw(hashNode* node) {
         tmp.a -= (255.f - Itr.animation->getHashAlpha());
         DrawCircleV(Itr.preNode->getPosition(), NODE_RADIUS - 3, tmp);
     }
-    Color tmp = mLib::highlightColor;
+    Color tmp = nodeColorSet.borderHighlight;
     tmp.a -= node->getAlpha();
     DrawCircleV(node->getPosition(), NODE_RADIUS - 3, tmp);
     DrawRing(node->getPosition(), NODE_RADIUS - 3, NODE_RADIUS, 0, 360, 20, PALETTE->borderNormal);
@@ -266,8 +266,8 @@ void Hash::draw(hashNode* node) {
 }
 
 void Hash::draw() {
-    if (!endLoop()) mLib::DrawTextHash(core[loop].index);
-    else mLib::DrawTextHash(-1);
+    if (!endLoop()) Utility::DrawTextHash(core[loop].index);
+    else Utility::DrawTextHash(-1);
     for (int i = 0; i < m; i++) {
         Utility::drawText(std::to_string(i).c_str(), Vector2Add(root[i]->getPosition(), Vector2{0, -50}), Utility::inter20, PALETTE->textNormal, 20, 1, VerticalAlignment::CENTERED, HorizontalAlignment::CENTERED);
         draw(root[i]);

@@ -89,7 +89,7 @@ void AVLState::initPanes(Vector2 position) {
 }
 
 void AVLState::handleInput() {
-    assert(mLib::mFont.texture.id != 0);
+    assert(Utility::inter30.texture.id != 0);
 
     if (addPane.isButtonPressed(0)) {
         if (!mAVL.completedAllActions()) return;

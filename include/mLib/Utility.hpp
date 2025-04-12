@@ -6,11 +6,11 @@
 #include <string>
 #include <cstring>
 
-namespace mLib
+namespace Utility
 {
     extern Color highlightColor;
-    extern Font mFont;
-    extern int row;
+
+    extern int highlightingRow;
     extern Texture2D diceTexture[6], dice, pause, play, prev, next, forward, backward, expand, collapse;
     extern const std::vector<std::string> TrieInsert;
     extern const std::vector<std::string> TrieSearch;

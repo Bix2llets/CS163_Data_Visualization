@@ -17,30 +17,30 @@ float minValue = 0.01f, maxValue = 5.f, sliderValue = 1.f;
 
 TextureBox backwardButton =
     TextureBox(buttonPos, sliderBarDimension, (Rectangle){0, 0, 100, 100},
-               &mLib::backward, &buttonColorSet);
+               &Utility::backward, &buttonColorSet);
 TextureBox forwardButton = TextureBox(
     (Vector2){buttonPos.x + (buttonDimension.x + buttonDistance.x) * 4,
               buttonPos.y},
-    buttonDimension, (Rectangle){0, 0, 100, 100}, &mLib::forward,
+    buttonDimension, (Rectangle){0, 0, 100, 100}, &Utility::forward,
     &buttonColorSet);
 TextureBox playButton = TextureBox(
     (Vector2){buttonPos.x + (buttonDimension.x + buttonDistance.x) * 2,
               buttonPos.y},
-    buttonDimension, (Rectangle){0, 0, 100, 100}, &mLib::pause,
+    buttonDimension, (Rectangle){0, 0, 100, 100}, &Utility::pause,
     &buttonColorSet);
 TextureBox pauseButton = TextureBox(
     (Vector2){buttonPos.x + (buttonDimension.x + buttonDistance.x) * 2,
               buttonPos.y},
-    buttonDimension, (Rectangle){0, 0, 100, 100}, &mLib::expand,
+    buttonDimension, (Rectangle){0, 0, 100, 100}, &Utility::expand,
     &buttonColorSet);
 TextureBox prevButton = TextureBox(
     (Vector2){buttonPos.x + (buttonDimension.x + buttonDistance.x),
               buttonPos.y},
-    buttonDimension, (Rectangle){0, 0, 100, 100}, &mLib::prev, &buttonColorSet);
+    buttonDimension, (Rectangle){0, 0, 100, 100}, &Utility::prev, &buttonColorSet);
 TextureBox nextButton = TextureBox(
     (Vector2){buttonPos.x + (buttonDimension.x + buttonDistance.x) * 3,
               buttonPos.y},
-    buttonDimension, (Rectangle){0, 0, 100, 100}, &mLib::next, &buttonColorSet);
+    buttonDimension, (Rectangle){0, 0, 100, 100}, &Utility::next, &buttonColorSet);
 Button showMenu = Button(optionPosition,
                          (Vector2){sliderBarDimension.y, sliderBarDimension.x},
                          ">", 20, &buttonColorSet);

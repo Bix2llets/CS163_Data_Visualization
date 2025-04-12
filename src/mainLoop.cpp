@@ -44,9 +44,9 @@ void setColorPalette() {
         nodeDragHighlight = TokyoNight::NIGHT_GREEN;
         sliderIndicator = TokyoNight::NIGHT_YELLOW;
         CodePane::colorModeButton.setText("Night mode");
-        // mLib::highlightColor = GBLight::LIGHT_YELLOW;
+        // Utility::highlightColor = GBLight::LIGHT_YELLOW;
         nodeResultColor = TokyoNight::NIGHT_RED;
-        mLib::highlightColor = nodeColorSet.borderHighlight;
+        Utility::highlightColor = nodeColorSet.borderHighlight;
     } else {
         nodeColorSet = COLOR_SET_LIGHT;
         buttonColorSet = BUTTON_SET_LIGHT;
@@ -55,8 +55,8 @@ void setColorPalette() {
         nodeDragHighlight = GBLight::DARK_GREEN;
         sliderIndicator = GBLight::BACKGROUND4;
         CodePane::colorModeButton.setText("Light mode");
-        // mLib::highlightColor = GBLight::LIGHT_GREEN;
-        mLib::highlightColor = nodeColorSet.borderHighlight;
+        // Utility::highlightColor = GBLight::LIGHT_GREEN;
+        Utility::highlightColor = nodeColorSet.borderHighlight;
         nodeResultColor = GBLight::DARK_RED;
     }
 }

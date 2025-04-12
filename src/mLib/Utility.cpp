@@ -1,8 +1,8 @@
 #include <mLib/Utility.hpp>
 
-namespace mLib {
-Font mFont;
-int row;
+namespace Utility {
+
+int highlightingRow;
 Color highlightColor = {128, 239, 128, 255};
 Texture2D diceTexture[6], dice, pause, play, prev, next, backward, forward,
     expand, collapse;
@@ -148,8 +148,8 @@ void GenerateRandomNum(char *text) {
     text[length] = '\0';
 }
 void Init() {
-    mFont = LoadFontEx("assets/Inter-Black.ttf", 30, nullptr, 0);
-    row = -1;
+    inter30 = LoadFontEx("assets/Inter-Black.ttf", 30, nullptr, 0);
+    highlightingRow = -1;
     diceTexture[0] = LoadTexture("assets/dice/1_dot.png");
     diceTexture[1] = LoadTexture("assets/dice/2_dots.png");
     diceTexture[2] = LoadTexture("assets/dice/3_dots.png");
@@ -168,84 +168,84 @@ void Init() {
 }
 void DrawTextTrie(int index) {
     if (index == -1) {
-        row = index;
+        highlightingRow = index;
         CodePane::loadCode(TrieInsert);
-        CodePane::setHighlight(&row);
+        CodePane::setHighlight(&highlightingRow);
         return;
     }
     if (index <= 5) {
-        row = index;
-        if (row > 1) row++;
+        highlightingRow = index;
+        if (highlightingRow > 1) highlightingRow++;
         CodePane::loadCode(TrieInsert);
-        CodePane::setHighlight(&row);
+        CodePane::setHighlight(&highlightingRow);
     } else if (index <= 11) {
-        row = index - 6;
-        if (row > 1) row++;
+        highlightingRow = index - 6;
+        if (highlightingRow > 1) highlightingRow++;
         CodePane::loadCode(TrieSearch);
-        CodePane::setHighlight(&row);
+        CodePane::setHighlight(&highlightingRow);
     } else {
         if (index <= 15) {
             CodePane::loadCode(TrieDelete);
-            row = index - 12;
-            if (row > 1) row++;
-            CodePane::setHighlight(&row);
+            highlightingRow = index - 12;
+            if (highlightingRow > 1) highlightingRow++;
+            CodePane::setHighlight(&highlightingRow);
         } else {
             CodePane::loadCode(TrieDelete2);
-            row = index - 16;
-            row += 3;
-            if (row > 3) row++;
-            CodePane::setHighlight(&row);
+            highlightingRow = index - 16;
+            highlightingRow += 3;
+            if (highlightingRow > 3) highlightingRow++;
+            CodePane::setHighlight(&highlightingRow);
         }
     }
 }
 void DrawTextHash(int index) {
     if (index == -1) {
-        row = index;
+        highlightingRow = index;
         CodePane::loadCode(hashInsert);
-        CodePane::setHighlight(&row);
+        CodePane::setHighlight(&highlightingRow);
         return;
     }
     if (index <= 4) {
-        row = index;
+        highlightingRow = index;
         CodePane::loadCode(hashInsert);
-        CodePane::setHighlight(&row);
+        CodePane::setHighlight(&highlightingRow);
     } else if (index <= 9) {
-        row = index - 5;
+        highlightingRow = index - 5;
         CodePane::loadCode(hashSearch);
-        CodePane::setHighlight(&row);
+        CodePane::setHighlight(&highlightingRow);
     } else {
-        row = index - 10;
+        highlightingRow = index - 10;
         CodePane::loadCode(hashDelete);
-        CodePane::setHighlight(&row);
+        CodePane::setHighlight(&highlightingRow);
     }
 }
 void DrawTextAVL(int index) {
     if (index == -1) {
-        row = index;
+        highlightingRow = index;
         CodePane::loadCode(AVLInsert);
-        CodePane::setHighlight(&row);
+        CodePane::setHighlight(&highlightingRow);
         return;
     }
     if (index <= 8) {
         CodePane::loadCode(AVLInsert);
-        row = index;
-        CodePane::setHighlight(&row);
+        highlightingRow = index;
+        CodePane::setHighlight(&highlightingRow);
     } else if (index <= 13) {
         CodePane::loadCode(AVLSearch);
-        row = index - 9;
-        CodePane::setHighlight(&row);
+        highlightingRow = index - 9;
+        CodePane::setHighlight(&highlightingRow);
     } else {
         if (index <= 19) {
             CodePane::loadCode(AVLDelete);
-            row = index - 14;
-            if (row > 1) row++;
-            CodePane::setHighlight(&row);
+            highlightingRow = index - 14;
+            if (highlightingRow > 1) highlightingRow++;
+            CodePane::setHighlight(&highlightingRow);
         } else {
             CodePane::loadCode(AVLDelete2);
-            row = index - 20;
-            row += 2;
-            CodePane::setHighlight(&row);
+            highlightingRow = index - 20;
+            highlightingRow += 2;
+            CodePane::setHighlight(&highlightingRow);
         }
     }
 }
-}  // namespace mLib
+}  // namespace Utility

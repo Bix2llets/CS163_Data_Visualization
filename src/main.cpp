@@ -81,7 +81,7 @@ void otherInit() {
     CodePane::init();
     SLLScene::init();
     GraphScene::init();
-    mLib::Init();
+    Utility::Init();
     Loop::setColorPalette();
     Loop::configSlider();
 }

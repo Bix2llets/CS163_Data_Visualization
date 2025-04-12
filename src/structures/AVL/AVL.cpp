@@ -660,7 +660,7 @@ void AVL::draw(AVLNode *root) {
         backgroundColor.a -= root->alpha;
         DrawCircleV(root->getPosition(), NODE_RADIUS - 3, backgroundColor);
     }
-    Color color = mLib::highlightColor;
+    Color color = nodeColorSet.borderHighlight;
     color.a = 255.f - root->getAlpha();
     DrawCircleV(root->getPosition(), NODE_RADIUS - 3, color);
     DrawRing(root->getPosition(), NODE_RADIUS - 3, NODE_RADIUS, 0, 360, 20,
@@ -671,7 +671,7 @@ void AVL::draw(AVLNode *root) {
         colorText.a -= changing.first.getAlpha();
         char *text = new char[std::to_string(changing.first.getNewValue()).length() + 1];
         strcpy(text, std::to_string(changing.first.getNewValue()).c_str());
-        Utility::drawText(text, root->getPosition(), mLib::mFont,
+        Utility::drawText(text, root->getPosition(), Utility::inter30,
                               colorText, 20, Utility::SPACING,
                               VerticalAlignment::CENTERED,
                               HorizontalAlignment::CENTERED);
@@ -679,7 +679,7 @@ void AVL::draw(AVLNode *root) {
         colorText.a -= (255.f - changing.first.getAlpha());
         text = new char[std::to_string(changing.first.getOldValue()).length() + 1];
         strcpy(text, std::to_string(changing.first.getOldValue()).c_str());
-        Utility::drawText(text, root->getPosition(), mLib::mFont,
+        Utility::drawText(text, root->getPosition(), Utility::inter30,
                               colorText, 20, Utility::SPACING,
                               VerticalAlignment::CENTERED,
                               HorizontalAlignment::CENTERED);
@@ -688,7 +688,7 @@ void AVL::draw(AVLNode *root) {
     std::string value = std::to_string(root->value);
     char *text = new char[value.length() + 1];
     strcpy(text, value.c_str());
-    Utility::drawText(value.c_str(), root->getPosition(), mLib::mFont,
+    Utility::drawText(value.c_str(), root->getPosition(), Utility::inter30,
                           PALETTE->textNormal, 20, Utility::SPACING,
                           VerticalAlignment::CENTERED,
                           HorizontalAlignment::CENTERED);
@@ -700,21 +700,21 @@ void AVL::draw(AVLNode *root) {
     if (root->targeted || !root->isCompletedAlpha()) {
         Color colorText = WHITE;
         colorText.a -= root->alpha;
-        Utility::drawText(value.c_str(), root->getPosition(), mLib::mFont,
+        Utility::drawText(value.c_str(), root->getPosition(), Utility::inter30,
         colorText, 20, Utility::SPACING,
         VerticalAlignment::CENTERED,
         HorizontalAlignment::CENTERED);
         
     }
-    // DrawTextEx(mLib::mFont, text, (Vector2){root->getPosition().x - 12,
+    // DrawTextEx(Utility::inter30, text, (Vector2){root->getPosition().x - 12,
     // root->getPosition().y - 12}, 20, 2, WHITE);
 }
 
 void AVL::draw() {
     if (!endLoop())
-        mLib::DrawTextAVL(core[loop].index);
+        Utility::DrawTextAVL(core[loop].index);
     else
-        mLib::DrawTextAVL(-1);
+        Utility::DrawTextAVL(-1);
     drawArrow(root);
     draw(root);
     // if (Itr.show)

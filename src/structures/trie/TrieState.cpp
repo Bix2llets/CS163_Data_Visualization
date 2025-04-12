@@ -89,7 +89,7 @@ void TrieState::initPanes(Vector2 position) {
 }
 
 void TrieState::handleInput() {
-    assert(mLib::mFont.texture.id != 0);
+    assert(Utility::inter30.texture.id != 0);
 
     // if (mCreateButton->isPressed()) {
     //     showCreateOptions = !showCreateOptions;
@@ -224,7 +224,7 @@ void TrieState::handleInput() {
 
     if (addPane.isRandomPressed(0)) {
         char randomWord[MAX_TEXT_LENGTH + 1];
-        mLib::GenerateRandomText(randomWord);
+        Utility::GenerateRandomText(randomWord);
         addPane.getForm(0, 0).setText(randomWord);
     }
 
@@ -242,7 +242,7 @@ void TrieState::handleInput() {
         else size = std::stoi(data);
         for (int i = 0; i < size; i++) {
             char randomWord[MAX_TEXT_LENGTH + 1];
-            mLib::GenerateRandomText(randomWord);
+            Utility::GenerateRandomText(randomWord);
             mTrie.insert(randomWord);
             while (!mTrie.completedAllActions()) {
                 mTrie.update(1e-15, 1e-15);
@@ -277,7 +277,7 @@ void TrieState::handleInput() {
         if (!mTrie.completedAllActions()) return;
 
         char randomWord[MAX_TEXT_LENGTH + 1];
-        mLib::GenerateRandomText(randomWord);
+        Utility::GenerateRandomText(randomWord);
         algoPane.getForm(0, 0).setText(randomWord);
     }
 
@@ -401,13 +401,13 @@ void TrieState::render() {
     mTime += GetFrameTime();
     if (showTextBox & mTrie.completedAllActions()) {
         if (textDestionation == 1)
-            DrawTextEx(mLib::mFont, "Searching", (Vector2){10 + 250, 700}, 30,
+            DrawTextEx(Utility::inter30, "Searching", (Vector2){10 + 250, 700}, 30,
                        2, WHITE);
         else if (textDestionation == 2)
-            DrawTextEx(mLib::mFont, "Inserting", (Vector2){10 + 250, 700}, 30,
+            DrawTextEx(Utility::inter30, "Inserting", (Vector2){10 + 250, 700}, 30,
                        2, WHITE);
         else if (textDestionation == 3)
-            DrawTextEx(mLib::mFont, "Deleting", (Vector2){10 + 250, 700}, 30, 2,
+            DrawTextEx(Utility::inter30, "Deleting", (Vector2){10 + 250, 700}, 30, 2,
                        WHITE);
         mRandomValueButton->render();
         mEnterButton->render();
@@ -422,7 +422,7 @@ void TrieState::render() {
     //     mRandomButton->render();
     //     mCustomButton->render();
     // }
-    // DrawTextEx(mLib::mFont, mTrie.completedAllActions() ? "Animation
+    // DrawTextEx(mLib::inter30, mTrie.completedAllActions() ? "Animation
     // Completed" : animationPlaying ? "Animation Running" : "Animation Paused",
     // (Vector2) {1200, 10}, 30, 2, mTrie.completedAllActions() ? WHITE :
     // animationPlaying ? GREEN : RED);

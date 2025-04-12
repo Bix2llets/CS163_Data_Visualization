@@ -10,7 +10,7 @@ void DiceButton::render() {
     if (isPressed()) {
         loop = rand() % 16;
     }
-    DrawTexturePro(mLib::dice, {loop * 260.f, 0, 260.f, 260.f}, 
+    DrawTexturePro(Utility::dice, {loop * 260.f, 0, 260.f, 260.f}, 
     {position.x, position.y, dimension.x, dimension.y}, {0, 0}, 0, WHITE);
 }
 
