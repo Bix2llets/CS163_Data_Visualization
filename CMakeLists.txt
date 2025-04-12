@@ -19,6 +19,7 @@ include_directories(include/structures/graph)
 add_executable(
     ${PROJECT_NAME}
     src/main.cpp
+    
     src/basis/button.cpp
     src/basis/utility.cpp
     src/basis/GUIObject.cpp
@@ -30,13 +31,10 @@ add_executable(
     src/basis/toggleable.cpp
     src/basis/mForm.cpp
     src/basis/diceButton.cpp
-    # src/basis/insertBox.cpp
-    # src/basis/edgeInsertBox.cpp
     src/basis/textureButton.cpp
     src/basis/dynamicColor.cpp
 
     src/animation/animation.cpp
-    # src/animation/arrow.cpp
     src/animation/animationColor.cpp
     
     src/GUI/welcomeMenu.cpp
@@ -66,9 +64,6 @@ add_executable(
     src/scene/AVLScene.cpp
     src/scene/HashScene.cpp
     src/mainLoop.cpp
-
-    src/mLib/tinyfiledialogs.cpp
-
 )
 # For build and run purpose
 file(COPY ${RAYLIB}
