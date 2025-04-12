@@ -92,7 +92,6 @@ void render() {
         if (addPane) addPane->render();
         if (deletePane) deletePane->render();
         if (algoPane) algoPane->render();
-        if (storagePane) storagePane->render();
     }
     backwardButton.render();
     forwardButton.render();
