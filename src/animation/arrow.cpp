@@ -11,7 +11,7 @@ void AnimationEdge::render() {
 
     
     // For the arrow tip
-    DrawUtility::drawEdge(beginPos, endPos, currentColor.getCurrentColor());
+    Utility::drawEdge(beginPos, endPos, currentColor.getCurrentColor());
 }
 void AnimationEdge::update() {
     updateMotion();

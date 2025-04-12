@@ -8,7 +8,7 @@ void TextBox::render() {
     float renderWidth = width;
     float renderHeight = height;
     Vector2 textDimension = MeasureTextEx(
-        *font, text.c_str(), DrawUtility::NORMAL_SIZE, DrawUtility::SPACING);
+        *font, text.c_str(), Utility::NORMAL_SIZE, Utility::SPACING);
 
     renderWidth = std::max(textDimension.x + OFFSET * 2, renderWidth);
 
@@ -55,8 +55,8 @@ void TextBox::render() {
             textPosition.x = position.x + width - OFFSET;
             break;
     }
-    DrawUtility::drawText(text, textPosition, *font, textColor,
-                          DrawUtility::NORMAL_SIZE, DrawUtility::SPACING,
+    Utility::drawText(text, textPosition, *font, textColor,
+                          Utility::NORMAL_SIZE, Utility::SPACING,
                           verticalAlign, horizontalAlign);
 }
 

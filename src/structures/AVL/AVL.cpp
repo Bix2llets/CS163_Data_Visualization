@@ -671,16 +671,16 @@ void AVL::draw(AVLNode *root) {
         colorText.a -= changing.first.getAlpha();
         char *text = new char[std::to_string(changing.first.getNewValue()).length() + 1];
         strcpy(text, std::to_string(changing.first.getNewValue()).c_str());
-        DrawUtility::drawText(text, root->getPosition(), mLib::mFont,
-                              colorText, 20, DrawUtility::SPACING,
+        Utility::drawText(text, root->getPosition(), mLib::mFont,
+                              colorText, 20, Utility::SPACING,
                               VerticalAlignment::CENTERED,
                               HorizontalAlignment::CENTERED);
         colorText = WHITE;
         colorText.a -= (255.f - changing.first.getAlpha());
         text = new char[std::to_string(changing.first.getOldValue()).length() + 1];
         strcpy(text, std::to_string(changing.first.getOldValue()).c_str());
-        DrawUtility::drawText(text, root->getPosition(), mLib::mFont,
-                              colorText, 20, DrawUtility::SPACING,
+        Utility::drawText(text, root->getPosition(), mLib::mFont,
+                              colorText, 20, Utility::SPACING,
                               VerticalAlignment::CENTERED,
                               HorizontalAlignment::CENTERED);
         return ;
@@ -688,20 +688,20 @@ void AVL::draw(AVLNode *root) {
     std::string value = std::to_string(root->value);
     char *text = new char[value.length() + 1];
     strcpy(text, value.c_str());
-    DrawUtility::drawText(value.c_str(), root->getPosition(), mLib::mFont,
-                          PALETTE->textNormal, 20, DrawUtility::SPACING,
+    Utility::drawText(value.c_str(), root->getPosition(), mLib::mFont,
+                          PALETTE->textNormal, 20, Utility::SPACING,
                           VerticalAlignment::CENTERED,
                           HorizontalAlignment::CENTERED);
     Color colorText = WHITE;
     if (Itr.show && root == Itr.targetedNode) colorText.a -= Itr.animation->getHashAlpha();
     else if (Itr.show && root == Itr.preNode) colorText.a -= (255.f - Itr.animation->getHashAlpha());
     else colorText = PALETTE->textNormal;
-    DrawUtility::drawText(text, root->getPosition(), DrawUtility::inter20, colorText, 20, 1, VerticalAlignment::CENTERED, HorizontalAlignment::CENTERED);
+    Utility::drawText(text, root->getPosition(), Utility::inter20, colorText, 20, 1, VerticalAlignment::CENTERED, HorizontalAlignment::CENTERED);
     if (root->targeted || !root->isCompletedAlpha()) {
         Color colorText = WHITE;
         colorText.a -= root->alpha;
-        DrawUtility::drawText(value.c_str(), root->getPosition(), mLib::mFont,
-        colorText, 20, DrawUtility::SPACING,
+        Utility::drawText(value.c_str(), root->getPosition(), mLib::mFont,
+        colorText, 20, Utility::SPACING,
         VerticalAlignment::CENTERED,
         HorizontalAlignment::CENTERED);
         

@@ -28,8 +28,8 @@ void Form::render() {
     DrawRectangle(drawInfo.x, drawInfo.y, drawInfo.width, drawInfo.height,
                   groundColor);
     DrawRectangleLinesEx(drawInfo, 2 * BORDER_OFFSET, borderColor);
-    DrawUtility::drawText(textRender, textPosition, DrawUtility::inter16,
-                          textColor, 16, DrawUtility::SPACING,
+    Utility::drawText(textRender, textPosition, Utility::inter16,
+                          textColor, 16, Utility::SPACING,
                           VerticalAlignment::CENTERED,
                           HorizontalAlignment::LEFT);
 }
@@ -57,8 +57,8 @@ void Form::recordKeyboard() {
 
     if (chr == '\0') return;
     std::string newText = text + chr;
-    Vector2 newDimension = MeasureTextEx(DrawUtility::inter16, newText.c_str(),
-                                         16, DrawUtility::SPACING);
+    Vector2 newDimension = MeasureTextEx(Utility::inter16, newText.c_str(),
+                                         16, Utility::SPACING);
 
     if (newDimension.x > width - LEFT_MARGIN - RIGHT_MARGIN) return;
 

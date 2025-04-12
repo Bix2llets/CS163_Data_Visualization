@@ -5,9 +5,9 @@ void Node::render() {
     DrawCircle(position.x, position.y, radius, borderColor.getCurrentColor());
     DrawCircleV(position, radius - 3, PALETTE->backgroundNormal);
 
-    DrawUtility::drawText(data, position, DrawUtility::inter20,
-                          PALETTE->textNormal, DrawUtility::NORMAL_SIZE,
-                          DrawUtility::SPACING, VerticalAlignment::CENTERED,
+    Utility::drawText(data, position, Utility::inter20,
+                          PALETTE->textNormal, Utility::NORMAL_SIZE,
+                          Utility::SPACING, VerticalAlignment::CENTERED,
                           HorizontalAlignment::CENTERED);
 }
 

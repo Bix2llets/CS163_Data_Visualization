@@ -18,9 +18,9 @@ void GraphNode::render() {
 
     Color textColor = PALETTE->textNormal;
     textColor.a = border.a;
-    DrawUtility::drawText(std::to_string(label), position, DrawUtility::inter20,
-                          textColor, DrawUtility::NORMAL_SIZE,
-                          DrawUtility::SPACING, VerticalAlignment::CENTERED,
+    Utility::drawText(std::to_string(label), position, Utility::inter20,
+                          textColor, Utility::NORMAL_SIZE,
+                          Utility::SPACING, VerticalAlignment::CENTERED,
                           HorizontalAlignment::CENTERED);
 }
 

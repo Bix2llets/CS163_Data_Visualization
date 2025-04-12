@@ -1,11 +1,8 @@
 #include "utility.h"
 #include "mainLoop.h"
-namespace DrawUtility {
+namespace Utility {
 const int SPACING = 1;
 const int NORMAL_SIZE = 20;
-const Color EDGE_NORMAL = BLACK;
-const Color EDGE_HIGHLIGHTED = GOLD;
-const Color TEXT_COLOR = BLACK;
 Font inter20;
 Font jbm20;
 Font inter16;

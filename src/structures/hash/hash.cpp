@@ -244,32 +244,32 @@ void Hash::draw(hashNode* node) {
         char *text = new char[std::to_string(changing.first.getOldValue()).length() + 1];
         strcpy(text, std::to_string(changing.first.getOldValue()).c_str()); 
         if (changing.first.getOldValue() == -1) strcpy(text, "null");
-        DrawUtility::drawText(text, node->getPosition(), DrawUtility::inter20, colorText, 20, 1, VerticalAlignment::CENTERED, HorizontalAlignment::CENTERED);
+        Utility::drawText(text, node->getPosition(), Utility::inter20, colorText, 20, 1, VerticalAlignment::CENTERED, HorizontalAlignment::CENTERED);
         colorText = PALETTE->textNormal;
         colorText.a -= changing.first.getAlpha();
         text = new char[std::to_string(changing.first.getNewValue()).length() + 1];
         strcpy(text, std::to_string(changing.first.getNewValue()).c_str());
         if (changing.first.getNewValue() == -1) strcpy(text, "null");
-        DrawUtility::drawText(text, node->getPosition(), DrawUtility::inter20, colorText, 20, 1, VerticalAlignment::CENTERED, HorizontalAlignment::CENTERED);
+        Utility::drawText(text, node->getPosition(), Utility::inter20, colorText, 20, 1, VerticalAlignment::CENTERED, HorizontalAlignment::CENTERED);
         return;
     }
     std::string value = std::to_string(node->value);
     if (node->value == -1) value = "null";
     char *text = new char[value.length() + 1];
     strcpy(text, value.c_str());
-    DrawUtility::drawText(text, node->getPosition(), DrawUtility::inter20, PALETTE->textNormal, 20, 1, VerticalAlignment::CENTERED, HorizontalAlignment::CENTERED);
+    Utility::drawText(text, node->getPosition(), Utility::inter20, PALETTE->textNormal, 20, 1, VerticalAlignment::CENTERED, HorizontalAlignment::CENTERED);
     Color colorText = WHITE;
     if (Itr.show && node == Itr.targetedNode) colorText.a -= Itr.animation->getHashAlpha();
     else if (Itr.show && node == Itr.preNode) colorText.a -= (255.f - Itr.animation->getHashAlpha());
     else colorText = PALETTE->textNormal;
-    DrawUtility::drawText(text, node->getPosition(), DrawUtility::inter20, colorText, 20, 1, VerticalAlignment::CENTERED, HorizontalAlignment::CENTERED);
+    Utility::drawText(text, node->getPosition(), Utility::inter20, colorText, 20, 1, VerticalAlignment::CENTERED, HorizontalAlignment::CENTERED);
 }
 
 void Hash::draw() {
     if (!endLoop()) mLib::DrawTextHash(core[loop].index);
     else mLib::DrawTextHash(-1);
     for (int i = 0; i < m; i++) {
-        DrawUtility::drawText(std::to_string(i).c_str(), Vector2Add(root[i]->getPosition(), Vector2{0, -50}), DrawUtility::inter20, PALETTE->textNormal, 20, 1, VerticalAlignment::CENTERED, HorizontalAlignment::CENTERED);
+        Utility::drawText(std::to_string(i).c_str(), Vector2Add(root[i]->getPosition(), Vector2{0, -50}), Utility::inter20, PALETTE->textNormal, 20, 1, VerticalAlignment::CENTERED, HorizontalAlignment::CENTERED);
         draw(root[i]);
     }
 }

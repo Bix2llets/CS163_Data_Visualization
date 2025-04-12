@@ -60,7 +60,6 @@ add_executable(
     src/structures/AVL/AVLState.cpp
     src/structures/hash/hash.cpp
     src/structures/hash/hashState.cpp
-    src/mLib/Utility.cpp
     
     src/scene/SLLScene.cpp
     src/scene/GraphScene.cpp

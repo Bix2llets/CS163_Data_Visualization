@@ -30,10 +30,10 @@ void Button::render() {
                 //   renderInfo.height, backgroundColor);
 
     DrawRectangleRoundedLinesEx(renderInfo, 0.5f, 0, BORDER_OFFSET * 2, borderColor);
-    DrawUtility::drawText(
+    Utility::drawText(
         text, {position.x + dimension.x / 2, position.y + dimension.y / 2},
-        DrawUtility::inter20, textColor, DrawUtility::NORMAL_SIZE,
-        DrawUtility::SPACING, VerticalAlignment::CENTERED,
+        Utility::inter20, textColor, Utility::NORMAL_SIZE,
+        Utility::SPACING, VerticalAlignment::CENTERED,
         HorizontalAlignment::CENTERED);
 }
 

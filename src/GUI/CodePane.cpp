@@ -12,17 +12,17 @@ Vector2 codeBlockPosition{1050, 650};
 Vector2 codeLineSize{500, 25};
 Vector2 buttonDistance = {8, 8};
 Button backButton({10, 10, buttonDimension.x, buttonDimension.y}, "Back",
-                  DrawUtility::NORMAL_SIZE, buttonPalette);
-Button colorModeButton({1600 - buttonDimension.x - 10, 10, buttonDimension.x, buttonDimension.y}, "", DrawUtility::NORMAL_SIZE, buttonPalette, &DrawUtility::inter20);
+                  Utility::NORMAL_SIZE, buttonPalette);
+Button colorModeButton({1600 - buttonDimension.x - 10, 10, buttonDimension.x, buttonDimension.y}, "", Utility::NORMAL_SIZE, buttonPalette, &Utility::inter20);
 
 bool isDarkMode = false;
 std::vector<TextBox> codeList;
 std::vector<GUIObject*> renderList;
 
 TextBox locationText({450, 760, buttonDimension.x / 2, buttonDimension.y},
-                     buttonPalette, &DrawUtility::inter20, "Location: ");
+                     buttonPalette, &Utility::inter20, "Location: ");
 TextBox valueText({450, 840, buttonDimension.x / 2, buttonDimension.y},
-                  buttonPalette, &DrawUtility::inter20, "Value: ");
+                  buttonPalette, &Utility::inter20, "Value: ");
 
 int* highlightValue = nullptr;
 int verticalCellCount = 3;
@@ -34,7 +34,7 @@ void init() {
         float x = codeBlockPosition.x;
         float y = codeBlockPosition.y + i * codeLineSize.y;
         TextBox temp(Rectangle{x, y, codeLineSize.x, codeLineSize.y},
-                     codeBlockColor, &DrawUtility::jbm20, "amogus",
+                     codeBlockColor, &Utility::jbm20, "amogus",
                      HorizontalAlignment::LEFT);
         codeList[i] = temp;
         // ;if (i % 2 == 0) codeList[i].setHighlight(true);

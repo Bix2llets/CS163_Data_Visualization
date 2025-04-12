@@ -45,26 +45,15 @@ HashState _hashState;
 using namespace ColorPalette::FlatUI;
 using namespace ColorPalette;
 
-ColorSet elementTheme = {WET_ASPHALT,
-                         MIDNIGHT_BLUE,
-                         CLOUDS,
-                         ASBESTOS,
-                         DrawUtility::EDGE_NORMAL,
-                         DrawUtility::EDGE_HIGHLIGHTED};
-
 Color backgroundColor = GBLight::BACKGROUND4;
-
-void setSliderColor() {
-
-}
 void raylibInit() {
     InitWindow(1600, 900, "CS163 Data visualizer");
     SetTargetFPS(60);
     buttonColorSet = BUTTON_SET_LIGHT;
     nodeColorSet = COLOR_SET_LIGHT;
-    DrawUtility::init();
-    GuiSetStyle(DEFAULT, TEXT_SIZE, DrawUtility::NORMAL_SIZE);
-    GuiSetFont(DrawUtility::inter20);
+    Utility::init();
+    GuiSetStyle(DEFAULT, TEXT_SIZE, Utility::NORMAL_SIZE);
+    GuiSetFont(Utility::inter20);
 }
 
 void loadSpecs() {

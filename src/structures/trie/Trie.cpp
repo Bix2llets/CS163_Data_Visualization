@@ -253,7 +253,7 @@ void Trie::draw(TrieNode *root) {
     DrawCircleV(root->getPosition(), NODE_RADIUS - 3, color);
     DrawRing(root->getPosition(), NODE_RADIUS - 3, NODE_RADIUS, 0, 360, 20, PALETTE->borderNormal);
     char str[2] = {root->character, '\0'};
-    DrawUtility::drawText(str, root->getPosition(), DrawUtility::inter20, PALETTE->textNormal, 20, 1, VerticalAlignment::CENTERED, HorizontalAlignment::CENTERED);
+    Utility::drawText(str, root->getPosition(), Utility::inter20, PALETTE->textNormal, 20, 1, VerticalAlignment::CENTERED, HorizontalAlignment::CENTERED);
     // DrawTextEx(mLib::mFont, str, (Vector2){root->getPosition().x - 12, root->getPosition().y - 12}, 20, 2, WHITE);
 }
 

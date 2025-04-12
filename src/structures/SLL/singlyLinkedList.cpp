@@ -82,16 +82,16 @@ void SLL::addEnd(std::string data) {
 
 void SLL::render() {
     if (root == nullptr) return;
-    DrawUtility::drawText(
+    Utility::drawText(
         "Root", Vector2Add(root->getPosition(), {0, DISTANCE_HORIZONTAL / 3}),
-        DrawUtility::inter20, NODE_PALETTE->textNormal, DrawUtility::NORMAL_SIZE,
-        DrawUtility::SPACING, VerticalAlignment::CENTERED,
+        Utility::inter20, NODE_PALETTE->textNormal, Utility::NORMAL_SIZE,
+        Utility::SPACING, VerticalAlignment::CENTERED,
         HorizontalAlignment::CENTERED);
     Node* currEdge = root;
     Node* currNode = root;
     while (currEdge) {
         if (currEdge->nextNode != nullptr) {
-            DrawUtility::drawEdge(currEdge->getPosition(),
+            Utility::drawEdge(currEdge->getPosition(),
                                   currEdge->nextNode->getPosition(),
                                   currEdge->edgeColor.getCurrentColor());
             currEdge = currEdge->nextNode;

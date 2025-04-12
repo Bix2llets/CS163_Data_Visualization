@@ -13,7 +13,7 @@ void GraphEdge::update() {
 }
 
 void GraphEdge::render() {
-    DrawUtility::drawEdge(node1->getPosition(), node2->getPosition(),
+    Utility::drawEdge(node1->getPosition(), node2->getPosition(),
                           color.getCurrentColor());
 }
 void GraphEdge::renderText() {
@@ -21,13 +21,13 @@ void GraphEdge::renderText() {
     Color backTextColor = nodeColorSet.backgroundNormal;
     textColor.a = color.getCurrentColor().a;
     backTextColor.a = 180 * color.getCurrentColor().a / 255;
-    Vector2 textDimension = MeasureTextEx(DrawUtility::inter20, std::to_string(weight).c_str(), 16, DrawUtility::SPACING);
+    Vector2 textDimension = MeasureTextEx(Utility::inter20, std::to_string(weight).c_str(), 16, Utility::SPACING);
     textDimension.x += 10;
     textDimension.y += 10;
     DrawRectangle(position.x - textDimension.x / 2, position.y - textDimension.y / 2, textDimension.x, textDimension.y, backTextColor);
-    DrawUtility::drawText(std::to_string(weight), position,
-                          DrawUtility::inter16, textColor,
-                          16, DrawUtility::SPACING,
+    Utility::drawText(std::to_string(weight), position,
+                          Utility::inter16, textColor,
+                          16, Utility::SPACING,
                           VerticalAlignment::CENTERED, HorizontalAlignment::CENTERED);
 }
 void GraphEdge::highlight(bool isImmediate) {

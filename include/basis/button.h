@@ -27,7 +27,7 @@ class Button : public GUIObject, public Toggleable {
    public:
     Button(Vector2 position, Vector2 dimension, std::string text = "",
            int fontSize = 20, ColorSet const *palette = &buttonColorSet,
-           Font *renderFont = &DrawUtility::inter20)
+           Font *renderFont = &Utility::inter20)
         : GUIObject(position),
           dimension{dimension},
           text{text},
@@ -40,7 +40,7 @@ class Button : public GUIObject, public Toggleable {
 
     Button(Rectangle rectangle = {0, 0, 0, 0}, std::string text = "",
            int fontSize = 20, ColorSet const *palette = &buttonColorSet,
-           Font *renderFont = &DrawUtility::inter20)
+           Font *renderFont = &Utility::inter20)
         : Button{Vector2{rectangle.x, rectangle.y},
                  Vector2{rectangle.width, rectangle.height},
                  text,
@@ -50,7 +50,7 @@ class Button : public GUIObject, public Toggleable {
 
     Button(float x, float y, float width, float height, std::string text = "",
            int fontSize = 20, ColorSet const *palette = &buttonColorSet,
-           Font *renderFont = &DrawUtility::inter20)
+           Font *renderFont = &Utility::inter20)
         : Button{Vector2{x, y}, Vector2{width, height}, text, fontSize, palette,
                  renderFont} {};
 

@@ -32,8 +32,8 @@ void mForm::recordKeyboard() {
         return;
     if (mode == 1) chr = toupper(chr);
     Vector2 newDimension =
-       MeasureTextEx(DrawUtility::inter16, newText.c_str(),
-                      16, DrawUtility::SPACING);
+       MeasureTextEx(Utility::inter16, newText.c_str(),
+                      16, Utility::SPACING);
 
     if (newDimension.x > width - LEFT_MARGIN - RIGHT_MARGIN) return;
 
