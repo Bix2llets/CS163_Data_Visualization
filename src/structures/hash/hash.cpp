@@ -1,6 +1,6 @@
 #include "hash/hash.hpp"
 #include "Utility.h"
-
+#include "CodePane.h"
 ColorSet const *Hash::PALETTE = &nodeColorSet;
 Hash::Hash(int _m = 10) : Itr(), m(_m), changing({ChangeProcedure(-1, -1, NULL), NULL}) {
     loop = 0;
@@ -266,8 +266,8 @@ void Hash::draw(hashNode* node) {
 }
 
 void Hash::draw() {
-    if (!endLoop()) Utility::DrawTextHash(core[loop].index);
-    else Utility::DrawTextHash(-1);
+    if (!endLoop()) adjustHighlight(core[loop].index);
+    else adjustHighlight(-1);
     for (int i = 0; i < m; i++) {
         Utility::drawText(std::to_string(i).c_str(), Vector2Add(root[i]->getPosition(), Vector2{0, -50}), Utility::inter20, PALETTE->textNormal, 20, 1, VerticalAlignment::CENTERED, HorizontalAlignment::CENTERED);
         draw(root[i]);
@@ -319,4 +319,51 @@ Hash::~Hash() {
     ItrHistory.clear();
     changeList.clear();
     root.clear();
+}
+
+
+const std::vector<std::string> Hash::hashInsert = {
+    "Begin",                                 // 0
+    "i = v % m",                             // 1
+    "while a[i]->v != -1, i = (i + 1) % m",  // 2
+    "if a[i]->v = -1, a[i]->v = v",          // 3
+    "End",                                   // 4
+};
+
+const std::vector<std::string> Hash::hashSearch = {
+    "Begin",                                         // 5
+    "i = v % m",                                     // 6
+    "while a[i]->v != (v and -1), i = (i + 1) % m",  // 7
+    "if a[i]->v == v, return i",                     // 8
+    "End",                                           // 9
+};
+
+const std::vector<std::string> Hash::hashDelete = {
+    "Begin",                                         // 10
+    "i = v % m",                                     // 11
+    "while a[i]->v != (v and -1), i = (i + 1) % m",  // 12
+    "if a[i]->v == v, a[i]->v = -1",                 // 13
+    "End",                                           // 14
+};
+int Hash::highlightingRow = -1;
+void Hash::adjustHighlight(int index) {
+    if (index == -1) {
+        highlightingRow = index;
+        CodePane::loadCode(hashInsert);
+        CodePane::setHighlight(&highlightingRow);
+        return;
+    }
+    if (index <= 4) {
+        highlightingRow = index;
+        CodePane::loadCode(hashInsert);
+        CodePane::setHighlight(&highlightingRow);
+    } else if (index <= 9) {
+        highlightingRow = index - 5;
+        CodePane::loadCode(hashSearch);
+        CodePane::setHighlight(&highlightingRow);
+    } else {
+        highlightingRow = index - 10;
+        CodePane::loadCode(hashDelete);
+        CodePane::setHighlight(&highlightingRow);
+    }
 }

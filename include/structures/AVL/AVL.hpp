@@ -3,6 +3,7 @@
 
 #include <cmath>
 #include <iostream>
+#include <mLib/changeProcedure.hpp>
 #include <queue>
 #include <string>
 #include <vector>
@@ -10,7 +11,6 @@
 #include "AVLNode.hpp"
 #include "colorPalette.h"
 #include "raylib.h"
-#include <mLib/changeProcedure.hpp>
 
 class AVL {
    private:
@@ -61,6 +61,11 @@ class AVL {
     AVLNode *root;
     int flag, flagUndo;
 
+    static const std::vector<std::string> AVLInsert;
+    static const std::vector<std::string> AVLSearch;
+    static const std::vector<std::string> AVLDelete;
+    static const std::vector<std::string> AVLDelete2;
+
    public:
     AVL();
     bool Action(bool isReversed);
@@ -83,6 +88,8 @@ class AVL {
     static ColorSet const *PALETTE;
     void setNULLPos(AVLNode *root);
     void printDebug(AVLNode *root);
+    
+    static int highlightingRow;
    private:
     void calcPosition(AVLNode *root);
     std::vector<AVLNode *> getNodes(AVLNode *root);
@@ -105,7 +112,9 @@ class AVL {
     std::vector<int> changeList, rotateList;
     std::pair<bool, bool> doFadeEffect(AVLNode *root, double currTime,
                                        double TransTime, AVLNode *targetedNode);
-    std::pair<ChangeProcedure, AVLNode*>  changing;
+    std::pair<ChangeProcedure, AVLNode *> changing;
+
+    static void adjustHighlight(int index);
 
 };
 

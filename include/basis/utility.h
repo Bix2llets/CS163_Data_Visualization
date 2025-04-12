@@ -19,7 +19,7 @@ extern Font noto;
 extern const int NORMAL_SIZE;
 extern const int SPACING;
 
-extern int highlightingRow;
+extern int highlightingRow; // Left for backward compatibility, but not used anymore
 extern Texture2D diceTexture[6], dice, pause, play, prev, next, forward,
     backward, expand, collapse;
 
@@ -30,23 +30,12 @@ void drawText(std::string text, Vector2 position, Font font, Color textColor,
 
 void drawEdge(Vector2 beginPostion, Vector2 endPosition, Color color);
 
-extern const std::vector<std::string> TrieInsert;
-extern const std::vector<std::string> TrieSearch;
-extern const std::vector<std::string> TrieDelete;
-extern const std::vector<std::string> TrieDelete2;
-extern const std::vector<std::string> hashInsert;
-extern const std::vector<std::string> hashSearch;
-extern const std::vector<std::string> hashDelete;
-extern const std::vector<std::string> AVLInsert;
-extern const std::vector<std::string> AVLSearch;
-extern const std::vector<std::string> AVLDelete;
-extern const std::vector<std::string> AVLDelete2;
+// Removed vector declarations as they've been moved to their respective classes
 
 std::string GenerateRandomText(int length);
-    int GenerateRandomNum(int length);
-    void GenerateRandomText(char *text);
-    void GenerateRandomNum(char *text);
-    void DrawTextAVL(int index);
-    void DrawTextTrie(int index);
-    void DrawTextHash(int index);
+int GenerateRandomNum(int length);
+void GenerateRandomText(char *text);
+void GenerateRandomNum(char *text);
+
+// Removed DrawTextTrie and DrawTextHash function declarations
 }  // namespace Utility

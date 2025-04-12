@@ -1,8 +1,87 @@
 #include "trie/Trie.hpp"
 #include "Utility.h"
+#include "mainLoop.h"
 
 ColorSet const *Trie::PALETTE = &nodeColorSet;
 Color const *Trie::finalNodeColor = &GBLight::BACKGROUND0H;
+int Trie::highlightingRow = -1;
+
+// Static member initialization
+const std::vector<std::string> Trie::TrieInsert = {
+    "Begin",       // 0
+    "cur = root",  // 1
+    "for char x in word",
+    "   if cur->c[x] == NULL, cur->c[x] = new TrieNode",  // 2
+    "   cur = cur->c[x]",                                 // 3
+    "cur->isEndOfWord = true",                            // 4
+    "End",                                                // 5
+};
+
+const std::vector<std::string> Trie::TrieSearch = {
+    "Begin",       // 6
+    "cur = root",  // 7
+    "for char x in word",
+    "   if cur->c[x] == NULL, End",     // 8
+    "   else cur = cur->c[x]",          // 9
+    "if cur->isEndOfWord, return cur",  // 10
+    "End",                              // 11
+};
+
+const std::vector<std::string> Trie::TrieDelete = {
+    "Begin",       // 12
+    "cur = root",  // 13
+    "for char x in word",
+    "   if cur->c[x] == NULL, return false",  // 14
+    "   cur = cur->c[x]",                     // 15
+    "...",
+    "End",  // 19
+};
+
+const std::vector<std::string> Trie::TrieDelete2 = {
+    "Begin",  // 12
+    "...",
+    "if cur->isEndOfWord = false, return false",
+    "cur->isEndOfWord = false",  // 16
+    "while cur.isLeaf() & !cur.isEnd() & cur != root,",
+    "   temp = cur, cur = cur->parent",  // 17
+    "   delete temp",                    // 18
+    "End",                               // 19
+};
+
+// Implementation of DrawTextTrie
+void Trie::adjustHighlight(int index) {
+    if (index == -1) {
+        highlightingRow = index;
+        CodePane::loadCode(TrieInsert);
+        CodePane::setHighlight(&highlightingRow);
+        return;
+    }
+    if (index <= 5) {
+        highlightingRow = index;
+        if (highlightingRow > 1) highlightingRow++;
+        CodePane::loadCode(TrieInsert);
+        CodePane::setHighlight(&highlightingRow);
+    } else if (index <= 11) {
+        highlightingRow = index - 6;
+        if (highlightingRow > 1) highlightingRow++;
+        CodePane::loadCode(TrieSearch);
+        CodePane::setHighlight(&highlightingRow);
+    } else {
+        if (index <= 15) {
+            CodePane::loadCode(TrieDelete);
+            highlightingRow = index - 12;
+            if (highlightingRow > 1) highlightingRow++;
+            CodePane::setHighlight(&highlightingRow);
+        } else {
+            CodePane::loadCode(TrieDelete2);
+            highlightingRow = index - 16;
+            highlightingRow += 3;
+            if (highlightingRow > 3) highlightingRow++;
+            CodePane::setHighlight(&highlightingRow);
+        }
+    }
+}
+
 Trie::Trie() : Itr() {
     loop = 0;
     core = ActionList();
@@ -307,8 +386,8 @@ void Trie::draw(TrieNode *root) {
 }
 
 void Trie::draw() {
-    if (!endLoop()) Utility::DrawTextTrie(core[loop].index);
-    else Utility::DrawTextTrie(-1);
+    if (!endLoop()) adjustHighlight(core[loop].index);
+    else adjustHighlight(-1);
     drawArrow(root);
     draw(root);
     //if (Itr.show) DrawRing(Itr.animation->getPosition(), NODE_RADIUS, NODE_RADIUS + 5, 0, 360, 20, GBLight::DARK_RED);
