@@ -371,7 +371,7 @@ void HashState::handleInput() {
             mhash.update(1e-15, 1e-15);
             mhash.Action(1);
         } while (!mhash.completedAllActions() && !mhash.reachedStart());
-        //mhash.ClearOperator();
+        mhash.ClearOperator();
     }
 
     if (MenuTable::pauseButton.isPressed() || *MenuTable::isPlaying) animationPlaying = 1;

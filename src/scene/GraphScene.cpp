@@ -695,7 +695,8 @@ void resetGraphColor() {
 void backward() {
     while (past.size()) {
         prevStep();
-        if (past.back().highlightRef == nullptr) return;
+        while(steps.size()) steps.pop_back();
+        if (past.size() == 0 || past.back().highlightRef == nullptr) return;
     }
 }
 

@@ -348,12 +348,12 @@ void Trie::draw(TrieNode *root) {
     for (auto &child : root->children) draw(child.second);
     DrawCircleV(root->getPosition(), NODE_RADIUS - 3,PALETTE->backgroundNormal);
     if (Itr.show && root == Itr.targetedNode) {
-        Color tmp = GBLight::LIGHT_RED;
+        Color tmp = nodeResultColor;
         tmp.a -= Itr.animation->getHashAlpha();
         DrawCircleV(Itr.targetedNode->getPosition(), NODE_RADIUS - 3, tmp);
     }
     if (Itr.show && root == Itr.preNode) {
-        Color tmp = GBLight::LIGHT_RED;
+        Color tmp = nodeResultColor;
         tmp.a -= (255.f - Itr.animation->getHashAlpha());
         DrawCircleV(Itr.preNode->getPosition(), NODE_RADIUS - 3, tmp);
     }

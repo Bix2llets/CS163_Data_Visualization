@@ -171,7 +171,7 @@ void handleInput() {
         }
 
         if (backwardButton.isPressed()) {
-            pauseAnimation();
+            // pauseAnimation();
         }
     }
 }

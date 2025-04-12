@@ -79,6 +79,7 @@ void SLLScene::addAt(std::string data, int place) {
     }
     addStep(0, &PSEUDO_INSERT);
     steps.back().sll.deHighlight();
+    addStep(0, &PSEUDO_INSERT);
     steps.back().sll.highlightTo(place - 1);
     addStep(1, &PSEUDO_INSERT);
     steps.back().sll.addAt(data, place);
@@ -110,11 +111,13 @@ void SLLScene::removeAt(int place) {
     if (place > size) {
         addStep(0, &PSEUDO_DELETE);
         steps.back().sll.deHighlight();
+        addStep(0, &PSEUDO_DELETE);
         steps.back().sll.highlightTo(size);
         return;
     }
     addStep(0, &PSEUDO_DELETE);
     steps.back().sll.deHighlight();
+    addStep(0, &PSEUDO_DELETE);
     steps.back().sll.highlightTo(place);
     addStep(1, &PSEUDO_DELETE);
     steps.back().sll.moveAt(place);
@@ -169,23 +172,26 @@ void SLLScene::find(std::string val) {
     addStep(0, &PSEUDO_SEARCH);
     SLL& currSll = steps.back().sll;
     Node* curr = currSll.root;
-    currSll.deHighlight();
+    steps.back().sll.deHighlight();
     int nodeIndex = sll.locate(val);
-
+    
     // The index of the node, zero index
-
+    
     if (nodeIndex == -1) {
-        currSll.highlightTo(sll.nodeCount);
+        addStep(0, &PSEUDO_SEARCH);
+        steps.back().sll.highlightTo(sll.nodeCount);
         addStep(-1, &PSEUDO_SEARCH);
         return;
     }
-
-    currSll.highlightTo(nodeIndex);  // since node index is actual node - 1;
+    
+    addStep(0, &PSEUDO_SEARCH);
+    steps.back().sll.highlightTo(nodeIndex);  // since node index is actual node - 1;
     addStep(1, &PSEUDO_SEARCH);
     SLL& lastSll = steps.back().sll;
     curr = lastSll.root;
     for (int i = 0; i < nodeIndex; i++) curr = curr->nextNode;
     curr->borderColor.transitionToward(&nodeResultColor);
+    addStep(-1, &PSEUDO_SEARCH);
 }
 
 void SLLScene::clearScene() {
@@ -349,6 +355,7 @@ void SLLScene::correctAnimation() {
 void SLLScene::backward() {
     while (past.size()) {
         prevStep();
+        while(steps.size() > 1) steps.pop_back();
         if (steps.front().highlightIndex == -1) break;
     }
     sll = steps.front().sll;
