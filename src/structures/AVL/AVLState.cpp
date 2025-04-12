@@ -257,7 +257,12 @@ void AVLState::handleInput() {
     }
     if (MenuTable::nextButton.isPressed()) {  // Redo functionality
         //if (!mAVL.completeAnimation()) return;
-        isReversed = 0;
+        if (*MenuTable::isPlaying) {
+            while (true) {
+                mAVL.update(1e-15, 1e-15);
+                if (mAVL.Action(0)) break;
+            }
+        } else isReversed = 0;
     }
 
     if (MenuTable::forwardButton.isPressed()) {  // Forward functionality

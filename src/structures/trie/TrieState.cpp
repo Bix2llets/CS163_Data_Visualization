@@ -69,7 +69,7 @@ void TrieState::initPanes(Vector2 position) {
     addPane.newLine(0, 1, "Add", {"Word"}, {1}, true);
     addPane.newLine(1, 1, "Create", {"Num word"}, {0}, true);
 
-    removePane.newLine(0, 1, "Remove", {"Word"}, {1}, false);
+    removePane.newLine(0, 1, "Remove", {"Word"}, {1}, true);
     removePane.newLine(1, 0, "Clear", {}, {}, false);
 
     algoPane.newLine(0, 1, "Search", {"Word"}, {1}, true);
@@ -266,6 +266,14 @@ void TrieState::handleInput() {
         mTrie = Trie();                   // Reset the Trie
     }
 
+    if (removePane.isRandomPressed(0)) {
+        if (!mTrie.completedAllActions()) return;
+
+        char randomWord[MAX_TEXT_LENGTH + 1];
+        Utility::GenerateRandomText(randomWord);
+        removePane.getForm(0, 0).setText(randomWord);
+    }
+
     if (algoPane.isButtonPressed(0)) {
         std::string word = algoPane.getForm(0, 0).getText();
         algoPane.getForm(0, 0).clear();
@@ -332,7 +340,12 @@ void TrieState::handleInput() {
     if (MenuTable::nextButton.isPressed()) {  // Redo functionality
         // MenuTable::pauseAnimation();
         //if (!mAVL.completeAnimation()) return;
-        isReversed = 0;
+        if (*MenuTable::isPlaying) {
+            while (true) {
+                mTrie.update(1e-15, 1e-15);
+                if (mTrie.Action(0)) break;
+            }
+        } else isReversed = 0;
     }
     
     if (MenuTable::forwardButton.isPressed()) {  // Forward functionality

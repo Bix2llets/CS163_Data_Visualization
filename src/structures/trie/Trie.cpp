@@ -79,6 +79,7 @@ void Trie::insert(std::string word) {
         current = current->children[word[i]];
         actions.push_back({3, SETLECT, current});
     }
+    actions.push_back({4, SETLECT, NULL});
     actions.push_back({4, SETEND, current});
     actions.push_back({5, CLEAR, current});
     core.insert(core.end(), actions.begin(), actions.end());
@@ -91,6 +92,7 @@ void Trie::search(std::string word) {
     actions.push_back({7, SETLECT, current});
     for (int i = 0; i < word.size(); i++) {
         if (current->children.find(word[i]) == current->children.end()) {
+            actions.push_back({11, SETLECT, NULL});
             actions.push_back({11, CLEAR, current});
             core.insert(core.end(), actions.begin(), actions.end());
             return ;
@@ -99,6 +101,7 @@ void Trie::search(std::string word) {
         actions.push_back({9, SETLECT, current});
     }
     if (current->isEndOfWord) actions.push_back({10, FadeEffect, current});
+    actions.push_back({11, SETLECT, NULL});
     actions.push_back({11, CLEAR, current});
     core.insert(core.end(), actions.begin(), actions.end());
 }
@@ -110,6 +113,7 @@ void Trie::remove(std::string word) {
     actions.push_back({13, SETLECT, current});
     for (int i = 0; i < word.size(); i++) {
         if (current->children.find(word[i]) == current->children.end()) {
+            actions.push_back({19, SETLECT, NULL});
             actions.push_back({19, CLEAR, current});
             core.insert(core.end(), actions.begin(), actions.end());
             return ;
@@ -126,6 +130,7 @@ void Trie::remove(std::string word) {
         current = parent;
         if (current->children.size() > 1 || current->isEndOfWord) flag = false;
     }
+    actions.push_back({19, SETLECT, NULL});
     actions.push_back({19, CLEAR, current});
     core.insert(core.end(), actions.begin(), actions.end());
 }
@@ -134,14 +139,18 @@ bool Trie::Undo(action Action) {
     switch (Action.action)
     {
         case INIT:
-            Itr.show = false;
+            Itr = ItrAction();
             return true;
         case CLEAR:
             Itr.show = true;
             return true;
         case SETLECT:
-            Itr.targetedNode = ItrHistory.back().first;
-            Itr.setTarget();
+            if (ItrHistory.size() && ItrHistory.back().first != Itr.targetedNode) {
+                Itr.preNode = Itr.targetedNode;
+                Itr.targetedNode = ItrHistory.back().first;
+                Itr.animation->setHashAlpha(0);
+                Itr.setTarget();
+            }
             if (Itr.animation -> isCompleted()) ItrHistory.pop_back();
             if (Itr.animation -> isCompleted()) return true;
             return false;
@@ -156,11 +165,13 @@ bool Trie::Undo(action Action) {
             APosition(root);
             return isCompleted(root);
         case SETEND:
+            if (Action.node->isEndOfWord) Action.node->setUnTarget();
             Action.node->isEndOfWord = false;
-            return true;
+            return Action.node->isCompletedAlpha();
         case UNSETEND:
+            if (!Action.node->isEndOfWord) Action.node->setTarget();
             Action.node->isEndOfWord = true;
-            return true;
+            return Action.node->isCompletedAlpha();
         case FadeEffect:
             if (flagUndo == -1) flagUndo = 0;
             else if (flagUndo == 1) flagUndo = -1;
@@ -175,13 +186,18 @@ bool Trie::doAction(action Action) {
             Itr.show = true;
             return true;
         case CLEAR:
-            Itr.show = false;
+            //Itr.show = false;
+            Itr = ItrAction();
             return true;
         case SETLECT:
-            if (ItrHistory.size() == 0 || ItrHistory.back().second != loop) ItrHistory.push_back({Itr.targetedNode, loop});
-            Itr.targetedNode = Action.node;
-            Itr.setTarget();
-            if (Itr.animation -> isCompleted()) return true;
+            if (ItrHistory.size() == 0 || ItrHistory.back().second != loop) {
+                ItrHistory.push_back({Itr.targetedNode, loop});
+                Itr.preNode = Itr.targetedNode;
+                Itr.targetedNode = Action.node;
+                Itr.animation->setHashAlpha(0);
+                Itr.setTarget();
+            }
+            if (Itr.animation->isCompleted()) return true;
             return false;
         case CREATE:
             Action.node->valid = true;
@@ -194,11 +210,13 @@ bool Trie::doAction(action Action) {
             APosition(root);
             return isCompleted(root);
         case SETEND:
+            if (!Action.node->isEndOfWord) Action.node->setTarget();
             Action.node->isEndOfWord = true;
-            return true;
+            return Action.node->isCompletedAlpha();
         case UNSETEND:
+            if (Action.node->isEndOfWord) Action.node->setUnTarget();
             Action.node->isEndOfWord = false;
-            return true;
+            return Action.node->isCompletedAlpha();
         case FadeEffect:
             if (flag == -1) flag = 0;
             else if (flag == 1) flag = -1;
@@ -226,6 +244,7 @@ bool Trie::isCompleted(TrieNode *root) {
 void Trie::update(TrieNode *root, double currTime, double rate) {
     if (root == NULL) return;
     root->displace(currTime, rate);
+    root->updateAlpha(currTime, rate);
     for (auto &child : root->children) update(child.second, currTime, rate);
 }
 
@@ -243,10 +262,27 @@ void Trie::update(double currTime, double rate) {
     }
 }
 
+//#include "Utility.h"
+
 void Trie::draw(TrieNode *root) {
     if (root == NULL) return;
     for (auto &child : root->children) draw(child.second);
-    DrawCircleV(root->getPosition(), NODE_RADIUS - 3, root->isEndOfWord ? PALETTE->backgroundHighlight : PALETTE->backgroundNormal);
+    DrawCircleV(root->getPosition(), NODE_RADIUS - 3,PALETTE->backgroundNormal);
+    if (Itr.show && root == Itr.targetedNode) {
+        Color tmp = GBLight::LIGHT_RED;
+        tmp.a -= Itr.animation->getHashAlpha();
+        DrawCircleV(Itr.targetedNode->getPosition(), NODE_RADIUS - 3, tmp);
+    }
+    if (Itr.show && root == Itr.preNode) {
+        Color tmp = GBLight::LIGHT_RED;
+        tmp.a -= (255.f - Itr.animation->getHashAlpha());
+        DrawCircleV(Itr.preNode->getPosition(), NODE_RADIUS - 3, tmp);
+    }
+    if (root->isEndOfWord || !root->isCompletedAlpha()) {
+        Color backgroundColor = GBLight::DARK_YELLOW;
+        backgroundColor.a -= root->alpha;
+        DrawCircleV(root->getPosition(), NODE_RADIUS - 3, backgroundColor);
+    }
     //Color color = PALETTE->backgroundNormal;
     Color color = nodeColorSet.borderHighlight;
     color.a = 255.f - root->getAlpha();
@@ -255,6 +291,19 @@ void Trie::draw(TrieNode *root) {
     char str[2] = {root->character, '\0'};
     Utility::drawText(str, root->getPosition(), Utility::inter20, PALETTE->textNormal, 20, 1, VerticalAlignment::CENTERED, HorizontalAlignment::CENTERED);
     // DrawTextEx(mLib::inter30, str, (Vector2){root->getPosition().x - 12, root->getPosition().y - 12}, 20, 2, WHITE);
+    Color colorText = WHITE;
+    if (Itr.show && root == Itr.targetedNode) colorText.a -= Itr.animation->getHashAlpha();
+    else if (Itr.show && root == Itr.preNode) colorText.a -= (255.f - Itr.animation->getHashAlpha());
+    else colorText = PALETTE->textNormal;
+    Utility::drawText(str, root->getPosition(), Utility::inter20, colorText, 20, 1, VerticalAlignment::CENTERED, HorizontalAlignment::CENTERED);
+    if (root->isEndOfWord || !root->isCompletedAlpha()) {
+        Color colorText = WHITE;
+        colorText.a -= root->alpha;
+        Utility::drawText(str, root->getPosition(), Utility::inter30,
+        colorText, 20, Utility::SPACING,
+        VerticalAlignment::CENTERED,
+        HorizontalAlignment::CENTERED);   
+    }
 }
 
 void Trie::draw() {
@@ -262,7 +311,7 @@ void Trie::draw() {
     else Utility::DrawTextTrie(-1);
     drawArrow(root);
     draw(root);
-    if (Itr.show) DrawRing(Itr.animation->getPosition(), NODE_RADIUS, NODE_RADIUS + 5, 0, 360, 20, GBLight::DARK_RED);
+    //if (Itr.show) DrawRing(Itr.animation->getPosition(), NODE_RADIUS, NODE_RADIUS + 5, 0, 360, 20, GBLight::DARK_RED);
 }
 
 void Trie::drawArrow(TrieNode* root) {

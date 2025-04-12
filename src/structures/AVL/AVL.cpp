@@ -23,7 +23,7 @@ void AVL::printDebug(AVLNode *root) {
 
 void AVL::setNULLPos(AVLNode *root) {
     if (root == NULL) return;
-    root->setPosition((Vector2){800, 100});
+    root->setPosition((Vector2){800, 90});
     setNULLPos(root->left);
     setNULLPos(root->right);
 }

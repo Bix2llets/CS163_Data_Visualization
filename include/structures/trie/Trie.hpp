@@ -25,14 +25,14 @@ class Trie {
         struct ItrAction {
             Animation *animation;
             bool show;
-            TrieNode *targetedNode;
+            TrieNode *targetedNode, *preNode;
             void setTarget() {
                 if (targetedNode == NULL) animation->setTargetedPosition((Vector2){0, 0});
                 else animation->setTargetedPosition(targetedNode->getTargetedPosition());
             }
             ItrAction() {
                 animation = new Animation(0, 0);
-                targetedNode = NULL;
+                targetedNode = preNode = NULL;
                 show = false;
             }
         };
@@ -45,7 +45,7 @@ class Trie {
         
         typedef std::vector<action> ActionList;
     private:
-        float xOFFSET = 70, yOFFSET = 70, NODE_RADIUS = 25;
+        float xOFFSET = 100, yOFFSET = 100, NODE_RADIUS = 25;
         TrieNode* root;
         int flag, flagUndo;
     public: 
