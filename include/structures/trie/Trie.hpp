@@ -51,6 +51,8 @@ class Trie {
     public: 
         static ColorSet const *PALETTE;
         static Color const *finalNodeColor;
+        static int highlightingRow; 
+        
         Trie() ;
         bool Action(bool isReversed);
         bool doAction(action Action);
@@ -94,7 +96,7 @@ class Trie {
             }
             return words;
         }
-    private:
+        private:
         Vector2 calcPosition(TrieNode *root);
         void APosition(TrieNode *root);
         void draw(TrieNode *root);
@@ -107,7 +109,14 @@ class Trie {
         ActionList core;
         std::vector<std::pair<TrieNode*, int>> ItrHistory;
         std::pair<bool, bool> doFadeEffect(TrieNode *root, double currTime, double TransTime, TrieNode *targetedNode);
-};
 
-
-#endif // TRIE_HPP
+        static const std::vector<std::string> TrieInsert; 
+        static const std::vector<std::string> TrieSearch;
+        static const std::vector<std::string> TrieDelete;
+        static const std::vector<std::string> TrieDelete2;
+        
+        static void adjustHighlight(int index); 
+    };
+    
+    
+    #endif // TRIE_HPP

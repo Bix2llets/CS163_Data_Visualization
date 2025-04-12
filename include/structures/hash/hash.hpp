@@ -50,6 +50,8 @@ class Hash {
         std::vector<hashNode *> root;
     public: 
         static ColorSet const *PALETTE;
+        static int highlightingRow; 
+        
         void printTable();
         Hash(int _m) ;
         bool Action(bool isReversed);
@@ -81,7 +83,7 @@ class Hash {
         void setValues(std::vector<int> values) {
             for (int i = 0; i < m; i++) root[i]->value = values[i];
         }
-    private:
+        private:
         void draw(hashNode *root);
         void DrawArrowWithCircles(Vector2 start, Vector2 end, float radius, Color color, float thickness);
         ItrAction Itr;
@@ -91,7 +93,13 @@ class Hash {
         std::vector<int> changeList;
         std::pair<bool, bool> doFadeEffect(double currTime, double TransTime, hashNode *targetedNode);
         std::pair<ChangeProcedure, hashNode*>  changing;
-};
 
-
-#endif // hash_HPP
+        static const std::vector<std::string> hashInsert; 
+        static const std::vector<std::string> hashSearch;
+        static const std::vector<std::string> hashDelete;
+        
+        static void adjustHighlight(int index);
+    };
+    
+    
+    #endif // hash_HPP

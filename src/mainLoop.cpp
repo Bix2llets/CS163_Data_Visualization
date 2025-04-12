@@ -72,6 +72,7 @@ void registerInput() {
             renderFunc = &AVLScene::render;
             updateFunc = &AVLScene::update;
             recordFunc = &AVLScene::handleInput;
+            CodePane::highlightValue = &AVL::highlightingRow;
 
             MenuTable::addPane = &AVLState::addPane;
             MenuTable::deletePane = &AVLState::removePane;
@@ -95,10 +96,14 @@ void registerInput() {
             renderFunc = &HashScene::render;
             updateFunc = &HashScene::update;
             recordFunc = &HashScene::handleInput;
+            
             MenuTable::addPane = &HashState::addPane;
             MenuTable::deletePane = &HashState::removePane;
             MenuTable::algoPane = &HashState::algoPane;
             MenuTable::storagePane = &HashState::storagePane;
+            
+            // Update to use Hash's static variable
+            CodePane::highlightValue = &Hash::highlightingRow;
         }
         if (WelcomeMenu::isLinkedListPressed()) {
             currentScene = SceneList::LINKED_LIST;
@@ -123,6 +128,9 @@ void registerInput() {
             MenuTable::deletePane = &TrieState::removePane;
             MenuTable::algoPane = &TrieState::algoPane;
             MenuTable::storagePane = &TrieState::storagePane;
+            
+            // Update to use Trie's static variable
+            CodePane::highlightValue = &Trie::highlightingRow;
         }
         return;
     }
