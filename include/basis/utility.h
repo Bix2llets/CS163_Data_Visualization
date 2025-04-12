@@ -3,6 +3,7 @@
 
 #include "raylib.h"
 #include "raymath.h"
+#include <vector>
 enum class VerticalAlignment { TOP, CENTERED, BOTTOM };
 enum class HorizontalAlignment { LEFT, CENTERED, RIGHT };
 Vector2 randomPosition();

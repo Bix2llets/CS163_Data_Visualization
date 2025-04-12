@@ -8,7 +8,7 @@
 // #include "edgeInsertBox.hpp"
 #include "textureButton.hpp"
 #include "menuPane.h"
-#include <mLib/Utility.hpp>
+#include <Utility.h>
 #include "TrieScene.h"
 #include "AVLScene.h"
 #include "hashScene.h"

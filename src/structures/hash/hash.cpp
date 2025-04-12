@@ -1,5 +1,5 @@
 #include "hash/hash.hpp"
-#include <mLib/Utility.hpp>
+#include "Utility.h"
 
 ColorSet const *Hash::PALETTE = &nodeColorSet;
 Hash::Hash(int _m = 10) : Itr(), m(_m), changing({ChangeProcedure(-1, -1, NULL), NULL}) {

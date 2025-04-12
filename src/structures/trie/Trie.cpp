@@ -1,5 +1,5 @@
 #include "trie/Trie.hpp"
-#include <mLib/Utility.hpp>
+#include "Utility.h"
 
 ColorSet const *Trie::PALETTE = &nodeColorSet;
 Color const *Trie::finalNodeColor = &GBLight::BACKGROUND0H;

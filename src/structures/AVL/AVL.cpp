@@ -1,6 +1,6 @@
 #include "avl/AVL.hpp"
 
-#include <mLib/Utility.hpp>
+#include "Utility.h"
 
 ColorSet const *AVL::PALETTE = &nodeColorSet;
 AVL::AVL() : Itr(), changing({ChangeProcedure(-1, -1, NULL), NULL}) {

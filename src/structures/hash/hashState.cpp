@@ -1,7 +1,7 @@
 #include "hash/hashState.hpp"
 #include "menu.hpp"
 #include "raygui.h"
-#include <mLib/Utility.hpp>
+#include "Utility.h"
 #include <cstring>#include <fstream>
 #include <mLib/tinyfiledialogs.h>
 #include <cstdlib>

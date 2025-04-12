@@ -3,12 +3,12 @@
 #include <cmath>
 #include <cstdlib>
 #include <iostream>
-#include <mLib/Utility.hpp>
 #include <queue>
 #include <string>
 #include <unordered_map>
 #include <vector>
 
+#include "Utility.h"
 #include "AVLScene.h"
 #include "GraphScene.h"
 #include "MenuPane.h"
@@ -81,7 +81,6 @@ void otherInit() {
     CodePane::init();
     SLLScene::init();
     GraphScene::init();
-    Utility::Init();
     Loop::setColorPalette();
     Loop::configSlider();
 }

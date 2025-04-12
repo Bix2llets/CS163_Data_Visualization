@@ -45,7 +45,6 @@ add_executable(
     src/GUI/menu.cpp
     src/GUI/AppInfo.cpp
     
-    src/mLib/Utility.cpp 
     src/mLib/tinyfiledialogs.cpp
 
     src/structures/SLL/SLLNode.cpp

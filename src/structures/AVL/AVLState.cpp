@@ -6,7 +6,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <fstream>
-#include <mLib/Utility.hpp>
+#include "Utility.h"
 
 #include "menuPane.h"
 #include "raygui.h"
