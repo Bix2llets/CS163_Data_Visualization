@@ -278,7 +278,7 @@ void AVLState::handleInput() {
             mAVL.update(1e-15, 1e-15);
             mAVL.Action(1);
         } while (!mAVL.completedAllActions() && !mAVL.reachedStart());
-        //mAVL.ClearOperator();
+        mAVL.ClearOperator();
     }
 
     if (MenuTable::pauseButton.isPressed() || *MenuTable::isPlaying) animationPlaying = 1;

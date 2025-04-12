@@ -362,6 +362,7 @@ void TrieState::handleInput() {
             mTrie.update(1e-15, 1e-15);
             mTrie.Action(1);
         } while (!mTrie.completedAllActions() && !mTrie.reachedStart());
+        mTrie.ClearOperator();
         //mTrie.ClearOperator();
     }
 

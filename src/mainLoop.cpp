@@ -96,12 +96,12 @@ void registerInput() {
             renderFunc = &HashScene::render;
             updateFunc = &HashScene::update;
             recordFunc = &HashScene::handleInput;
-            
+
             MenuTable::addPane = &HashState::addPane;
             MenuTable::deletePane = &HashState::removePane;
             MenuTable::algoPane = &HashState::algoPane;
             MenuTable::storagePane = &HashState::storagePane;
-            
+
             // Update to use Hash's static variable
             CodePane::highlightValue = &Hash::highlightingRow;
         }
@@ -128,16 +128,16 @@ void registerInput() {
             MenuTable::deletePane = &TrieState::removePane;
             MenuTable::algoPane = &TrieState::algoPane;
             MenuTable::storagePane = &TrieState::storagePane;
-            
+
             // Update to use Trie's static variable
             CodePane::highlightValue = &Trie::highlightingRow;
         }
         return;
     }
-    
-        checkForReturn();
 
-        if (recordFunc) recordFunc();
+    checkForReturn();
+
+    if (recordFunc) recordFunc();
 }
 
 void render() {
