@@ -5,7 +5,7 @@ const int GraphNode::BORDER_WIDTH = 4;
 ColorSet const *GraphNode::PALETTE  = &nodeColorSet;
 
 Color const *GraphNode::HOVER = &GBLight::LIGHT_GREEN;
-const float GraphNode::MASS = 1;
+const float GraphNode::MASS = 1e-1;
 
 void GraphNode::render() {
     Color border = borderColor.getCurrentColor();
