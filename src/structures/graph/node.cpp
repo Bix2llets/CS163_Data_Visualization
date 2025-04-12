@@ -5,7 +5,7 @@ const int GraphNode::BORDER_WIDTH = 4;
 ColorSet const *GraphNode::PALETTE  = &nodeColorSet;
 
 Color const *GraphNode::HOVER = &GBLight::LIGHT_GREEN;
-const float GraphNode::MASS = 1e-1;
+const float GraphNode::MASS = 1.f;
 
 void GraphNode::render() {
     Color border = borderColor.getCurrentColor();
@@ -86,7 +86,7 @@ void GraphNode::applyForce(Vector2 force) {
     Vector2 deltaVelocity = Vector2Scale(acceleration, AppInfo::DELTA_TIME);
 
     velocity = Vector2Add(velocity, deltaVelocity);
-    velocity = Vector2ClampValue(velocity, -2400.f / 10, 2400.f / 10);
+    // velocity = Vector2ClampValue(velocity, -2400.f / 10, 2400.f / 10);
 }
 
 int GraphNode::getLabel() { return label; }

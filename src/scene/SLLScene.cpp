@@ -8,7 +8,7 @@ const Rectangle SLLScene::CANVAS = {100, 100, 1400, 600};
 ColorSet const* SLLScene::NODE_PALETTE = &nodeColorSet;
 
 float SLLScene::animationRate = 1.0f;
-SLL SLLScene::sll(CANVAS, animationRate);
+SLL SLLScene::sll(CANVAS);
 int SLLScene::highlightedRow = -1;
 
 std::deque<SLLScene::SLLStorage> SLLScene::steps;
@@ -41,6 +41,7 @@ void SLLScene::init() {
     addPane.newLine(0, 2, "Add", {"Value", "Location"}, {0, 0}, true);
     addPane.newLine(1, 0, "Random", {}, {}, false);
     deletePane.newLine(0, 1, "Remove", {"Location"}, {0, 0}, true);
+    deletePane.newLine(1, 0, "Clear", {}, {}, false);
     algoPane.newLine(0, 1, "Search", {"Value"}, {0});
     miscPane.newLine(0, 0, "Save", {}, {});
     miscPane.newLine(1, 0, "Load", {}, {});
@@ -188,7 +189,7 @@ void SLLScene::find(std::string val) {
 }
 
 void SLLScene::clearScene() {
-    sll = SLL(CANVAS, animationRate);
+    sll = SLL(CANVAS);
     while (steps.size()) {
         steps.front().sll.freeMemory();
         steps.pop_front();
@@ -215,35 +216,37 @@ void SLLScene::recordInput() {
     }
     if (addPane.isButtonPressed(0)) {
         // * Add at end
+        if (sll.isFinished() == false) return;
         auto value = addPane.getText(0, 0);
         auto location = addPane.getText(0, 1);
-
+        
         if (isStrNum(value)) {
             if (isStrNum(location)) {
                 SLLScene::addAt(value, std::stoi(location));
                 CodePane::loadCode(SLLScene::PSEUDO_INSERT);
-
+                
             } else if (location.size() == 0) {
                 SLLScene::addEnd(value);
                 CodePane::loadCode(SLLScene::PSEUDO_INSERT);
             }
-
+            
             addPane.getForm(0, 0).clear();
             addPane.getForm(0, 1).clear();
         }
     }
-
+    
     if (addPane.isRandomPressed(0)) {
         std::string value = std::to_string(rand() % 10000);
         std::string location = std::to_string(rand() % (sll.nodeCount + 1));
-
+        
         addPane.getForm(0, 0).setText(value);
         addPane.getForm(0, 1).setText(location);
     }
     if (deletePane.isButtonPressed(0)) {
         // * Delete at end and delete at somewhere else
+        if (sll.isFinished() == false) return;
         auto location = deletePane.getText(0, 0);
-
+        
         if (isStrNum(location)) {
             SLLScene::removeAt(std::stoi(location));
             CodePane::loadCode(SLLScene::PSEUDO_DELETE);
@@ -251,6 +254,12 @@ void SLLScene::recordInput() {
             SLLScene::removeEnd();
             CodePane::loadCode(SLLScene::PSEUDO_DELETE);
         }
+    }
+    if (deletePane.isButtonPressed(1)) {
+        // * Delete at end and delete at somewhere else
+        if (sll.isFinished() == false) return;
+        addStep(-1, nullptr);
+        steps.back().sll = SLL(CANVAS);
     }
     if (deletePane.isRandomPressed(0)) {
         if (sll.nodeCount == 0) return;
@@ -333,7 +342,7 @@ void SLLScene::prevStep() {
 }
 
 void SLLScene::correctAnimation() {
-    if (future.size() == 0) return;
+    if (steps.size() == 1) return;
     while (steps.front().highlightIndex != -1) nextStep();
 }
 

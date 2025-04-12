@@ -1,6 +1,7 @@
 #pragma once
 #include <deque>
 
+#include "Appinfo.h"
 #include "SLLNode.h"
 class SLL {
      public:
@@ -12,11 +13,10 @@ class SLL {
     int nodePerRow;
     Rectangle drawArea;
     int nodeCount;
-    float animationRate;
 
     Node* root;
 
-    SLL(Rectangle area = {100, 100, 1400, 400}, float animationRate = 1.0f);
+    SLL(Rectangle area = {AppInfo::UPPER_LEFT.x, AppInfo::UPPER_LEFT.y, AppInfo::LOWER_RIGHT.x - AppInfo::UPPER_LEFT.x, AppInfo::LOWER_RIGHT.y - AppInfo::UPPER_LEFT.y});
     SLL(const SLL &sll);
     // ~SLL();
     void update();

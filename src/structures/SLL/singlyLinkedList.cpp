@@ -7,9 +7,8 @@ const int SLL::NODE_RADIUS = 30;
 const int SLL::DISTANCE_HORIZONTAL = 120;
 const int SLL::DISTANCE_VERTICAL = 120;
 
-SLL::SLL(Rectangle area, float animationRate)
+SLL::SLL(Rectangle area)
     : drawArea{area},
-      animationRate{animationRate},
       root{nullptr},
       nodePerRow{int(1 + area.width / DISTANCE_HORIZONTAL)},
       nodeCount{0} {}
@@ -44,7 +43,6 @@ SLL::SLL(const SLL& sll) {
     nodePerRow = sll.nodePerRow;
     drawArea = sll.drawArea;
     nodeCount = sll.nodeCount;
-    animationRate = sll.animationRate;
 
     root = sll.root;
 }
@@ -312,7 +310,6 @@ SLL SLL::operator=(const SLL& source) {
         nodePerRow = source.nodePerRow;
         drawArea = source.drawArea;
         nodeCount = source.nodeCount;
-        animationRate = source.animationRate;
 
         root = source.root;
     }
