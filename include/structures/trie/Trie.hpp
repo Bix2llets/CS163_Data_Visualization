@@ -25,14 +25,14 @@ class Trie {
         struct ItrAction {
             Animation *animation;
             bool show;
-            TrieNode *targetedNode;
+            TrieNode *targetedNode, *preNode;
             void setTarget() {
                 if (targetedNode == NULL) animation->setTargetedPosition((Vector2){0, 0});
                 else animation->setTargetedPosition(targetedNode->getTargetedPosition());
             }
             ItrAction() {
                 animation = new Animation(0, 0);
-                targetedNode = NULL;
+                targetedNode = preNode = NULL;
                 show = false;
             }
         };
@@ -45,12 +45,14 @@ class Trie {
         
         typedef std::vector<action> ActionList;
     private:
-        float xOFFSET = 70, yOFFSET = 70, NODE_RADIUS = 25;
+        float xOFFSET = 100, yOFFSET = 100, NODE_RADIUS = 25;
         TrieNode* root;
         int flag, flagUndo;
     public: 
         static ColorSet const *PALETTE;
         static Color const *finalNodeColor;
+        static int highlightingRow; 
+        
         Trie() ;
         bool Action(bool isReversed);
         bool doAction(action Action);
@@ -94,7 +96,7 @@ class Trie {
             }
             return words;
         }
-    private:
+        private:
         Vector2 calcPosition(TrieNode *root);
         void APosition(TrieNode *root);
         void draw(TrieNode *root);
@@ -107,7 +109,14 @@ class Trie {
         ActionList core;
         std::vector<std::pair<TrieNode*, int>> ItrHistory;
         std::pair<bool, bool> doFadeEffect(TrieNode *root, double currTime, double TransTime, TrieNode *targetedNode);
-};
 
-
-#endif // TRIE_HPP
+        static const std::vector<std::string> TrieInsert; 
+        static const std::vector<std::string> TrieSearch;
+        static const std::vector<std::string> TrieDelete;
+        static const std::vector<std::string> TrieDelete2;
+        
+        static void adjustHighlight(int index); 
+    };
+    
+    
+    #endif // TRIE_HPP

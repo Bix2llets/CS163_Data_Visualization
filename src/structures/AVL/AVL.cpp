@@ -1,8 +1,52 @@
-#include "AVL.hpp"
+#include "avl/AVL.hpp"
 
-#include <mLib/Utility.hpp>
-
+#include "CodePane.h"
+#include "Utility.h"
 ColorSet const *AVL::PALETTE = &nodeColorSet;
+
+const std::vector<std::string> AVL::AVLInsert = {
+    "Begin",                        // 0
+    "search for insert position",   // 1
+    "insert node",                  // 2
+    "rebalance",                    // 3
+    "Case 1: Left rotation",        // 4
+    "Case 2: Right rotation",       // 5
+    "Case 3: Left-Right rotation",  // 6
+    "Case 4: Right-Left rotation",  // 7
+    "End",                          // 8
+};
+
+const std::vector<std::string> AVL::AVLSearch = {
+    "Begin",                               // 9
+    "if node.data = value, return node",   // 10
+    "if node.data < value, search right",  // 11
+    "if node.data > value, search left",   // 12
+    "End",                                 // 13
+};
+
+const std::vector<std::string> AVL::AVLDelete = {
+    "Begin",            // 14
+    "search for node",  // 15
+    "if node is internal node",
+    "   find successor S",    // 16
+    "   node.data = S.data",  // 17
+    "   delete successor S",  // 18
+    "else delete node",       // 19
+    "...",
+    "End",  // 25
+};
+
+const std::vector<std::string> AVL::AVLDelete2 = {
+    "Begin",  // 14
+    "...",
+    "rebalance",                    // 20
+    "Case 1: Left rotation",        // 21
+    "Case 2: Right rotation",       // 22
+    "Case 3: Left-Right rotation",  // 23
+    "Case 4: Right-Left rotation",  // 24
+    "End",                          // 25
+};
+
 AVL::AVL() : Itr(), changing({ChangeProcedure(-1, -1, NULL), NULL}) {
     loop = 0;
     core = ActionList();
@@ -16,14 +60,15 @@ AVL::AVL() : Itr(), changing({ChangeProcedure(-1, -1, NULL), NULL}) {
 void AVL::printDebug(AVLNode *root) {
     if (root == NULL) return;
     std::cout << root->PosInParent << ' ';
-    std::cout << root->value << " " << (root->left ? root->left->value : -1) << " " << (root->right ? root->right->value : -1) << "\n";
+    std::cout << root->value << " " << (root->left ? root->left->value : -1)
+              << " " << (root->right ? root->right->value : -1) << "\n";
     printDebug(root->left);
     printDebug(root->right);
 }
 
 void AVL::setNULLPos(AVLNode *root) {
     if (root == NULL) return;
-    root->setPosition((Vector2){800, 100});
+    root->setPosition((Vector2){800, 90});
     setNULLPos(root->left);
     setNULLPos(root->right);
 }
@@ -117,17 +162,20 @@ std::pair<int, int> AVL::insert(AVLNode *par, AVLNode *&root, int value,
         if (value < root->left->value) {
             actions.push_back({5, Right, root});
             int hLeft = root->left->heightLeft;
-            int hRight = std::max(root->left->heightRight, root->heightRight) + 1;
+            int hRight =
+                std::max(root->left->heightRight, root->heightRight) + 1;
             return {std::max(hLeft, hRight) + 1, hLeft - hRight};
         } else {
             actions.push_back({6, LL, root});
             actions.push_back({6, Right, root});
             int hLeft = std::max(root->left->right->heightLeft,
-                                 root->left->heightLeft) + 1;
-            int hRight = std::max(root->left->right->heightRight, root->heightRight) + 1;
+                                 root->left->heightLeft) +
+                        1;
+            int hRight =
+                std::max(root->left->right->heightRight, root->heightRight) + 1;
             return {std::max(hLeft, hRight) + 1, hLeft - hRight};
         }
-        //return {std::max(root->heightLeft, root->heightRight), 1};
+        // return {std::max(root->heightLeft, root->heightRight), 1};
     } else if (balance < -1) {
         if (value > root->right->value) {
             actions.push_back({4, Left, root});
@@ -137,12 +185,14 @@ std::pair<int, int> AVL::insert(AVLNode *par, AVLNode *&root, int value,
         } else {
             actions.push_back({7, RR, root});
             actions.push_back({7, Left, root});
-            int hLeft = std::max(root->right->left->heightLeft, root->heightLeft) + 1;
+            int hLeft =
+                std::max(root->right->left->heightLeft, root->heightLeft) + 1;
             int hRight = std::max(root->right->left->heightRight,
-                                  root->right->heightRight) + 1;
+                                  root->right->heightRight) +
+                         1;
             return {std::max(hLeft, hRight) + 1, hLeft - hRight};
         }
-        //return {std::max(root->heightLeft, root->heightRight), -1};
+        // return {std::max(root->heightLeft, root->heightRight), -1};
     }
     return {std::max(root->heightLeft, root->heightRight) + 1, balance};
 }
@@ -227,12 +277,14 @@ std::pair<int, int> AVL::remove(AVLNode *par, AVLNode *root, int value,
         } else {
             actions.push_back({23, LL, root});
             actions.push_back({23, Right, root});
-            int hLeft = std::max(root->left->right->heightLeft, root->heightLeft) + 1;
+            int hLeft =
+                std::max(root->left->right->heightLeft, root->heightLeft) + 1;
             int hRight = std::max(root->left->right->heightRight,
-                                  root->right->heightRight) + 1;
+                                  root->right->heightRight) +
+                         1;
             return {std::max(hLeft, hRight) + 1, hLeft - hRight};
         }
-        //return {std::max(root->heightLeft, root->heightRight), 1};
+        // return {std::max(root->heightLeft, root->heightRight), 1};
     } else if (balance < -1) {
         if (root->right->balance <= 0) {
             actions.push_back({21, Left, root});
@@ -242,12 +294,14 @@ std::pair<int, int> AVL::remove(AVLNode *par, AVLNode *root, int value,
         } else {
             actions.push_back({24, RR, root});
             actions.push_back({24, Left, root});
-            int hLeft = std::max(root->right->left->heightLeft, root->heightLeft) + 1;
+            int hLeft =
+                std::max(root->right->left->heightLeft, root->heightLeft) + 1;
             int hRight = std::max(root->right->left->heightRight,
-                                  root->right->heightRight) + 1;
+                                  root->right->heightRight) +
+                         1;
             return {std::max(hLeft, hRight) + 1, hLeft - hRight};
         }
-        //return {std::max(root->heightLeft, root->heightRight), -1};
+        // return {std::max(root->heightLeft, root->heightRight), -1};
     }
     return {std::max(root->heightLeft, root->heightRight) + 1, balance};
 }
@@ -298,14 +352,15 @@ bool AVL::Undo(action Action) {
             Itr.show = true;
             return true;
         case SETLECT:
-            if (ItrHistory.size() && ItrHistory.back().first != Itr.targetedNode) {
+            if (ItrHistory.size() &&
+                ItrHistory.back().first != Itr.targetedNode) {
                 Itr.preNode = Itr.targetedNode;
                 Itr.targetedNode = ItrHistory.back().first;
                 Itr.animation->setHashAlpha(0);
                 Itr.setTarget();
             }
-            if (Itr.animation -> isCompleted()) ItrHistory.pop_back();
-            if (Itr.animation -> isCompleted()) return true;
+            if (Itr.animation->isCompleted()) ItrHistory.pop_back();
+            if (Itr.animation->isCompleted()) return true;
             return false;
         case CREATE:
             Action.node->valid = false;
@@ -334,7 +389,10 @@ bool AVL::Undo(action Action) {
         case changeValue:
             if (changing.second == NULL) {
                 Action.node->targetValue = Action.node->value;
-                changing = {ChangeProcedure(Action.node->value, changeList.back(), &Action.node->value), Action.node};
+                changing = {
+                    ChangeProcedure(Action.node->value, changeList.back(),
+                                    &Action.node->value),
+                    Action.node};
                 changeList.pop_back();
             }
             if (changing.first.isCompleted()) {
@@ -448,7 +506,7 @@ bool AVL::doAction(action Action) {
             Itr.show = true;
             return true;
         case CLEAR:
-            //Itr.show = false;
+            // Itr.show = false;
             Itr = ItrAction();
             return true;
         case SETLECT:
@@ -492,7 +550,10 @@ bool AVL::doAction(action Action) {
         case changeValue:
             if (changing.second == NULL) {
                 changeList.push_back(Action.node->value);
-                changing = {ChangeProcedure(Action.node->value, Action.node->targetValue, &Action.node->value), Action.node};
+                changing = {ChangeProcedure(Action.node->value,
+                                            Action.node->targetValue,
+                                            &Action.node->value),
+                            Action.node};
                 Action.node->targetValue = -1;
             }
             if (changing.first.isCompleted()) {
@@ -510,7 +571,8 @@ bool AVL::doAction(action Action) {
                 // left rotation on leftChild
                 leftChild->right = left_Right_LeftChild;
                 if (left_Right_LeftChild != NULL)
-                    left_Right_LeftChild->parent = leftChild, left_Right_LeftChild->PosInParent = 1;
+                    left_Right_LeftChild->parent = leftChild,
+                    left_Right_LeftChild->PosInParent = 1;
                 righ_LeftChild->left = leftChild;
                 leftChild->parent = righ_LeftChild;
                 righ_LeftChild->parent = Action.node,
@@ -530,7 +592,8 @@ bool AVL::doAction(action Action) {
                 // right rotation on rightChild
                 rightChild->left = right_Left_RightChild;
                 if (right_Left_RightChild != NULL)
-                    right_Left_RightChild->parent = rightChild, right_Left_RightChild->PosInParent = 0;
+                    right_Left_RightChild->parent = rightChild,
+                    right_Left_RightChild->PosInParent = 0;
                 left_RightChild->right = rightChild;
                 rightChild->parent = left_RightChild;
                 left_RightChild->parent = Action.node,
@@ -660,7 +723,7 @@ void AVL::draw(AVLNode *root) {
         backgroundColor.a -= root->alpha;
         DrawCircleV(root->getPosition(), NODE_RADIUS - 3, backgroundColor);
     }
-    Color color = mLib::highlightColor;
+    Color color = GBLight::LIGHT_GREEN;
     color.a = 255.f - root->getAlpha();
     DrawCircleV(root->getPosition(), NODE_RADIUS - 3, color);
     DrawRing(root->getPosition(), NODE_RADIUS - 3, NODE_RADIUS, 0, 360, 20,
@@ -669,56 +732,63 @@ void AVL::draw(AVLNode *root) {
     if (changing.second == root) {
         Color colorText = WHITE;
         colorText.a -= changing.first.getAlpha();
-        char *text = new char[std::to_string(changing.first.getNewValue()).length() + 1];
+        char *text =
+            new char[std::to_string(changing.first.getNewValue()).length() + 1];
         strcpy(text, std::to_string(changing.first.getNewValue()).c_str());
-        DrawUtility::drawText(text, root->getPosition(), mLib::mFont,
-                              colorText, 20, DrawUtility::SPACING,
-                              VerticalAlignment::CENTERED,
-                              HorizontalAlignment::CENTERED);
+        Utility::drawText(text, root->getPosition(), Utility::inter30,
+                          colorText, 20, Utility::SPACING,
+                          VerticalAlignment::CENTERED,
+                          HorizontalAlignment::CENTERED);
         colorText = WHITE;
         colorText.a -= (255.f - changing.first.getAlpha());
-        text = new char[std::to_string(changing.first.getOldValue()).length() + 1];
+        text =
+            new char[std::to_string(changing.first.getOldValue()).length() + 1];
         strcpy(text, std::to_string(changing.first.getOldValue()).c_str());
-        DrawUtility::drawText(text, root->getPosition(), mLib::mFont,
-                              colorText, 20, DrawUtility::SPACING,
-                              VerticalAlignment::CENTERED,
-                              HorizontalAlignment::CENTERED);
-        return ;
+        Utility::drawText(text, root->getPosition(), Utility::inter30,
+                          colorText, 20, Utility::SPACING,
+                          VerticalAlignment::CENTERED,
+                          HorizontalAlignment::CENTERED);
+        return;
     }
     std::string value = std::to_string(root->value);
     char *text = new char[value.length() + 1];
     strcpy(text, value.c_str());
-    DrawUtility::drawText(value.c_str(), root->getPosition(), mLib::mFont,
-                          PALETTE->textNormal, 20, DrawUtility::SPACING,
-                          VerticalAlignment::CENTERED,
-                          HorizontalAlignment::CENTERED);
+    Utility::drawText(value.c_str(), root->getPosition(), Utility::inter30,
+                      PALETTE->textNormal, 20, Utility::SPACING,
+                      VerticalAlignment::CENTERED,
+                      HorizontalAlignment::CENTERED);
     Color colorText = WHITE;
-    if (Itr.show && root == Itr.targetedNode) colorText.a -= Itr.animation->getHashAlpha();
-    else if (Itr.show && root == Itr.preNode) colorText.a -= (255.f - Itr.animation->getHashAlpha());
-    else colorText = PALETTE->textNormal;
-    DrawUtility::drawText(text, root->getPosition(), DrawUtility::inter20, colorText, 20, 1, VerticalAlignment::CENTERED, HorizontalAlignment::CENTERED);
+    if (Itr.show && root == Itr.targetedNode)
+        colorText.a -= Itr.animation->getHashAlpha();
+    else if (Itr.show && root == Itr.preNode)
+        colorText.a -= (255.f - Itr.animation->getHashAlpha());
+    else
+        colorText = PALETTE->textNormal;
+    Utility::drawText(text, root->getPosition(), Utility::inter20, colorText,
+                      20, 1, VerticalAlignment::CENTERED,
+                      HorizontalAlignment::CENTERED);
     if (root->targeted || !root->isCompletedAlpha()) {
         Color colorText = WHITE;
         colorText.a -= root->alpha;
-        DrawUtility::drawText(value.c_str(), root->getPosition(), mLib::mFont,
-        colorText, 20, DrawUtility::SPACING,
-        VerticalAlignment::CENTERED,
-        HorizontalAlignment::CENTERED);
-        
+        Utility::drawText(value.c_str(), root->getPosition(), Utility::inter30,
+                          colorText, 20, Utility::SPACING,
+                          VerticalAlignment::CENTERED,
+                          HorizontalAlignment::CENTERED);
     }
-    // DrawTextEx(mLib::mFont, text, (Vector2){root->getPosition().x - 12,
+    // DrawTextEx(Utility::inter30, text, (Vector2){root->getPosition().x - 12,
     // root->getPosition().y - 12}, 20, 2, WHITE);
 }
 
 void AVL::draw() {
     if (!endLoop())
-        mLib::DrawTextAVL(core[loop].index);
+        adjustHighlight(core[loop].index);
     else
-        mLib::DrawTextAVL(-1);
+        adjustHighlight(-1);
     drawArrow(root);
     draw(root);
     // if (Itr.show)
-    //     DrawRing(Itr.animation->getPosition(), NODE_RADIUS, NODE_RADIUS + 3, 0,
+    //     DrawRing(Itr.animation->getPosition(), NODE_RADIUS, NODE_RADIUS + 3,
+    //     0,
     //              360, 20, GBLight::DARK_RED);
 }
 
@@ -754,7 +824,7 @@ void AVL::DrawArrowWithCircles(Vector2 start, Vector2 end, float radius,
 }
 
 bool AVL::completedAllActions() {
-    //if (loop < core.size()) std::cout << core[loop].action << std::endl;
+    // if (loop < core.size()) std::cout << core[loop].action << std::endl;
     return loop == core.size();
 }
 
@@ -809,4 +879,35 @@ AVL::~AVL() {
     ItrHistory.clear();
     changeList.clear();
     rotateList.clear();
+}
+
+int AVL::highlightingRow = -1;
+void AVL::adjustHighlight(int index) {
+    if (index == -1) {
+        highlightingRow = index;
+        CodePane::loadCode(AVLInsert);
+        CodePane::setHighlight(&highlightingRow);
+        return;
+    }
+    if (index <= 8) {
+        CodePane::loadCode(AVLInsert);
+        highlightingRow = index;
+        CodePane::setHighlight(&highlightingRow);
+    } else if (index <= 13) {
+        CodePane::loadCode(AVLSearch);
+        highlightingRow = index - 9;
+        CodePane::setHighlight(&highlightingRow);
+    } else {
+        if (index <= 19) {
+            CodePane::loadCode(AVLDelete);
+            highlightingRow = index - 14;
+            if (highlightingRow > 1) highlightingRow++;
+            CodePane::setHighlight(&highlightingRow);
+        } else {
+            CodePane::loadCode(AVLDelete2);
+            highlightingRow = index - 20;
+            highlightingRow += 2;
+            CodePane::setHighlight(&highlightingRow);
+        }
+    }
 }

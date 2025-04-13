@@ -1,7 +1,7 @@
-#include "hashState.hpp"
+#include "hash/hashState.hpp"
 #include "menu.hpp"
 #include "raygui.h"
-#include <mLib/Utility.hpp>
+#include "Utility.h"
 #include <cstring>#include <fstream>
 #include <mLib/tinyfiledialogs.h>
 #include <cstdlib>
@@ -86,7 +86,7 @@ void HashState::initPanes(Vector2 position) { // Updated to static
 }
 
 void HashState::handleInput() {
-    assert(mLib::mFont.texture.id != 0);
+    assert(Utility::inter30.texture.id != 0);
     // if (mCreateButton->isPressed()) {
     //     showCreateOptions = !showCreateOptions;
     //     showTextBox = 0;
@@ -150,7 +150,7 @@ void HashState::handleInput() {
     // }
     // if (showTextBox & mhash.completedAllActions()) {
     //     if (GuiTextBox((Rectangle){10 + 200, 740, 200, 40}, textBox, MAX_TEXT_LENGTH + 1, editMode)) editMode = !editMode;
-    //     if (mRandomValueButton->isPressed()) mLib::GenerateRandomNum(textBox);
+    //     if (mRandomValueButton->isPressed()) Utility::GenerateRandomNum(textBox);
     //     if (mEnterButton->isPressed()) 
     //     {
     //         strcpy(requestText, textBox);
@@ -338,20 +338,25 @@ void HashState::handleInput() {
     }
 
     if (MenuTable::prevButton.isPressed()) {  // Undo functionality
-        MenuTable::pauseAnimation();
+        // MenuTable::pauseAnimation();
         //if (!mAVL.completeAnimation()) return;
         isReversed = 1;;
     }
 
     if (MenuTable::nextButton.isPressed()) {  // Redo functionality
-        MenuTable::pauseAnimation();
+        // MenuTable::pauseAnimation();
 
         //if (!mAVL.completeAnimation()) return;
-        isReversed = 0;
+        if (*MenuTable::isPlaying) {
+            while (true) {
+                mhash.update(1e-15, 1e-15);
+                if (mhash.Action(0)) break;
+            }
+        } else isReversed = 0;
     }
 
     if (MenuTable::forwardButton.isPressed()) {  // Forward functionality
-        MenuTable::pauseAnimation();
+        // MenuTable::pauseAnimation();
 
         while (!mhash.completedAllActions()) {
             mhash.update(1e-15, 1e-15);
@@ -360,13 +365,13 @@ void HashState::handleInput() {
     }
 
     if (MenuTable::backwardButton.isPressed()) {  // Backward functionality
-        MenuTable::pauseAnimation();
+        // MenuTable::pauseAnimation();
 
         do {
             mhash.update(1e-15, 1e-15);
             mhash.Action(1);
         } while (!mhash.completedAllActions() && !mhash.reachedStart());
-        //mhash.ClearOperator();
+        mhash.ClearOperator();
     }
 
     if (MenuTable::pauseButton.isPressed() || *MenuTable::isPlaying) animationPlaying = 1;
@@ -417,9 +422,9 @@ void HashState::render() {
     mTime += GetFrameTime();
     if (showTextBox & mhash.completedAllActions())
     {
-        if (textDestionation == 1) DrawTextEx(mLib::mFont, "Searching", (Vector2) {10 + 250, 700}, 30, 2, WHITE);
-        else if (textDestionation == 2) DrawTextEx(mLib::mFont, "Inserting", (Vector2) {10 + 250, 700}, 30, 2, WHITE);
-        else if (textDestionation == 3) DrawTextEx(mLib::mFont, "Deleting", (Vector2) {10 + 250, 700}, 30, 2, WHITE);
+        if (textDestionation == 1) DrawTextEx(Utility::inter30, "Searching", (Vector2) {10 + 250, 700}, 30, 2, WHITE);
+        else if (textDestionation == 2) DrawTextEx(Utility::inter30, "Inserting", (Vector2) {10 + 250, 700}, 30, 2, WHITE);
+        else if (textDestionation == 3) DrawTextEx(Utility::inter30, "Deleting", (Vector2) {10 + 250, 700}, 30, 2, WHITE);
         mRandomValueButton->render();
         mEnterButton->render();
     }
@@ -433,7 +438,7 @@ void HashState::render() {
     //     mRandomButton->render();
     //     mCustomButton->render();
     // }
-    // DrawTextEx(mLib::mFont, mhash.completedAllActions() ? "Animation Completed" : animationPlaying ? "Animation Running" : "Animation Paused", (Vector2) {1200, 10}, 30, 2, 
+    // DrawTextEx(Utility::inter30, mhash.completedAllActions() ? "Animation Completed" : animationPlaying ? "Animation Running" : "Animation Paused", (Vector2) {1200, 10}, 30, 2, 
     // mhash.completedAllActions() ? WHITE : animationPlaying ? GREEN : RED);
 }
 

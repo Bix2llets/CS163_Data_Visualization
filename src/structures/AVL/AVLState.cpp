@@ -1,4 +1,4 @@
-#include "AVLState.hpp"
+#include "avl/AVLState.hpp"
 #include "menu.hpp"
 #include <colorPalette.h>
 #include <mLib/tinyfiledialogs.h>
@@ -6,7 +6,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <fstream>
-#include <mLib/Utility.hpp>
+#include "Utility.h"
 
 #include "menuPane.h"
 #include "raygui.h"
@@ -89,7 +89,7 @@ void AVLState::initPanes(Vector2 position) {
 }
 
 void AVLState::handleInput() {
-    assert(mLib::mFont.texture.id != 0);
+    assert(Utility::inter30.texture.id != 0);
 
     if (addPane.isButtonPressed(0)) {
         if (!mAVL.completedAllActions()) return;
@@ -252,17 +252,20 @@ void AVLState::handleInput() {
 
     if (MenuTable::prevButton.isPressed()) {  // Undo functionality
         //if (!mAVL.completeAnimation()) return;
-        MenuTable::pauseAnimation();
+        // MenuTable::pauseAnimation();
         isReversed = 1;;
     }
     if (MenuTable::nextButton.isPressed()) {  // Redo functionality
         //if (!mAVL.completeAnimation()) return;
-        MenuTable::pauseAnimation();
-        isReversed = 0;
+        if (*MenuTable::isPlaying) {
+            while (true) {
+                mAVL.update(1e-15, 1e-15);
+                if (mAVL.Action(0)) break;
+            }
+        } else isReversed = 0;
     }
 
     if (MenuTable::forwardButton.isPressed()) {  // Forward functionality
-        MenuTable::pauseAnimation();
         while (!mAVL.completedAllActions()) {
             mAVL.update(1e-15, 1e-15);
             mAVL.Action(0);
@@ -270,12 +273,12 @@ void AVLState::handleInput() {
     }
 
     if (MenuTable::backwardButton.isPressed()) {  // Backward functionality
-        MenuTable::pauseAnimation();
+        // MenuTable::pauseAnimation();
         do {
             mAVL.update(1e-15, 1e-15);
             mAVL.Action(1);
         } while (!mAVL.completedAllActions() && !mAVL.reachedStart());
-        //mAVL.ClearOperator();
+        mAVL.ClearOperator();
     }
 
     if (MenuTable::pauseButton.isPressed() || *MenuTable::isPlaying) animationPlaying = 1;

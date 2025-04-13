@@ -44,9 +44,9 @@ void MenuPane::render() {
             drawingCoordinate.x += form.getDimension().x / 2;
             drawingCoordinate.y -= 10;
 
-            DrawUtility::drawText(
-                str, drawingCoordinate, DrawUtility::inter16,
-                formPalette->textNormal, 16, DrawUtility::SPACING,
+            Utility::drawText(
+                str, drawingCoordinate, Utility::inter16,
+                formPalette->textNormal, 16, Utility::SPACING,
                 VerticalAlignment::CENTERED, HorizontalAlignment::CENTERED);
         }
 
@@ -74,7 +74,7 @@ void MenuPane::newLine(int row, int numberOfForms,
     startingPoint.y += row * (std::max(BUTTON_DIMENSION.y, FORM_DIMENSION.y) +
                               ELEMENT_DISTANCE.y);
     btnList[row] = Button(startingPoint, BUTTON_DIMENSION, buttonLabel, 16,
-                          buttonPalette, &DrawUtility::inter16);
+                          buttonPalette, &Utility::inter16);
 
     for (int i = 0; i < numberOfForms; i++) {
         formList[row].push_back(

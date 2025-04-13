@@ -1,6 +1,6 @@
-#include "hash.hpp"
-#include <mLib/Utility.hpp>
-
+#include "hash/hash.hpp"
+#include "Utility.h"
+#include "CodePane.h"
 ColorSet const *Hash::PALETTE = &nodeColorSet;
 Hash::Hash(int _m = 10) : Itr(), m(_m), changing({ChangeProcedure(-1, -1, NULL), NULL}) {
     loop = 0;
@@ -234,7 +234,7 @@ void Hash::draw(hashNode* node) {
         tmp.a -= (255.f - Itr.animation->getHashAlpha());
         DrawCircleV(Itr.preNode->getPosition(), NODE_RADIUS - 3, tmp);
     }
-    Color tmp = mLib::highlightColor;
+    Color tmp = GBLight::LIGHT_GREEN;
     tmp.a -= node->getAlpha();
     DrawCircleV(node->getPosition(), NODE_RADIUS - 3, tmp);
     DrawRing(node->getPosition(), NODE_RADIUS - 3, NODE_RADIUS, 0, 360, 20, PALETTE->borderNormal);
@@ -244,32 +244,32 @@ void Hash::draw(hashNode* node) {
         char *text = new char[std::to_string(changing.first.getOldValue()).length() + 1];
         strcpy(text, std::to_string(changing.first.getOldValue()).c_str()); 
         if (changing.first.getOldValue() == -1) strcpy(text, "null");
-        DrawUtility::drawText(text, node->getPosition(), DrawUtility::inter20, colorText, 20, 1, VerticalAlignment::CENTERED, HorizontalAlignment::CENTERED);
+        Utility::drawText(text, node->getPosition(), Utility::inter20, colorText, 20, 1, VerticalAlignment::CENTERED, HorizontalAlignment::CENTERED);
         colorText = PALETTE->textNormal;
         colorText.a -= changing.first.getAlpha();
         text = new char[std::to_string(changing.first.getNewValue()).length() + 1];
         strcpy(text, std::to_string(changing.first.getNewValue()).c_str());
         if (changing.first.getNewValue() == -1) strcpy(text, "null");
-        DrawUtility::drawText(text, node->getPosition(), DrawUtility::inter20, colorText, 20, 1, VerticalAlignment::CENTERED, HorizontalAlignment::CENTERED);
+        Utility::drawText(text, node->getPosition(), Utility::inter20, colorText, 20, 1, VerticalAlignment::CENTERED, HorizontalAlignment::CENTERED);
         return;
     }
     std::string value = std::to_string(node->value);
     if (node->value == -1) value = "null";
     char *text = new char[value.length() + 1];
     strcpy(text, value.c_str());
-    DrawUtility::drawText(text, node->getPosition(), DrawUtility::inter20, PALETTE->textNormal, 20, 1, VerticalAlignment::CENTERED, HorizontalAlignment::CENTERED);
+    Utility::drawText(text, node->getPosition(), Utility::inter20, PALETTE->textNormal, 20, 1, VerticalAlignment::CENTERED, HorizontalAlignment::CENTERED);
     Color colorText = WHITE;
     if (Itr.show && node == Itr.targetedNode) colorText.a -= Itr.animation->getHashAlpha();
     else if (Itr.show && node == Itr.preNode) colorText.a -= (255.f - Itr.animation->getHashAlpha());
     else colorText = PALETTE->textNormal;
-    DrawUtility::drawText(text, node->getPosition(), DrawUtility::inter20, colorText, 20, 1, VerticalAlignment::CENTERED, HorizontalAlignment::CENTERED);
+    Utility::drawText(text, node->getPosition(), Utility::inter20, colorText, 20, 1, VerticalAlignment::CENTERED, HorizontalAlignment::CENTERED);
 }
 
 void Hash::draw() {
-    if (!endLoop()) mLib::DrawTextHash(core[loop].index);
-    else mLib::DrawTextHash(-1);
+    if (!endLoop()) adjustHighlight(core[loop].index);
+    else adjustHighlight(-1);
     for (int i = 0; i < m; i++) {
-        DrawUtility::drawText(std::to_string(i).c_str(), Vector2Add(root[i]->getPosition(), Vector2{0, -50}), DrawUtility::inter20, PALETTE->textNormal, 20, 1, VerticalAlignment::CENTERED, HorizontalAlignment::CENTERED);
+        Utility::drawText(std::to_string(i).c_str(), Vector2Add(root[i]->getPosition(), Vector2{0, -50}), Utility::inter20, PALETTE->textNormal, 20, 1, VerticalAlignment::CENTERED, HorizontalAlignment::CENTERED);
         draw(root[i]);
     }
 }
@@ -319,4 +319,51 @@ Hash::~Hash() {
     ItrHistory.clear();
     changeList.clear();
     root.clear();
+}
+
+
+const std::vector<std::string> Hash::hashInsert = {
+    "Begin",                                 // 0
+    "i = v % m",                             // 1
+    "while a[i]->v != -1, i = (i + 1) % m",  // 2
+    "if a[i]->v = -1, a[i]->v = v",          // 3
+    "End",                                   // 4
+};
+
+const std::vector<std::string> Hash::hashSearch = {
+    "Begin",                                         // 5
+    "i = v % m",                                     // 6
+    "while a[i]->v != (v and -1), i = (i + 1) % m",  // 7
+    "if a[i]->v == v, return i",                     // 8
+    "End",                                           // 9
+};
+
+const std::vector<std::string> Hash::hashDelete = {
+    "Begin",                                         // 10
+    "i = v % m",                                     // 11
+    "while a[i]->v != (v and -1), i = (i + 1) % m",  // 12
+    "if a[i]->v == v, a[i]->v = -1",                 // 13
+    "End",                                           // 14
+};
+int Hash::highlightingRow = -1;
+void Hash::adjustHighlight(int index) {
+    if (index == -1) {
+        highlightingRow = index;
+        CodePane::loadCode(hashInsert);
+        CodePane::setHighlight(&highlightingRow);
+        return;
+    }
+    if (index <= 4) {
+        highlightingRow = index;
+        CodePane::loadCode(hashInsert);
+        CodePane::setHighlight(&highlightingRow);
+    } else if (index <= 9) {
+        highlightingRow = index - 5;
+        CodePane::loadCode(hashSearch);
+        CodePane::setHighlight(&highlightingRow);
+    } else {
+        highlightingRow = index - 10;
+        CodePane::loadCode(hashDelete);
+        CodePane::setHighlight(&highlightingRow);
+    }
 }

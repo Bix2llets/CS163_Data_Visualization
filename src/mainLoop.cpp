@@ -1,23 +1,19 @@
 #include "mainLoop.h"
-#include "raygui.h"
-#include <mLib/mScene.hpp>
 
 #include "graphScene.h"
+#include "raygui.h"
 
 namespace Loop {
 float elapsedSinceLastUpdate = 0.f;
 int frameCount = 0;
-const float DELTA_TIME = 1.0f / 60;
 SceneList currentScene = SceneList::MAIN_MENU;
 bool isRunning = true;
 
-const Vector2 UPPER_LEFT = {50, 50};
-const Vector2 LOWER_RIGHT = {1550, 650};
 void (*renderFunc)() = nullptr;
 void (*updateFunc)() = nullptr;
 void (*recordFunc)() = nullptr;
 void checkForReturn() {
-    if (AppMenu::backButton.isPressed()) {
+    if (CodePane::backButton.isPressed()) {
         currentScene = MAIN_MENU;
         updateFunc = nullptr;
         recordFunc = nullptr;
@@ -29,9 +25,9 @@ void checkForReturn() {
 }
 void update() {
     elapsedSinceLastUpdate += GetFrameTime();
-    while (elapsedSinceLastUpdate > DELTA_TIME) {
+    while (elapsedSinceLastUpdate > AppInfo::DELTA_TIME) {
         frameCount++;
-        elapsedSinceLastUpdate -= DELTA_TIME;
+        elapsedSinceLastUpdate -= AppInfo::DELTA_TIME;
     }
     while (frameCount) {
         if (updateFunc != nullptr && isRunning) updateFunc();
@@ -40,16 +36,17 @@ void update() {
 }
 
 void setColorPalette() {
-    if (AppMenu::isDarkMode) {
+    if (CodePane::isDarkMode) {
         nodeColorSet = COLOR_SET_DARK;
         buttonColorSet = BUTTON_SET_DARK;
         backgroundSet = BACKGROUND_SET_DARK;
         paneBackground = TokyoNight::NIGHT_BLACK;
         nodeDragHighlight = TokyoNight::NIGHT_GREEN;
         sliderIndicator = TokyoNight::NIGHT_YELLOW;
-        AppMenu::colorModeButton.setText("Night mode");
-        mLib::highlightColor = GBLight::LIGHT_YELLOW;
+        CodePane::colorModeButton.setText("Night mode");
+        // Utility::highlightColor = GBLight::LIGHT_YELLOW;
         nodeResultColor = TokyoNight::NIGHT_RED;
+        // Utility::highlightColor = nodeColorSet.borderHighlight;
     } else {
         nodeColorSet = COLOR_SET_LIGHT;
         buttonColorSet = BUTTON_SET_LIGHT;
@@ -57,23 +54,25 @@ void setColorPalette() {
         paneBackground = GBLight::BACKGROUND1;
         nodeDragHighlight = GBLight::DARK_GREEN;
         sliderIndicator = GBLight::BACKGROUND4;
-        AppMenu::colorModeButton.setText("Light mode");
-        mLib::highlightColor = GBLight::LIGHT_GREEN;
+        CodePane::colorModeButton.setText("Light mode");
+        // Utility::highlightColor = GBLight::LIGHT_GREEN;
+        // Utility::highlightColor = nodeColorSet.borderHighlight;
         nodeResultColor = GBLight::DARK_RED;
     }
 }
 void registerInput() {
-    if (AppMenu::colorModeButton.isPressed()) {
-        AppMenu::isDarkMode = !AppMenu::isDarkMode;
+    if (CodePane::colorModeButton.isPressed()) {
+        CodePane::isDarkMode = !CodePane::isDarkMode;
         setColorPalette();
         configSlider();
     }
     if (currentScene == SceneList::MAIN_MENU) {
         if (WelcomeMenu::isAVLTreePressed()) {
             currentScene = SceneList::AVL;
-            renderFunc = []() { mScene::avl.render(); };
-            updateFunc = []() { mScene::avl.update(); };
-            recordFunc = []() { mScene::avl.handleInput(); };
+            renderFunc = &AVLScene::render;
+            updateFunc = &AVLScene::update;
+            recordFunc = &AVLScene::handleInput;
+            CodePane::highlightValue = &AVL::highlightingRow;
 
             MenuTable::addPane = &AVLState::addPane;
             MenuTable::deletePane = &AVLState::removePane;
@@ -84,9 +83,8 @@ void registerInput() {
             currentScene = SceneList::GRAPH;
             renderFunc = &GraphScene::render;
             updateFunc = &GraphScene::update;
-
             recordFunc = &GraphScene::registerInput;
-            AppMenu::highlightValue = &GraphScene::currentHighlighting;
+            CodePane::highlightValue = &GraphScene::currentHighlighting;
 
             MenuTable::addPane = &GraphScene::addPane;
             MenuTable::deletePane = &GraphScene::deletePane;
@@ -95,14 +93,17 @@ void registerInput() {
         }
         if (WelcomeMenu::isHashTablePressed()) {
             currentScene = SceneList::HASH;
-            renderFunc = []() { mScene::hash.render(); };
-            updateFunc = []() { mScene::hash.update(); };
-            recordFunc = []() { mScene::hash.handleInput(); };
+            renderFunc = &HashScene::render;
+            updateFunc = &HashScene::update;
+            recordFunc = &HashScene::handleInput;
 
             MenuTable::addPane = &HashState::addPane;
             MenuTable::deletePane = &HashState::removePane;
             MenuTable::algoPane = &HashState::algoPane;
             MenuTable::storagePane = &HashState::storagePane;
+
+            // Update to use Hash's static variable
+            CodePane::highlightValue = &Hash::highlightingRow;
         }
         if (WelcomeMenu::isLinkedListPressed()) {
             currentScene = SceneList::LINKED_LIST;
@@ -115,21 +116,25 @@ void registerInput() {
             MenuTable::deletePane = &SLLScene::deletePane;
             MenuTable::algoPane = &SLLScene::algoPane;
             MenuTable::storagePane = &SLLScene::miscPane;
-            AppMenu::highlightValue = &SLLScene::highlightedRow;
+            CodePane::highlightValue = &SLLScene::highlightedRow;
         }
         if (WelcomeMenu::isTriePressed()) {
             currentScene = TRIE;
-            renderFunc = []() { mScene::trie.render(); };
-            updateFunc = []() { mScene::trie.update(); };
-            recordFunc = []() { mScene::trie.handleInput(); };
+            renderFunc = &TrieScene::render;
+            updateFunc = &TrieScene::update;
+            recordFunc = &TrieScene::handleInput;
 
             MenuTable::addPane = &TrieState::addPane;
             MenuTable::deletePane = &TrieState::removePane;
             MenuTable::algoPane = &TrieState::algoPane;
             MenuTable::storagePane = &TrieState::storagePane;
+
+            // Update to use Trie's static variable
+            CodePane::highlightValue = &Trie::highlightingRow;
         }
         return;
     }
+
     checkForReturn();
 
     if (recordFunc) recordFunc();
@@ -141,48 +146,50 @@ void render() {
         WelcomeMenu::render();
     } else {
         ClearBackground(backgroundSet.backgroundNormal);
-        DrawRectangle(UPPER_LEFT.x, UPPER_LEFT.y, LOWER_RIGHT.x - UPPER_LEFT.x,
-                      LOWER_RIGHT.y - UPPER_LEFT.y,
+        DrawRectangle(AppInfo::UPPER_LEFT.x, AppInfo::UPPER_LEFT.y,
+                      AppInfo::LOWER_RIGHT.x - AppInfo::UPPER_LEFT.x,
+                      AppInfo::LOWER_RIGHT.y - AppInfo::UPPER_LEFT.y,
                       backgroundSet.backgroundHighlight);
         if (renderFunc) renderFunc();
-        DrawRectangleLinesEx(
-            {UPPER_LEFT.x, UPPER_LEFT.y, LOWER_RIGHT.x - UPPER_LEFT.x,
-             LOWER_RIGHT.y - UPPER_LEFT.y},
-            3.0f, backgroundSet.borderNormal);
+        DrawRectangleLinesEx({AppInfo::UPPER_LEFT.x, AppInfo::UPPER_LEFT.y,
+                              AppInfo::LOWER_RIGHT.x - AppInfo::UPPER_LEFT.x,
+                              AppInfo::LOWER_RIGHT.y - AppInfo::UPPER_LEFT.y},
+                             3.0f, backgroundSet.borderNormal);
         // * For covering
-        DrawRectangle(0, LOWER_RIGHT.y, GetRenderWidth(), GetRenderHeight(),
-                      backgroundSet.backgroundNormal);
-        DrawRectangle(LOWER_RIGHT.x, 0, GetRenderWidth() - LOWER_RIGHT.x,
+        DrawRectangle(0, AppInfo::LOWER_RIGHT.y, GetRenderWidth(),
                       GetRenderHeight(), backgroundSet.backgroundNormal);
-        DrawRectangle(0, 0, GetRenderWidth(), UPPER_LEFT.y,
+        DrawRectangle(AppInfo::LOWER_RIGHT.x, 0,
+                      GetRenderWidth() - AppInfo::LOWER_RIGHT.x,
+                      GetRenderHeight(), backgroundSet.backgroundNormal);
+        DrawRectangle(0, 0, GetRenderWidth(), AppInfo::UPPER_LEFT.y,
                       backgroundSet.backgroundNormal);
-        DrawRectangle(0, 0, UPPER_LEFT.x, GetRenderHeight(),
+        DrawRectangle(0, 0, AppInfo::UPPER_LEFT.x, GetRenderHeight(),
                       backgroundSet.backgroundNormal);
-        AppMenu::render();
+        CodePane::render();
         MenuTable::render();
     }
-    AppMenu::colorModeButton.render();
+    CodePane::colorModeButton.render();
 }
 
 void configSlider() {
     GuiSetStyle(SLIDER, BORDER_COLOR_NORMAL,
-                ColorToInt(AppMenu::buttonPalette->borderNormal));
+                ColorToInt(CodePane::buttonPalette->borderNormal));
     GuiSetStyle(SLIDER, BORDER_COLOR_FOCUSED,
-                ColorToInt(AppMenu::buttonPalette->borderNormal));
+                ColorToInt(CodePane::buttonPalette->borderNormal));
     GuiSetStyle(SLIDER, BORDER_COLOR_PRESSED,
-                ColorToInt(AppMenu::buttonPalette->borderNormal));
+                ColorToInt(CodePane::buttonPalette->borderNormal));
     GuiSetStyle(SLIDER, BORDER_WIDTH, 2);
     GuiSetStyle(SLIDER, BASE_COLOR_NORMAL,
-                ColorToInt(AppMenu::buttonPalette->backgroundNormal));
+                ColorToInt(CodePane::buttonPalette->backgroundNormal));
     GuiSetStyle(SLIDER, BASE_COLOR_FOCUSED,
-                ColorToInt(AppMenu::buttonPalette->backgroundHighlight));
+                ColorToInt(CodePane::buttonPalette->backgroundHighlight));
     GuiSetStyle(SLIDER, BASE_COLOR_PRESSED, ColorToInt(sliderIndicator));
     GuiSetStyle(SLIDER, TEXT_COLOR_NORMAL,
-                ColorToInt(AppMenu::buttonPalette->textNormal));
+                ColorToInt(CodePane::buttonPalette->textNormal));
     GuiSetStyle(SLIDER, TEXT_COLOR_FOCUSED,
-                ColorToInt(AppMenu::buttonPalette->textHighlight));
+                ColorToInt(CodePane::buttonPalette->textHighlight));
     GuiSetStyle(SLIDER, TEXT_COLOR_PRESSED,
-                ColorToInt(AppMenu::buttonPalette->textHighlight));
+                ColorToInt(CodePane::buttonPalette->textHighlight));
 }
 
 }  // namespace Loop

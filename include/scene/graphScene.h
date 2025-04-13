@@ -3,9 +3,11 @@
 #include <queue>
 #include <set>
 #include <unordered_map>
+#include <fstream>
 #include "menuPane.h"
 #include "graph/graph.h"
-
+// #include "tinyfiledialogs.h"
+// #include "menu.hpp"
 namespace GraphScene {
 extern Graph graph;
 

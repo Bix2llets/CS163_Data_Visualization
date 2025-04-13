@@ -159,4 +159,4 @@ ColorSet backgroundSet;
 Color paneBackground;
 Color nodeDragHighlight;
 Color sliderIndicator;
-Color nodeResultColor;
+Color nodeResultColor; 

@@ -3,17 +3,17 @@
 
 #include "button.h"
 #include "mainLoop.h"
-#include "appMenu.h"
-#include "insertBox.hpp"
-#include "edgeInsertBox.hpp"
+#include "CodePane.h"
+// #include "insertBox.hpp"
+// #include "edgeInsertBox.hpp"
 #include "textureButton.hpp"
 #include "menuPane.h"
-#include <mLib/Utility.hpp>
-#include "TrieState.hpp"
-#include "AVLState.hpp"
-// #include "graphScene.h"
+#include <Utility.h>
+#include "TrieScene.h"
+#include "AVLScene.h"
+#include "hashScene.h"
+#include "graphScene.h"
 #include "SLLScene.h"
-#include "hashState.hpp"
 namespace MenuTable {
     enum Type {
         CREATE, // show random, clear, and import button
@@ -30,14 +30,7 @@ namespace MenuTable {
 
     extern Vector2 sliderBarPos, sliderBarDimension;
     extern Button showMenu;
-    extern Button clearButton, importButton, randomButton;
-    extern InsertBox insertBox;
-    extern edgeInsertBox edgeBox;
-    extern std::string requestText, requestNum;
-    extern std::vector<std::string> requestEdge; // u, v, w
-    extern bool showMenuFlag, requestClear, requestImport, requestRandom, inAnimationProcess, *isPlaying;
-    extern std::vector<std::pair<Button *, Type>> GUIObjects;
-    extern int MaxSizeNum, MaxSizeText, MaxSizeWeight;
+    extern bool showMenuFlag, *isPlaying;
     extern MenuPane basePane;
     extern MenuPane* addPane;
     extern MenuPane* deletePane;
@@ -47,8 +40,6 @@ namespace MenuTable {
     void init();
     void render();
     void handleInput();
-    void CLEAR();
-    void pack(Button *obj, Type type);
 
     void continueAnimation();
     void pauseAnimation();

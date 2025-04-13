@@ -1,15 +1,14 @@
 
-#include "singlyLinkedList.h"
-#include "SLLScene.h"
+#include "SLL/singlyLinkedList.h"
+// #include "SLLScene.h"
 #include "colorPalette.h"
 ColorSet const *SLL::NODE_PALETTE = &nodeColorSet;
 const int SLL::NODE_RADIUS = 30;
 const int SLL::DISTANCE_HORIZONTAL = 120;
 const int SLL::DISTANCE_VERTICAL = 120;
 
-SLL::SLL(Rectangle area, float animationRate)
+SLL::SLL(Rectangle area)
     : drawArea{area},
-      animationRate{animationRate},
       root{nullptr},
       nodePerRow{int(1 + area.width / DISTANCE_HORIZONTAL)},
       nodeCount{0} {}
@@ -44,7 +43,6 @@ SLL::SLL(const SLL& sll) {
     nodePerRow = sll.nodePerRow;
     drawArea = sll.drawArea;
     nodeCount = sll.nodeCount;
-    animationRate = sll.animationRate;
 
     root = sll.root;
 }
@@ -82,16 +80,16 @@ void SLL::addEnd(std::string data) {
 
 void SLL::render() {
     if (root == nullptr) return;
-    DrawUtility::drawText(
+    Utility::drawText(
         "Root", Vector2Add(root->getPosition(), {0, DISTANCE_HORIZONTAL / 3}),
-        DrawUtility::inter20, NODE_PALETTE->textNormal, DrawUtility::NORMAL_SIZE,
-        DrawUtility::SPACING, VerticalAlignment::CENTERED,
+        Utility::inter20, NODE_PALETTE->textNormal, Utility::NORMAL_SIZE,
+        Utility::SPACING, VerticalAlignment::CENTERED,
         HorizontalAlignment::CENTERED);
     Node* currEdge = root;
     Node* currNode = root;
     while (currEdge) {
         if (currEdge->nextNode != nullptr) {
-            DrawUtility::drawEdge(currEdge->getPosition(),
+            Utility::drawEdge(currEdge->getPosition(),
                                   currEdge->nextNode->getPosition(),
                                   currEdge->edgeColor.getCurrentColor());
             currEdge = currEdge->nextNode;
@@ -312,7 +310,6 @@ SLL SLL::operator=(const SLL& source) {
         nodePerRow = source.nodePerRow;
         drawArea = source.drawArea;
         nodeCount = source.nodeCount;
-        animationRate = source.animationRate;
 
         root = source.root;
     }

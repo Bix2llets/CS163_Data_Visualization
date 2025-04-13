@@ -2,7 +2,7 @@
 #define DICEBUTTON_HPP
 
 #include "Button.h"
-#include <mLib/Utility.hpp>
+#include "utility.h"
 #include <cassert>
 
 class DiceButton : public Button{

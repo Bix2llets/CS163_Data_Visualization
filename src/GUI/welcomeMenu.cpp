@@ -46,7 +46,7 @@ void render() {
     Vector2 bannerLocation = {GetRenderWidth() / 2 + 10, 125};
     DrawRectangleGradientV(0, 0, GetRenderWidth(), GetRenderHeight() / 10 * 2,
                            backgroundSet.backgroundNormal, Color{0, 0, 0, 0});
-    DrawUtility::drawText("Data Visualizer", bannerLocation, DrawUtility::noto,
+    Utility::drawText("Data Visualizer", bannerLocation, Utility::noto,
                           buttonColorSet.textNormal, 100, 1,
                           VerticalAlignment::CENTERED,
                           HorizontalAlignment::CENTERED);

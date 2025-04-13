@@ -76,7 +76,7 @@ void Graph::applyCentricForce() {
 
     centroidPosition = Vector2Scale(centroidPosition, 1.0f / nodeCount);
 
-    Vector2 centerPosition = Vector2Add(Loop::UPPER_LEFT, Loop::LOWER_RIGHT);
+    Vector2 centerPosition = Vector2Add(AppInfo::UPPER_LEFT, AppInfo::LOWER_RIGHT);
 
     centerPosition = Vector2Scale(centerPosition, 1.0f / 2);
 

@@ -15,51 +15,36 @@ Vector2 buttonDistance = {10, 0};
 
 float minValue = 0.01f, maxValue = 5.f, sliderValue = 1.f;
 
-int MaxSizeNum = 3, MaxSizeText = 5, MaxSizeWeight = 5;
 TextureBox backwardButton =
     TextureBox(buttonPos, sliderBarDimension, (Rectangle){0, 0, 100, 100},
-               &mLib::backward, &buttonColorSet);
+               &Utility::backward, &buttonColorSet);
 TextureBox forwardButton = TextureBox(
     (Vector2){buttonPos.x + (buttonDimension.x + buttonDistance.x) * 4,
               buttonPos.y},
-    buttonDimension, (Rectangle){0, 0, 100, 100}, &mLib::forward,
+    buttonDimension, (Rectangle){0, 0, 100, 100}, &Utility::forward,
     &buttonColorSet);
 TextureBox playButton = TextureBox(
     (Vector2){buttonPos.x + (buttonDimension.x + buttonDistance.x) * 2,
               buttonPos.y},
-    buttonDimension, (Rectangle){0, 0, 100, 100}, &mLib::pause, &buttonColorSet);
+    buttonDimension, (Rectangle){0, 0, 100, 100}, &Utility::pause,
+    &buttonColorSet);
 TextureBox pauseButton = TextureBox(
     (Vector2){buttonPos.x + (buttonDimension.x + buttonDistance.x) * 2,
               buttonPos.y},
-    buttonDimension, (Rectangle){0, 0, 100, 100}, &mLib::expand, &buttonColorSet);
+    buttonDimension, (Rectangle){0, 0, 100, 100}, &Utility::expand,
+    &buttonColorSet);
 TextureBox prevButton = TextureBox(
     (Vector2){buttonPos.x + (buttonDimension.x + buttonDistance.x),
               buttonPos.y},
-    buttonDimension, (Rectangle){0, 0, 100, 100}, &mLib::prev, &buttonColorSet);
+    buttonDimension, (Rectangle){0, 0, 100, 100}, &Utility::prev, &buttonColorSet);
 TextureBox nextButton = TextureBox(
     (Vector2){buttonPos.x + (buttonDimension.x + buttonDistance.x) * 3,
               buttonPos.y},
-    buttonDimension, (Rectangle){0, 0, 100, 100}, &mLib::next, &buttonColorSet);
+    buttonDimension, (Rectangle){0, 0, 100, 100}, &Utility::next, &buttonColorSet);
 Button showMenu = Button(optionPosition,
                          (Vector2){sliderBarDimension.y, sliderBarDimension.x},
                          ">", 20, &buttonColorSet);
-Button clearButton = Button(optionPosition, sliderBarDimension, "Clear", 20,
-                            &buttonColorSet);
-Button importButton = Button(optionPosition, sliderBarDimension, "Import", 20,
-    &buttonColorSet);
-Button randomButton = Button(optionPosition, sliderBarDimension, "Random", 20,
-    &buttonColorSet);
-InsertBox insertBox = InsertBox(optionPosition, optionDimension, 20,
-    &buttonColorSet, 0, MaxSizeNum);
-edgeInsertBox edgeBox =
-    edgeInsertBox(optionPosition, optionDimension, 20, &buttonColorSet,
-                  0, MaxSizeNum, MaxSizeWeight);
-std::string requestText = "";
-std::string requestNum = "";
-std::vector<std::string> requestEdge = {"", "", ""};
-bool showMenuFlag = false, requestClear = false, requestImport = false,
-     requestRandom = false, inAnimationProcess = false, *isPlaying = &Loop::isRunning;
-std::vector<std::pair<Button*, Type>> GUIObjects = {};
+bool showMenuFlag = false, *isPlaying = &Loop::isRunning;
 // * For menu panes
 MenuPane basePane({optionPosition.x + 10 + showMenu.getDimension().x,
                    optionPosition.y},
@@ -77,21 +62,7 @@ void Constructor(Vector2 _optionPosition = {10, 600},
     sliderBarPos = _sliderBarPos;
     sliderBarDimension = _sliderBarDimension;
 
-    // minValue = 1.f, maxValue = 100.f, sliderValue = 50.f;
 
-    MaxSizeNum = 3, MaxSizeText = 5, MaxSizeWeight = 5;
-
-    // clearButton = Button(optionPosition, sliderBarDimension, "Clear", 20,
-    //                      AppMenu::buttonPalette);
-    // importButton = Button(optionPosition, sliderBarDimension, "Import", 20,
-    //                       AppMenu::buttonPalette);
-    // randomButton = Button(optionPosition, sliderBarDimension, "Random", 20,
-    //                       AppMenu::buttonPalette);
-    // insertBox = InsertBox(optionPosition, optionDimension, 20,
-    //                       AppMenu::buttonPalette, 0, MaxSizeNum);
-    // edgeBox =
-    //     edgeInsertBox(optionPosition, optionDimension, 20,
-    //                   AppMenu::buttonPalette, 0, MaxSizeNum, MaxSizeWeight);
     basePane.newLine(0, 0, "Add", {}, {}, false);
     basePane.newLine(1, 0, "Remove", {}, {}, false);
     basePane.newLine(2, 0, "Algorithm", {}, {}, false);
@@ -103,85 +74,25 @@ void Constructor(Vector2 _optionPosition = {10, 600},
     storagePane = nullptr;
     showMenu.setDimension(
         {showMenu.getDimension().x, basePane.getDimension().y});
-    requestText = "";
-    requestNum = "";
-    requestEdge = {"", "", ""};
-    showMenuFlag = false, requestClear = false, requestImport = false,
-    requestRandom = false, inAnimationProcess = false, isPlaying = &Loop::isRunning;
-    GUIObjects = {};
+    showMenuFlag = false;
+    isPlaying = &Loop::isRunning;
 }
 
 void init() {
-    clearButton.disable();
-    importButton.disable();
-    randomButton.disable();
     pauseButton.disable();
     playButton.enable();
 }
 
-void CLEAR() {
-    requestText = "";
-    requestNum = "";
-    requestEdge = {"", "", ""};
-    sliderValue = 50.f;
-    showMenuFlag = false;
-    GUIObjects.clear();
-}
-
-void pack(Button* obj, Type type) {
-    std::cout << "pack" << std::endl;
-    if (obj == nullptr) return;
-    std::cout << "pack 1" << std::endl;
-    obj->setPosition(
-        (Vector2){optionPosition.x + showMenu.getDimension().x,
-                  optionPosition.y + optionDimension.y * GUIObjects.size()});
-    obj->setDimension(optionDimension);
-    GUIObjects.push_back(std::make_pair(obj, type));
-    showMenu.setDimension(
-        (Vector2){optionDimension.y, optionDimension.y * GUIObjects.size()});
-}
 
 void render() {
     handleInput();
     showMenu.render();
     if (showMenuFlag) {
-        // std::cout << GUIObjects.size() << std::endl;
         basePane.render();
         if (addPane) addPane->render();
         if (deletePane) deletePane->render();
         if (algoPane) algoPane->render();
         if (storagePane) storagePane->render();
-        // for (auto &obj : GUIObjects) {
-        //     if (obj.first != nullptr) {
-        //         obj.first->render();
-        //         if (obj.first->isOpen() && inAnimationProcess == false) {
-        //             if (obj.second == EdgeInsert)
-        //                 requestEdge = edgeBox.render();
-        //             else if (obj.second == NumInsert)
-        //                 requestNum = insertBox.render();
-        //             else if (obj.second == TextInsert)
-        //                 requestText = insertBox.render();
-        //             else if (obj.second == CREATE) {
-        //                 clearButton.render();
-        //                 importButton.render();
-        //                 randomButton.render();
-        //                 if (clearButton.isPressed()) {
-        //                     requestClear = true;
-        //                     requestImport = false;
-        //                     requestRandom = false;
-        //                 } else if (importButton.isPressed()) {
-        //                     requestImport = true;
-        //                     requestClear = false;
-        //                     requestRandom = false;
-        //                 } else if (randomButton.isPressed()) {
-        //                     requestRandom = true;
-        //                     requestImport = false;
-        //                     requestClear = false;
-        //                 }
-        //             }  // else assert(Type::None != obj.second);
-        // }
-        // }
-        // }
     }
     backwardButton.render();
     forwardButton.render();
@@ -191,11 +102,14 @@ void render() {
     prevButton.render();
     nextButton.render();
     ///* Slider bar **/
-    Vector2 centerPauseButton = Vector2Add(pauseButton.getPosition(), Vector2Scale(pauseButton.getDimension(), 0.5f));
-    Vector2 sliderPosition = Vector2Add(centerPauseButton, Vector2{- sliderBarDimension.x * 3 / 2, 50});
+    Vector2 centerPauseButton =
+        Vector2Add(pauseButton.getPosition(),
+                   Vector2Scale(pauseButton.getDimension(), 0.5f));
+    Vector2 sliderPosition = Vector2Add(
+        centerPauseButton, Vector2{-sliderBarDimension.x * 3 / 2, 50});
     GuiSliderBar(
         (Rectangle){sliderPosition.x, sliderPosition.y,
-            sliderBarDimension.x * 3, sliderBarDimension.y / 2},
+                    sliderBarDimension.x * 3, sliderBarDimension.y / 2},
         "Speed", TextFormat("%.2fx", sliderValue), &sliderValue, minValue,
         maxValue);
 
@@ -246,95 +160,21 @@ void handleInput() {
             if (storagePane) storagePane->toggle();
         }
 
-        // Button *object = nullptr;
-        // Type type = None;
-        // for (auto &obj : GUIObjects)
-        //     if (obj.first != nullptr) {
-        //         if (obj.first->isPressed()) {
-        //             object = obj.first;
-        //             type = obj.second;
-        //             break;
-        //         }
-        //     }
-        // if (object != nullptr) {
-        //     for (auto &obj : GUIObjects)
-        //         if (obj.first != nullptr && obj.first != object &&
-        //             obj.first->isOpen())
-        //             obj.first->changeOpen();
-        //     object->changeOpen();
-        //     init();
-        //     if (object->isOpen()) {
-        //         if (type == CREATE) {
-        //             requestClear = false;
-        //             requestImport = false;
-        //             requestRandom = false;
-        //             clearButton.enable();
-        //             importButton.enable();
-        //             randomButton.enable();
-        //             clearButton = Button(
-        //                 (Vector2){optionPosition.x +
-        //                 showMenu.getDimension().x +
-        //                               object->getDimension().x,
-        //                           object->getPosition().y},
-        //                 optionDimension, "Clear", 20,
-        //                 AppMenu::buttonPalette);
-        //             importButton = Button(
-        //                 (Vector2){optionPosition.x +
-        //                 showMenu.getDimension().x +
-        //                               object->getDimension().x,
-        //                           object->getPosition().y +
-        //                           optionDimension.y},
-        //                 optionDimension, "Import", 20,
-        //                 AppMenu::buttonPalette);
-        //             randomButton = Button(
-        //                 (Vector2){
-        //                     optionPosition.x + showMenu.getDimension().x +
-        //                         object->getDimension().x,
-        //                     object->getPosition().y + optionDimension.y * 2},
-        //                 optionDimension, "Random", 20,
-        //                 AppMenu::buttonPalette);
-        //         } else if (type == EdgeInsert) {
-        //             requestEdge = {"", "", ""};
-        //             edgeBox = edgeInsertBox(
-        //                 (Vector2){optionPosition.x +
-        //                 showMenu.getDimension().x +
-        //                               object->getDimension().x,
-        //                           object->getPosition().y},
-        //                 optionDimension, 20, AppMenu::buttonPalette, 0,
-        //                 MaxSizeNum, MaxSizeWeight);
-        //         } else if (type == NumInsert) {
-        //             requestText = "";
-        //             requestNum = "";
-        //             insertBox = InsertBox(
-        //                 (Vector2){optionPosition.x +
-        //                 showMenu.getDimension().x +
-        //                               object->getDimension().x,
-        //                           object->getPosition().y},
-        //                 optionDimension, 20, AppMenu::buttonPalette, 0,
-        //                 MaxSizeNum);
-        //         } else if (type == TextInsert) {
-        //             requestText = "";
-        //             requestNum = "";
-        //             insertBox = InsertBox(
-        //                 (Vector2){optionPosition.x +
-        //                 showMenu.getDimension().x +
-        //                               object->getDimension().x,
-        //                           object->getPosition().y},
-        //                 optionDimension, 20, AppMenu::buttonPalette, 1,
-        //                 MaxSizeText);
-        //         }  // else assert(Type::None != type);
-        //     }
-        // }
-    }
+        if (playButton.isPressed()) {
+            pauseAnimation();
+        } else if (pauseButton.isPressed()) {
+            continueAnimation();
+        }
 
-    if (playButton.isPressed()) {
-        pauseAnimation();
-    } else
-        if (pauseButton.isPressed()) {
-        Loop::isRunning = true;
-        continueAnimation();
+        if (prevButton.isPressed()) {
+            pauseAnimation();
+        }
+
+        if (backwardButton.isPressed()) {
+            // pauseAnimation();
+        }
     }
-};
+}
 
 void pauseAnimation() {
     Loop::isRunning = false;

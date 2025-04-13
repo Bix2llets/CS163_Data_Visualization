@@ -1,4 +1,4 @@
-#include "TrieState.hpp"
+#include "trie/TrieState.hpp"
 #include "menu.hpp"
 #include <colorPalette.h>
 #include <mLib/tinyfiledialogs.h>
@@ -6,14 +6,14 @@
 #include <cstdlib>
 #include <cstring>
 #include <fstream>
-#include <mLib/Utility.hpp>
+#include "utility.h"
 
 #include "menuPane.h"
 #include "raygui.h"
+#include <iostream>
 
 const int MAX_TEXT_LENGTH = 5;
 
-#include <iostream>
 
 double TrieState::mTimeStep;
 TrieState::TrieState() : mTrie() {
@@ -69,7 +69,7 @@ void TrieState::initPanes(Vector2 position) {
     addPane.newLine(0, 1, "Add", {"Word"}, {1}, true);
     addPane.newLine(1, 1, "Create", {"Num word"}, {0}, true);
 
-    removePane.newLine(0, 1, "Remove", {"Word"}, {1}, false);
+    removePane.newLine(0, 1, "Remove", {"Word"}, {1}, true);
     removePane.newLine(1, 0, "Clear", {}, {}, false);
 
     algoPane.newLine(0, 1, "Search", {"Word"}, {1}, true);
@@ -89,7 +89,7 @@ void TrieState::initPanes(Vector2 position) {
 }
 
 void TrieState::handleInput() {
-    assert(mLib::mFont.texture.id != 0);
+    assert(Utility::inter30.texture.id != 0);
 
     // if (mCreateButton->isPressed()) {
     //     showCreateOptions = !showCreateOptions;
@@ -224,7 +224,7 @@ void TrieState::handleInput() {
 
     if (addPane.isRandomPressed(0)) {
         char randomWord[MAX_TEXT_LENGTH + 1];
-        mLib::GenerateRandomText(randomWord);
+        Utility::GenerateRandomText(randomWord);
         addPane.getForm(0, 0).setText(randomWord);
     }
 
@@ -242,7 +242,7 @@ void TrieState::handleInput() {
         else size = std::stoi(data);
         for (int i = 0; i < size; i++) {
             char randomWord[MAX_TEXT_LENGTH + 1];
-            mLib::GenerateRandomText(randomWord);
+            Utility::GenerateRandomText(randomWord);
             mTrie.insert(randomWord);
             while (!mTrie.completedAllActions()) {
                 mTrie.update(1e-15, 1e-15);
@@ -266,6 +266,14 @@ void TrieState::handleInput() {
         mTrie = Trie();                   // Reset the Trie
     }
 
+    if (removePane.isRandomPressed(0)) {
+        if (!mTrie.completedAllActions()) return;
+
+        char randomWord[MAX_TEXT_LENGTH + 1];
+        Utility::GenerateRandomText(randomWord);
+        removePane.getForm(0, 0).setText(randomWord);
+    }
+
     if (algoPane.isButtonPressed(0)) {
         std::string word = algoPane.getForm(0, 0).getText();
         algoPane.getForm(0, 0).clear();
@@ -277,7 +285,7 @@ void TrieState::handleInput() {
         if (!mTrie.completedAllActions()) return;
 
         char randomWord[MAX_TEXT_LENGTH + 1];
-        mLib::GenerateRandomText(randomWord);
+        Utility::GenerateRandomText(randomWord);
         algoPane.getForm(0, 0).setText(randomWord);
     }
 
@@ -324,19 +332,24 @@ void TrieState::handleInput() {
         }
     }
     if (MenuTable::prevButton.isPressed()) {  // Undo functionality
-        MenuTable::pauseAnimation();
+        // MenuTable::pauseAnimation();
         //if (!mAVL.completeAnimation()) return;
         isReversed = 1;;
     }
     
     if (MenuTable::nextButton.isPressed()) {  // Redo functionality
-        MenuTable::pauseAnimation();
+        // MenuTable::pauseAnimation();
         //if (!mAVL.completeAnimation()) return;
-        isReversed = 0;
+        if (*MenuTable::isPlaying) {
+            while (true) {
+                mTrie.update(1e-15, 1e-15);
+                if (mTrie.Action(0)) break;
+            }
+        } else isReversed = 0;
     }
     
     if (MenuTable::forwardButton.isPressed()) {  // Forward functionality
-        MenuTable::pauseAnimation();
+        // MenuTable::pauseAnimation();
         while (!mTrie.completedAllActions()) {
             mTrie.update(1e-15, 1e-15);
             mTrie.Action(0);
@@ -344,11 +357,12 @@ void TrieState::handleInput() {
     }
     
     if (MenuTable::backwardButton.isPressed()) {  // Backward functionality
-        MenuTable::pauseAnimation();
+        // MenuTable::pauseAnimation();
         do {
             mTrie.update(1e-15, 1e-15);
             mTrie.Action(1);
         } while (!mTrie.completedAllActions() && !mTrie.reachedStart());
+        mTrie.ClearOperator();
         //mTrie.ClearOperator();
     }
 
@@ -401,13 +415,13 @@ void TrieState::render() {
     mTime += GetFrameTime();
     if (showTextBox & mTrie.completedAllActions()) {
         if (textDestionation == 1)
-            DrawTextEx(mLib::mFont, "Searching", (Vector2){10 + 250, 700}, 30,
+            DrawTextEx(Utility::inter30, "Searching", (Vector2){10 + 250, 700}, 30,
                        2, WHITE);
         else if (textDestionation == 2)
-            DrawTextEx(mLib::mFont, "Inserting", (Vector2){10 + 250, 700}, 30,
+            DrawTextEx(Utility::inter30, "Inserting", (Vector2){10 + 250, 700}, 30,
                        2, WHITE);
         else if (textDestionation == 3)
-            DrawTextEx(mLib::mFont, "Deleting", (Vector2){10 + 250, 700}, 30, 2,
+            DrawTextEx(Utility::inter30, "Deleting", (Vector2){10 + 250, 700}, 30, 2,
                        WHITE);
         mRandomValueButton->render();
         mEnterButton->render();
@@ -422,7 +436,7 @@ void TrieState::render() {
     //     mRandomButton->render();
     //     mCustomButton->render();
     // }
-    // DrawTextEx(mLib::mFont, mTrie.completedAllActions() ? "Animation
+    // DrawTextEx(mLib::inter30, mTrie.completedAllActions() ? "Animation
     // Completed" : animationPlaying ? "Animation Running" : "Animation Paused",
     // (Vector2) {1200, 10}, 30, 2, mTrie.completedAllActions() ? WHITE :
     // animationPlaying ? GREEN : RED);
