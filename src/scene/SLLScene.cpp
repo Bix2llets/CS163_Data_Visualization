@@ -39,7 +39,7 @@ void SLLScene::init() {
     miscPane.disable();
     deletePane.disable();
     addPane.newLine(0, 2, "Add", {"Value", "Location"}, {0, 0}, true);
-    addPane.newLine(1, 1, "Random", {"Number of nodes"}, {0}, false);
+    addPane.newLine(1, 1, "Random", {"Number of nodes"}, {0}, true);
     deletePane.newLine(0, 1, "Remove", {"Location"}, {0, 0}, true);
     deletePane.newLine(1, 0, "Clear", {}, {}, false);
     algoPane.newLine(0, 1, "Search", {"Value"}, {0});
@@ -257,6 +257,11 @@ void SLLScene::recordInput() {
             newSll.moveAt(newSll.nodeCount - 1);
         }
         newSll.finishAnimation();
+    }
+
+    if (addPane.isRandomPressed(1)) {
+        std::string length = std::to_string(rand() % 30);
+        addPane.getForm(1, 0).setText(length);
     }
     if (deletePane.isButtonPressed(0)) {
         // * Delete at end and delete at somewhere else

@@ -66,7 +66,7 @@ void clearGraph() {
 void init() {
     addPane.newLine(0, 1, "Vertice", {"Node label"}, {0}, true);
     addPane.newLine(1, 1, "Edge", {"Data"}, {0}, true);
-    addPane.newLine(2, 2, "Random", {"Vertices", "Edges"}, {0, 0}, false);
+    addPane.newLine(2, 2, "Random", {"Vertices", "Edges"}, {0, 0}, true);
 
     deletePane.newLine(0, 1, "Vertice", {"Node label"}, {0}, true);
     deletePane.newLine(1, 2, "Edge", {"U", "V"}, {0, 0}, true);
@@ -359,6 +359,17 @@ void registerInput() {
         ss << weight;
         std::string str = ss.str();
         form.setText(str);
+    }
+
+    if (addPane.isRandomPressed(2)) {
+        Form &verticesForm = addPane.getForm(2, 0);
+        Form &edgesForm = addPane.getForm(2, 1);
+
+        int nodeCount = rand() % 15 + 5;
+        int edgeCount = rand() % (nodeCount * (nodeCount - 1) / 2);
+        verticesForm.setText(std::to_string(nodeCount));
+        edgesForm.setText(std::to_string(edgeCount));
+
     }
     if (deletePane.isButtonPressed(0)) {
         std::string data = deletePane.getForm(0, 0).getText();
