@@ -363,7 +363,7 @@ void Trie::draw(TrieNode *root) {
         DrawCircleV(root->getPosition(), NODE_RADIUS - 3, backgroundColor);
     }
     //Color color = PALETTE->backgroundNormal;
-    Color color = nodeColorSet.borderHighlight;
+    Color color = GBLight::LIGHT_GREEN;
     color.a = 255.f - root->getAlpha();
     DrawCircleV(root->getPosition(), NODE_RADIUS - 3, color);
     DrawRing(root->getPosition(), NODE_RADIUS - 3, NODE_RADIUS, 0, 360, 20, PALETTE->borderNormal);

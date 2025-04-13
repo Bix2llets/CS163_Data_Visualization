@@ -234,7 +234,7 @@ void Hash::draw(hashNode* node) {
         tmp.a -= (255.f - Itr.animation->getHashAlpha());
         DrawCircleV(Itr.preNode->getPosition(), NODE_RADIUS - 3, tmp);
     }
-    Color tmp = nodeColorSet.borderHighlight;
+    Color tmp = GBLight::LIGHT_GREEN;
     tmp.a -= node->getAlpha();
     DrawCircleV(node->getPosition(), NODE_RADIUS - 3, tmp);
     DrawRing(node->getPosition(), NODE_RADIUS - 3, NODE_RADIUS, 0, 360, 20, PALETTE->borderNormal);
