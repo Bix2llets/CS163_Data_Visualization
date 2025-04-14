@@ -347,6 +347,11 @@ void Trie::draw(TrieNode *root) {
     if (root == NULL) return;
     for (auto &child : root->children) draw(child.second);
     DrawCircleV(root->getPosition(), NODE_RADIUS - 3,PALETTE->backgroundNormal);
+    if (root->isEndOfWord || !root->isCompletedAlpha()) {
+        Color backgroundColor = GBLight::DARK_YELLOW;
+        backgroundColor.a -= root->alpha;
+        DrawCircleV(root->getPosition(), NODE_RADIUS - 3, backgroundColor);
+    }
     if (Itr.show && root == Itr.targetedNode) {
         Color tmp = nodeResultColor;
         tmp.a -= Itr.animation->getHashAlpha();
@@ -356,11 +361,6 @@ void Trie::draw(TrieNode *root) {
         Color tmp = nodeResultColor;
         tmp.a -= (255.f - Itr.animation->getHashAlpha());
         DrawCircleV(Itr.preNode->getPosition(), NODE_RADIUS - 3, tmp);
-    }
-    if (root->isEndOfWord || !root->isCompletedAlpha()) {
-        Color backgroundColor = GBLight::DARK_YELLOW;
-        backgroundColor.a -= root->alpha;
-        DrawCircleV(root->getPosition(), NODE_RADIUS - 3, backgroundColor);
     }
     //Color color = PALETTE->backgroundNormal;
     Color color = GBLight::LIGHT_GREEN;
