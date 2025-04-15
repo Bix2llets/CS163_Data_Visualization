@@ -58,6 +58,19 @@ class Hash {
     static ColorSet const *PALETTE;
     static int highlightingRow;
 
+
+    int getSize() { return m; }
+    void updatePos_Key(int pos, int key) {
+        if (pos < 0 || pos >= m) return;
+        ActionList actions;
+        actions.push_back({15, INIT, NULL});
+        actions.push_back({16, target, root[pos]});
+        root[pos]->targetValue = key;
+        actions.push_back({17, changeValue, root[pos]});
+        actions.push_back({18, untarget, root[pos]});
+        actions.push_back({19, CLEAR, NULL});
+        core.insert(core.end(), actions.begin(), actions.end());
+    }
     void printTable();
     Hash(int _m);
     bool Action(bool isReversed);
@@ -106,7 +119,7 @@ class Hash {
     static const std::vector<std::string> hashInsert;
     static const std::vector<std::string> hashSearch;
     static const std::vector<std::string> hashDelete;
-
+    static const std::vector<std::string> hashUp;
     static void adjustHighlight(int index);
 };
 

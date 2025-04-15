@@ -345,6 +345,13 @@ const std::vector<std::string> Hash::hashDelete = {
     "if a[i]->v == v, a[i]->v = -1",                 // 13
     "End",                                           // 14
 };
+const std::vector<std::string> Hash::hashUp = {
+    "Begin",                                         // 15
+    "target a[Pos]",                                 // 16
+    "a[Pos]->v = v",                                 // 17
+    "untarget a[Pos]",                               // 18
+    "End",                                           // 19
+};
 int Hash::highlightingRow = -1;
 void Hash::adjustHighlight(int index) {
     if (index == -1) {
@@ -361,9 +368,13 @@ void Hash::adjustHighlight(int index) {
         highlightingRow = index - 5;
         CodePane::loadCode(hashSearch);
         CodePane::setHighlight(&highlightingRow);
-    } else {
+    } else if (index <= 14) {
         highlightingRow = index - 10;
         CodePane::loadCode(hashDelete);
+        CodePane::setHighlight(&highlightingRow);
+    } else {
+        highlightingRow = index - 15;
+        CodePane::loadCode(hashUp);
         CodePane::setHighlight(&highlightingRow);
     }
 }
