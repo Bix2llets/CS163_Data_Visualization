@@ -48,6 +48,13 @@ const std::vector<std::string> Trie::TrieDelete2 = {
     "End",                               // 19
 };
 
+const std::vector<std::string> Trie::TrieUpdate = {
+    "Begin",       // 20
+    "Traverse to end of word",  // 21
+    "Remove to target size",  // 22
+    "End",  // 23
+};
+
 // Implementation of DrawTextTrie
 void Trie::adjustHighlight(int index) {
     if (index == -1) {
@@ -72,11 +79,16 @@ void Trie::adjustHighlight(int index) {
             highlightingRow = index - 12;
             if (highlightingRow > 1) highlightingRow++;
             CodePane::setHighlight(&highlightingRow);
-        } else {
+        } else 
+            if (index <= 19) {
             CodePane::loadCode(TrieDelete2);
             highlightingRow = index - 16;
             highlightingRow += 3;
             if (highlightingRow > 3) highlightingRow++;
+            CodePane::setHighlight(&highlightingRow);
+        } else {
+            CodePane::loadCode(TrieUpdate);
+            highlightingRow = index - 20;
             CodePane::setHighlight(&highlightingRow);
         }
     }
@@ -200,11 +212,24 @@ void Trie::remove(std::string word) {
         current = current->children[word[i]];
         actions.push_back({15, SETLECT, current});
     }
-    if (current->isEndOfWord) actions.push_back({16, UNSETEND, current});
+    if (current->isEndOfWord == false) {
+        actions.push_back({19, SETLECT, NULL});
+        actions.push_back({19, CLEAR, current});
+        core.insert(core.end(), actions.begin(), actions.end());
+        return ;
+    }
     bool flag = current->isEndOfWord & current->children.size() == 0;
+    if (flag == 0) {
+        actions.push_back({16, SETLECT, NULL});
+        actions.push_back({16, UNSETEND, current});
+        actions.push_back({19, CLEAR, current});
+        core.insert(core.end(), actions.begin(), actions.end());
+        return ;
+    }
     while (flag && current != root) {
         TrieNode *parent = current->parent;
         actions.push_back({17, SETLECT, parent});
+        if (current->isEndOfWord) actions.push_back({16, UNSETEND, current});
         actions.push_back({18, DELETE, current});
         current = parent;
         if (current->children.size() > 1 || current->isEndOfWord) flag = false;

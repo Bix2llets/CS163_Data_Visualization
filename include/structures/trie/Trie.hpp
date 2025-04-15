@@ -54,6 +54,54 @@ class Trie {
         static int highlightingRow; 
         
         Trie() ;
+        void updateOldNew(std::string oldWord, int newSize) {
+            if (newSize <= 0) return;
+            ActionList actions;
+            TrieNode *current = root;
+            actions.push_back({20, INIT, current});
+            actions.push_back({21, SETLECT, current});
+            for (int i = 0; i < oldWord.size(); i++) {
+                if (current->children.find(oldWord[i]) == current->children.end()) {
+                    actions.push_back({23, SETLECT, NULL});
+                    actions.push_back({23, CLEAR, current});
+                    core.insert(core.end(), actions.begin(), actions.end());
+                    return ;
+                }
+                current = current->children[oldWord[i]];
+                actions.push_back({21, SETLECT, current});
+            }
+            if (!current->isEndOfWord) {
+                actions.push_back({23, SETLECT, NULL});
+                actions.push_back({23, CLEAR, current});
+                core.insert(core.end(), actions.begin(), actions.end());
+                return ;
+            }
+            bool flag = current->isEndOfWord & current->children.size() == 0;
+            if (flag == 0) {
+                actions.push_back({22, SETLECT, NULL});
+                actions.push_back({22, UNSETEND, current});
+                while (newSize--) current = current->parent;
+                actions.push_back({22, SETEND, current});
+                actions.push_back({23, CLEAR, current});
+                core.insert(core.end(), actions.begin(), actions.end());
+                return ;
+            }
+            newSize = oldWord.size() - newSize;
+            while (flag && current != root && newSize) {
+                TrieNode *parent = current->parent;
+                actions.push_back({22, SETLECT, parent});
+                if (current->isEndOfWord) actions.push_back({22, UNSETEND, current});
+                actions.push_back({22, DELETE, current});
+                newSize--;
+                current = parent;
+                if (current->children.size() > 1 || current->isEndOfWord) flag = false;
+            }
+            actions.push_back({22, SETLECT, NULL});
+            while (newSize--) current = current->parent;
+            actions.push_back({22, SETEND, current});
+            actions.push_back({23, CLEAR, current});
+            core.insert(core.end(), actions.begin(), actions.end());
+        }
         bool Action(bool isReversed);
         bool doAction(action Action);
         bool Undo(action Action);
@@ -114,6 +162,7 @@ class Trie {
         static const std::vector<std::string> TrieSearch;
         static const std::vector<std::string> TrieDelete;
         static const std::vector<std::string> TrieDelete2;
+        static const std::vector<std::string> TrieUpdate;
         
         static void adjustHighlight(int index); 
     };
