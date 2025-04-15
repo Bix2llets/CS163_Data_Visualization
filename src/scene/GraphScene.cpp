@@ -35,17 +35,17 @@ void setPanePosition(Vector2 position) {
 
 void clearGraph() {
     addStep(-1, nullptr);
-    std::cerr << "Before removal: \n";
-    for (auto x : nodeList) std::cerr << x << " ";
-    std::cerr << "\n";
-    for (auto x : edgeList)
-        std::cerr << x.first.first << " " << x.first.second << " " << x.second
-                  << "\n";
-    std::cerr << "\n";
+    // std::cerr << "Before removal: \n";
+    // for (auto x : nodeList) std::cerr << x << " ";
+    // std::cerr << "\n";
+    // for (auto x : edgeList)
+    //     std::cerr << x.first.first << " " << x.first.second << " " << x.second
+    //               << "\n";
+    // std::cerr << "\n";
     std::vector<std::shared_ptr<GraphNode>> graphNodeList = graph.getNodeList();
     std::vector<std::shared_ptr<GraphEdge>> graphEdgeList = graph.getEdgeList();
     for (std::shared_ptr<GraphNode> node : graphNodeList)
-        addNodeDelete(node->getLabel());
+        addNodeDelete(node->getLabel()); 
 
     for (std::shared_ptr<GraphEdge> edge : graphEdgeList)
         addEdgeDelete(edge->node1->getLabel(), edge->node2->getLabel(),
@@ -54,14 +54,14 @@ void clearGraph() {
     future.clear();
     edgeList.clear();
     nodeList.clear();
-    std::cerr << "After removal: \n";
-    for (auto x : nodeList) std::cerr << x << " ";
-    std::cerr << "\n";
-    for (auto x : edgeList)
-        std::cerr << x.first.first << " " << x.first.second << " " << x.second
-                  << "\n";
-    std::cerr << "\n";
-    std::cerr << "----------------------------\n";
+    // std::cerr << "After removal: \n";
+    // for (auto x : nodeList) std::cerr << x << " ";
+    // std::cerr << "\n";
+    // for (auto x : edgeList)
+    //     std::cerr << x.first.first << " " << x.first.second << " " << x.second
+    //               << "\n";
+    // std::cerr << "\n";
+    // std::cerr << "----------------------------\n";
 }
 void init() {
     addPane.newLine(0, 1, "Vertice", {"Node label"}, {0}, true);
@@ -313,7 +313,7 @@ void registerInput() {
         } else {
             if (verticesCount.length() == 0) {
                 maxNode = rand() % 15;
-                if (edgesCount.length() != 0) maxNode += sqrt(sqrt(stoi(edgesCount) * 2));   
+                if (edgesCount.length() != 0) maxNode += int(sqrt(stoi(edgesCount) * 2));   
             }
             else
                 maxNode = std::stoi(verticesCount);
@@ -335,7 +335,7 @@ void registerInput() {
              [](Action::EdgeInfo a, Action::EdgeInfo b) {
                  return a.weight < b.weight;
              });
-        for (int i = 1; i <= maxEdge; i++) {
+        for (int i = 0; i < maxEdge; i++) {
             int u = edgeList[i].node1;
             int v = edgeList[i].node2;
             int weight = rand() % 1000;
