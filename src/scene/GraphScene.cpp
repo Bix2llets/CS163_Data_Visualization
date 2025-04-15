@@ -276,12 +276,14 @@ void registerInput() {
     using namespace CodePane;
 
     if (addPane.isButtonPressed(0)) {
+        if (graph.isAnimationDone() == false) return;
         std::string data = addPane.getForm(0, 0).getText();
         addPane.getForm(0, 0).clear();
         if (!isStrNum(data)) return;
         addNode(std::stoi(data));
     }
     if (addPane.isButtonPressed(1)) {
+        if (graph.isAnimationDone() == false) return;
         std::string data = addPane.getForm(1, 0).getText();
         addPane.getForm(1, 0).clear();
         std::stringstream ss;
@@ -292,19 +294,20 @@ void registerInput() {
         if (!isStrNum(v)) return;
         if (!isStrNum(weight)) return;
         addEdge(std::stoi(u), std::stoi(v), std::stoi(weight));
-
+        
         return;
     }
-
+    
     if (addPane.isRandomPressed(0)) {
         int newNodeLabel = rand() % 1000;
         addPane.getForm(0, 0).setText(std::to_string(newNodeLabel));
     }
     if (addPane.isButtonPressed(2)) {
+        if (graph.isAnimationDone() == false) return;
         clearGraph();
         addStep(-1, nullptr);
         int maxNode, maxEdge;
-
+        
         std::string verticesCount = addPane.getText(2, 0);
         std::string edgesCount = addPane.getText(2, 1);
         if (verticesCount.length() == 0 && edgesCount.length() == 0) {
@@ -317,25 +320,25 @@ void registerInput() {
             }
             else
                 maxNode = std::stoi(verticesCount);
-            if (edgesCount.length() == 0)
+                if (edgesCount.length() == 0)
                 maxEdge = rand() % maxNode * (maxNode - 1) / 2;
-            else
+                else
                 maxEdge = std::min(maxNode * (maxNode - 1) / 2,
-                                   std::stoi(edgesCount));
-            addPane.getForm(2, 0).clear();
-            addPane.getForm(2, 1).clear();
-        }
-        for (int i = 1; i <= maxNode; i++) addNodeAdd(i);
-        std::vector<Action::EdgeInfo> edgeList;
-        for (int i = 1; i <= maxNode; i++)
+                std::stoi(edgesCount));
+                addPane.getForm(2, 0).clear();
+                addPane.getForm(2, 1).clear();
+            }
+            for (int i = 1; i <= maxNode; i++) addNodeAdd(i);
+            std::vector<Action::EdgeInfo> edgeList;
+            for (int i = 1; i <= maxNode; i++)
             for (int j = i + 1; j <= maxNode; j++)
-                edgeList.push_back({i, j, rand()});
-
-        sort(edgeList.begin(), edgeList.end(),
-             [](Action::EdgeInfo a, Action::EdgeInfo b) {
-                 return a.weight < b.weight;
-             });
-        for (int i = 0; i < maxEdge; i++) {
+            edgeList.push_back({i, j, rand()});
+            
+            sort(edgeList.begin(), edgeList.end(),
+            [](Action::EdgeInfo a, Action::EdgeInfo b) {
+                return a.weight < b.weight;
+            });
+            for (int i = 0; i < maxEdge; i++) {
             int u = edgeList[i].node1;
             int v = edgeList[i].node2;
             int weight = rand() % 1000;
@@ -351,7 +354,7 @@ void registerInput() {
         int firstNodePlace = rand() % nodeList.size();
         int secondNodePlace = rand() % nodeList.size();
         while (secondNodePlace == firstNodePlace)
-            secondNodePlace = rand() % nodeList.size();
+        secondNodePlace = rand() % nodeList.size();
         int weight = rand() % 10000;
         std::stringstream ss;
         ss << nodeList[firstNodePlace]->getLabel() << " ";
@@ -360,26 +363,28 @@ void registerInput() {
         std::string str = ss.str();
         form.setText(str);
     }
-
+    
     if (addPane.isRandomPressed(2)) {
         Form &verticesForm = addPane.getForm(2, 0);
         Form &edgesForm = addPane.getForm(2, 1);
-
+        
         int nodeCount = rand() % 15 + 5;
         int edgeCount = rand() % (nodeCount * (nodeCount - 1) / 2);
         verticesForm.setText(std::to_string(nodeCount));
         edgesForm.setText(std::to_string(edgeCount));
-
+        
     }
     if (deletePane.isButtonPressed(0)) {
+        if (graph.isAnimationDone() == false) return;
         std::string data = deletePane.getForm(0, 0).getText();
         deletePane.getForm(0, 0).clear();
         if (!isStrNum(data)) return;
         removeNode(std::stoi(data));
         return;
     }
-
+    
     if (deletePane.isButtonPressed(1)) {
+        if (graph.isAnimationDone() == false) return;
         std::string u = deletePane.getForm(1, 0).getText();
         std::string v = deletePane.getForm(1, 1).getText();
         deletePane.getForm(1, 0).clear();
@@ -389,13 +394,14 @@ void registerInput() {
         removeEdge(std::stoi(u), std::stoi(v));
         return;
     }
-
+    
     if (deletePane.isButtonPressed(2)) {
+        if (graph.isAnimationDone() == false) return;
         // * For clearing graph
         clearGraph();
         return;
     }
-
+    
     if (deletePane.isRandomPressed(0)) {
         auto nodeList = graph.getNodeList();
         if (nodeList.size() == 0) return;
@@ -403,7 +409,7 @@ void registerInput() {
         Form &form = deletePane.getForm(0, 0);
         form.setText(std::to_string(nodeList[place]->getLabel()));
     }
-
+    
     if (deletePane.isRandomPressed(1)) {
         auto edgeList = graph.getEdgeList();
         if (edgeList.size() == 0) return;
@@ -412,54 +418,58 @@ void registerInput() {
             std::to_string(edgeList[place]->node1->getLabel()));
         deletePane.getForm(1, 1).setText(
             std::to_string(edgeList[place]->node2->getLabel()));
-    }
-    if (algoPane.isButtonPressed(0)) {
+        }
+        if (algoPane.isButtonPressed(0)) {
+        if (graph.isAnimationDone() == false) return;
         MST();
         return;
     }
-
+    
     if (algoPane.isButtonPressed(1)) {
+        if (graph.isAnimationDone() == false) return;
         std::string data = algoPane.getForm(1, 0).getText();
         algoPane.getForm(1, 0).clear();
         if (!isStrNum(data)) return;
         if (data.find(' ') != std::string::npos) return;
         dijkstra(std::stoi(data));
     }
-
+    
     if (storagePane.isButtonPressed(0)) {
+        if (graph.isAnimationDone() == false) return;
         // * Save function
         const char *filePath = tinyfd_saveFileDialog(
             "Save Graph", "graph.txt", 1, (const char *[]){"*.txt"},
             "Text files (*.txt)");
-        if (filePath) {
-            std::ofstream outFile(filePath);
-            if (!outFile) {
-                tinyfd_messageBox("Error", "Failed to open file for saving.",
-                                  "ok", "error", 1);
-                return;
-            }
-
-            // Save nodes
-            outFile << "Nodes:\n";
-            for (int node : nodeList) {
-                outFile << node << "\n";
-            }
-
-            // Save edges
-            outFile << "Edges:\n";
-            for (const auto &edge : edgeList) {
-                outFile << edge.first.first << " " << edge.first.second << " "
+            if (filePath) {
+                std::ofstream outFile(filePath);
+                if (!outFile) {
+                    tinyfd_messageBox("Error", "Failed to open file for saving.",
+                        "ok", "error", 1);
+                        return;
+                    }
+                    
+                    // Save nodes
+                    outFile << "Nodes:\n";
+                    for (int node : nodeList) {
+                        outFile << node << "\n";
+                    }
+                    
+                    // Save edges
+                    outFile << "Edges:\n";
+                    for (const auto &edge : edgeList) {
+                        outFile << edge.first.first << " " << edge.first.second << " "
                         << edge.second << "\n";
             }
-
+            
             outFile.close();
             // tinyfd_messageBox("Success", "Graph saved successfully.", "ok",
             // "info", 1);
         }
         return;
     }
-
+    
     if (storagePane.isButtonPressed(1)) {
+        if (graph.isAnimationDone() == false) return;
         // * Load function
         const char *filePath = tinyfd_openFileDialog(
             "Load Graph", "graph.txt", 1, (const char *[]){"*.txt"},

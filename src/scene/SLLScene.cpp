@@ -215,36 +215,37 @@ void SLLScene::recordInput() {
         if (sll.isFinished() == false) return;
         auto value = addPane.getText(0, 0);
         auto location = addPane.getText(0, 1);
-
+        
         if (isStrNum(value)) {
             if (isStrNum(location)) {
                 SLLScene::addAt(value, std::stoi(location));
                 CodePane::loadCode(SLLScene::PSEUDO_INSERT);
-
+                
             } else if (location.size() == 0) {
                 SLLScene::addEnd(value);
                 CodePane::loadCode(SLLScene::PSEUDO_INSERT);
             }
-
+            
             addPane.getForm(0, 0).clear();
             addPane.getForm(0, 1).clear();
         }
     }
-
+    
     if (addPane.isRandomPressed(0)) {
         std::string value = std::to_string(rand() % 10000);
         std::string location = std::to_string(rand() % (sll.nodeCount + 1));
-
+        
         addPane.getForm(0, 0).setText(value);
         addPane.getForm(0, 1).setText(location);
     }
-
+    
     if (addPane.isButtonPressed(1)) {
+        if (sll.isFinished() == false) return;
         addStep(-1, nullptr);
         std::string formText = addPane.getText(1, 0);
         int length;
         if (formText.length() == 0)
-            length = rand() % 20 + 10;
+        length = rand() % 20 + 10;
         else
         {
             length = std::stoi(formText);
@@ -258,7 +259,7 @@ void SLLScene::recordInput() {
         }
         newSll.finishAnimation();
     }
-
+    
     if (addPane.isRandomPressed(1)) {
         std::string length = std::to_string(rand() % 30);
         addPane.getForm(1, 0).setText(length);
@@ -267,7 +268,7 @@ void SLLScene::recordInput() {
         // * Delete at end and delete at somewhere else
         if (sll.isFinished() == false) return;
         auto location = deletePane.getText(0, 0);
-
+        
         if (isStrNum(location)) {
             SLLScene::removeAt(std::stoi(location));
             CodePane::loadCode(SLLScene::PSEUDO_DELETE);
@@ -288,34 +289,37 @@ void SLLScene::recordInput() {
         deletePane.getForm(0, 0).setText(location);
     }
     if (algoPane.isButtonPressed(0)) {
+        if (sll.isFinished() == false) return;
         auto value = algoPane.getText(0, 0);
-
+        
         if (isStrNum(value)) {
             SLLScene::find(value);
             CodePane::loadCode(SLLScene::PSEUDO_SEARCH);
         }
     }
-
+    
     if (miscPane.isButtonPressed(0)) {
         // * Save
+        if (sll.isFinished() == false) return;
         const char* filter[2] = {"*.txt", "*.inp"};
         auto path = tinyfd_saveFileDialog("Save As: ", "SLL.txt", 2, filter,
-                                          "txt or inp file");
-
-        std::cerr << "The path is: " << path << "\n";
-        if (path != NULL) {
-            SLL& curr = steps.front().sll;
-            std::ofstream outputFile(path);
-            outputFile << curr.getSaveData();
+            "txt or inp file");
+            
+            std::cerr << "The path is: " << path << "\n";
+            if (path != NULL) {
+                SLL& curr = steps.front().sll;
+                std::ofstream outputFile(path);
+                outputFile << curr.getSaveData();
+            }
         }
-    }
-
-    if (miscPane.isButtonPressed(1)) {
-        const char* filter[2] = {"*.txt", "*.inp"};
-        auto path = tinyfd_openFileDialog("Open: ", "", 2, filter,
-                                          "txt or inp file", 0);
-
-        if (path != NULL) {
+        
+        if (miscPane.isButtonPressed(1)) {
+            if (sll.isFinished() == false) return;
+            const char* filter[2] = {"*.txt", "*.inp"};
+            auto path = tinyfd_openFileDialog("Open: ", "", 2, filter,
+                "txt or inp file", 0);
+                
+                if (path != NULL) {
             addStep(-1, nullptr);
 
             SLL& newSll = steps.back().sll;
