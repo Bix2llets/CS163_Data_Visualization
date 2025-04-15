@@ -69,7 +69,8 @@ void HashState::initPanes(Vector2 position) { // Updated to static
     removePane.newLine(0, 1, "Remove", {"Value"}, {0}, true);
     removePane.newLine(1, 0, "Clear", {}, {}, false);
 
-    algoPane.newLine(0, 1, "Search", {"Value"}, {0}, true);
+    algoPane.newLine(0, 2, "Update", {"Position", "Value"}, {0, 0}, true);
+    algoPane.newLine(1, 1, "Search", {"Value"}, {0}, true);
 
     storagePane.newLine(0, 0, "Save", {}, {}, false);
     storagePane.newLine(1, 0, "Load", {}, {}, false);
@@ -283,15 +284,35 @@ void HashState::handleInput() {
     if (algoPane.isButtonPressed(0)) {
         if (!mhash.completedAllActions()) return;
         
-        std::string data = algoPane.getForm(0, 0).getText();
+        std::string data1 = algoPane.getForm(0, 0).getText();
+        std::string data2 = algoPane.getForm(0, 1).getText();
         algoPane.getForm(0, 0).clear();
+        algoPane.getForm(0, 1).clear();
+        if (!isStrNum(data1) || !isStrNum(data2)) return;
+        mhash.updatePos_Key(std::stoi(data1), std::stoi(data2));
+    }
+
+    if (algoPane.isRandomPressed(0)) {
+        if (mhash.getSize()) {
+            int value1 = rand() % mhash.getSize();
+            int value2 = rand() % 1000;
+            algoPane.getForm(0, 0).setText(std::to_string(value1));
+            algoPane.getForm(0, 1).setText(std::to_string(value2));
+        }
+    }
+
+    if (algoPane.isButtonPressed(1)) {
+        if (!mhash.completedAllActions()) return;
+        
+        std::string data = algoPane.getForm(1, 0).getText();
+        algoPane.getForm(1, 0).clear();
         if (!isStrNum(data)) return;
         mhash.search(std::stoi(data));
     }
     
-    if (algoPane.isRandomPressed(0)) {
+    if (algoPane.isRandomPressed(1)) {
         int value = rand() % 1000;
-        algoPane.getForm(0, 0).setText(std::to_string(value));
+        algoPane.getForm(1, 0).setText(std::to_string(value));
     }
     
     if (storagePane.isButtonPressed(0)) {  // Save functionality

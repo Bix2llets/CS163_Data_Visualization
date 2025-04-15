@@ -48,6 +48,13 @@ const std::vector<std::string> Trie::TrieDelete2 = {
     "End",                               // 19
 };
 
+const std::vector<std::string> Trie::TrieUpdate = {
+    "Begin",       // 20
+    "Traverse to end of word",  // 21
+    "Remove to target size",  // 22
+    "End",  // 23
+};
+
 // Implementation of DrawTextTrie
 void Trie::adjustHighlight(int index) {
     if (index == -1) {
@@ -72,11 +79,16 @@ void Trie::adjustHighlight(int index) {
             highlightingRow = index - 12;
             if (highlightingRow > 1) highlightingRow++;
             CodePane::setHighlight(&highlightingRow);
-        } else {
+        } else 
+            if (index <= 19) {
             CodePane::loadCode(TrieDelete2);
             highlightingRow = index - 16;
             highlightingRow += 3;
             if (highlightingRow > 3) highlightingRow++;
+            CodePane::setHighlight(&highlightingRow);
+        } else {
+            CodePane::loadCode(TrieUpdate);
+            highlightingRow = index - 20;
             CodePane::setHighlight(&highlightingRow);
         }
     }
@@ -200,11 +212,24 @@ void Trie::remove(std::string word) {
         current = current->children[word[i]];
         actions.push_back({15, SETLECT, current});
     }
-    if (current->isEndOfWord) actions.push_back({16, UNSETEND, current});
+    if (current->isEndOfWord == false) {
+        actions.push_back({19, SETLECT, NULL});
+        actions.push_back({19, CLEAR, current});
+        core.insert(core.end(), actions.begin(), actions.end());
+        return ;
+    }
     bool flag = current->isEndOfWord & current->children.size() == 0;
+    if (flag == 0) {
+        actions.push_back({16, SETLECT, NULL});
+        actions.push_back({16, UNSETEND, current});
+        actions.push_back({19, CLEAR, current});
+        core.insert(core.end(), actions.begin(), actions.end());
+        return ;
+    }
     while (flag && current != root) {
         TrieNode *parent = current->parent;
         actions.push_back({17, SETLECT, parent});
+        if (current->isEndOfWord) actions.push_back({16, UNSETEND, current});
         actions.push_back({18, DELETE, current});
         current = parent;
         if (current->children.size() > 1 || current->isEndOfWord) flag = false;
@@ -348,7 +373,7 @@ void Trie::draw(TrieNode *root) {
     for (auto &child : root->children) draw(child.second);
     DrawCircleV(root->getPosition(), NODE_RADIUS - 3,PALETTE->backgroundNormal);
     if (root->isEndOfWord || !root->isCompletedAlpha()) {
-        Color backgroundColor = GBLight::DARK_YELLOW;
+        Color backgroundColor = yellowShade;
         backgroundColor.a -= root->alpha;
         DrawCircleV(root->getPosition(), NODE_RADIUS - 3, backgroundColor);
     }
@@ -363,20 +388,20 @@ void Trie::draw(TrieNode *root) {
         DrawCircleV(Itr.preNode->getPosition(), NODE_RADIUS - 3, tmp);
     }
     //Color color = PALETTE->backgroundNormal;
-    Color color = GBLight::LIGHT_GREEN;
+    Color color = greenShade;
     color.a = 255.f - root->getAlpha();
     DrawCircleV(root->getPosition(), NODE_RADIUS - 3, color);
     DrawRing(root->getPosition(), NODE_RADIUS - 3, NODE_RADIUS, 0, 360, 20, PALETTE->borderNormal);
     char str[2] = {root->character, '\0'};
     Utility::drawText(str, root->getPosition(), Utility::inter20, PALETTE->textNormal, 20, 1, VerticalAlignment::CENTERED, HorizontalAlignment::CENTERED);
     // DrawTextEx(mLib::inter30, str, (Vector2){root->getPosition().x - 12, root->getPosition().y - 12}, 20, 2, WHITE);
-    Color colorText = WHITE;
+    Color colorText = nodeColorSet.textNormal;
     if (Itr.show && root == Itr.targetedNode) colorText.a -= Itr.animation->getHashAlpha();
     else if (Itr.show && root == Itr.preNode) colorText.a -= (255.f - Itr.animation->getHashAlpha());
     else colorText = PALETTE->textNormal;
     Utility::drawText(str, root->getPosition(), Utility::inter20, colorText, 20, 1, VerticalAlignment::CENTERED, HorizontalAlignment::CENTERED);
     if (root->isEndOfWord || !root->isCompletedAlpha()) {
-        Color colorText = WHITE;
+        Color colorText = nodeColorSet.textNormal;
         colorText.a -= root->alpha;
         Utility::drawText(str, root->getPosition(), Utility::inter30,
         colorText, 20, Utility::SPACING,

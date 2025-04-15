@@ -47,6 +47,14 @@ const std::vector<std::string> AVL::AVLDelete2 = {
     "End",                          // 25
 };
 
+
+const std::vector<std::string> AVL::AVLUpdate = {
+    "Begin",            // 26
+    "Find the limits of old key",  // 27
+    "If new key satisfies the limits, replace old by new",  // 28
+    "End",                                 // 29
+};
+
 AVL::AVL() : Itr(), changing({ChangeProcedure(-1, -1, NULL), NULL}) {
     loop = 0;
     core = ActionList();
@@ -709,28 +717,28 @@ void AVL::draw(AVLNode *root) {
     backgroundColor = PALETTE->backgroundNormal;
     DrawCircleV(root->getPosition(), NODE_RADIUS - 3, backgroundColor);
     if (Itr.show && root == Itr.targetedNode) {
-        Color tmp = GBLight::LIGHT_RED;
+        Color tmp = nodeResultColor;
         tmp.a -= Itr.animation->getHashAlpha();
         DrawCircleV(Itr.targetedNode->getPosition(), NODE_RADIUS - 3, tmp);
     }
     if (Itr.show && root == Itr.preNode) {
-        Color tmp = GBLight::LIGHT_RED;
+        Color tmp = nodeResultColor;
         tmp.a -= (255.f - Itr.animation->getHashAlpha());
         DrawCircleV(Itr.preNode->getPosition(), NODE_RADIUS - 3, tmp);
     }
     if (root->targeted || !root->isCompletedAlpha()) {
-        backgroundColor = GBLight::DARK_YELLOW;
+        backgroundColor = yellowShade;
         backgroundColor.a -= root->alpha;
         DrawCircleV(root->getPosition(), NODE_RADIUS - 3, backgroundColor);
     }
-    Color color = GBLight::LIGHT_GREEN;
+    Color color = greenShade;
     color.a = 255.f - root->getAlpha();
     DrawCircleV(root->getPosition(), NODE_RADIUS - 3, color);
     DrawRing(root->getPosition(), NODE_RADIUS - 3, NODE_RADIUS, 0, 360, 20,
              PALETTE->borderNormal);
 
     if (changing.second == root) {
-        Color colorText = WHITE;
+        Color colorText = nodeColorSet.textNormal;
         colorText.a -= changing.first.getAlpha();
         char *text =
             new char[std::to_string(changing.first.getNewValue()).length() + 1];
@@ -739,7 +747,7 @@ void AVL::draw(AVLNode *root) {
                           colorText, 20, Utility::SPACING,
                           VerticalAlignment::CENTERED,
                           HorizontalAlignment::CENTERED);
-        colorText = WHITE;
+        colorText = nodeColorSet.textNormal;
         colorText.a -= (255.f - changing.first.getAlpha());
         text =
             new char[std::to_string(changing.first.getOldValue()).length() + 1];
@@ -768,7 +776,7 @@ void AVL::draw(AVLNode *root) {
                       20, 1, VerticalAlignment::CENTERED,
                       HorizontalAlignment::CENTERED);
     if (root->targeted || !root->isCompletedAlpha()) {
-        Color colorText = WHITE;
+        Color colorText = nodeColorSet.textNormal;
         colorText.a -= root->alpha;
         Utility::drawText(value.c_str(), root->getPosition(), Utility::inter30,
                           colorText, 20, Utility::SPACING,
@@ -903,10 +911,15 @@ void AVL::adjustHighlight(int index) {
             highlightingRow = index - 14;
             if (highlightingRow > 1) highlightingRow++;
             CodePane::setHighlight(&highlightingRow);
-        } else {
+        } else 
+            if (index <= 25) {
             CodePane::loadCode(AVLDelete2);
             highlightingRow = index - 20;
             highlightingRow += 2;
+            CodePane::setHighlight(&highlightingRow);
+        } else {
+            CodePane::loadCode(AVLUpdate);
+            highlightingRow = index - 26;
             CodePane::setHighlight(&highlightingRow);
         }
     }

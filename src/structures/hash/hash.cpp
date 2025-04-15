@@ -1,30 +1,33 @@
 #include "hash/hash.hpp"
-#include "Utility.h"
+
 #include "CodePane.h"
+#include "Utility.h"
 ColorSet const *Hash::PALETTE = &nodeColorSet;
-Hash::Hash(int _m = 10) : Itr(), m(_m), changing({ChangeProcedure(-1, -1, NULL), NULL}) {
+Hash::Hash(int _m = 10)
+    : Itr(), m(_m), changing({ChangeProcedure(-1, -1, NULL), NULL}) {
     loop = 0;
     core = ActionList();
     root.clear();
-    hashNode *node; //= new hashNode(100, 350, -1);
-    //root.push_back(node);
+    hashNode *node;  //= new hashNode(100, 350, -1);
+    // root.push_back(node);
     int numRow = m / 15 + 1;
     for (int i = 0; i < m; i++) {
-        int X = i / 15, Y = i % 15; /// location in matrix
-        node = new hashNode(100 + xOFFSET * Y, 400 + (X - numRow / 2) * yOFFSET, -1);
+        int X = i / 15, Y = i % 15;  /// location in matrix
+        node = new hashNode(100 + xOFFSET * Y, 400 + (X - numRow / 2) * yOFFSET,
+                            -1);
         root.push_back(node);
     }
-    ItrHistory.clear(); 
+    ItrHistory.clear();
     changeList.clear();
     flag = flagUndo = -1;
     // std::cout << "done create\n";
 }
 
 void Hash::printTable() {
-    for (int i = 0; i < m; i ++) {
-        // std::cout << root[i]->getPosition().x << ' '<< root[i]->getPosition().y << " ";
-        // std::cout << root[i]->targeted << ' ' << root[i]->value << ' ' << root[i]->targetValue << "\n";
-
+    for (int i = 0; i < m; i++) {
+        // std::cout << root[i]->getPosition().x << ' '<<
+        // root[i]->getPosition().y << " "; std::cout << root[i]->targeted << '
+        // ' << root[i]->value << ' ' << root[i]->targetValue << "\n";
     }
     // std::cout << "\n";
 }
@@ -110,8 +113,7 @@ void Hash::remove(int value) {
 }
 
 bool Hash::Undo(action Action) {
-    switch (Action.action)
-    {
+    switch (Action.action) {
         case INIT:
             Itr = ItrAction();
             return true;
@@ -119,14 +121,15 @@ bool Hash::Undo(action Action) {
             Itr.show = true;
             return true;
         case SETLECT:
-            if (ItrHistory.size() && ItrHistory.back().first != Itr.targetedNode) {
+            if (ItrHistory.size() &&
+                ItrHistory.back().first != Itr.targetedNode) {
                 Itr.preNode = Itr.targetedNode;
                 Itr.targetedNode = ItrHistory.back().first;
                 Itr.animation->setHashAlpha(0);
                 Itr.setTarget();
             }
-            if (Itr.animation -> isCompleted()) ItrHistory.pop_back();
-            if (Itr.animation -> isCompleted()) return true;
+            if (Itr.animation->isCompleted()) ItrHistory.pop_back();
+            if (Itr.animation->isCompleted()) return true;
             return false;
         case target:
             Action.node->targeted = false;
@@ -137,7 +140,10 @@ bool Hash::Undo(action Action) {
         case changeValue:
             if (changing.second == NULL) {
                 Action.node->targetValue = Action.node->value;
-                changing = {ChangeProcedure(Action.node->value, changeList.back(), &Action.node->value), Action.node};
+                changing = {
+                    ChangeProcedure(Action.node->value, changeList.back(),
+                                    &Action.node->value),
+                    Action.node};
                 changeList.pop_back();
             }
             if (changing.first.isCompleted()) {
@@ -146,15 +152,16 @@ bool Hash::Undo(action Action) {
             }
             return false;
         case FadeEffect:
-            if (flagUndo == -1) flagUndo = 0;
-            else if (flagUndo == 1) flagUndo = -1;
+            if (flagUndo == -1)
+                flagUndo = 0;
+            else if (flagUndo == 1)
+                flagUndo = -1;
             return flagUndo;
     }
 }
 
 bool Hash::doAction(action Action) {
-    switch (Action.action)
-    {
+    switch (Action.action) {
         case INIT:
             Itr.show = true;
             return true;
@@ -162,16 +169,16 @@ bool Hash::doAction(action Action) {
             Itr = ItrAction();
             return true;
         case SETLECT:
-        if (ItrHistory.size() == 0 || ItrHistory.back().second != loop) {
-            ItrHistory.push_back({Itr.targetedNode, loop});
-            Itr.preNode = Itr.targetedNode;
-            Itr.targetedNode = Action.node;
-            Itr.animation->setHashAlpha(0);
-            Itr.setTarget();
-        }
-        if (Itr.animation -> isCompleted()) return true;
-        return false;
-        case target: 
+            if (ItrHistory.size() == 0 || ItrHistory.back().second != loop) {
+                ItrHistory.push_back({Itr.targetedNode, loop});
+                Itr.preNode = Itr.targetedNode;
+                Itr.targetedNode = Action.node;
+                Itr.animation->setHashAlpha(0);
+                Itr.setTarget();
+            }
+            if (Itr.animation->isCompleted()) return true;
+            return false;
+        case target:
             Action.node->targeted = true;
             return true;
         case untarget:
@@ -180,24 +187,31 @@ bool Hash::doAction(action Action) {
         case changeValue:
             if (changing.second == NULL) {
                 changeList.push_back(Action.node->value);
-                changing = {ChangeProcedure(Action.node->value, Action.node->targetValue, &Action.node->value), Action.node};
+                changing = {ChangeProcedure(Action.node->value,
+                                            Action.node->targetValue,
+                                            &Action.node->value),
+                            Action.node};
                 Action.node->targetValue = -1;
             }
             if (changing.first.isCompleted()) {
-                // std::cout << Action.node->value << ' ' << changing.first.getNewValue() << std::endl;
+                // std::cout << Action.node->value << ' ' <<
+                // changing.first.getNewValue() << std::endl;
                 changing = {ChangeProcedure(-1, -1, NULL), NULL};
                 return true;
             }
             return false;
         case FadeEffect:
-            if (flag == -1) flag = 0;
-            else if (flag == 1) flag = -1;
+            if (flag == -1)
+                flag = 0;
+            else if (flag == 1)
+                flag = -1;
             return flag;
     }
 }
 
-std::pair<bool, bool> Hash::doFadeEffect(double curr, double Trans, hashNode *target) {
-    for (int i = 0; i < m; i++) 
+std::pair<bool, bool> Hash::doFadeEffect(double curr, double Trans,
+                                         hashNode *target) {
+    for (int i = 0; i < m; i++)
         if (root[i] == target) return {root[i]->fadeEffect(curr, Trans), true};
 }
 
@@ -221,76 +235,99 @@ void Hash::update(double currTime, double rate) {
 
 #include <cstring>
 
-void Hash::draw(hashNode* node) {
+void Hash::draw(hashNode *node) {
     if (node == NULL) return;
-    DrawCircleV(node->getPosition(), NODE_RADIUS - 3, node->targeted ? PALETTE->backgroundHighlight : PALETTE->backgroundNormal);
+    DrawCircleV(node->getPosition(), NODE_RADIUS - 3,
+                node->targeted ? PALETTE->backgroundHighlight
+                               : PALETTE->backgroundNormal);
     if (Itr.show && node == Itr.targetedNode) {
-        Color tmp = GBLight::LIGHT_RED;
+        Color tmp = nodeResultColor;
         tmp.a -= Itr.animation->getHashAlpha();
         DrawCircleV(Itr.targetedNode->getPosition(), NODE_RADIUS - 3, tmp);
     }
     if (Itr.show && node == Itr.preNode) {
-        Color tmp = GBLight::LIGHT_RED;
+        Color tmp = nodeResultColor;
         tmp.a -= (255.f - Itr.animation->getHashAlpha());
         DrawCircleV(Itr.preNode->getPosition(), NODE_RADIUS - 3, tmp);
     }
-    Color tmp = GBLight::LIGHT_GREEN;
+    Color tmp = greenShade;
     tmp.a -= node->getAlpha();
     DrawCircleV(node->getPosition(), NODE_RADIUS - 3, tmp);
-    DrawRing(node->getPosition(), NODE_RADIUS - 3, NODE_RADIUS, 0, 360, 20, PALETTE->borderNormal);
+    DrawRing(node->getPosition(), NODE_RADIUS - 3, NODE_RADIUS, 0, 360, 20,
+             PALETTE->borderNormal);
     if (changing.second == node) {
         Color colorText = PALETTE->textNormal;
         colorText.a -= (255.f - changing.first.getAlpha());
-        char *text = new char[std::to_string(changing.first.getOldValue()).length() + 1];
-        strcpy(text, std::to_string(changing.first.getOldValue()).c_str()); 
+        char *text =
+            new char[std::to_string(changing.first.getOldValue()).length() + 1];
+        strcpy(text, std::to_string(changing.first.getOldValue()).c_str());
         if (changing.first.getOldValue() == -1) strcpy(text, "null");
-        Utility::drawText(text, node->getPosition(), Utility::inter20, colorText, 20, 1, VerticalAlignment::CENTERED, HorizontalAlignment::CENTERED);
+        Utility::drawText(text, node->getPosition(), Utility::inter20,
+                          colorText, 20, 1, VerticalAlignment::CENTERED,
+                          HorizontalAlignment::CENTERED);
         colorText = PALETTE->textNormal;
         colorText.a -= changing.first.getAlpha();
-        text = new char[std::to_string(changing.first.getNewValue()).length() + 1];
+        text =
+            new char[std::to_string(changing.first.getNewValue()).length() + 1];
         strcpy(text, std::to_string(changing.first.getNewValue()).c_str());
         if (changing.first.getNewValue() == -1) strcpy(text, "null");
-        Utility::drawText(text, node->getPosition(), Utility::inter20, colorText, 20, 1, VerticalAlignment::CENTERED, HorizontalAlignment::CENTERED);
+        Utility::drawText(text, node->getPosition(), Utility::inter20,
+                          colorText, 20, 1, VerticalAlignment::CENTERED,
+                          HorizontalAlignment::CENTERED);
         return;
     }
     std::string value = std::to_string(node->value);
     if (node->value == -1) value = "null";
     char *text = new char[value.length() + 1];
     strcpy(text, value.c_str());
-    Utility::drawText(text, node->getPosition(), Utility::inter20, PALETTE->textNormal, 20, 1, VerticalAlignment::CENTERED, HorizontalAlignment::CENTERED);
-    Color colorText = WHITE;
-    if (Itr.show && node == Itr.targetedNode) colorText.a -= Itr.animation->getHashAlpha();
-    else if (Itr.show && node == Itr.preNode) colorText.a -= (255.f - Itr.animation->getHashAlpha());
-    else colorText = PALETTE->textNormal;
-    Utility::drawText(text, node->getPosition(), Utility::inter20, colorText, 20, 1, VerticalAlignment::CENTERED, HorizontalAlignment::CENTERED);
+    Utility::drawText(text, node->getPosition(), Utility::inter20,
+                      PALETTE->textNormal, 20, 1, VerticalAlignment::CENTERED,
+                      HorizontalAlignment::CENTERED);
+    Color colorText = PALETTE->textNormal;
+    if (Itr.show && node == Itr.targetedNode)
+        colorText.a -= Itr.animation->getHashAlpha();
+    else if (Itr.show && node == Itr.preNode)
+        colorText.a -= (255.f - Itr.animation->getHashAlpha());
+    else
+        colorText = PALETTE->textNormal;
+    Utility::drawText(text, node->getPosition(), Utility::inter20, colorText,
+                      20, 1, VerticalAlignment::CENTERED,
+                      HorizontalAlignment::CENTERED);
 }
 
 void Hash::draw() {
-    if (!endLoop()) adjustHighlight(core[loop].index);
-    else adjustHighlight(-1);
+    if (!endLoop())
+        adjustHighlight(core[loop].index);
+    else
+        adjustHighlight(-1);
     for (int i = 0; i < m; i++) {
-        Utility::drawText(std::to_string(i).c_str(), Vector2Add(root[i]->getPosition(), Vector2{0, -50}), Utility::inter20, PALETTE->textNormal, 20, 1, VerticalAlignment::CENTERED, HorizontalAlignment::CENTERED);
+        Utility::drawText(std::to_string(i).c_str(),
+                          Vector2Add(root[i]->getPosition(), Vector2{0, -50}),
+                          Utility::inter20, PALETTE->textNormal, 20, 1,
+                          VerticalAlignment::CENTERED,
+                          HorizontalAlignment::CENTERED);
         draw(root[i]);
     }
 }
 
-void Hash::DrawArrowWithCircles(Vector2 start, Vector2 end, float radius, Color color, float thickness) {
-    Vector2 dir = { end.x - start.x, end.y - start.y };
+void Hash::DrawArrowWithCircles(Vector2 start, Vector2 end, float radius,
+                                Color color, float thickness) {
+    Vector2 dir = {end.x - start.x, end.y - start.y};
     float length = sqrtf(dir.x * dir.x + dir.y * dir.y);
     dir.x /= length;
     dir.y /= length;
-    Vector2 arrowStart = { start.x + radius * dir.x, start.y + radius * dir.y };
-    Vector2 arrowEnd = { end.x - radius * dir.x, end.y - radius * dir.y };
+    Vector2 arrowStart = {start.x + radius * dir.x, start.y + radius * dir.y};
+    Vector2 arrowEnd = {end.x - radius * dir.x, end.y - radius * dir.y};
     DrawLineEx(arrowStart, arrowEnd, thickness, color);
     float arrowSize = 10.0f;
-    Vector2 left = { arrowEnd.x - arrowSize * (dir.x - dir.y), arrowEnd.y - arrowSize * (dir.y + dir.x) };
-    Vector2 right = { arrowEnd.x - arrowSize * (dir.x + dir.y), arrowEnd.y - arrowSize * (dir.y - dir.x) };
+    Vector2 left = {arrowEnd.x - arrowSize * (dir.x - dir.y),
+                    arrowEnd.y - arrowSize * (dir.y + dir.x)};
+    Vector2 right = {arrowEnd.x - arrowSize * (dir.x + dir.y),
+                     arrowEnd.y - arrowSize * (dir.y - dir.x)};
     DrawTriangle(arrowEnd, left, right, color);
 }
 
-bool Hash::completedAllActions() {
-    return loop == core.size();
-}
+bool Hash::completedAllActions() { return loop == core.size(); }
 
 bool Hash::completeAnimation() {
     bool f = 1;
@@ -321,7 +358,6 @@ Hash::~Hash() {
     root.clear();
 }
 
-
 const std::vector<std::string> Hash::hashInsert = {
     "Begin",                                 // 0
     "i = v % m",                             // 1
@@ -345,6 +381,13 @@ const std::vector<std::string> Hash::hashDelete = {
     "if a[i]->v == v, a[i]->v = -1",                 // 13
     "End",                                           // 14
 };
+const std::vector<std::string> Hash::hashUp = {
+    "Begin",            // 15
+    "target a[Pos]",    // 16
+    "a[Pos]->v = v",    // 17
+    "untarget a[Pos]",  // 18
+    "End",              // 19
+};
 int Hash::highlightingRow = -1;
 void Hash::adjustHighlight(int index) {
     if (index == -1) {
@@ -361,9 +404,13 @@ void Hash::adjustHighlight(int index) {
         highlightingRow = index - 5;
         CodePane::loadCode(hashSearch);
         CodePane::setHighlight(&highlightingRow);
-    } else {
+    } else if (index <= 14) {
         highlightingRow = index - 10;
         CodePane::loadCode(hashDelete);
+        CodePane::setHighlight(&highlightingRow);
+    } else {
+        highlightingRow = index - 15;
+        CodePane::loadCode(hashUp);
         CodePane::setHighlight(&highlightingRow);
     }
 }

@@ -72,7 +72,8 @@ void TrieState::initPanes(Vector2 position) {
     removePane.newLine(0, 1, "Remove", {"Word"}, {1}, true);
     removePane.newLine(1, 0, "Clear", {}, {}, false);
 
-    algoPane.newLine(0, 1, "Search", {"Word"}, {1}, true);
+    algoPane.newLine(0, 2, "Update", {"Word", "New size"}, {1, 0}, true);
+    algoPane.newLine(1, 1, "Search", {"Word"}, {1}, true);
 
     storagePane.newLine(0, 0, "Save", {}, {}, false);
     storagePane.newLine(1, 0, "Load", {}, {}, false);
@@ -275,13 +276,19 @@ void TrieState::handleInput() {
         Utility::GenerateRandomText(randomWord);
         removePane.getForm(0, 0).setText(randomWord);
     }
-    
+
     if (algoPane.isButtonPressed(0)) {
         if (!mTrie.completedAllActions()) return;
+        
         std::string word = algoPane.getForm(0, 0).getText();
         algoPane.getForm(0, 0).clear();
         if (word.empty()) return;
-        mTrie.search(word);
+        std::string newSizeStr = algoPane.getForm(0, 1).getText();
+        algoPane.getForm(0, 1).clear();
+        int newSize;
+        if (!isStrNum(newSizeStr)) return ;
+        else newSize = std::stoi(newSizeStr);
+        mTrie.updateOldNew(word, newSize);  // Perform the update operation
     }
 
     if (algoPane.isRandomPressed(0)) {
@@ -290,6 +297,25 @@ void TrieState::handleInput() {
         char randomWord[MAX_TEXT_LENGTH + 1];
         Utility::GenerateRandomText(randomWord);
         algoPane.getForm(0, 0).setText(randomWord);
+        std::string RW = randomWord;
+        int newSize = GetRandomValue(1, RW.size());
+        algoPane.getForm(0, 1).setText(std::to_string(newSize));
+    }
+    
+    if (algoPane.isButtonPressed(1)) {
+        if (!mTrie.completedAllActions()) return;
+        std::string word = algoPane.getForm(1, 0).getText();
+        algoPane.getForm(1, 0).clear();
+        if (word.empty()) return;
+        mTrie.search(word);
+    }
+
+    if (algoPane.isRandomPressed(1)) {
+        if (!mTrie.completedAllActions()) return;
+        
+        char randomWord[MAX_TEXT_LENGTH + 1];
+        Utility::GenerateRandomText(randomWord);
+        algoPane.getForm(1, 0).setText(randomWord);
     }
     
     if (storagePane.isButtonPressed(0)) {
