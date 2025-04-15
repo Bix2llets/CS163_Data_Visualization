@@ -72,7 +72,8 @@ void AVLState::initPanes(Vector2 position) {
     removePane.newLine(0, 1, "Remove", {"Value"}, {0}, true);
     removePane.newLine(1, 0, "Clear", {}, {}, false);
 
-    algoPane.newLine(0, 1, "Search", {"Value"}, {0}, true);
+    algoPane.newLine(0, 2, "Update", {"Old key", "New key"}, {0, 0}, true);
+    algoPane.newLine(1, 1, "Search", {"Value"}, {0}, true);
 
     storagePane.newLine(0, 0, "Save", {}, {}, false);
     storagePane.newLine(1, 0, "Load", {}, {}, false);
@@ -165,10 +166,42 @@ void AVLState::handleInput() {
         mAVL = AVL();
         return;
     }
-    if (algoPane.isButtonPressed(0)) {  // Search functionality
+
+    if (algoPane.isButtonPressed(0)) {
         if (!mAVL.completedAllActions()) return;
-        std::string data = algoPane.getForm(0, 0).getText();
+        std::string data1 = algoPane.getForm(0, 0).getText();
+        std::string data2 = algoPane.getForm(0, 1).getText();
         algoPane.getForm(0, 0).clear();
+        algoPane.getForm(0, 1).clear();
+        if (!isStrNum(data1) || !isStrNum(data2)) return;
+        mAVL.upOldNew(std::stoi(data1), std::stoi(data2));  // Perform the update operation
+    }
+
+    if (algoPane.isRandomPressed(0)) {  
+        std::vector<int> values;
+        std::queue<AVLNode *> nodeQueue;
+        AVLNode *root = mAVL.getRoot();
+        if (root) nodeQueue.push(root);
+
+        while (!nodeQueue.empty()) {
+            AVLNode *current = nodeQueue.front();
+            nodeQueue.pop();
+            values.push_back(current->value);
+
+            if (current->left) nodeQueue.push(current->left);
+            if (current->right) nodeQueue.push(current->right);
+        }
+        if (values.size() == 0) return;
+        int place = rand() % values.size();
+        algoPane.getForm(0, 0).setText(std::to_string(values[place]));
+        int newKey = rand() % 1000;
+        algoPane.getForm(0, 1).setText(std::to_string(newKey));
+    }
+
+    if (algoPane.isButtonPressed(1)) {  // Search functionality
+        if (!mAVL.completedAllActions()) return;
+        std::string data = algoPane.getForm(1, 0).getText();
+        algoPane.getForm(1, 0).clear();
         if (!isStrNum(data)) return;
         int value = std::stoi(data);
         mAVL.search(value);  // Perform the search operation
@@ -178,9 +211,9 @@ void AVLState::handleInput() {
         // }
     }
 
-    if (algoPane.isRandomPressed(0)) {  // Random value assignment for algoPane
+    if (algoPane.isRandomPressed(1)) {  // Random value assignment for algoPane
         int randomValue = rand() % 1000;  // Generate a random value
-        algoPane.getForm(0, 0).setText(
+        algoPane.getForm(1, 0).setText(
             std::to_string(randomValue));  // Set the random value in the form
     }
 

@@ -65,8 +65,64 @@ class AVL {
     static const std::vector<std::string> AVLSearch;
     static const std::vector<std::string> AVLDelete;
     static const std::vector<std::string> AVLDelete2;
+    static const std::vector<std::string> AVLUpdate;
 
    public:
+   void upOldNew(int oldValue, int newValue) {
+        ActionList actions;
+        actions.push_back({26, INIT, NULL});
+        AVLNode *current = root;
+        while (current != NULL) {
+            if (oldValue < current->value) current = current->left;
+            else if (oldValue > current->value) current = current->right;
+            else break;
+        }
+        actions.push_back({26, SETLECT, current});
+        std::vector<AVLNode *> nodes;
+        if (current != NULL) {
+            int lower = -1e9, upper = 1e9;
+            AVLNode *temp = current->left;
+            while (temp != NULL) {
+                lower = std::max(lower, temp->value);
+                if (temp->right == NULL) nodes.push_back(temp);
+                temp = temp->right;
+            }
+            temp = current->right;
+            while (temp != NULL) {
+                upper = std::min(upper, temp->value);
+                if (temp->left == NULL) nodes.push_back(temp);
+                temp = temp->left;
+            }
+            temp = current;
+            while (temp -> parent) {
+                if (temp->PosInParent == 1) {
+                    lower = std::max(lower, temp->parent->value);
+                    nodes.push_back(temp->parent);
+                    break ;
+                }
+                temp = temp->parent;
+            }
+            temp = current;
+            while (temp -> parent) {
+                if (temp->PosInParent == 0) {
+                    upper = std::min(upper, temp->parent->value);
+                    nodes.push_back(temp->parent);
+                    break ;
+                }
+                temp = temp->parent;
+            }
+            for (AVLNode *node : nodes) actions.push_back({27, target, node});
+            if (lower < newValue && newValue < upper) {
+                current->targetValue = newValue;
+                actions.push_back({28, changeValue, current});
+            }
+            for (AVLNode *node : nodes) actions.push_back({29, untarget, node});
+            
+        }
+        actions.push_back({29, SETLECT, NULL});
+        actions.push_back({29, CLEAR, NULL});
+        core.insert(core.end(), actions.begin(), actions.end());
+   }
     AVL();
     bool Action(bool isReversed);
     bool doAction(action Action);

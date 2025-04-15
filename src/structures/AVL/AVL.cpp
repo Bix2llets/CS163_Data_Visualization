@@ -47,6 +47,14 @@ const std::vector<std::string> AVL::AVLDelete2 = {
     "End",                          // 25
 };
 
+
+const std::vector<std::string> AVL::AVLUpdate = {
+    "Begin",            // 26
+    "Find the limits of old key",  // 27
+    "If new key satisfies the limits, replace old by new",  // 28
+    "End",                                 // 29
+};
+
 AVL::AVL() : Itr(), changing({ChangeProcedure(-1, -1, NULL), NULL}) {
     loop = 0;
     core = ActionList();
@@ -903,10 +911,15 @@ void AVL::adjustHighlight(int index) {
             highlightingRow = index - 14;
             if (highlightingRow > 1) highlightingRow++;
             CodePane::setHighlight(&highlightingRow);
-        } else {
+        } else 
+            if (index <= 25) {
             CodePane::loadCode(AVLDelete2);
             highlightingRow = index - 20;
             highlightingRow += 2;
+            CodePane::setHighlight(&highlightingRow);
+        } else {
+            CodePane::loadCode(AVLUpdate);
+            highlightingRow = index - 26;
             CodePane::setHighlight(&highlightingRow);
         }
     }
