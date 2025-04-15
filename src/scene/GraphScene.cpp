@@ -328,7 +328,7 @@ void registerInput() {
         for (int i = 1; i <= maxNode; i++) addNodeAdd(i);
         std::vector<Action::EdgeInfo> edgeList;
         for (int i = 1; i <= maxNode; i++)
-            for (int j = 1; j <= maxNode; j++)
+            for (int j = i + 1; j <= maxNode; j++)
                 edgeList.push_back({i, j, rand()});
 
         sort(edgeList.begin(), edgeList.end(),
