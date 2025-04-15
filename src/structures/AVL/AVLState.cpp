@@ -29,32 +29,12 @@ double AVLState::mTimeStep;
 AVLState::AVLState() : mAVL() {
     showCreateOptions = false;
     showTextBox = false;
-    // editMode = false;
-    // textDestionation = 0;
-    // textBox[0] = '\0';
-    // requestText[0] = '\0';
     mTime = 0;
     isReversed = -1;
     mTimeStep = 0.5f;
     animationPlaying = 1;
     pendingPause = 0;
-    // showRunStepByStep = 1;
     sliderValue = 50;
-    // mCreateButton = new Button(10, 700, 200, 40, "Create", 20,
-    // buttonPalette); mCreateButton->enable(); mSearchButton = new Button(10,
-    // 740, 200, 40, "Search", 20, buttonPalette); mSearchButton->enable();
-    // mInsertButton = new Button(10, 780, 200, 40, "Insert", 20,
-    // buttonPalette); mInsertButton->enable(); mDeleteButton = new Button(10,
-    // 820, 200, 40, "Delete", 20, buttonPalette); mDeleteButton->enable();
-    // mClearButton = new Button(10 + 200, 700, 200, 40, "Clear", 20,
-    // buttonPalette); mClearButton->enable(); mRandomButton = new Button(10 +
-    // 200, 740, 200, 40, "Random", 20, buttonPalette); mClearButton->enable();
-    // mCustomButton = new Button(10 + 200, 780, 200, 40, "Custom", 20,
-    // buttonPalette); mCustomButton->enable(); mRandomValueButton = new
-    // Button(10 + 200, 780, 200, 40, "Random value", 20, buttonPalette);
-    // mRandomValueButton->enable();
-    // mEnterButton = new Button(10 + 200, 820, 200, 40, "Enter", 20,
-    // buttonPalette); mEnterButton->enable();
 }
 
 AVLState::~AVLState() {}
@@ -119,17 +99,14 @@ void AVLState::handleInput() {
         int size;
         if (!isStrNum(data)) size = GetRandomValue(1, 15);
         else size = std::stoi(data);
-        //std::vector<int> values = {778, 808, 175, 316, 699, 457, 678, 246, 688};
         for (int i = 0; i < size; i++) {
             int x = GetRandomValue(0, 1000000000) % 1000;
-            //x = values[i];
             mAVL.insert(x);
             while (mAVL.completedAllActions() == 0) {
                 mAVL.update(1, 1);
                 mAVL.Action(0);
             }
         }
-        //mAVL.printDebug(mAVL.getRoot());
         mAVL.setNULLPos(mAVL.getRoot());
         mTime = 0;
     }
@@ -205,10 +182,6 @@ void AVLState::handleInput() {
         if (!isStrNum(data)) return;
         int value = std::stoi(data);
         mAVL.search(value);  // Perform the search operation
-        // while (mAVL.completedAllActions() == 0) {
-        //     mAVL.update(1e-15, 1e-15);
-        //     mAVL.Action(0);
-        // }
     }
 
     if (algoPane.isRandomPressed(1)) {  // Random value assignment for algoPane
@@ -273,25 +246,11 @@ void AVLState::handleInput() {
             inFile.close();
         }
     }
-    // if (MenuTable::prevButton.isPressed()) {  // Undo functionality
-    //     //if (!mAVL.completeAnimation()) return;
-    //     MenuTable::pauseAnimation();
-    //     isReversed = 1;;
-    // }
-    
-    // if (MenuTable::nextButton.isPressed()) {  // Redo functionality
-    //     //if (!mAVL.completeAnimation()) return;
-    //     MenuTable::pauseAnimation();
-    //     isReversed = 0;
-    // }
 
     if (MenuTable::prevButton.isPressed()) {  // Undo functionality
-        //if (!mAVL.completeAnimation()) return;
-        // MenuTable::pauseAnimation();
         isReversed = 1;;
     }
     if (MenuTable::nextButton.isPressed()) {  // Redo functionality
-        //if (!mAVL.completeAnimation()) return;
         if (*MenuTable::isPlaying) {
             while (true) {
                 mAVL.update(1e-15, 1e-15);
@@ -331,7 +290,6 @@ void AVLState::update() {
         mTime = 0;
         if (isReversed == -1) {
             if (mAVL.Action(0)) {
-                //showRunStepByStep = 1;
                 if (pendingPause) {
                     pendingPause = 0;
                     animationPlaying = 0;
@@ -340,7 +298,6 @@ void AVLState::update() {
         } else {
             if (mAVL.Action(isReversed)) {
                 if (isReversed == 1 && mAVL.reachedStart()) ;
-                //mAVL.ClearOperator();
                 isReversed = -1;
             }
         }
