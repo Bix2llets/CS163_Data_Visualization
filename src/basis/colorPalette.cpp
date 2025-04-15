@@ -160,3 +160,5 @@ Color paneBackground;
 Color nodeDragHighlight;
 Color sliderIndicator;
 Color nodeResultColor; 
+Color yellowShade;
+Color greenShade;

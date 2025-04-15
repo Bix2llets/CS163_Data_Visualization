@@ -373,7 +373,7 @@ void Trie::draw(TrieNode *root) {
     for (auto &child : root->children) draw(child.second);
     DrawCircleV(root->getPosition(), NODE_RADIUS - 3,PALETTE->backgroundNormal);
     if (root->isEndOfWord || !root->isCompletedAlpha()) {
-        Color backgroundColor = GBLight::DARK_YELLOW;
+        Color backgroundColor = yellowShade;
         backgroundColor.a -= root->alpha;
         DrawCircleV(root->getPosition(), NODE_RADIUS - 3, backgroundColor);
     }
@@ -388,20 +388,20 @@ void Trie::draw(TrieNode *root) {
         DrawCircleV(Itr.preNode->getPosition(), NODE_RADIUS - 3, tmp);
     }
     //Color color = PALETTE->backgroundNormal;
-    Color color = GBLight::LIGHT_GREEN;
+    Color color = greenShade;
     color.a = 255.f - root->getAlpha();
     DrawCircleV(root->getPosition(), NODE_RADIUS - 3, color);
     DrawRing(root->getPosition(), NODE_RADIUS - 3, NODE_RADIUS, 0, 360, 20, PALETTE->borderNormal);
     char str[2] = {root->character, '\0'};
     Utility::drawText(str, root->getPosition(), Utility::inter20, PALETTE->textNormal, 20, 1, VerticalAlignment::CENTERED, HorizontalAlignment::CENTERED);
     // DrawTextEx(mLib::inter30, str, (Vector2){root->getPosition().x - 12, root->getPosition().y - 12}, 20, 2, WHITE);
-    Color colorText = WHITE;
+    Color colorText = nodeColorSet.textNormal;
     if (Itr.show && root == Itr.targetedNode) colorText.a -= Itr.animation->getHashAlpha();
     else if (Itr.show && root == Itr.preNode) colorText.a -= (255.f - Itr.animation->getHashAlpha());
     else colorText = PALETTE->textNormal;
     Utility::drawText(str, root->getPosition(), Utility::inter20, colorText, 20, 1, VerticalAlignment::CENTERED, HorizontalAlignment::CENTERED);
     if (root->isEndOfWord || !root->isCompletedAlpha()) {
-        Color colorText = WHITE;
+        Color colorText = nodeColorSet.textNormal;
         colorText.a -= root->alpha;
         Utility::drawText(str, root->getPosition(), Utility::inter30,
         colorText, 20, Utility::SPACING,

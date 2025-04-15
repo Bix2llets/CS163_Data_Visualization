@@ -727,18 +727,18 @@ void AVL::draw(AVLNode *root) {
         DrawCircleV(Itr.preNode->getPosition(), NODE_RADIUS - 3, tmp);
     }
     if (root->targeted || !root->isCompletedAlpha()) {
-        backgroundColor = GBLight::DARK_YELLOW;
+        backgroundColor = yellowShade;
         backgroundColor.a -= root->alpha;
         DrawCircleV(root->getPosition(), NODE_RADIUS - 3, backgroundColor);
     }
-    Color color = GBLight::LIGHT_GREEN;
+    Color color = greenShade;
     color.a = 255.f - root->getAlpha();
     DrawCircleV(root->getPosition(), NODE_RADIUS - 3, color);
     DrawRing(root->getPosition(), NODE_RADIUS - 3, NODE_RADIUS, 0, 360, 20,
              PALETTE->borderNormal);
 
     if (changing.second == root) {
-        Color colorText = WHITE;
+        Color colorText = nodeColorSet.textNormal;
         colorText.a -= changing.first.getAlpha();
         char *text =
             new char[std::to_string(changing.first.getNewValue()).length() + 1];
@@ -747,7 +747,7 @@ void AVL::draw(AVLNode *root) {
                           colorText, 20, Utility::SPACING,
                           VerticalAlignment::CENTERED,
                           HorizontalAlignment::CENTERED);
-        colorText = WHITE;
+        colorText = nodeColorSet.textNormal;
         colorText.a -= (255.f - changing.first.getAlpha());
         text =
             new char[std::to_string(changing.first.getOldValue()).length() + 1];
@@ -776,7 +776,7 @@ void AVL::draw(AVLNode *root) {
                       20, 1, VerticalAlignment::CENTERED,
                       HorizontalAlignment::CENTERED);
     if (root->targeted || !root->isCompletedAlpha()) {
-        Color colorText = WHITE;
+        Color colorText = nodeColorSet.textNormal;
         colorText.a -= root->alpha;
         Utility::drawText(value.c_str(), root->getPosition(), Utility::inter30,
                           colorText, 20, Utility::SPACING,

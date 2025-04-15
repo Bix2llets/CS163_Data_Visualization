@@ -21,6 +21,9 @@ extern Color paneBackground;
 extern Color nodeDragHighlight;
 extern Color sliderIndicator;
 extern Color nodeResultColor;
+
+extern Color yellowShade;
+extern Color greenShade;
 namespace ColorPalette {
 const int MAX_TRANSPARENCY = 255;
 namespace FlatUI {
