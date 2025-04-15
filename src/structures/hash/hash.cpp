@@ -225,12 +225,12 @@ void Hash::draw(hashNode* node) {
     if (node == NULL) return;
     DrawCircleV(node->getPosition(), NODE_RADIUS - 3, node->targeted ? PALETTE->backgroundHighlight : PALETTE->backgroundNormal);
     if (Itr.show && node == Itr.targetedNode) {
-        Color tmp = GBLight::LIGHT_RED;
+        Color tmp = nodeResultColor;
         tmp.a -= Itr.animation->getHashAlpha();
         DrawCircleV(Itr.targetedNode->getPosition(), NODE_RADIUS - 3, tmp);
     }
     if (Itr.show && node == Itr.preNode) {
-        Color tmp = GBLight::LIGHT_RED;
+        Color tmp = nodeResultColor;
         tmp.a -= (255.f - Itr.animation->getHashAlpha());
         DrawCircleV(Itr.preNode->getPosition(), NODE_RADIUS - 3, tmp);
     }
@@ -258,7 +258,7 @@ void Hash::draw(hashNode* node) {
     char *text = new char[value.length() + 1];
     strcpy(text, value.c_str());
     Utility::drawText(text, node->getPosition(), Utility::inter20, PALETTE->textNormal, 20, 1, VerticalAlignment::CENTERED, HorizontalAlignment::CENTERED);
-    Color colorText = WHITE;
+    Color colorText = PALETTE->textNormal;
     if (Itr.show && node == Itr.targetedNode) colorText.a -= Itr.animation->getHashAlpha();
     else if (Itr.show && node == Itr.preNode) colorText.a -= (255.f - Itr.animation->getHashAlpha());
     else colorText = PALETTE->textNormal;
