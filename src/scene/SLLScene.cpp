@@ -42,7 +42,8 @@ void SLLScene::init() {
     addPane.newLine(1, 1, "Random", {"Number of nodes"}, {0}, true);
     deletePane.newLine(0, 1, "Remove", {"Location"}, {0, 0}, true);
     deletePane.newLine(1, 0, "Clear", {}, {}, false);
-    algoPane.newLine(0, 1, "Search", {"Value"}, {0});
+    algoPane.newLine(0, 2, "Update", {"Location", "Value"}, {0, 0}, true);
+    algoPane.newLine(1, 1, "Search", {"Value"}, {0});
     miscPane.newLine(0, 0, "Save", {}, {});
     miscPane.newLine(1, 0, "Load", {}, {});
 }
@@ -63,7 +64,7 @@ void SLLScene::addEnd(std::string data) {
     addAt(data, place);
 };
 void SLLScene::addAt(std::string data, int place) {
-    if (steps.size() > 1) return;
+    // if (steps.size() > 1) return;
     correctAnimation();
     int size = 0;
     if (steps.size())
@@ -100,7 +101,7 @@ void SLLScene::removeEnd() {
     removeAt(place);
 };
 void SLLScene::removeAt(int place) {
-    if (steps.size() > 1) return;
+    // if (steps.size() > 1) return;
     correctAnimation();
     int size = 0;
     if (steps.size())
@@ -167,7 +168,7 @@ void SLLScene::addStep(int highlightIndex,
 void SLLScene::render() { sll.render(); }
 
 void SLLScene::find(std::string val) {
-    if (steps.size() > 1) return;
+    // if (steps.size() > 1) return;
     correctAnimation();
     addStep(0, &PSEUDO_SEARCH);
     SLL& currSll = steps.back().sll;
@@ -292,7 +293,25 @@ void SLLScene::recordInput() {
     }
     if (algoPane.isButtonPressed(0)) {
         if (sll.isFinished() == false) return;
-        auto value = algoPane.getText(0, 0);
+        auto location = algoPane.getText(0, 0);
+        auto value  = algoPane.getText(0, 1);
+        if (location == "" || value == "") return;
+        addStep(-1, nullptr);
+        int place = stoi(location);
+        removeAt(place);
+        addAt(value, place);
+
+    }
+    if (algoPane.isRandomPressed(0)) {
+        int length = sll.nodeCount;
+        if (length == 0) return;
+        int location = rand() % length;
+        algoPane.getForm(0, 0).setText(std::to_string(location));
+        algoPane.getForm(0, 1).setText(std::to_string(rand() % 10000));
+    }   
+    if (algoPane.isButtonPressed(1)) {
+        if (sll.isFinished() == false) return;
+        auto value = algoPane.getText(1, 0);
         
         if (isStrNum(value)) {
             SLLScene::find(value);
