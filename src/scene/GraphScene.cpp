@@ -225,11 +225,24 @@ void prevStep() {
     currentHighlighting = lastAction.highlightedLine;
     if (lastAction.highlightRef) CodePane::loadCode(*lastAction.highlightRef);
     for (auto [label1, label2, weight] : lastAction.edgeAdded)
+    {
         graph.removeEdge(label1, label2);
+        edgeList.erase({{label1, label2}, weight});
+    }
     for (auto [label1, label2, weight] : lastAction.edgeDeleted)
+    {
         graph.addEdge(label1, label2, weight);
-    for (int label : lastAction.nodeAdded) graph.removeNode(label);
-    for (int label : lastAction.nodeDeleted) graph.addNode(label);
+        edgeList.insert({{label1, label2}, weight});
+    }
+    for (int label : lastAction.nodeAdded) 
+    {
+        graph.removeNode(label);
+        nodeList.erase(label);
+    }
+    for (int label : lastAction.nodeDeleted){
+        graph.addNode(label);
+        nodeList.erase(label);
+    } 
 
     for (NodeChange nodeChange : lastAction.nodeChange) {
         auto node = graph.findNode(nodeChange.label);
@@ -597,14 +610,14 @@ void MST() {
         addEdgeChange(edge->node1->getLabel(), edge->node2->getLabel(),
                       {0, 0, 0, 1, 0});
     }
-    // addStep(-1, nullptr);
+    addStep(-1, nullptr);
 }
 
 void dijkstra(int source) {
     // * Build the adjacency list (undirected) and init the minimumDistance to
     // nodes
     if (nodeList.find(source) == nodeList.end()) return;
-    addStep(1, &PSEUDO_BLANK);
+    addStep(1, nullptr);
     resetGraphColor();
     std::unordered_map<int, std::vector<std::pair<int, int>>> adjList;
     std::unordered_map<int, int> minimumDistance;
@@ -659,6 +672,7 @@ void dijkstra(int source) {
             }
         }
     }
+    addStep(-1, nullptr);
 }
 void addStep(int highlightedLine, std::vector<std::string> const *ref) {
     steps.push_back(Action());
