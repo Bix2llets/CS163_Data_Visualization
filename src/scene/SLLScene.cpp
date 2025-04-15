@@ -38,7 +38,7 @@ void SLLScene::init() {
     algoPane.disable();
     miscPane.disable();
     deletePane.disable();
-    addPane.newLine(0, 2, "Add", {"Value", "Location"}, {0, 0}, true);
+    addPane.newLine(0, 2, "Add", {"Location", "Value"}, {0, 0}, true);
     addPane.newLine(1, 1, "Random", {"Number of nodes"}, {0}, true);
     deletePane.newLine(0, 1, "Remove", {"Location"}, {0, 0}, true);
     deletePane.newLine(1, 0, "Clear", {}, {}, false);
@@ -214,8 +214,8 @@ void SLLScene::recordInput() {
     if (addPane.isButtonPressed(0)) {
         // * Add at end
         if (sll.isFinished() == false) return;
-        auto value = addPane.getText(0, 0);
-        auto location = addPane.getText(0, 1);
+        auto value = addPane.getText(0, 1);
+        auto location = addPane.getText(0, 0);
         
         if (isStrNum(value)) {
             if (isStrNum(location)) {
