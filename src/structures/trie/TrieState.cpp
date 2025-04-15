@@ -232,8 +232,9 @@ void TrieState::handleInput() {
         int size = GetRandomValue(1, 15);
         addPane.getForm(1, 0).setText(std::to_string(size));
     }
-
+    
     if (addPane.isButtonPressed(1)) {
+        if (!mTrie.completedAllActions()) return;
         mTrie = Trie();
         std::string data = addPane.getForm(1, 0).getText();
         addPane.getForm(1, 0).clear();
@@ -255,26 +256,28 @@ void TrieState::handleInput() {
 
     if (removePane.isButtonPressed(0)) {  // Remove operation
         if (!mTrie.completedAllActions()) return;
-
+        
         std::string word = removePane.getForm(0, 0).getText();
         removePane.getForm(0, 0).clear();
         if (word.empty()) return;
         mTrie.remove(word);  // Perform the remove operation
     }
-
+    
     if (removePane.isButtonPressed(1)) {  // Clear operation
+        if (!mTrie.completedAllActions()) return;
         mTrie = Trie();                   // Reset the Trie
     }
 
     if (removePane.isRandomPressed(0)) {
         if (!mTrie.completedAllActions()) return;
-
+        
         char randomWord[MAX_TEXT_LENGTH + 1];
         Utility::GenerateRandomText(randomWord);
         removePane.getForm(0, 0).setText(randomWord);
     }
-
+    
     if (algoPane.isButtonPressed(0)) {
+        if (!mTrie.completedAllActions()) return;
         std::string word = algoPane.getForm(0, 0).getText();
         algoPane.getForm(0, 0).clear();
         if (word.empty()) return;
@@ -283,21 +286,22 @@ void TrieState::handleInput() {
 
     if (algoPane.isRandomPressed(0)) {
         if (!mTrie.completedAllActions()) return;
-
+        
         char randomWord[MAX_TEXT_LENGTH + 1];
         Utility::GenerateRandomText(randomWord);
         algoPane.getForm(0, 0).setText(randomWord);
     }
-
+    
     if (storagePane.isButtonPressed(0)) {
+        if (!mTrie.completedAllActions()) return;
         const char *filePath = tinyfd_saveFileDialog("Save Trie", "trie.txt", 1,
-                                                     (const char *[]){"*.txt"},
-                                                     "Text files (*.txt)");
-        if (filePath) {
-            std::ofstream outFile(filePath);
-            if (!outFile) {
-                tinyfd_messageBox("Error", "Failed to open file for saving.",
-                                  "ok", "error", 1);
+            (const char *[]){"*.txt"},
+            "Text files (*.txt)");
+            if (filePath) {
+                std::ofstream outFile(filePath);
+                if (!outFile) {
+                    tinyfd_messageBox("Error", "Failed to open file for saving.",
+                        "ok", "error", 1);
                 return;
             }
             std::vector<std::string> words = mTrie.getWords();
@@ -307,13 +311,14 @@ void TrieState::handleInput() {
             outFile.close();
         }
     }
-
+    
     if (storagePane.isButtonPressed(1)) {
+        if (!mTrie.completedAllActions()) return;
         const char *filePath = tinyfd_openFileDialog("Load Trie", "trie.txt", 1,
-                                                     (const char *[]){"*.txt"},
-                                                     "Text files (*.txt)", 0);
-        if (filePath) {
-            std::ifstream inFile(filePath);
+            (const char *[]){"*.txt"},
+            "Text files (*.txt)", 0);
+            if (filePath) {
+                std::ifstream inFile(filePath);
             if (!inFile) {
                 tinyfd_messageBox("Error", "Failed to open file for loading.",
                                   "ok", "error", 1);

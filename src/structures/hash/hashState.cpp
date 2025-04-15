@@ -222,13 +222,14 @@ void HashState::handleInput() {
         if (!isStrNum(data)) return;
         mhash.insert(std::stoi(data));
     }
-
+    
     if (addPane.isRandomPressed(0)) {
         int randomValue = rand() % 1000;
         addPane.getForm(0, 0).setText(std::to_string(randomValue));
     }
-
+    
     if (addPane.isButtonPressed(1)) {
+        if (!mhash.completedAllActions()) return;
         std::string data = addPane.getForm(1, 0).getText();
         addPane.getForm(1, 0).clear();
         int size;
@@ -250,18 +251,19 @@ void HashState::handleInput() {
         mhash.setNULLPos();
         mTime = 0;
     }
-
+    
     if (addPane.isRandomPressed(1)) {
+        if (!mhash.completedAllActions()) return;
         int size = GetRandomValue(1, 60);
         addPane.getForm(1, 0).setText(std::to_string(size));
         int numValue = GetRandomValue(0, size);
         addPane.getForm(1, 1).setText(std::to_string(numValue));
     } 
 
-
+    
     if (removePane.isButtonPressed(0)) {
         if (!mhash.completedAllActions()) return;
-
+        
         std::string data = removePane.getForm(0, 0).getText();
         removePane.getForm(0, 0).clear();
         if (!isStrNum(data)) return;
@@ -269,9 +271,10 @@ void HashState::handleInput() {
     }
 
     if (removePane.isButtonPressed(1)) {
+        if (!mhash.completedAllActions()) return;
         mhash = Hash(0);  // Reset the hash table
     }
-
+    
     if (removePane.isRandomPressed(0)) {
         int value = rand() % 1000;
         removePane.getForm(0, 0).setText(std::to_string(value));
@@ -279,38 +282,40 @@ void HashState::handleInput() {
     }
     if (algoPane.isButtonPressed(0)) {
         if (!mhash.completedAllActions()) return;
-
+        
         std::string data = algoPane.getForm(0, 0).getText();
         algoPane.getForm(0, 0).clear();
         if (!isStrNum(data)) return;
         mhash.search(std::stoi(data));
     }
-
+    
     if (algoPane.isRandomPressed(0)) {
         int value = rand() % 1000;
         algoPane.getForm(0, 0).setText(std::to_string(value));
     }
-
+    
     if (storagePane.isButtonPressed(0)) {  // Save functionality
+        if (!mhash.completedAllActions()) return;
         const char *filePath = tinyfd_saveFileDialog(
             "Save Hash Table", "hashtable.txt", 1, (const char *[]){"*.txt"},
             "Text files (*.txt)");
-        if (filePath) {
-            std::ofstream outFile(filePath);
-            if (!outFile) {
-                tinyfd_messageBox("Error", "Failed to open file for saving.", "ok", "error", 1);
-                return;
+            if (filePath) {
+                std::ofstream outFile(filePath);
+                if (!outFile) {
+                    tinyfd_messageBox("Error", "Failed to open file for saving.", "ok", "error", 1);
+                    return;
+                }
+                std::vector<int> valueList = mhash.getValues();
+                //std::sort(valueList.begin(), valueList.end());
+                for (int x : valueList) outFile << x << " ";
+                outFile << "\n";
+                outFile.close();
             }
-            std::vector<int> valueList = mhash.getValues();
-            //std::sort(valueList.begin(), valueList.end());
-            for (int x : valueList) outFile << x << " ";
-            outFile << "\n";
-            outFile.close();
         }
-    }
-
-    if (storagePane.isButtonPressed(1)) {  // Load functionality
-        const char *filePath = tinyfd_openFileDialog(
+        
+        if (storagePane.isButtonPressed(1)) {  // Load functionality
+            if (!mhash.completedAllActions()) return;
+            const char *filePath = tinyfd_openFileDialog(
             "Load Hash Table", "hashtable.txt", 1, (const char *[]){"*.txt"},
             "Text files (*.txt)", 0);
         if (filePath) {

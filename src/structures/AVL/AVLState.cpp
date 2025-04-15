@@ -104,13 +104,14 @@ void AVLState::handleInput() {
         int randomValue = rand() % 1000;
         addPane.getForm(0, 0).setText(std::to_string(randomValue));
     }
-
+    
     if (addPane.isRandomPressed(1)) {
         int size = GetRandomValue(1, 15);
         addPane.getForm(1, 0).setText(std::to_string(size));
     }
-
+    
     if (addPane.isButtonPressed(1)) {  
+        if (!mAVL.completedAllActions()) return;
         mAVL = AVL();
         std::string data = addPane.getForm(1, 0).getText();
         addPane.getForm(1, 0).clear();
@@ -134,7 +135,7 @@ void AVLState::handleInput() {
 
     if (removePane.isButtonPressed(0)) {
         if (!mAVL.completedAllActions()) return;
-
+        
         std::string data = removePane.getForm(0, 0).getText();
         removePane.getForm(0, 0).clear();
         if (!isStrNum(data)) return;
@@ -160,6 +161,7 @@ void AVLState::handleInput() {
         removePane.getForm(0, 0).setText(std::to_string(values[place]));
     }
     if (removePane.isButtonPressed(1)) {
+        if (!mAVL.completedAllActions()) return;
         mAVL = AVL();
         return;
     }
