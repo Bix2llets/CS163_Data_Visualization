@@ -2,7 +2,7 @@
 void TextBox::render() {
     if (!enabled) return;
     if (font == nullptr) {
-        std::cerr << "Null font, unexpected\n";
+        // std::cerr << "Null font, unexpected\n";
         return;
     }
     float renderWidth = width;

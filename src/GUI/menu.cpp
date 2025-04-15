@@ -33,14 +33,16 @@ TextureBox pauseButton = TextureBox(
               buttonPos.y},
     buttonDimension, (Rectangle){0, 0, 100, 100}, &Utility::expand,
     &buttonColorSet);
-TextureBox prevButton = TextureBox(
-    (Vector2){buttonPos.x + (buttonDimension.x + buttonDistance.x),
-              buttonPos.y},
-    buttonDimension, (Rectangle){0, 0, 100, 100}, &Utility::prev, &buttonColorSet);
+TextureBox prevButton =
+    TextureBox((Vector2){buttonPos.x + (buttonDimension.x + buttonDistance.x),
+                         buttonPos.y},
+               buttonDimension, (Rectangle){0, 0, 100, 100}, &Utility::prev,
+               &buttonColorSet);
 TextureBox nextButton = TextureBox(
     (Vector2){buttonPos.x + (buttonDimension.x + buttonDistance.x) * 3,
               buttonPos.y},
-    buttonDimension, (Rectangle){0, 0, 100, 100}, &Utility::next, &buttonColorSet);
+    buttonDimension, (Rectangle){0, 0, 100, 100}, &Utility::next,
+    &buttonColorSet);
 Button showMenu = Button(optionPosition,
                          (Vector2){sliderBarDimension.y, sliderBarDimension.x},
                          ">", 20, &buttonColorSet);
@@ -62,7 +64,6 @@ void Constructor(Vector2 _optionPosition = {10, 600},
     sliderBarPos = _sliderBarPos;
     sliderBarDimension = _sliderBarDimension;
 
-
     basePane.newLine(0, 0, "Add", {}, {}, false);
     basePane.newLine(1, 0, "Remove", {}, {}, false);
     basePane.newLine(2, 0, "Algorithm", {}, {}, false);
@@ -76,13 +77,13 @@ void Constructor(Vector2 _optionPosition = {10, 600},
         {showMenu.getDimension().x, basePane.getDimension().y});
     showMenuFlag = false;
     isPlaying = &Loop::isRunning;
+    continueAnimation();
 }
 
 void init() {
     pauseButton.disable();
     playButton.enable();
 }
-
 
 void render() {
     handleInput();
@@ -159,20 +160,19 @@ void handleInput() {
             if (algoPane) algoPane->disable();
             if (storagePane) storagePane->toggle();
         }
+    }
+    if (playButton.isPressed()) {
+        pauseAnimation();
+    } else if (pauseButton.isPressed()) {
+        continueAnimation();
+    }
 
-        if (playButton.isPressed()) {
-            pauseAnimation();
-        } else if (pauseButton.isPressed()) {
-            continueAnimation();
-        }
+    if (prevButton.isPressed()) {
+        pauseAnimation();
+    }
 
-        if (prevButton.isPressed()) {
-            pauseAnimation();
-        }
-
-        if (backwardButton.isPressed()) {
-            // pauseAnimation();
-        }
+    if (backwardButton.isPressed()) {
+        // pauseAnimation();
     }
 }
 

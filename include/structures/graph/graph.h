@@ -46,8 +46,8 @@ class Graph {
     void applyPullForce();
     void applyCentricForce();
 
-    std::vector<std::shared_ptr<GraphEdge>> getEdgeList();
-    std::vector<std::shared_ptr<GraphNode>> getNodeList();
+    std::vector<std::shared_ptr<GraphEdge>> &getEdgeList();
+    std::vector<std::shared_ptr<GraphNode>> &getNodeList();
 
     void finishAnimation();
 

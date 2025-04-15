@@ -10,7 +10,7 @@ std::deque<Action> past;
 std::deque<Action> future;
 std::deque<Action> steps;
 float timeLeft = 0.0f;
-const float TIME_DELAY = 0.1f;  // Adjust the delay as needed
+const float TIME_DELAY = 0.0f;
 int currentHighlighting = -1;
 
 std::set<int> nodeList;
@@ -35,33 +35,42 @@ void setPanePosition(Vector2 position) {
 
 void clearGraph() {
     addStep(-1, nullptr);
-    std::cerr << "Before removal: \n";
-    for (auto x : nodeList) std::cerr << x << " ";
-    std::cerr << "\n";
-    for (auto x : edgeList)
-        std::cerr << x.first.first << " " << x.first.second << " " << x.second
-                  << "\n";
-    std::cerr << "\n";
+    // std::cerr << "Before removal: \n";
+    // for (auto x : nodeList) std::cerr << x << " ";
+    // std::cerr << "\n";
+    // for (auto x : edgeList)
+    //     std::cerr << x.first.first << " " << x.first.second << " " <<
+    //     x.second
+    //               << "\n";
+    // std::cerr << "\n";
     std::vector<std::shared_ptr<GraphNode>> graphNodeList = graph.getNodeList();
     std::vector<std::shared_ptr<GraphEdge>> graphEdgeList = graph.getEdgeList();
-    for (std::shared_ptr<GraphNode> node : graphNodeList)
-        addNodeDelete(node->getLabel());
-
-    for (std::shared_ptr<GraphEdge> edge : graphEdgeList)
+    for (std::shared_ptr<GraphEdge> edge : graphEdgeList) {
         addEdgeDelete(edge->node1->getLabel(), edge->node2->getLabel(),
                       edge->getWeight());
-
-    future.clear();
+        graph.removeEdge(edge->node1->getLabel(), edge->node2->getLabel());
+    }
+    for (std::shared_ptr<GraphNode> node : graphNodeList) {
+        addNodeDelete(node->getLabel());
+        graph.removeNode(node->getLabel());
+    }
+    updateAnimation(true);
+    graphNodeList.clear();
+    graphEdgeList.clear();
+    // future.clear();
     edgeList.clear();
     nodeList.clear();
-    std::cerr << "After removal: \n";
-    for (auto x : nodeList) std::cerr << x << " ";
-    std::cerr << "\n";
-    for (auto x : edgeList)
-        std::cerr << x.first.first << " " << x.first.second << " " << x.second
-                  << "\n";
-    std::cerr << "\n";
-    std::cerr << "----------------------------\n";
+    // std::cerr << graphNodeList.size() << "\n";
+    // std::cerr << graphEdgeList.size() << "\n";
+    // std::cerr << "After removal: \n";
+    // for (auto x : nodeList) std::cerr << x << " ";
+    // std::cerr << "\n";
+    // for (auto x : edgeList)
+    //     std::cerr << x.first.first << " " << x.first.second << " " <<
+    //     x.second
+    //               << "\n";
+    // std::cerr << "\n";
+    // std::cerr << "----------------------------\n";
 }
 void init() {
     addPane.newLine(0, 1, "Vertice", {"Node label"}, {0}, true);
@@ -88,11 +97,12 @@ void init() {
     algoPane.disable();
     storagePane.disable();
 }
-void updateAnimation() {
-    if (!graph.isAnimationDone()) return;
+void updateAnimation(bool isForced) {
+    if (!isForced)
+        if (!graph.isAnimationDone()) return;
     if (steps.size() == 0) timeLeft = 0;
     timeLeft -= GetFrameTime();
-    if (timeLeft <= 0 && steps.size()) {
+    if (isForced || (timeLeft <= 0 && steps.size())) {
         Action nextAction = steps.front();
         steps.pop_front();
         past.push_back(nextAction);
@@ -224,12 +234,22 @@ void prevStep() {
 
     currentHighlighting = lastAction.highlightedLine;
     if (lastAction.highlightRef) CodePane::loadCode(*lastAction.highlightRef);
-    for (auto [label1, label2, weight] : lastAction.edgeAdded)
+    for (auto [label1, label2, weight] : lastAction.edgeAdded) {
         graph.removeEdge(label1, label2);
-    for (auto [label1, label2, weight] : lastAction.edgeDeleted)
+        edgeList.erase({{label1, label2}, weight});
+    }
+    for (auto [label1, label2, weight] : lastAction.edgeDeleted) {
         graph.addEdge(label1, label2, weight);
-    for (int label : lastAction.nodeAdded) graph.removeNode(label);
-    for (int label : lastAction.nodeDeleted) graph.addNode(label);
+        edgeList.insert({{label1, label2}, weight});
+    }
+    for (int label : lastAction.nodeAdded) {
+        graph.removeNode(label);
+        nodeList.erase(label);
+    }
+    for (int label : lastAction.nodeDeleted) {
+        graph.addNode(label);
+        nodeList.erase(label);
+    }
 
     for (NodeChange nodeChange : lastAction.nodeChange) {
         auto node = graph.findNode(nodeChange.label);
@@ -276,12 +296,14 @@ void registerInput() {
     using namespace CodePane;
 
     if (addPane.isButtonPressed(0)) {
+        if (graph.isAnimationDone() == false) return;
         std::string data = addPane.getForm(0, 0).getText();
         addPane.getForm(0, 0).clear();
         if (!isStrNum(data)) return;
         addNode(std::stoi(data));
     }
     if (addPane.isButtonPressed(1)) {
+        if (graph.isAnimationDone() == false) return;
         std::string data = addPane.getForm(1, 0).getText();
         addPane.getForm(1, 0).clear();
         std::stringstream ss;
@@ -301,6 +323,7 @@ void registerInput() {
         addPane.getForm(0, 0).setText(std::to_string(newNodeLabel));
     }
     if (addPane.isButtonPressed(2)) {
+        if (graph.isAnimationDone() == false) return;
         clearGraph();
         addStep(-1, nullptr);
         int maxNode, maxEdge;
@@ -313,9 +336,9 @@ void registerInput() {
         } else {
             if (verticesCount.length() == 0) {
                 maxNode = rand() % 15;
-                if (edgesCount.length() != 0) maxNode += sqrt(sqrt(stoi(edgesCount) * 2));   
-            }
-            else
+                if (edgesCount.length() != 0)
+                    maxNode += int(sqrt(stoi(edgesCount) * 2));
+            } else
                 maxNode = std::stoi(verticesCount);
             if (edgesCount.length() == 0)
                 maxEdge = rand() % maxNode * (maxNode - 1) / 2;
@@ -335,12 +358,13 @@ void registerInput() {
              [](Action::EdgeInfo a, Action::EdgeInfo b) {
                  return a.weight < b.weight;
              });
-        for (int i = 1; i <= maxEdge; i++) {
+        for (int i = 0; i < maxEdge; i++) {
             int u = edgeList[i].node1;
             int v = edgeList[i].node2;
             int weight = rand() % 1000;
             addEdgeAdd(u, v, weight);
         }
+        updateAnimation(true);
         return;
     }
 
@@ -369,9 +393,9 @@ void registerInput() {
         int edgeCount = rand() % (nodeCount * (nodeCount - 1) / 2);
         verticesForm.setText(std::to_string(nodeCount));
         edgesForm.setText(std::to_string(edgeCount));
-
     }
     if (deletePane.isButtonPressed(0)) {
+        if (graph.isAnimationDone() == false) return;
         std::string data = deletePane.getForm(0, 0).getText();
         deletePane.getForm(0, 0).clear();
         if (!isStrNum(data)) return;
@@ -380,6 +404,7 @@ void registerInput() {
     }
 
     if (deletePane.isButtonPressed(1)) {
+        if (graph.isAnimationDone() == false) return;
         std::string u = deletePane.getForm(1, 0).getText();
         std::string v = deletePane.getForm(1, 1).getText();
         deletePane.getForm(1, 0).clear();
@@ -391,6 +416,7 @@ void registerInput() {
     }
 
     if (deletePane.isButtonPressed(2)) {
+        if (graph.isAnimationDone() == false) return;
         // * For clearing graph
         clearGraph();
         return;
@@ -414,11 +440,13 @@ void registerInput() {
             std::to_string(edgeList[place]->node2->getLabel()));
     }
     if (algoPane.isButtonPressed(0)) {
+        if (graph.isAnimationDone() == false) return;
         MST();
         return;
     }
 
     if (algoPane.isButtonPressed(1)) {
+        if (graph.isAnimationDone() == false) return;
         std::string data = algoPane.getForm(1, 0).getText();
         algoPane.getForm(1, 0).clear();
         if (!isStrNum(data)) return;
@@ -427,6 +455,7 @@ void registerInput() {
     }
 
     if (storagePane.isButtonPressed(0)) {
+        if (graph.isAnimationDone() == false) return;
         // * Save function
         const char *filePath = tinyfd_saveFileDialog(
             "Save Graph", "graph.txt", 1, (const char *[]){"*.txt"},
@@ -460,6 +489,7 @@ void registerInput() {
     }
 
     if (storagePane.isButtonPressed(1)) {
+        if (graph.isAnimationDone() == false) return;
         // * Load function
         const char *filePath = tinyfd_openFileDialog(
             "Load Graph", "graph.txt", 1, (const char *[]){"*.txt"},
@@ -538,7 +568,7 @@ bool join(int label1, int label2, std::unordered_map<int, int> &parList) {
     return true;
 }
 void MST() {
-    addStep(-1, &PSEUDO_BLANK);
+    addStep(-1, nullptr);
     resetGraphColor();
     std::vector<std::shared_ptr<GraphEdge>> edgeList = graph.getEdgeList();
     std::vector<std::shared_ptr<GraphNode>> nodeList = graph.getNodeList();
@@ -587,14 +617,13 @@ void MST() {
         addEdgeChange(edge->node1->getLabel(), edge->node2->getLabel(),
                       {0, 0, 0, 1, 0});
     }
-    // addStep(-1, nullptr);
 }
 
 void dijkstra(int source) {
     // * Build the adjacency list (undirected) and init the minimumDistance to
     // nodes
     if (nodeList.find(source) == nodeList.end()) return;
-    addStep(1, &PSEUDO_BLANK);
+    addStep(-1, nullptr);
     resetGraphColor();
     std::unordered_map<int, std::vector<std::pair<int, int>>> adjList;
     std::unordered_map<int, int> minimumDistance;
@@ -737,7 +766,7 @@ void backward() {
     while (past.size()) {
         prevStep();
         while (steps.size()) steps.pop_back();
-        if (past.size() == 0 || past.back().highlightRef == nullptr) return;
+        if (past.size() == 0 || steps.front().highlightRef == nullptr) return;
     }
 }
 

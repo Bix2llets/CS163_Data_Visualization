@@ -72,7 +72,7 @@ void init();
 void setPanePosition(Vector2 position);
 
 void update();
-void updateAnimation();
+void updateAnimation(bool isForced = false);
 void render();
 
 void addNode(int nodeLabel);

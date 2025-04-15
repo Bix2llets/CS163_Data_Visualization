@@ -209,11 +209,11 @@ bool Graph::isAnimationDone() {
     return true;
 }
 
-std::vector<std::shared_ptr<GraphEdge>> Graph::getEdgeList() {
+std::vector<std::shared_ptr<GraphEdge>> &Graph::getEdgeList() {
     return edgeList;
 }
 
-std::vector<std::shared_ptr<GraphNode>> Graph::getNodeList() {
+std::vector<std::shared_ptr<GraphNode>> &Graph::getNodeList() {
     return nodeList;
 }
 
