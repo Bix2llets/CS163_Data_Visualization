@@ -258,6 +258,8 @@ void SLLScene::recordInput() {
             newSll.moveAt(newSll.nodeCount - 1);
         }
         newSll.finishAnimation();
+        timeLeft = 0;
+        update();
     }
     
     if (addPane.isRandomPressed(1)) {
