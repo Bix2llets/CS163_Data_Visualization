@@ -17,16 +17,16 @@ Hash::Hash(int _m = 10) : Itr(), m(_m), changing({ChangeProcedure(-1, -1, NULL),
     ItrHistory.clear(); 
     changeList.clear();
     flag = flagUndo = -1;
-    std::cout << "done create\n";
+    // std::cout << "done create\n";
 }
 
 void Hash::printTable() {
     for (int i = 0; i < m; i ++) {
-        std::cout << root[i]->getPosition().x << ' '<< root[i]->getPosition().y << " ";
-        std::cout << root[i]->targeted << ' ' << root[i]->value << ' ' << root[i]->targetValue << "\n";
+        // std::cout << root[i]->getPosition().x << ' '<< root[i]->getPosition().y << " ";
+        // std::cout << root[i]->targeted << ' ' << root[i]->value << ' ' << root[i]->targetValue << "\n";
 
     }
-    std::cout << "\n";
+    // std::cout << "\n";
 }
 
 bool Hash::Action(bool isReversed) {
@@ -184,7 +184,7 @@ bool Hash::doAction(action Action) {
                 Action.node->targetValue = -1;
             }
             if (changing.first.isCompleted()) {
-                std::cout << Action.node->value << ' ' << changing.first.getNewValue() << std::endl;
+                // std::cout << Action.node->value << ' ' << changing.first.getNewValue() << std::endl;
                 changing = {ChangeProcedure(-1, -1, NULL), NULL};
                 return true;
             }
@@ -210,7 +210,7 @@ void Hash::update(double currTime, double rate) {
         Itr.animation->displace(currTime, rate);
     }
     if (loop < core.size() && core[loop].action == FadeEffect && flag == 0) {
-        std::cout << "fade effect\n";
+        // std::cout << "fade effect\n";
         flag = doFadeEffect(currTime, rate, core[loop].node).first;
     }
     if (loop > 0 && core[loop - 1].action == FadeEffect && flagUndo == 0) {

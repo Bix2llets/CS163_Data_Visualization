@@ -59,9 +59,9 @@ AVL::AVL() : Itr(), changing({ChangeProcedure(-1, -1, NULL), NULL}) {
 
 void AVL::printDebug(AVLNode *root) {
     if (root == NULL) return;
-    std::cout << root->PosInParent << ' ';
-    std::cout << root->value << " " << (root->left ? root->left->value : -1)
-              << " " << (root->right ? root->right->value : -1) << "\n";
+    // std::cout << root->PosInParent << ' ';
+    // std::cout << root->value << " " << (root->left ? root->left->value : -1)
+            //   << " " << (root->right ? root->right->value : -1) << "\n";
     printDebug(root->left);
     printDebug(root->right);
 }

@@ -74,7 +74,7 @@ std::string GenerateRandomText(int length) {
 
 int GenerateRandomNum(int length) {
     length = GetRandomValue(1, length);
-    std::cout << length << std::endl;
+    // std::cout << length << std::endl;
     int num = 0;
     for (int i = 0; i < length; i++) {
         num = num * 10 + GetRandomValue(0 + (i == 0), 9);

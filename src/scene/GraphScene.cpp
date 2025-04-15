@@ -60,8 +60,8 @@ void clearGraph() {
     // future.clear();
     edgeList.clear();
     nodeList.clear();
-    std::cerr << graphNodeList.size() << "\n";
-    std::cerr << graphEdgeList.size() << "\n";
+    // std::cerr << graphNodeList.size() << "\n";
+    // std::cerr << graphEdgeList.size() << "\n";
     // std::cerr << "After removal: \n";
     // for (auto x : nodeList) std::cerr << x << " ";
     // std::cerr << "\n";

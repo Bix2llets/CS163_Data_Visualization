@@ -307,7 +307,7 @@ void SLLScene::recordInput() {
         auto path = tinyfd_saveFileDialog("Save As: ", "SLL.txt", 2, filter,
             "txt or inp file");
             
-            std::cerr << "The path is: " << path << "\n";
+            // std::cerr << "The path is: " << path << "\n";
             if (path != NULL) {
                 SLL& curr = steps.front().sll;
                 std::ofstream outputFile(path);
