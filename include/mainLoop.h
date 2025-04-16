@@ -2,7 +2,7 @@
 #include "CodePane.h"
 #include "raylib.h"
 
-#include "menu.hpp"
+#include "menu.h"
 
 // Component scenes 
 #include "SLLScene.h"

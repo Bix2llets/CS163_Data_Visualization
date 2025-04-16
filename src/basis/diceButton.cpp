@@ -1,4 +1,4 @@
-#include "diceButton.hpp"
+#include "diceButton.h"
 
 
 void DiceButton::render() {

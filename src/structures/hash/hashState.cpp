@@ -1,5 +1,5 @@
-#include "hash/hashState.hpp"
-#include "menu.hpp"
+#include "hash/hashState.h"
+#include "menu.h"
 #include "raygui.h"
 #include "Utility.h"
 #include <cstring>#include <fstream>
