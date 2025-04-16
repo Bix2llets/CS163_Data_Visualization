@@ -3,13 +3,13 @@
 
 #include <cmath>
 #include <iostream>
-#include <mLib/changeProcedure.hpp>
+#include <mLib/changeProcedure.h>
 #include <queue>
 #include <string>
 #include <vector>
 
 #include "colorPalette.h"
-#include "hashNode.hpp"
+#include "hashNode.h"
 #include "raylib.h"
 class Hash {
    private:

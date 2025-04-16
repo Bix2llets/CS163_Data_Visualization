@@ -1,4 +1,4 @@
-#include "trie/Trie.hpp"
+#include "trie/Trie.h"
 #include "Utility.h"
 #include "mainLoop.h"
 

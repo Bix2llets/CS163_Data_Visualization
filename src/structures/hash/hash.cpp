@@ -1,4 +1,4 @@
-#include "hash/hash.hpp"
+#include "hash/hash.h"
 
 #include "CodePane.h"
 #include "Utility.h"
