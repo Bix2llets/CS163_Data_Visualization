@@ -73,7 +73,7 @@ void clearGraph() {
     // std::cerr << "----------------------------\n";
 }
 void init() {
-    addPane.newLine(0, 1, "Vertice", {"Node label"}, {0}, true);
+    addPane.newLine(0, 1, "Vertex", {"Node label"}, {0}, true);
     addPane.newLine(1, 1, "Edge", {"Data"}, {0}, true);
     addPane.newLine(2, 2, "Random", {"Vertices", "Edges"}, {0, 0}, true);
 
