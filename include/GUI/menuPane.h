@@ -3,7 +3,7 @@
 
 #include "assert.h"
 #include "button.h"
-#include "diceButton.hpp"
+#include "diceButton.h"
 #include "mForm.h"
 #include "toggleable.h"
 class MenuPane : public Toggleable, public GUIObject {

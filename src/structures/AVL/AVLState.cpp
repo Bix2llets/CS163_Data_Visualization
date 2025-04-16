@@ -1,5 +1,5 @@
-#include "avl/AVLState.hpp"
-#include "menu.hpp"
+#include "avl/AVLState.h"
+#include "menu.h"
 #include <colorPalette.h>
 #include <mLib/tinyfiledialogs.h>
 

@@ -3,12 +3,12 @@
 
 #include <cmath>
 #include <iostream>
-#include <mLib/changeProcedure.hpp>
+#include <mLib/changeProcedure.h>
 #include <queue>
 #include <string>
 #include <vector>
 
-#include "AVLNode.hpp"
+#include "AVLNode.h"
 #include "colorPalette.h"
 #include "raylib.h"
 

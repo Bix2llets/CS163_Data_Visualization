@@ -7,7 +7,7 @@
 #include <queue>
 #include <cmath>
 #include "raylib.h"
-#include "TrieNode.hpp"
+#include "TrieNode.h"
 #include "colorPalette.h"
 class Trie {
     private:

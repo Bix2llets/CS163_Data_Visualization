@@ -3,7 +3,7 @@
 
 #include "raylib.h"
 #include <cstring>
-#include "AVL.hpp"
+#include "AVL.h"
 #include "button.h"
 #include "menuPane.h"
 

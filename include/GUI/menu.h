@@ -6,7 +6,7 @@
 #include "CodePane.h"
 // #include "insertBox.hpp"
 // #include "edgeInsertBox.hpp"
-#include "textureButton.hpp"
+#include "textureButton.h"
 #include "menuPane.h"
 #include <Utility.h>
 #include "TrieScene.h"

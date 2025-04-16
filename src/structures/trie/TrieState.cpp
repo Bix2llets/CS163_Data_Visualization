@@ -1,5 +1,5 @@
-#include "trie/TrieState.hpp"
-#include "menu.hpp"
+#include "trie/TrieState.h"
+#include "menu.h"
 #include <colorPalette.h>
 #include <mLib/tinyfiledialogs.h>
 
