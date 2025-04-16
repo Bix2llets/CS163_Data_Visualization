@@ -1,13 +1,14 @@
 #include "avl/AVLState.h"
-#include "menu.h"
+
 #include <colorPalette.h>
 #include <mLib/tinyfiledialogs.h>
 
 #include <cstdlib>
 #include <cstring>
 #include <fstream>
-#include "Utility.h"
 
+#include "Utility.h"
+#include "menu.h"
 #include "menuPane.h"
 #include "raygui.h"
 
@@ -85,20 +86,22 @@ void AVLState::handleInput() {
         int randomValue = rand() % 1000;
         addPane.getForm(0, 0).setText(std::to_string(randomValue));
     }
-    
+
     if (addPane.isRandomPressed(1)) {
         int size = GetRandomValue(1, 15);
         addPane.getForm(1, 0).setText(std::to_string(size));
     }
-    
-    if (addPane.isButtonPressed(1)) {  
+
+    if (addPane.isButtonPressed(1)) {
         if (!mAVL.completedAllActions()) return;
         mAVL = AVL();
         std::string data = addPane.getForm(1, 0).getText();
         addPane.getForm(1, 0).clear();
         int size;
-        if (!isStrNum(data)) size = GetRandomValue(1, 15);
-        else size = std::stoi(data);
+        if (!isStrNum(data))
+            size = GetRandomValue(1, 15);
+        else
+            size = std::stoi(data);
         for (int i = 0; i < size; i++) {
             int x = GetRandomValue(0, 1000000000) % 1000;
             mAVL.insert(x);
@@ -113,7 +116,7 @@ void AVLState::handleInput() {
 
     if (removePane.isButtonPressed(0)) {
         if (!mAVL.completedAllActions()) return;
-        
+
         std::string data = removePane.getForm(0, 0).getText();
         removePane.getForm(0, 0).clear();
         if (!isStrNum(data)) return;
@@ -151,10 +154,11 @@ void AVLState::handleInput() {
         algoPane.getForm(0, 0).clear();
         algoPane.getForm(0, 1).clear();
         if (!isStrNum(data1) || !isStrNum(data2)) return;
-        mAVL.upOldNew(std::stoi(data1), std::stoi(data2));  // Perform the update operation
+        mAVL.upOldNew(std::stoi(data1),
+                      std::stoi(data2));  // Perform the update operation
     }
 
-    if (algoPane.isRandomPressed(0)) {  
+    if (algoPane.isRandomPressed(0)) {
         std::vector<int> values;
         std::queue<AVLNode *> nodeQueue;
         AVLNode *root = mAVL.getRoot();
@@ -205,17 +209,18 @@ void AVLState::handleInput() {
             std::vector<int> valueList;
             AVLNode *root = mAVL.getRoot();
             std::queue<AVLNode *> nodeList;
-            nodeList.push(root);
-            while (nodeList.size()) {
-                AVLNode *curr = nodeList.front();
-                nodeList.pop();
+            if (root != nullptr) {
+                nodeList.push(root);
+                while (nodeList.size()) {
+                    AVLNode *curr = nodeList.front();
+                    nodeList.pop();
 
-                valueList.push_back(curr->value);
-                if (curr->left) nodeList.push(curr->left);
-                if (curr->right) nodeList.push(curr->right);
+                    valueList.push_back(curr->value);
+                    if (curr->left) nodeList.push(curr->left);
+                    if (curr->right) nodeList.push(curr->right);
+                }
             }
-
-            //std::sort(valueList.begin(), valueList.end());
+            // std::sort(valueList.begin(), valueList.end());
             for (int x : valueList) outFile << x << " ";
             outFile << "\n";
             outFile.close();
@@ -248,7 +253,8 @@ void AVLState::handleInput() {
     }
 
     if (MenuTable::prevButton.isPressed()) {  // Undo functionality
-        isReversed = 1;;
+        isReversed = 1;
+        ;
     }
     if (MenuTable::nextButton.isPressed()) {  // Redo functionality
         if (*MenuTable::isPlaying) {
@@ -256,7 +262,8 @@ void AVLState::handleInput() {
                 mAVL.update(1e-15, 1e-15);
                 if (mAVL.Action(0)) break;
             }
-        } else isReversed = 0;
+        } else
+            isReversed = 0;
     }
 
     if (MenuTable::forwardButton.isPressed()) {  // Forward functionality
@@ -275,10 +282,13 @@ void AVLState::handleInput() {
         mAVL.ClearOperator();
     }
 
-    if (MenuTable::pauseButton.isPressed() || *MenuTable::isPlaying) animationPlaying = 1;
+    if (MenuTable::pauseButton.isPressed() || *MenuTable::isPlaying)
+        animationPlaying = 1;
     if (MenuTable::playButton.isPressed() || !*MenuTable::isPlaying) {
-        if (mAVL.completedAllActions()) animationPlaying = 0;
-        else pendingPause = 1;
+        if (mAVL.completedAllActions())
+            animationPlaying = 0;
+        else
+            pendingPause = 1;
     }
 
     if (pendingPause || isReversed != -1) update();
@@ -297,7 +307,8 @@ void AVLState::update() {
             }
         } else {
             if (mAVL.Action(isReversed)) {
-                if (isReversed == 1 && mAVL.reachedStart()) ;
+                if (isReversed == 1 && mAVL.reachedStart())
+                    ;
                 isReversed = -1;
             }
         }
@@ -312,10 +323,8 @@ void AVLState::render() {
 void AVLState::run() {
     handleInput();
     update();
-    
+
     render();
 }
 
-void AVLState::setAnimationSpeed(float factor) {
-    mTimeStep = 1.0f / factor;
-}
+void AVLState::setAnimationSpeed(float factor) { mTimeStep = 1.0f / factor; }
