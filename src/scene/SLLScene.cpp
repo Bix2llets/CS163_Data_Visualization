@@ -73,12 +73,12 @@ void SLLScene::addAt(std::string data, int place) {
         size = sll.nodeCount;
     if (size == 0 && place != 0) return;
     if (place > size) {
-        addStep(0, &PSEUDO_INSERT);
+        addStep(-1, &PSEUDO_INSERT);
         steps.back().sll.deHighlight();
         steps.back().sll.highlightTo(size);
         return;
     }
-    addStep(0, &PSEUDO_INSERT);
+    addStep(-1, nullptr);
     steps.back().sll.deHighlight();
     addStep(0, &PSEUDO_INSERT);
     steps.back().sll.highlightTo(place - 1);
@@ -110,13 +110,13 @@ void SLLScene::removeAt(int place) {
         size = sll.nodeCount;
     if (size == 0) return;
     if (place > size) {
-        addStep(0, &PSEUDO_DELETE);
+        addStep(-1, nullptr);
         steps.back().sll.deHighlight();
         addStep(0, &PSEUDO_DELETE);
         steps.back().sll.highlightTo(size);
         return;
     }
-    addStep(0, &PSEUDO_DELETE);
+    addStep(-1, nullptr);
     steps.back().sll.deHighlight();
     addStep(0, &PSEUDO_DELETE);
     steps.back().sll.highlightTo(place);
@@ -126,6 +126,7 @@ void SLLScene::removeAt(int place) {
     steps.back().sll.removeAt(place);
     addStep(2, &PSEUDO_DELETE);
     steps.back().sll.shiftBackward(place);
+    // addStep(-1, nullptr);
 };
 void SLLScene::update() {
     sll.update();
@@ -134,7 +135,7 @@ void SLLScene::update() {
     timeLeft -= GetFrameTime();
     if (abs(timeLeft) < 1e-6) timeLeft = 0;
     if (timeLeft <= 0) timeLeft = 0;
-
+    if (steps.size() == 1) highlightedRow = -1;
     if (timeLeft == 0 && steps.size() > 1) {
         past.push_back(steps.front());
         steps.pop_front();
@@ -170,7 +171,7 @@ void SLLScene::render() { sll.render(); }
 void SLLScene::find(std::string val) {
     // if (steps.size() > 1) return;
     correctAnimation();
-    addStep(0, &PSEUDO_SEARCH);
+    addStep(-1, nullptr);
     SLL& currSll = steps.back().sll;
     Node* curr = currSll.root;
     steps.back().sll.deHighlight();
@@ -181,7 +182,7 @@ void SLLScene::find(std::string val) {
     if (nodeIndex == -1) {
         addStep(0, &PSEUDO_SEARCH);
         steps.back().sll.highlightTo(sll.nodeCount);
-        addStep(-1, &PSEUDO_SEARCH);
+        // addStep(-1, nullptr);
         return;
     }
 
@@ -193,7 +194,7 @@ void SLLScene::find(std::string val) {
     curr = lastSll.root;
     for (int i = 0; i < nodeIndex; i++) curr = curr->nextNode;
     curr->borderColor.transitionToward(&nodeResultColor);
-    addStep(-1, &PSEUDO_SEARCH);
+    // addStep(-1, nullptr);
 }
 
 void SLLScene::clearScene() {
@@ -236,8 +237,8 @@ void SLLScene::recordInput() {
         std::string value = std::to_string(rand() % 10000);
         std::string location = std::to_string(rand() % (sll.nodeCount + 1));
         
-        addPane.getForm(0, 0).setText(value);
-        addPane.getForm(0, 1).setText(location);
+        addPane.getForm(0, 1).setText(value);
+        addPane.getForm(0, 0).setText(location);
     }
     
     if (addPane.isButtonPressed(1)) {
@@ -296,7 +297,7 @@ void SLLScene::recordInput() {
         auto location = algoPane.getText(0, 0);
         auto value  = algoPane.getText(0, 1);
         if (location == "" || value == "") return;
-        addStep(-1, nullptr);
+        // addStep(-1, nullptr);
         int place = stoi(location);
         removeAt(place);
         addAt(value, place);
@@ -396,7 +397,7 @@ void SLLScene::backward() {
     while (past.size()) {
         prevStep();
         while (steps.size() > 1) steps.pop_back();
-        if (steps.front().highlightIndex == -1) break;
+        if (steps.front().highlightRef == nullptr) break;
     }
     sll = steps.front().sll;
     sll.finishAnimation();
@@ -410,7 +411,7 @@ void SLLScene::forward() {
         auto& temp = steps.front();
         while (steps.size() > 1 || future.size()) {
             nextStep();
-            if (&temp != &steps.front() && steps.front().highlightIndex == -1)
+            if (&temp != &steps.front() && steps.front().highlightRef == nullptr)
                 break;
         }
     }

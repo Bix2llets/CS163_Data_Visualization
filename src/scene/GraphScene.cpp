@@ -100,7 +100,10 @@ void init() {
 void updateAnimation(bool isForced) {
     if (!isForced)
         if (!graph.isAnimationDone()) return;
-    if (steps.size() == 0) timeLeft = 0;
+    if (steps.size() == 0) {
+        timeLeft = 0;
+        currentHighlighting = -1;
+    }
     timeLeft -= GetFrameTime();
     if (isForced || (timeLeft <= 0 && steps.size())) {
         Action nextAction = steps.front();
@@ -280,14 +283,15 @@ void prevStep() {
         else
             edge->makeTransparent(isImmediate);
     }
+    graph.finishAnimation();
 }
 
 void nextStep() {
     if (!steps.size()) return;
     if (steps.size()) {
+        updateAnimation();
         graph.finishAnimation();
         timeLeft = 0;
-        updateAnimation();
         return;
     }
 }
@@ -634,7 +638,7 @@ void dijkstra(int source) {
         if (node->getLabel() != source) {
             addStep(1, &PSEUDO_DIJKSTRA);
             minimumDistance[node->getLabel()] = INF;
-            addNodeChange(node->getLabel(), getInfo(node, 1, 1, 0));
+            addNodeChange(node->getLabel(), {0, 1, 1, 1, 0});
         }
     }
     addStep(0, &PSEUDO_DIJKSTRA);

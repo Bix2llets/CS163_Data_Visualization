@@ -51,7 +51,7 @@ const std::vector<std::string> AVL::AVLDelete2 = {
 const std::vector<std::string> AVL::AVLUpdate = {
     "Begin",            // 26
     "Find the limits of old key",  // 27
-    "If new key satisfies the limits, replace old by new",  // 28
+    "If new key satisfies the limits, replace it",  // 28
     "End",                                 // 29
 };
 
