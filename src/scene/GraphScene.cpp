@@ -3,7 +3,7 @@
 #include <sstream>
 #include <unordered_map>
 
-#include "menu.hpp"
+#include "menu.h"
 namespace GraphScene {
 Graph graph;
 std::deque<Action> past;

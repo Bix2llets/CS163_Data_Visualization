@@ -1,4 +1,4 @@
-#include "trie/TrieState.hpp"
+#include "trie/TrieState.h"
 namespace TrieScene {
     extern TrieState Trie;
 

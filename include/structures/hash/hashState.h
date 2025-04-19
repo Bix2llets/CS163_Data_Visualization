@@ -1,44 +1,49 @@
-#ifndef TrieSTATE_HPP
-#define TrieSTATE_HPP
+#ifndef hashSTATE_HPP
+#define hashSTATE_HPP
 
 #include "raylib.h"
 #include <cstring>
-#include "Trie.hpp"
+#include "hash.h"
 #include "button.h"
 #include "menuPane.h"
-class TrieState
+
+class HashState
 {
-    ColorSet const *buttonPalette = &buttonColorSet;
+    static ColorSet const *buttonPalette;
     
     public:
-        TrieState();
+        HashState();
         void handleInput();
         void update();
         void render();
         void run();
-        ~TrieState();
-        
-        static void initPanes(Vector2 position);
-        static MenuPane addPane, removePane, algoPane, storagePane;
+        static void initPanes(Vector2 position); // Changed to static
+        ~HashState();
 
         static void setAnimationSpeed(float factor);
+
+        static MenuPane addPane;
+        static MenuPane removePane;
+        static MenuPane algoPane;
+        static MenuPane storagePane;
     private:
-        Trie mTrie;
+        Hash mhash;
         bool showCreateOptions;
         bool showTextBox;
         bool editMode;
         int isReversed;
         int textDestionation;
         char textBox[100], requestText[100];
-        double static mTimeStep;
+        static double mTimeStep;
         double mTime, mTimeStepSlider;
         bool animationPlaying, pendingPause, showRunStepByStep;
         float sliderValue;
 
+        // Menu panes
+
         Button *mCreateButton, *mSearchButton, *mInsertButton, *mDeleteButton;
         Button *mClearButton, *mRandomButton, *mCustomButton;
         Button *mRandomValueButton, *mEnterButton;
-
 };
 
-#endif // TrieSTATE_HPP
+#endif // hashSTATE_HPP

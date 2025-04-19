@@ -1,4 +1,4 @@
-#include "hash/HashState.hpp"
+#include "hash/HashState.h"
 namespace HashScene {
     extern HashState Hash;
 
