@@ -338,7 +338,7 @@ void SLLScene::recordInput() {
         if (miscPane.isButtonPressed(1)) {
             if (sll.isFinished() == false) return;
             const char* filter[2] = {"*.txt", "*.inp"};
-            auto path = tinyfd_openFileDialog("Open: ", "", 2, filter,
+            auto path = tinyfd_openFileDialog("Open: ", "SLL.txt", 2, filter,
                 "txt or inp file", 0);
                 
                 if (path != NULL) {
